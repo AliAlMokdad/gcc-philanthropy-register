@@ -6,6 +6,9 @@
 <title>Gulf Cooperation Council (GCC) Philanthropy</title>
 <meta name="description" content="Directory of philanthropic funders, foundations, corporate giving programmes and endowments in the United Arab Emirates, Saudi Arabia and Qatar.">
 <meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' rx='10' fill='%23006C35'/><path d='M0 10a10 10 0 0 1 10-10h6v48h-6a10 10 0 0 1-10-10z' fill='%23CE1126'/><path d='M32 0h6a10 10 0 0 1 10 10v28a10 10 0 0 1-10 10h-6z' fill='%238A1538'/></svg>">
 <!--
 ANTI_SLOP_BRIEF
@@ -46,36 +49,36 @@ ANTI_SLOP_BRIEF
 -->
 <style>
 :root{
-  /* ink-3 is #5A5E61 rather than a lighter grey because the small labels sit over
-     the flag wash, where a lighter grey measured 3.66:1. axe cannot composite
-     through a mask, so this one was computed by hand: worst case now 4.96:1. */
-  --ink:#191A17; --ink-2:#4D5156; --ink-3:#5A5E61;
-  --accent:#1F4E3D; --accent-2:#2C6B53; --accent-soft:#EAF2EE; --accent-line:#BFD5CB;
-  --paper:#FFFFFF; --paper-2:#F8F9F7; --line:#E4E6E2; --line-2:#D3D6D1;
-  --focus:#1F4E3D;
-  --bg-a:rgba(31,78,61,.055); --bg-b:rgba(31,78,61,.035);
-  --shadow:0 1px 3px rgba(25,26,23,.10);
-  --shadow-up:0 6px 20px rgba(25,26,23,.10);
-  /* the Microsoft stack. Segoe UI Variable first, then Segoe UI, then whatever the
-     machine has: nothing is downloaded, so a machine without Segoe falls through to
-     its own system face rather than to a blank. */
-  --display:"Segoe UI Variable Display","Segoe UI Variable Text","Segoe UI Variable",
-            "Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
-  --serif:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI",system-ui,
-          -apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
-  --sans:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI",system-ui,
-         -apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  /* Copilot / Quantum Humanitarian / Humanitarian Diplomacy house style. Ink #181824
+     and slate #183C54 are sampled from Ali's own paper cover; the Fluent spectrum
+     ribbon is the single chromatic accent, used once. ink-3 was checked over paper and
+     the flag wash: worst case still clears AA. */
+  --ink:#181824; --slate:#183C54; --ink-2:#3E4A5C; --ink-3:#586170;
+  --accent:#183C54; --accent-2:#24557A; --accent-soft:#EAF0F6; --accent-line:#C4D2E0;
+  --paper:#FFFFFF; --paper-2:#F5F7F9; --line:#E3E7EC; --line-2:#CDD5DE;
+  --focus:#183C54;
+  --spectrum:linear-gradient(120deg,#E3008C,#7B61FF,#0078D4,#00BCF2,#13A10E,#FFB900);
+  --bg-a:rgba(24,60,84,.05); --bg-b:rgba(24,60,84,.03);
+  --shadow:0 1px 3px rgba(20,24,36,.10);
+  --shadow-up:0 8px 24px rgba(20,24,36,.12);
+  /* Source Serif 4 for the record voice, IBM Plex Mono for labels and chrome, both from
+     Google Fonts. System sans is kept for dense values and the search field so nothing
+     critical waits on a web font. */
+  --display:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --ink:#F1F2EF; --ink-2:#BDC1C6; --ink-3:#9AA0A6;
-    --accent:#8FD1B4; --accent-2:#A6DCC4; --accent-soft:#16241F; --accent-line:#335347;
-    --paper:#131513; --paper-2:#1B1E1B; --line:#2B2E2B; --line-2:#3A3E3A;
-    --focus:#8FD1B4;
-    --bg-a:rgba(143,209,180,.055); --bg-b:rgba(143,209,180,.035);
-    --shadow:0 1px 6px rgba(0,0,0,.5);
-    --shadow-up:0 1px 10px rgba(143,209,180,.22);
+    --ink:#EEF0F4; --slate:#9CC0DE; --ink-2:#BAC2CE; --ink-3:#97A2B0;
+    --accent:#9CC0DE; --accent-2:#B6D2E8; --accent-soft:#16222E; --accent-line:#34485C;
+    --paper:#0F1218; --paper-2:#161A20; --line:#282E38; --line-2:#38404C;
+    --focus:#9CC0DE;
+    --bg-a:rgba(156,192,222,.06); --bg-b:rgba(156,192,222,.035);
+    --shadow:0 1px 6px rgba(0,0,0,.55);
+    --shadow-up:0 8px 24px rgba(0,0,0,.5);
   }
 }
 *{box-sizing:border-box}
@@ -445,12 +448,80 @@ main{padding-bottom:var(--s5)}
   .door:hover{transform:none}
 }
 </style>
+<style id="copilot-skin">
+/* Copilot house-style overlay, loaded after the base sheet so it wins ties. Palette and
+   fonts already come from the retimed :root tokens; this adds the signature moves: an ink
+   masthead capped by the Fluent spectrum ribbon, section headers led by a serif numeral
+   over a mono label, IBM Plex Mono on the chrome, Source Serif on the names. No class
+   names change, so the script is untouched. */
+
+/* masthead: white on ink, the spectrum ribbon along its foot */
+header.top{background:var(--ink);border-bottom:0;position:relative}
+header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
+  background:var(--spectrum)}
+header.top .wrap{padding-top:26px;padding-bottom:26px}
+.kick{margin:0 0 10px;font:600 12px/1 var(--mono);letter-spacing:.2em;
+  text-transform:uppercase;color:#AEB7C6}
+header.top h1{font:600 27px/1.18 var(--display);color:#F4F3F0;letter-spacing:.1px}
+@media (min-width:700px){ header.top h1{font-size:31px} }
+header.top h1 a{color:inherit}
+header.top h1 a:hover{color:#FFFFFF}
+header.top h1 .abbr{color:#98A3B4;font-weight:400}
+
+/* section eyebrow: a serif numeral, a mono label, a hairline, a mono tail */
+.eyebrow{align-items:baseline;gap:16px;font:600 12px/1 var(--mono);letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-3)}
+.eyebrow::before{display:none}
+.eyebrow .rn{order:-1;flex:0 0 auto;font:400 32px/1 var(--display);color:var(--slate);
+  letter-spacing:0;text-transform:none}
+.eyebrow::after{align-self:center}
+.eyebrow .tail{font:400 12px/1 var(--mono);letter-spacing:.06em;text-transform:none;
+  color:var(--ink-3)}
+
+/* record voice: names in Source Serif, labels and chrome in IBM Plex Mono */
+.door .nm{font-family:var(--display)}
+.door .go{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+ol.ranked .t{font-family:var(--serif);font-size:16px;line-height:1.3}
+.back{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.sel-sub{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-3)}
+.pick label,fieldset.has legend{font-family:var(--mono);letter-spacing:.1em;
+  text-transform:uppercase;font-size:11px}
+.chip span{font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+.tally{font-family:var(--mono);letter-spacing:.02em}
+.rowbtn .nm{font-family:var(--serif)}
+dl.rec-dl dt{font-family:var(--mono)}
+nav.pager a,nav.pager span{font-family:var(--mono)}
+.routes .copy{font-family:var(--mono)}
+footer.sig a{font-family:var(--serif)}
+
+/* the ranked corner-glow: keep it slate in dark mode, where the base sheet hardcodes green */
+@media (prefers-color-scheme:dark){
+  ol.ranked a{
+    background:
+      radial-gradient(150px 90px at 100% 0%,rgba(156,192,222,.12),transparent 72%),
+      linear-gradient(135deg,#161A20 0%,#141A22 52%,#16222E 100%);
+    border-color:rgba(156,192,222,.20)}
+}
+
+/* the mono eyebrow label plus its count is wider than a phone, and the base sheet sets
+   the eyebrow nowrap, so below 560px drop the connecting rule and let the count fall to
+   its own line rather than push the row into a horizontal scroll */
+@media (max-width:560px){
+  .eyebrow{flex-wrap:wrap;gap:10px 12px}
+  .eyebrow::after{display:none}
+  .eyebrow .rn{font-size:26px}
+  .eyebrow .tail{flex-basis:100%;order:3}
+}
+</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
-  <div class="wrap"><h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1></div>
+  <div class="wrap">
+    <p class="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar</p>
+    <h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1>
+  </div>
 </header>
 
 <main id="main" class="wrap">
@@ -461,11 +532,11 @@ main{padding-bottom:var(--s5)}
 
   <div id="l1" hidden>
     <section class="band" aria-labelledby="h-country">
-      <p class="eyebrow" id="h-country">Countries</p>
+      <p class="eyebrow" id="h-country"><span class="rn">I</span>Countries</p>
       <div class="doors" id="doors"></div>
     </section>
     <section class="band" aria-labelledby="h-type">
-      <p class="eyebrow" id="h-type">Organisation categories<span class="tail" id="typetail"></span></p>
+      <p class="eyebrow" id="h-type"><span class="rn">II</span>Organisation categories<span class="tail" id="typetail"></span></p>
       <ol class="ranked" id="types"></ol>
       <details class="more" id="moretypes">
         <summary id="moresum"></summary>
