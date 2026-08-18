@@ -75,7 +75,8 @@ body{
   margin:0;background:var(--paper);color:var(--ink);
   font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1000px;margin:0 auto;padding:0 var(--s4)}
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--s5)}
+@media (max-width:700px){ .wrap{padding:0 var(--s4)} }
 a{color:var(--accent)}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
@@ -87,15 +88,36 @@ a{color:var(--accent)}
 /* masthead: the title, and nothing beside it */
 header.top{border-bottom:1px solid var(--line);background:var(--paper-2)}
 header.top .wrap{padding-top:var(--s4);padding-bottom:var(--s4)}
-h1{font:400 22px/1.2 var(--serif);margin:0;letter-spacing:0}
+h1{font:400 22px/1.2 var(--serif);margin:0;letter-spacing:-.2px}
 h1 a{color:inherit;text-decoration:none;display:inline-block}
 h1 a:hover{color:var(--accent)}
 h1 .abbr{color:var(--ink-3);font-weight:400}
 
 .eyebrow{font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--accent);margin:0 0 var(--s4)}
+  color:var(--accent);margin:0 0 var(--s4);display:flex;align-items:center;
+  gap:var(--s3);flex-wrap:nowrap}
+.eyebrow::after{content:"";flex:1 1 auto;height:1px;background:var(--line);order:1;
+  min-width:16px}
+.eyebrow .tail{order:2;flex:0 0 auto;font:400 11px/1 var(--sans);letter-spacing:.05em;
+  text-transform:none;color:var(--ink-3);font-variant-numeric:tabular-nums}
 section.band{padding:var(--s5) 0}
-section.band + section.band{border-top:1px solid var(--line)}
+/* Landscape. On a wide screen the two ways in sit BESIDE each other rather than
+   stacked down the middle, so the whole choice is one glance wide. */
+@media (min-width:1040px){
+  #l1{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+      gap:0 var(--s5);align-items:start}
+  #l1 section.band + section.band{border-left:1px solid var(--line);
+      padding-left:var(--s5)}
+  /* the id keeps these ahead of the plain .doors and ol.ranked rules regardless of
+     source order: written as bare class selectors they lost to the later
+     three-column rule and clipped Qatar against the divider */
+  #l1 .doors{grid-template-columns:1fr;gap:var(--s2)}
+  #l1 .door{padding:var(--s3) var(--s4)}
+  #l1 ol.ranked{grid-template-columns:1fr 1fr}
+}
+@media (max-width:1039px){
+  section.band + section.band{border-top:1px solid var(--line)}
+}
 
 /* ---------- level 1: country doors, name only ---------- */
 .doors{display:grid;gap:var(--s3);grid-template-columns:1fr}
@@ -147,20 +169,21 @@ details.more ol.ranked{margin-top:var(--s3)}
    width made the Saudi panel 193px tall against a 210px header and it collided with
    the controls below. Equal height is also how flags are actually displayed side by
    side. */
-.flagplate{display:block;width:max-content;max-width:100%;margin:0 0 var(--s4);
-  border-radius:5px;overflow:hidden;line-height:0;background:var(--paper);
-  box-shadow:0 14px 34px rgba(25,26,23,.13),0 0 0 1px rgba(25,26,23,.12)}
-.flagplate svg{display:block;height:104px;width:auto;max-width:100%}
-@media (min-width:820px){
-  #l2.hasback .l2head{padding-right:350px;min-height:196px}
-  .flagplate{position:absolute;right:0;top:var(--s5);margin:0}
-  .flagplate svg{height:124px}
-  .l2head{position:relative}
+/* The flag sits BEHIND the country page, faded, as the owner asked. It is shown WHOLE
+   and evenly faded, never clipped and never masked into a sliver: an even wash is a
+   watermark, whereas cutting the Saudi flag through the shahada would not be an
+   acceptable way to render a creed. It is kept clear of the text column so it never
+   sits under a line anyone has to read. */
+.flagplate{position:absolute;right:0;top:0;width:min(46%,420px);margin:0;
+  line-height:0;pointer-events:none;z-index:0;opacity:.16}
+.flagplate svg{display:block;width:100%;height:auto}
+@media (prefers-color-scheme:dark){ .flagplate{opacity:.22} }
+.l2head{position:relative}
+@media (min-width:900px){ #l2.hasback .l2head{padding-right:30%;min-height:190px} }
+@media (max-width:899px){
+  .flagplate{width:min(56%,290px);opacity:.13;top:-4px;right:-6px}
 }
-@media (max-width:560px){
-  .flagplate{margin-bottom:var(--s3)}
-  .flagplate svg{height:82px}
-}
+#l2 .l2head > *:not(.flagplate){position:relative;z-index:1}
 
 /* ---------- flag backdrops ----------
    Drawn as vector here rather than lifted from a news photograph, so it is
@@ -180,30 +203,25 @@ details.more ol.ranked{margin-top:var(--s3)}
 @media (prefers-color-scheme:dark){ .flagback svg{opacity:.34} }
 /* On a country page the backdrop is COLOUR ONLY, taken from that flag, never the
    artwork: the flag itself is shown whole in the plate above the heading instead. */
-.flagback.one{height:300px;bottom:auto;border-radius:0;
-  background:radial-gradient(58% 62% at 84% 34%,var(--wash) 0,transparent 72%);
-  -webkit-mask-image:none;mask-image:none;opacity:.5}
-@media (prefers-color-scheme:dark){ .flagback.one{opacity:.36} }
-@media (max-width:699px){ .flagback.one{height:220px} }
-/* The three flags across the landing band, each shown WHOLE at its own proportions
-   and set to the right so they sit clear of the eyebrow and the doors. Sizing by
-   height would have cropped them, because the three ratios differ by a factor of
-   nearly two. */
-.flagback.trio{display:flex;justify-content:flex-end;align-items:center;
-  gap:12px;padding:0 max(24px,calc((100% - 1000px) / 2 + 24px)) 0 0}
+.flagback.one{height:250px;bottom:auto;border-radius:0;
+  background:radial-gradient(50% 56% at 86% 28%,var(--wash) 0,transparent 74%);
+  -webkit-mask-image:none;mask-image:none;opacity:.20}
+@media (prefers-color-scheme:dark){ .flagback.one{opacity:.16} }
+@media (max-width:699px){ .flagback.one{height:180px} }
 /* Each flag is small enough to sit COMPLETE inside the fade. An earlier attempt sized
    them to 23% of the band, and the mask then cut the Saudi flag through the middle of
    the shahada, which is not an acceptable way to render a creed. Whole, undistorted,
    or not at all. */
-.flagback.trio svg{position:static;flex:0 0 auto;width:58px;height:auto}
-@media (max-width:820px){ .flagback.trio{display:none} }
 
 /* ---------- level 2 ---------- */
 .l2head{padding:var(--s4) 0 0}
 .back{display:inline-block;font:600 13px/1 var(--sans);text-decoration:none;padding:8px 0}
 .back:hover{text-decoration:underline}
-h2.sel{font:400 32px/1.1 var(--serif);margin:var(--s2) 0 var(--s1);letter-spacing:0}
-@media (min-width:700px){ h2.sel{font-size:42px;line-height:1.05} }
+h2.sel{font:400 34px/1.06 var(--serif);margin:var(--s2) 0 var(--s3);
+  letter-spacing:-.5px;position:relative;padding-bottom:var(--s3)}
+h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
+  background:var(--accent);border-radius:1px}
+@media (min-width:700px){ h2.sel{font-size:50px;line-height:1;letter-spacing:-1.1px} }
 h2.sel:focus,h2.sel:focus-visible{outline:none}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
 
@@ -249,6 +267,10 @@ fieldset.has legend{float:left;font:700 10px/40px var(--sans);letter-spacing:.13
 .tally{font:400 13px/1.5 var(--sans);color:var(--ink-3);margin:0;
   padding:var(--s2) 0 var(--s3);border-bottom:1px solid var(--line);
   font-variant-numeric:tabular-nums}
+.ainote{margin:0;padding:var(--s3) 0 0;font:400 13px/1.55 var(--sans);
+  color:var(--ink-2);display:flex;align-items:flex-start;gap:var(--s2);max-width:74ch}
+.ainote::before{content:"";flex:0 0 auto;width:6px;height:6px;margin-top:7px;
+  border-radius:50%;background:var(--accent)}
 
 /* ---------- the list: names that open ---------- */
 ul.recs{list-style:none;margin:0;padding:0}
@@ -374,7 +396,7 @@ main{padding-bottom:var(--s5)}
       <div class="doors" id="doors"></div>
     </section>
     <section class="band" aria-labelledby="h-type">
-      <p class="eyebrow" id="h-type">By kind of funder</p>
+      <p class="eyebrow" id="h-type">Category of organisation<span class="tail" id="typetail"></span></p>
       <ol class="ranked" id="types"></ol>
       <details class="more" id="moretypes">
         <summary id="moresum"></summary>
@@ -385,7 +407,7 @@ main{padding-bottom:var(--s5)}
 
   <div id="l2" hidden>
     <div class="l2head">
-      <a class="back" href="#" id="back">Back to countries and types</a>
+      <a class="back" href="#" id="back">Back to countries and categories</a>
       <span class="flagplate" id="flagplate" aria-hidden="true" hidden></span>
       <h2 class="sel" id="selname" tabindex="-1"></h2>
       <p class="sel-sub" id="selsub"></p>
@@ -400,6 +422,10 @@ main{padding-bottom:var(--s5)}
         <label for="pick" id="picklabel">Where</label>
         <select id="pick"></select>
       </div>
+      <div class="pick" id="pick2wrap" hidden>
+        <label for="pick2" id="pick2label">Category</label>
+        <select id="pick2"></select>
+      </div>
       <fieldset class="has">
         <legend>Has</legend>
         <label class="chip"><input type="checkbox" id="f-email"><span>Email</span></label>
@@ -408,6 +434,7 @@ main{padding-bottom:var(--s5)}
       </fieldset>
     </div>
     <p class="tally" id="tally" role="status" aria-live="polite"></p>
+    <p class="ainote" id="ainote" role="status" aria-live="polite" hidden></p>
     <ul class="recs" id="recs"></ul>
     <nav class="pager" id="pager" aria-label="Pages"></nav>
     <div class="empty" id="empty" hidden>
@@ -432,7 +459,7 @@ main{padding-bottom:var(--s5)}
    set and each row's length are validated at boot. */
 var REQUIRED=["name","type","focus","country","city","website","email","phone",
               "linkedin","contact","title","area"];
-var DATA=null, F=null, ROWS=[], NORM=null;
+var DATA=null, F=null, ROWS=[], NORM=null, ROW_INDEX=null;
 function val(row,key){
   var i=F[key];
   if(i===undefined) return "";
@@ -546,15 +573,9 @@ function paintBackdrop(host,countryName){
   var old=host.querySelector(":scope > .flagback");
   if(old) old.parentNode.removeChild(old);
   host.classList.add("hasback");
-  var back=make("div","flagback "+(countryName ? "one" : "trio"));
+  var back=make("div","flagback one");
   back.setAttribute("aria-hidden","true");
-  if(countryName){
-    back.style.setProperty("--wash",FLAG_WASH[norm(countryName)]||"#1F4E3D");
-  }else{
-    DATA.meta.countries.forEach(function(c){
-      back.appendChild(countryMark(c.name,""));
-    });
-  }
+  back.style.setProperty("--wash",FLAG_WASH[norm(countryName)]||"#1F4E3D");
   host.insertBefore(back,host.firstChild);
 }
 function clearBackdrop(host){
@@ -589,7 +610,6 @@ function safeTel(t){ t=txt(t).trim(); return /[0-9]/.test(t) ? t : ""; }
 /* ---------- level 1 ---------- */
 function buildL1(){
   var doors=el("doors");
-  paintBackdrop(document.querySelector("header.top"),null);
   DATA.meta.countries.forEach(function(c){
     var a=make("a","door");
     a.href="#/c/"+slug(c.name);
@@ -612,8 +632,12 @@ function buildL1(){
     });
   }
   rank(head,el("types"));
+  el("typetail").textContent=plural(ts.length,"category","categories")+", "
+    + plural(DATA.meta.total,"organisation","organisations");
   if(rest.length){
-    el("moresum").textContent="More kinds of funder";
+    var restSum=rest.reduce(function(a,b){ return a+b.count; },0);
+    el("moresum").textContent=rest.length+" more categories, "
+      + plural(restSum,"organisation","organisations");
     rank(rest,el("types-rest"));
   }else{
     el("moretypes").hidden=true;
@@ -625,6 +649,8 @@ var SEARCH_FIELDS=["name","type","country","city","area","focus","contact","titl
 var VISIBLE_FIELDS=["name"];   /* only the name shows while a row is closed */
 
 function buildNorm(){
+  ROW_INDEX=new Map();
+  ROWS.forEach(function(r,i){ ROW_INDEX.set(r,i); });
   NORM=new Map();
   ROWS.forEach(function(r){
     NORM.set(r,{
@@ -650,6 +676,7 @@ function readControls(){
   return {
     q: norm(el("q").value),
     pick: el("pickwrap").hidden ? "" : el("pick").value,
+    pick2: el("pick2wrap").hidden ? "" : el("pick2").value,
     email: el("f-email").checked,
     phone: el("f-phone").checked,
     website: el("f-website").checked
@@ -659,6 +686,8 @@ function computeFiltered(sel,c){
   var field=(sel.kind==="c") ? "city" : "country";
   var out=sel.rows.filter(function(r){
     if(c.pick && val(r,field)!==c.pick) return false;
+    /* the category filter exists only on a country page */
+    if(c.pick2 && val(r,"type")!==c.pick2) return false;
     if(c.email && !val(r,"email")) return false;
     if(c.phone && !val(r,"phone")) return false;
     if(c.website && !val(r,"website")) return false;
@@ -722,8 +751,8 @@ function pairsFor(r){
     dl.appendChild(dd);
   }
   var focus=val(r,"focus");
-  if(focus) pair("What they fund",document.createTextNode(focus));
-  pair("Kind of funder",document.createTextNode(val(r,"type")));
+  if(focus) pair("Mandate",document.createTextNode(focus));
+  pair("Category",document.createTextNode(val(r,"type")));
   var where=[val(r,"city"),val(r,"country")].filter(Boolean).join(", ");
   var area=val(r,"area");
   if(area && area!==val(r,"city")) where=where ? where+" ("+area+")" : area;
@@ -838,6 +867,7 @@ function render(){
           ? ", filtered from "+num(current.rows.length) : "");
     el("empty").hidden=true;
   }else{
+    el("tally").textContent="";
     el("tally").hidden=true;
     el("emptymsg").textContent="Nothing in "+current.name+" matches that.";
     el("empty").hidden=false;
@@ -846,6 +876,32 @@ function render(){
 }
 
 /* ---------- the second filter, which depends on the level-1 choice ---------- */
+/* the category filter, offered only on a country page: on a category page it would be
+   a select with a single option in it */
+function fillPick2(sel){
+  var wrap=el("pick2wrap"), sl=el("pick2");
+  clear(sl);
+  if(sel.kind!=="c"){ wrap.hidden=true; return; }
+  var counts={};
+  sel.rows.forEach(function(r){
+    var v=val(r,"type");
+    if(v) counts[v]=(counts[v]||0)+1;
+  });
+  var names=Object.keys(counts).sort(function(a,b){
+    return counts[b]-counts[a] || a.localeCompare(b);
+  });
+  if(names.length<2){ wrap.hidden=true; return; }
+  var all=make("option",null,"All categories ("+num(sel.rows.length)+")");
+  all.value="";
+  sl.appendChild(all);
+  names.forEach(function(n){
+    var o=make("option",null,n+" ("+num(counts[n])+")");
+    o.value=n;
+    sl.appendChild(o);
+  });
+  wrap.hidden=false;
+}
+
 function fillPick(sel){
   var wrap=el("pickwrap"), sl=el("pick");
   clear(sl);
@@ -911,6 +967,7 @@ function hashFor(targetPage){
   var c=readControls(), p=[];
   if(c.q) p.push("q="+encodeURIComponent(el("q").value.trim()));
   if(c.pick) p.push("in="+encodeURIComponent(c.pick));
+  if(c.pick2) p.push("cat="+encodeURIComponent(c.pick2));
   var has=["email","phone","website"].filter(function(k){ return c[k]; });
   if(has.length) p.push("has="+has.join(","));
   if(targetPage && targetPage>1) p.push("p="+targetPage);
@@ -959,10 +1016,14 @@ function route(){
 
   el("q").value=p.q||"";
   fillPick(sel);
+  fillPick2(sel);
   var want=p["in"]||"";
   var ok=false, opts=el("pick").options, j;
   for(j=0;j<opts.length;j++) if(opts[j].value===want){ ok=true; break; }
   el("pick").value = ok ? want : "";
+  var want2=p.cat||"", ok2=false, o2=el("pick2").options, j2;
+  for(j2=0;j2<o2.length;j2++) if(o2[j2].value===want2){ ok2=true; break; }
+  el("pick2").value = ok2 ? want2 : "";
   var has=(p.has||"").split(",");
   el("f-email").checked=has.indexOf("email")>-1;
   el("f-phone").checked=has.indexOf("phone")>-1;
@@ -1003,24 +1064,237 @@ function showL1(clean){
   window.scrollTo(0,0);
 }
 
+/* ================= MEANING SEARCH =================================================
+   Finds an organisation whose mandate is ABOUT the query even when it never uses the
+   query's words. "helping orphans" reaches a society whose mandate says "care for
+   children who have lost parents".
+
+   HOW IT IS ARRANGED, and why. Codex reviewed the first design and two of its findings
+   changed it. Vectorize was over-engineered for 1,344 rows and may require a paid
+   plan, so the vectors ship as a 504 KB static file and the browser does the
+   arithmetic: 1,344 by 384 is about half a million multiply-adds, which is nothing.
+   And a worker that ranks results and writes a sentence about them can describe rows
+   the page then filters away, and can assert something no mandate says. So the worker
+   embeds the QUERY and nothing else. The page ranks, filters and explains, and the
+   explanation is assembled from words already present in the mandates on screen.
+
+   Ranking is hybrid, not semantic alone. Pure cosine buries an exact name match under
+   things that are merely similar, so exact and prefix name matches are pinned above
+   everything and the remainder is reciprocal rank fusion of the keyword and meaning
+   orders.
+
+   And it can say no. A nearest-neighbour search always returns something, so a result
+   is only offered when the best match clears an absolute floor AND stands clear of the
+   pack behind it. Otherwise the word matches stand and the page says so.
+================================================================================== */
+var WORKER = "https://gcc-funder-search.ankommer.workers.dev";
+var VEC = null, VDIMS = 0, VSCALE = 127, vecLoading = null, vecFailed = false;
+var aiSeq = 0, aiTimer = null, aiCache = Object.create(null);
+/* CALIBRATED, not guessed. Twenty probe queries against this actual index:
+   twelve real ones scored 0.619 to 0.783 (orphan care 0.728, eye care 0.783,
+   scholarships 0.765, housing 0.777, entrepreneurs 0.619) and eight nonsense ones
+   scored 0.413 to 0.561 (weather in Reykjavik 0.430, sourdough 0.463, keyboard mash
+   0.561). They separate cleanly, so the floor is the midpoint of that gap.
+   The first version also required the best match to stand clear of the median of the
+   pack behind it. That test was WRONG for this corpus: hundreds of Saudi charitable
+   societies carry near-identical general mandates, so a perfectly good query has a
+   margin of 0.02 and was being thrown away. Dropped. */
+var AI_MIN_CHARS = 3, AI_FLOOR = 0.59, AI_TAKE = 60;
+
+function loadVectors(){
+  if(VEC) return Promise.resolve(true);
+  if(vecFailed) return Promise.resolve(false);
+  if(vecLoading) return vecLoading;
+  vecLoading = Promise.all([
+    fetch("vectors.json").then(function(r){ return r.ok ? r.json() : null; }),
+    fetch("vectors.bin").then(function(r){ return r.ok ? r.arrayBuffer() : null; })
+  ]).then(function(a){
+    var hdr = a[0], buf = a[1];
+    if(!hdr || !buf) throw new Error("index missing");
+    if(hdr.count !== ROWS.length)
+      throw new Error("index has " + hdr.count + " rows, data has " + ROWS.length);
+    VDIMS = hdr.dims;
+    VSCALE = hdr.scale || 127;
+    VEC = new Int8Array(buf);
+    if(VEC.length !== hdr.count * VDIMS) throw new Error("index size mismatch");
+    return true;
+  }).catch(function(e){
+    console.warn("meaning search unavailable: " + e.message);
+    vecFailed = true;
+    VEC = null;
+    return false;
+  });
+  return vecLoading;
+}
+
+/* both sides were L2 normalised before quantising, so a dot product IS the cosine */
+function cosineAll(qv){
+  var n = ROWS.length, d = VDIMS, out = new Float32Array(n);
+  var denom = VSCALE * VSCALE, i, j, base, sum;
+  for(i = 0; i < n; i++){
+    base = i * d;
+    sum = 0;
+    for(j = 0; j < d; j++) sum += VEC[base + j] * qv[j];
+    out[i] = sum / denom;
+  }
+  return out;
+}
+
+/* the page is the final authority on what is in scope, never the worker */
+function inScope(r, sel, c){
+  var key = (sel.kind === "c") ? "country" : "type";
+  if(val(r, key) !== sel.name) return false;
+  var field = (sel.kind === "c") ? "city" : "country";
+  if(c.pick && val(r, field) !== c.pick) return false;
+  if(c.pick2 && val(r, "type") !== c.pick2) return false;
+  if(c.email && !val(r, "email")) return false;
+  if(c.phone && !val(r, "phone")) return false;
+  if(c.website && !val(r, "website")) return false;
+  return true;
+}
+
+/* Assembled from the mandates actually on screen. Nothing is generated: every word in
+   the sentence appears in a row being shown, so it cannot claim something no funder
+   says. */
+var STOP = ("and the for of in to a an with on its their this that from by as at is are "
+  + "or through across including support supports supporting programme programmes "
+  + "organisation organisations foundation fund funds funding charitable charity society "
+  + "company group holding based established via also which while both").split(" ");
+
+function rationale(rowsShown, q){
+  var qt = norm(q).split(" ").filter(function(w){ return w.length > 2; });
+  var freq = Object.create(null);
+  rowsShown.slice(0, 12).forEach(function(r){
+    var seen = Object.create(null);
+    norm(val(r, "focus")).split(" ").forEach(function(w){
+      if(w.length < 4 || STOP.indexOf(w) > -1 || seen[w]) return;
+      seen[w] = 1;
+      if(qt.indexOf(w) > -1) return;      /* the query's own words explain nothing */
+      freq[w] = (freq[w] || 0) + 1;
+    });
+  });
+  var terms = Object.keys(freq).filter(function(w){ return freq[w] >= 2; })
+    .sort(function(a, b){ return freq[b] - freq[a] || a.localeCompare(b); }).slice(0, 3);
+  if(!terms.length) return "Ranked by meaning rather than by wording.";
+  var list = terms.length === 1 ? terms[0]
+    : terms.slice(0, -1).join(", ") + " and " + terms[terms.length - 1];
+  return "Ranked by meaning. The mandates matched here mention " + list + ".";
+}
+
+function lexicalPin(r, q){
+  var nm = norm(val(r, "name")), qq = norm(q);
+  if(!qq) return 3;
+  if(nm === qq) return 0;
+  if(nm.indexOf(qq) === 0) return 1;
+  var toks = qq.split(" ");
+  for(var i = 0; i < toks.length; i++) if(nm.indexOf(toks[i]) === -1) return 3;
+  return 2;
+}
+
+function setAiNote(text){
+  var n = el("ainote");
+  if(!n) return;
+  n.textContent = text || "";
+  n.hidden = !text;
+}
+
+function runMeaningSearch(){
+  if(!current) return;
+  var c = readControls(), q = el("q").value.trim();
+  var sel = current, mySeq = ++aiSeq;
+  if(q.length < AI_MIN_CHARS){ setAiNote(""); return; }
+  var key = norm(q);
+
+  var proceed = function(qv){
+    if(mySeq !== aiSeq || current !== sel) return;      /* a newer query won */
+    return loadVectors().then(function(ready){
+      if(!ready){
+        setAiNote("Meaning search is unavailable, so these are word matches.");
+        return;
+      }
+      if(mySeq !== aiSeq || current !== sel) return;
+      var scores = cosineAll(qv), idx = [], i;
+      for(i = 0; i < ROWS.length; i++) if(inScope(ROWS[i], sel, c)) idx.push(i);
+      if(!idx.length){ setAiNote(""); return; }
+      idx.sort(function(a, b){ return scores[b] - scores[a]; });
+      var top = idx.slice(0, AI_TAKE);
+      var top1 = scores[top[0]];
+      /* a nearest neighbour always returns SOMETHING, so nothing is offered unless the
+         best match clears the calibrated floor */
+      if(top1 < AI_FLOOR){
+        setAiNote("Nothing here matches that closely enough to rank by meaning.");
+        return;
+      }
+      var cut = Math.max(0.50, top1 - 0.08);
+      var semantic = top.filter(function(k){ return scores[k] >= cut; }).slice(0, 40);
+      var semRank = Object.create(null);
+      semantic.forEach(function(k, n){ semRank[k] = n; });
+      var kwRank = Object.create(null);
+      filtered.forEach(function(r, n){ kwRank[ROW_INDEX.get(r)] = n; });
+      var union = Object.create(null);
+      semantic.forEach(function(k){ union[k] = 1; });
+      Object.keys(kwRank).forEach(function(k){ union[k] = 1; });
+      var merged = Object.keys(union).map(Number).map(function(k){
+        var kr = (k in kwRank) ? kwRank[k] : 1e6;
+        var sr = (k in semRank) ? semRank[k] : 1e6;
+        return { i: k, pin: lexicalPin(ROWS[k], q), rrf: 2.0 / (60 + kr) + 1.0 / (60 + sr) };
+      });
+      merged.sort(function(a, b){ return a.pin - b.pin || b.rrf - a.rrf; });
+      var rowsOut = merged.map(function(m){ return ROWS[m.i]; });
+      if(mySeq !== aiSeq || current !== sel) return;
+      filtered = rowsOut;
+      page = 1;
+      seq++;
+      clear(el("recs"));
+      render();
+      setAiNote(rationale(rowsOut, q));
+    });
+  };
+
+  if(aiCache[key]) return proceed(aiCache[key]);
+  fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ q: q }) })
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(d){
+      if(!d || !Array.isArray(d.v)) throw new Error("no vector");
+      aiCache[key] = d.v;
+      return proceed(d.v);
+    })
+    .catch(function(err){
+      /* log the real fault: an early version reported every error here as a network
+         failure, which hid a wrong variable name for several test rounds */
+      console.error("meaning search failed:", err && err.message);
+      if(mySeq === aiSeq)
+        setAiNote("Meaning search is unavailable just now, so these are word matches.");
+    });
+}
+
 /* ---------- events ---------- */
 function onSearch(){
   clearTimeout(timer);
+  clearTimeout(aiTimer);
+  aiSeq++;                     /* anything in flight is now stale */
+  setAiNote("");
   var owner=current;
   timer=setTimeout(function(){
-    if(current===owner) apply(true);
+    if(current!==owner) return;
+    apply(true);                              /* word matches appear at once */
+    aiTimer=setTimeout(runMeaningSearch,220); /* then meaning refines them */
   },180);
 }
 
 function wire(){
   el("q").addEventListener("input",onSearch);
   el("pick").addEventListener("change",function(){ apply(true); });
+  el("pick2").addEventListener("change",function(){ apply(true); });
   ["f-email","f-phone","f-website"].forEach(function(id){
     el(id).addEventListener("change",function(){ apply(true); });
   });
   el("clearall").addEventListener("click",function(){
+    aiSeq++; clearTimeout(aiTimer); setAiNote("");
     el("q").value="";
     el("pick").value="";
+    el("pick2").value="";
     el("f-email").checked=false;
     el("f-phone").checked=false;
     el("f-website").checked=false;
