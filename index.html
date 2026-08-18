@@ -261,6 +261,20 @@ nav.pager .edge{font-weight:600}
    dark mode: axe called it, and a control you cannot read is not a kindness. It is
    distinguished by having no hover and no href, not by being faint. */
 nav.pager .off{color:var(--ink-3);pointer-events:none;cursor:default}
+/* Nine controls do not fit 327px of usable width, so on a phone they are tightened
+   and given a row gap: if the row does wrap it reads as two deliberate rows rather
+   than a spill. The targets stay at or above 24px. */
+nav.pager .pg-sm{display:none}
+@media (max-width:520px){
+  nav.pager{gap:5px;row-gap:10px;padding:var(--s4) 0}
+  nav.pager a,nav.pager span{min-width:34px;padding:0 7px;font-size:13px}
+  /* Measured: the row needed 348px against 312px. The two ellipses are decorative and
+     removing them saves exactly the 38px that was missing, so the pager holds one
+     line instead of orphaning Next on a second. */
+  nav.pager .gap{display:none}
+  nav.pager .pg-lg{display:none}
+  nav.pager .pg-sm{display:inline}
+}
 
 .empty{padding:var(--s5) 0;color:var(--ink-2);font-size:15px}
 .empty button{font:600 13px/1 var(--sans);color:var(--accent);background:none;
@@ -647,13 +661,16 @@ function pageCount(){ return Math.max(1,Math.ceil(filtered.length/PER_PAGE)); }
    reachable, then next. Nine slots at most, so it never wraps on a phone. */
 function pageWindow(cur,total){
   var out=[], i;
-  if(total<=7){
+  if(total<=5){
     for(i=1;i<=total;i++) out.push(i);
     return out;
   }
-  var from=Math.max(2,cur-2), to=Math.min(total-1,cur+2);
-  if(cur<=4){ from=2; to=5; }
-  if(cur>=total-3){ from=total-4; to=total-1; }
+  /* At most seven slots INCLUDING the two gaps, so with Previous and Next the row is
+     nine controls and still fits 375px. The earlier budget counted only the numbers
+     and produced eleven. */
+  var from=Math.max(2,cur-1), to=Math.min(total-1,cur+1);
+  if(cur<=3){ from=2; to=3; }
+  if(cur>=total-2){ from=total-2; to=total-1; }
   out.push(1);
   if(from>2) out.push("gap");
   for(i=from;i<=to;i++) out.push(i);
@@ -667,17 +684,20 @@ function buildPager(){
   var total=pageCount();
   if(filtered.length<=PER_PAGE){ nav.hidden=true; return; }
   nav.hidden=false;
-  function step(label,target,enabled,cls){
-    var n;
+  function step(long,short,target,enabled,cls){
+    var n=enabled ? make("a",cls) : make("span",cls+" off");
     if(enabled){
-      n=make("a",cls,label);
       n.href=hashFor(target);
-    }else{
-      n=make("span",cls+" off",label);
+      n.setAttribute("data-page",target);
     }
+    /* both labels ship and CSS picks one, so the short form on a phone never changes
+       the accessible name */
+    n.setAttribute("aria-label",long+" page");
+    n.appendChild(make("span","pg-lg",long));
+    n.appendChild(make("span","pg-sm",short));
     nav.appendChild(n);
   }
-  step("Previous",page-1,page>1,"edge");
+  step("Previous","Prev",page-1,page>1,"edge");
   pageWindow(page,total).forEach(function(p){
     if(p==="gap"){ nav.appendChild(make("span","gap","...")); return; }
     if(p===page){
@@ -688,10 +708,11 @@ function buildPager(){
     }
     var a=make("a",null,num(p));
     a.href=hashFor(p);
+    a.setAttribute("data-page",p);
     a.setAttribute("aria-label","Page "+p);
     nav.appendChild(a);
   });
-  step("Next",page+1,page<total,"edge");
+  step("Next","Next",page+1,page<total,"edge");
 }
 
 function render(){
@@ -859,6 +880,11 @@ function route(){
   document.title=sel.name+" | GCC Philanthropy, Donors and Funders";
   filtered=computeFiltered(sel,readControls());
   render();
+  /* render() may have clamped the page, and a stale "in" may have been dropped, so
+     the URL is rewritten to state what is actually on screen. Without this,
+     ?p=999 showed page 35 and ?in=Nope showed no filter while both stayed in the
+     address bar, and a copied link misrepresented the view. */
+  if(location.hash!==hashFor(page)) writeHash(true);
   window.scrollTo(0,0);
   /* moving focus on every paging click would fight the reader, so the heading is
      only announced when the selection itself changes */
@@ -901,6 +927,21 @@ function wire(){
     el("f-phone").checked=false;
     el("f-website").checked=false;
     apply(true);
+  });
+  /* Handle a pager click from the LIVE controls. The href was written when the pager
+     was built, so on its own it would restore whatever the search box held at that
+     moment and discard anything typed since. */
+  el("pager").addEventListener("click",function(e){
+    if(!e.target.closest) return;
+    var a=e.target.closest("a[data-page]");
+    if(!a || !current) return;
+    e.preventDefault();
+    clearTimeout(timer);
+    page=Math.max(1,parseInt(a.getAttribute("data-page"),10)||1);
+    filtered=computeFiltered(current,readControls());
+    render();
+    writeHash(false);
+    window.scrollTo(0,0);
   });
   el("back").addEventListener("click",function(e){
     e.preventDefault();
