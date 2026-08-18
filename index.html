@@ -70,7 +70,8 @@ ANTI_SLOP_BRIEF
   }
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;overflow-x:clip}
+body{overflow-x:clip}
 body{
   margin:0;background:var(--paper);color:var(--ink);
   font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
@@ -100,40 +101,39 @@ h1 .abbr{color:var(--ink-3);font-weight:400}
   min-width:16px}
 .eyebrow .tail{order:2;flex:0 0 auto;font:400 11px/1 var(--sans);letter-spacing:.05em;
   text-transform:none;color:var(--ink-3);font-variant-numeric:tabular-nums}
-section.band{padding:var(--s5) 0}
-/* Landscape. On a wide screen the two ways in sit BESIDE each other rather than
-   stacked down the middle, so the whole choice is one glance wide. */
-@media (min-width:1040px){
-  #l1{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);
-      gap:0 var(--s5);align-items:start}
-  #l1 section.band + section.band{border-left:1px solid var(--line);
-      padding-left:var(--s5)}
-  /* the id keeps these ahead of the plain .doors and ol.ranked rules regardless of
-     source order: written as bare class selectors they lost to the later
-     three-column rule and clipped Qatar against the divider */
-  #l1 .doors{grid-template-columns:1fr;gap:var(--s2)}
-  #l1 .door{padding:var(--s3) var(--s4)}
-  #l1 ol.ranked{grid-template-columns:1fr 1fr}
-}
-@media (max-width:1039px){
-  section.band + section.band{border-top:1px solid var(--line)}
-}
+section.band{padding:var(--s5) 0 calc(var(--s5) + var(--s2))}
+section.band + section.band{border-top:1px solid var(--line)}
 
 /* ---------- level 1: country doors, name only ---------- */
 .doors{display:grid;gap:var(--s3);grid-template-columns:1fr}
-@media (min-width:700px){ .doors{grid-template-columns:repeat(3,1fr)} }
+@media (min-width:760px){ .doors{grid-template-columns:repeat(3,1fr)} }
+/* the flag leads and the name sits under it, so the card is the country rather than a
+   row with a small icon stuck on the front */
 .door{
-  display:flex;align-items:center;gap:var(--s3);text-decoration:none;color:inherit;
-  background:var(--paper);border:1px solid var(--line);border-radius:6px;
-  padding:var(--s4);
-  transition:box-shadow .16s ease,border-color .16s ease,transform .16s ease;
+  display:block;text-decoration:none;color:inherit;position:relative;overflow:hidden;
+  background:var(--paper);border:1px solid var(--line);border-radius:8px;
+  padding:0 0 var(--s4);
+  transition:box-shadow .2s ease,border-color .2s ease,transform .2s ease;
 }
-.door:hover,.door:focus-visible{box-shadow:var(--shadow-up);border-color:var(--accent-line);
-  transform:translateY(-1px)}
-.door .mark{flex:0 0 auto;width:46px;height:31px;border-radius:3px;overflow:hidden;
-  box-shadow:0 0 0 1px rgba(0,0,0,.10) inset;display:block}
-.door .nm{font:400 20px/1.22 var(--serif);color:var(--ink);letter-spacing:0;
-  text-wrap:balance}
+.door:hover,.door:focus-visible{box-shadow:var(--shadow-up);
+  border-color:var(--accent-line);transform:translateY(-2px)}
+/* object-fit does nothing to an inline SVG, so the flags floated in a white band with
+   gaps either side. They are now set WHOLE on a tinted plate at a common height: three
+   flags whose ratios run from 3:2 to 28:11 cannot fill one box without cropping, and
+   cropping the Saudi flag would cut the shahada. */
+.door .plate{display:flex;align-items:center;justify-content:center;
+  height:132px;background:var(--paper-2);border-bottom:1px solid var(--line);
+  padding:var(--s4)}
+.door .mark{display:block;height:100%;width:auto;max-width:100%;
+  border-radius:3px;box-shadow:0 2px 10px rgba(25,26,23,.18),0 0 0 1px rgba(25,26,23,.10)}
+.door:hover .plate{background:var(--accent-soft)}
+.door .nm{display:block;font:400 21px/1.25 var(--serif);color:var(--ink);
+  letter-spacing:-.3px;padding:var(--s4) var(--s4) 0;text-wrap:balance}
+.door .go{display:block;font:600 11px/1 var(--sans);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);padding:var(--s3) var(--s4) 0;
+  opacity:0;transform:translateY(-3px);
+  transition:opacity .2s ease,transform .2s ease}
+.door:hover .go,.door:focus-visible .go{opacity:1;transform:none}
 
 /* ---------- level 1: the kinds of funder, as tiles ---------- */
 ol.ranked{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);
@@ -169,45 +169,43 @@ details.more ol.ranked{margin-top:var(--s3)}
    width made the Saudi panel 193px tall against a 210px header and it collided with
    the controls below. Equal height is also how flags are actually displayed side by
    side. */
-/* The flag sits BEHIND the country page, faded, as the owner asked. It is shown WHOLE
-   and evenly faded, never clipped and never masked into a sliver: an even wash is a
-   watermark, whereas cutting the Saudi flag through the shahada would not be an
-   acceptable way to render a creed. It is kept clear of the text column so it never
-   sits under a line anyone has to read. */
-.flagplate{position:absolute;right:0;top:0;width:min(46%,420px);margin:0;
-  line-height:0;pointer-events:none;z-index:0;opacity:.16}
-.flagplate svg{display:block;width:100%;height:auto}
-@media (prefers-color-scheme:dark){ .flagplate{opacity:.22} }
-.l2head{position:relative}
-@media (min-width:900px){ #l2.hasback .l2head{padding-right:30%;min-height:190px} }
+/* THE COUNTRY OPENING.
+   The flag is the atmosphere of the page, not an ornament in a corner. The band
+   breaks the container and runs edge to edge, the flag sits large inside it at low
+   opacity, and a wash in that flag's own colour carries across the whole width so
+   the page feels like the country before a word is read.
+   The flag is shown WHOLE and evenly faded. It is never cropped, stretched, or cut
+   by a mask: the Saudi flag carries the shahada, and slicing a creed for decoration
+   is not something to ship. */
+.l2head{position:relative;padding:0;margin:0 calc(50% - 50vw) var(--s5);
+  width:100vw;overflow:hidden;border-bottom:1px solid var(--line)}
+.l2head > .inner{position:relative;z-index:2;max-width:1240px;margin:0 auto;
+  padding:var(--s5) var(--s5) calc(var(--s5) + var(--s2))}
+@media (max-width:700px){ .l2head > .inner{padding:var(--s4) var(--s4) var(--s5)} }
+
+/* the colour of the country, spread wide and soft */
+.l2wash{position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 150% at 88% 0%,var(--wash-a) 0,transparent 62%),
+    linear-gradient(180deg,var(--wash-b) 0,transparent 78%)}
+
+/* the flag itself, whole, large, and quiet */
+.flagplate{position:absolute;z-index:1;right:max(24px,calc((100vw - 1240px)/2 + 24px));
+  top:50%;transform:translateY(-50%);width:min(38vw,430px);
+  line-height:0;pointer-events:none;opacity:.22;
+  filter:drop-shadow(0 18px 40px rgba(0,0,0,.16))}
+.flagplate svg{display:block;width:100%;height:auto;border-radius:4px}
+@media (prefers-color-scheme:dark){ .flagplate{opacity:.30} }
+@media (min-width:900px){ .l2head > .inner{padding-right:min(42vw,500px)} }
 @media (max-width:899px){
-  .flagplate{width:min(56%,290px);opacity:.13;top:-4px;right:-6px}
+  .flagplate{width:min(58vw,320px);opacity:.16;right:-4%}
 }
-#l2 .l2head > *:not(.flagplate){position:relative;z-index:1}
 
 /* ---------- flag backdrops ----------
    Drawn as vector here rather than lifted from a news photograph, so it is
    licence-clean, stays crisp at any size, and the opacity is ours to control.
    The mask crops each flag to its distinctive geometry and fades it out well
    before it reaches any text. Purely decorative, aria-hidden, never a target. */
-.hasback{position:relative;isolation:isolate}
-.hasback > *:not(.flagback){position:relative;z-index:1}
-.flagback{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
-/* The mask has to finish INSIDE the box on every axis. At 125% it still painted to
-   the rectangle boundary, which read as a stray panel rather than a wash. */
-.flagback{
-  --m:linear-gradient(90deg,transparent 0 42%,rgba(0,0,0,.55) 66%,#000 88%);
-  -webkit-mask-image:var(--m); mask-image:var(--m);
-}
-.flagback svg{position:absolute;opacity:.30}
-@media (prefers-color-scheme:dark){ .flagback svg{opacity:.34} }
-/* On a country page the backdrop is COLOUR ONLY, taken from that flag, never the
-   artwork: the flag itself is shown whole in the plate above the heading instead. */
-.flagback.one{height:250px;bottom:auto;border-radius:0;
-  background:radial-gradient(50% 56% at 86% 28%,var(--wash) 0,transparent 74%);
-  -webkit-mask-image:none;mask-image:none;opacity:.20}
-@media (prefers-color-scheme:dark){ .flagback.one{opacity:.16} }
-@media (max-width:699px){ .flagback.one{height:180px} }
 /* Each flag is small enough to sit COMPLETE inside the fade. An earlier attempt sized
    them to 23% of the band, and the mask then cut the Saudi flag through the middle of
    the shahada, which is not an acceptable way to render a creed. Whole, undistorted,
@@ -228,7 +226,8 @@ h2.sel:focus,h2.sel:focus-visible{outline:none}
 .controls{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;
   padding:var(--s4) 0 var(--s3)}
 /* the pill search, borrowed from Google and tinted to the accent on focus */
-.search{flex:1 1 320px;max-width:560px;display:flex}
+.search{flex:1 1 340px;max-width:520px;display:flex}
+@media (max-width:1100px){ .search{flex-basis:100%;max-width:none} }
 .search input{
   width:100%;height:48px;font:16px/1.2 var(--sans);color:var(--ink);
   background:var(--paper);border:1px solid var(--line-2);border-radius:24px;
@@ -267,10 +266,17 @@ fieldset.has legend{float:left;font:700 10px/40px var(--sans);letter-spacing:.13
 .tally{font:400 13px/1.5 var(--sans);color:var(--ink-3);margin:0;
   padding:var(--s2) 0 var(--s3);border-bottom:1px solid var(--line);
   font-variant-numeric:tabular-nums}
-.ainote{margin:0;padding:var(--s3) 0 0;font:400 13px/1.55 var(--sans);
-  color:var(--ink-2);display:flex;align-items:flex-start;gap:var(--s2);max-width:74ch}
-.ainote::before{content:"";flex:0 0 auto;width:6px;height:6px;margin-top:7px;
+.ainote{margin:var(--s3) 0 0;padding:var(--s3) var(--s4);
+  font:400 13.5px/1.6 var(--sans);color:var(--ink-2);
+  display:flex;align-items:flex-start;gap:var(--s3);max-width:78ch;
+  background:var(--accent-soft);border-left:2px solid var(--accent);border-radius:0 6px 6px 0}
+.ainote::before{content:"";flex:0 0 auto;width:7px;height:7px;margin-top:8px;
   border-radius:50%;background:var(--accent)}
+.ainote.quiet{background:transparent;border-left-color:var(--line-2);color:var(--ink-3)}
+.ainote.quiet::before{background:var(--ink-3)}
+/* while it is thinking the dot breathes, which is the only motion on the page */
+.ainote.working::before{animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
 
 /* ---------- the list: names that open ---------- */
 ul.recs{list-style:none;margin:0;padding:0}
@@ -406,17 +412,20 @@ main{padding-bottom:var(--s5)}
   </div>
 
   <div id="l2" hidden>
-    <div class="l2head">
-      <a class="back" href="#" id="back">Back to countries and categories</a>
+    <div class="l2head" id="l2head">
+      <span class="l2wash" id="l2wash" aria-hidden="true"></span>
       <span class="flagplate" id="flagplate" aria-hidden="true" hidden></span>
-      <h2 class="sel" id="selname" tabindex="-1"></h2>
-      <p class="sel-sub" id="selsub"></p>
+      <div class="inner">
+        <a class="back" href="#" id="back">Back to countries and categories</a>
+        <h2 class="sel" id="selname" tabindex="-1"></h2>
+        <p class="sel-sub" id="selsub"></p>
+      </div>
     </div>
     <div class="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
         <input id="q" type="search" autocomplete="off" spellcheck="false"
-               placeholder="Search name, cause, city">
+               placeholder="Describe what you fund, in your own words">
       </div>
       <div class="pick" id="pickwrap" hidden>
         <label for="pick" id="picklabel">Where</label>
@@ -561,27 +570,27 @@ function countryMark(name,cls){
 }
 
 /* the colour each country page is tinted with, taken from that country's flag */
-var FLAG_WASH={"united arab emirates":"#00732F","saudi arabia":"#006C35",
-               "qatar":"#8A1538"};
+/* two tints per country, taken from its flag: one for the corner bloom and one for
+   the band that carries across the width */
+var FLAG_WASH={
+  "united arab emirates":["rgba(0,115,47,.26)","rgba(206,17,38,.10)"],
+  "saudi arabia":["rgba(0,108,53,.30)","rgba(0,108,53,.10)"],
+  "qatar":["rgba(138,21,56,.26)","rgba(138,21,56,.09)"]
+};
+var ACCENT_WASH=["rgba(31,78,61,.16)","rgba(31,78,61,.06)"];
 
 /* Paint a decorative backdrop behind a block. Level one carries the three flags,
    shown whole. A country page carries COLOUR ONLY, because its flag is presented
    intact in the plate beside the heading and a faded crop of the Saudi flag, which
    carries the shahada, would be the wrong treatment. aria-hidden throughout, never
    a pointer target. */
-function paintBackdrop(host,countryName){
-  var old=host.querySelector(":scope > .flagback");
-  if(old) old.parentNode.removeChild(old);
-  host.classList.add("hasback");
-  var back=make("div","flagback one");
-  back.setAttribute("aria-hidden","true");
-  back.style.setProperty("--wash",FLAG_WASH[norm(countryName)]||"#1F4E3D");
-  host.insertBefore(back,host.firstChild);
-}
-function clearBackdrop(host){
-  var old=host.querySelector(":scope > .flagback");
-  if(old) old.parentNode.removeChild(old);
-  host.classList.remove("hasback");
+/* the opening band takes the country's colours, or the register's own accent when a
+   category was chosen rather than a place */
+function paintWash(countryName){
+  var w=(countryName && FLAG_WASH[norm(countryName)]) || ACCENT_WASH;
+  var head=el("l2head");
+  head.style.setProperty("--wash-a",w[0]);
+  head.style.setProperty("--wash-b",w[1]);
 }
 function setPlate(countryName){
   var box=el("flagplate");
@@ -613,8 +622,11 @@ function buildL1(){
   DATA.meta.countries.forEach(function(c){
     var a=make("a","door");
     a.href="#/c/"+slug(c.name);
-    a.appendChild(countryMark(c.name));
+    var plate=make("span","plate");
+    plate.appendChild(countryMark(c.name));
+    a.appendChild(plate);
     a.appendChild(make("span","nm",c.name));
+    a.appendChild(make("span","go","See the funders"));
     doors.appendChild(a);
   });
 
@@ -1032,8 +1044,8 @@ function route(){
 
   el("l1").hidden=true;
   el("l2").hidden=false;
-  if(sel.kind==="c"){ paintBackdrop(el("l2"),sel.name); setPlate(sel.name); }
-  else { clearBackdrop(el("l2")); setPlate(null); }
+  paintWash(sel.kind==="c" ? sel.name : null);
+  setPlate(sel.kind==="c" ? sel.name : null);
   el("selname").textContent=sel.name;
   el("selsub").textContent=sel.sub;
   document.title=sel.name+" | Gulf Cooperation Council (GCC) Philanthropy, Donors and Funders";
@@ -1099,7 +1111,13 @@ var aiSeq = 0, aiTimer = null, aiCache = Object.create(null);
    pack behind it. That test was WRONG for this corpus: hundreds of Saudi charitable
    societies carry near-identical general mandates, so a perfectly good query has a
    margin of 0.02 and was being thrown away. Dropped. */
-var AI_MIN_CHARS = 3, AI_FLOOR = 0.59, AI_TAKE = 60;
+var AI_MIN_CHARS = 3, AI_FLOOR = 0.59, AI_TAKE = 48;
+/* The cross-encoder reads the query and a mandate TOGETHER, so it judges relevance far
+   better than two vectors compared at a distance. Measured on this index: a mandate
+   about visual impairment scores 0.999 against "help for blind people", one about eye
+   surgery 0.167, and football and scholarships 0.00004. Four orders of magnitude, so a
+   floor at 0.02 separates cleanly and the vector pass is only a shortlist. */
+var RERANK_FLOOR = 0.02, RERANK_KEEP = 48;
 
 function loadVectors(){
   if(VEC) return Promise.resolve(true);
@@ -1191,11 +1209,14 @@ function lexicalPin(r, q){
   return 2;
 }
 
-function setAiNote(text){
+/* The search is doing real work between keystroke and answer, and in silence that
+   looked like nothing happening. It now says which state it is in. */
+function setAiNote(text, state){
   var n = el("ainote");
   if(!n) return;
   n.textContent = text || "";
   n.hidden = !text;
+  n.className = "ainote" + (state ? " " + state : "");
 }
 
 function runMeaningSearch(){
@@ -1205,11 +1226,12 @@ function runMeaningSearch(){
   if(q.length < AI_MIN_CHARS){ setAiNote(""); return; }
   var key = norm(q);
 
+  setAiNote("Reading "+num(sel.rows.length)+" mandates for what you meant.","working");
   var proceed = function(qv){
     if(mySeq !== aiSeq || current !== sel) return;      /* a newer query won */
     return loadVectors().then(function(ready){
       if(!ready){
-        setAiNote("Meaning search is unavailable, so these are word matches.");
+        setAiNote("Meaning search is unavailable, so these are word matches.","quiet");
         return;
       }
       if(mySeq !== aiSeq || current !== sel) return;
@@ -1222,32 +1244,68 @@ function runMeaningSearch(){
       /* a nearest neighbour always returns SOMETHING, so nothing is offered unless the
          best match clears the calibrated floor */
       if(top1 < AI_FLOOR){
-        setAiNote("Nothing here matches that closely enough to rank by meaning.");
+        setAiNote("Nothing here is close enough in meaning to rank, so these are word "
+          + "matches.","quiet");
         return;
       }
-      var cut = Math.max(0.50, top1 - 0.08);
-      var semantic = top.filter(function(k){ return scores[k] >= cut; }).slice(0, 40);
-      var semRank = Object.create(null);
-      semantic.forEach(function(k, n){ semRank[k] = n; });
-      var kwRank = Object.create(null);
-      filtered.forEach(function(r, n){ kwRank[ROW_INDEX.get(r)] = n; });
-      var union = Object.create(null);
-      semantic.forEach(function(k){ union[k] = 1; });
-      Object.keys(kwRank).forEach(function(k){ union[k] = 1; });
-      var merged = Object.keys(union).map(Number).map(function(k){
-        var kr = (k in kwRank) ? kwRank[k] : 1e6;
-        var sr = (k in semRank) ? semRank[k] : 1e6;
-        return { i: k, pin: lexicalPin(ROWS[k], q), rrf: 2.0 / (60 + kr) + 1.0 / (60 + sr) };
+      /* the vector pass is only a shortlist; the cross-encoder decides */
+      var shortlist = top.slice(0, RERANK_KEEP);
+      var docs = shortlist.map(function(k){
+        return { id: k, text: (val(ROWS[k], "focus") + ". " + val(ROWS[k], "name")).slice(0, 470) };
       });
-      merged.sort(function(a, b){ return a.pin - b.pin || b.rrf - a.rrf; });
-      var rowsOut = merged.map(function(m){ return ROWS[m.i]; });
-      if(mySeq !== aiSeq || current !== sel) return;
-      filtered = rowsOut;
-      page = 1;
-      seq++;
-      clear(el("recs"));
-      render();
-      setAiNote(rationale(rowsOut, q));
+      setAiNote("Weighing " + num(docs.length) + " closest mandates against what you asked.",
+        "working");
+      return fetch(WORKER + "/rerank", { method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ q: q, docs: docs }) })
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(rr){
+          if(mySeq !== aiSeq || current !== sel) return;
+          var order, kept;
+          if(rr && Array.isArray(rr.ranked) && rr.ranked.length){
+            kept = rr.ranked.filter(function(x){ return x.score >= RERANK_FLOOR; });
+            if(!kept.length){
+              setAiNote("Nothing here is close enough in meaning to rank, so these are "
+                + "word matches.","quiet");
+              return;
+            }
+            order = kept.map(function(x){ return x.id; });
+          }else{
+            /* the reranker is unavailable, so fall back to the vector order rather
+               than showing nothing */
+            order = shortlist.filter(function(k){ return scores[k] >= Math.max(0.50, top1 - 0.10); });
+          }
+          /* an exact or prefix name match still wins outright, whatever the model says */
+          var rowsOut = order.map(function(k){ return ROWS[k]; });
+          rowsOut.sort(function(a, b){
+            var pa = lexicalPin(a, q), pb = lexicalPin(b, q);
+            if(pa !== pb) return pa - pb;
+            return order.indexOf(ROW_INDEX.get(a)) - order.indexOf(ROW_INDEX.get(b));
+          });
+          if(mySeq !== aiSeq || current !== sel) return;
+          filtered = rowsOut;
+          page = 1;
+          seq++;
+          clear(el("recs"));
+          render();
+          var head = num(rowsOut.length) + (rowsOut.length === 1 ? " match" : " matches")
+            + ", ordered by how closely each mandate answers what you described. ";
+          setAiNote(head + rationale(rowsOut, q), "ok");
+          /* then ask for a sentence about them, and use it only if the worker's own
+             check confirmed every word of it already appears in these mandates */
+          var texts = rowsOut.slice(0, 8).map(function(r){ return val(r, "focus"); })
+            .filter(Boolean);
+          if(!texts.length) return;
+          return fetch(WORKER + "/explain", { method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ q: q, texts: texts }) })
+            .then(function(r){ return r.ok ? r.json() : null; })
+            .then(function(ex){
+              if(mySeq !== aiSeq || current !== sel) return;
+              if(ex && ex.ok && ex.line) setAiNote(head + ex.line, "ok");
+            })
+            .catch(function(){ /* the deterministic line already stands */ });
+        });
     });
   };
 
@@ -1265,7 +1323,8 @@ function runMeaningSearch(){
          failure, which hid a wrong variable name for several test rounds */
       console.error("meaning search failed:", err && err.message);
       if(mySeq === aiSeq)
-        setAiNote("Meaning search is unavailable just now, so these are word matches.");
+        setAiNote("Meaning search is unavailable just now, so these are word matches.",
+          "quiet");
     });
 }
 
