@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GCC Philanthropy, Donors and Funders</title>
+<title>Gulf Cooperation Council (GCC) Philanthropy, Donors and Funders</title>
 <meta name="description" content="Directory of philanthropic funders, foundations, corporate giving programmes and endowments in the United Arab Emirates, Saudi Arabia and Qatar.">
 <meta name="color-scheme" content="light dark">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%231F4E3D'/></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' rx='10' fill='%23006C35'/><path d='M0 10a10 10 0 0 1 10-10h6v48h-6a10 10 0 0 1-10-10z' fill='%23CE1126'/><path d='M32 0h6a10 10 0 0 1 10 10v28a10 10 0 0 1-10 10h-6z' fill='%238A1538'/></svg>">
 <!--
 ANTI_SLOP_BRIEF
   bold move:  level one is three doors and a ranked list, nothing else. The country
@@ -53,8 +53,8 @@ ANTI_SLOP_BRIEF
   --accent:#1F4E3D; --accent-2:#2C6B53; --accent-soft:#EAF2EE; --accent-line:#BFD5CB;
   --paper:#FFFFFF; --paper-2:#F8F9F7; --line:#E4E6E2; --line-2:#D3D6D1;
   --focus:#1F4E3D;
-  --shadow:0 1px 6px rgba(32,33,36,.16);
-  --shadow-up:0 1px 10px rgba(31,78,61,.22);
+  --shadow:0 1px 3px rgba(25,26,23,.10);
+  --shadow-up:0 6px 20px rgba(25,26,23,.10);
   --serif:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
   --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
@@ -87,7 +87,10 @@ a{color:var(--accent)}
 /* masthead: the title, and nothing beside it */
 header.top{border-bottom:1px solid var(--line);background:var(--paper-2)}
 header.top .wrap{padding-top:var(--s4);padding-bottom:var(--s4)}
-h1{font:600 21px/1.25 var(--serif);margin:0;letter-spacing:.1px}
+h1{font:400 22px/1.2 var(--serif);margin:0;letter-spacing:0}
+h1 a{color:inherit;text-decoration:none;display:inline-block}
+h1 a:hover{color:var(--accent)}
+h1 .abbr{color:var(--ink-3);font-weight:400}
 
 .eyebrow{font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;
   color:var(--accent);margin:0 0 var(--s4)}
@@ -99,32 +102,65 @@ section.band + section.band{border-top:1px solid var(--line)}
 @media (min-width:700px){ .doors{grid-template-columns:repeat(3,1fr)} }
 .door{
   display:flex;align-items:center;gap:var(--s3);text-decoration:none;color:inherit;
-  background:var(--paper);border:1px solid var(--line);border-radius:12px;
-  padding:var(--s4);box-shadow:var(--shadow);
+  background:var(--paper);border:1px solid var(--line);border-radius:6px;
+  padding:var(--s4);
   transition:box-shadow .16s ease,border-color .16s ease,transform .16s ease;
 }
 .door:hover,.door:focus-visible{box-shadow:var(--shadow-up);border-color:var(--accent-line);
   transform:translateY(-1px)}
 .door .mark{flex:0 0 auto;width:46px;height:31px;border-radius:3px;overflow:hidden;
   box-shadow:0 0 0 1px rgba(0,0,0,.10) inset;display:block}
-.door .nm{font:600 17px/1.35 var(--serif);color:var(--ink);text-wrap:balance}
+.door .nm{font:400 20px/1.22 var(--serif);color:var(--ink);letter-spacing:0;
+  text-wrap:balance}
 
-/* ---------- level 1: funder types, where the numbers belong ---------- */
-ol.ranked{list-style:none;margin:0;padding:0;display:grid;gap:1px;
-  background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
-@media (min-width:700px){ ol.ranked{grid-template-columns:1fr 1fr} }
-ol.ranked a{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px var(--s3);
-  background:var(--paper);padding:14px var(--s3);text-decoration:none;color:inherit;height:100%}
-ol.ranked a:hover,ol.ranked a:focus-visible{background:var(--accent-soft)}
-ol.ranked .t{font:600 15px/1.35 var(--serif)}
-ol.ranked .c{font:600 14px/1 var(--sans);color:var(--accent);font-variant-numeric:tabular-nums}
-.bar{display:block;height:4px;background:var(--accent-soft);border-radius:2px;overflow:hidden;
-  grid-column:1/-1;margin-top:var(--s1)}
-.bar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+/* ---------- level 1: the kinds of funder, as tiles ---------- */
+ol.ranked{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);
+  grid-template-columns:1fr}
+@media (min-width:560px){ ol.ranked{grid-template-columns:1fr 1fr} }
+@media (min-width:860px){ ol.ranked{grid-template-columns:1fr 1fr 1fr} }
+ol.ranked a{
+  display:flex;align-items:center;min-height:60px;
+  background:var(--paper);border:1px solid var(--line);border-radius:6px;
+  padding:14px var(--s3) 14px calc(var(--s3) + 4px);text-decoration:none;color:inherit;
+  position:relative;overflow:hidden;
+  transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+}
+/* a hairline of the accent down the leading edge, which grows on hover: the one
+   moving part on this page, so it reads as a response rather than decoration */
+ol.ranked a::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--accent);transform:scaleY(.34);transform-origin:center;
+  transition:transform .2s ease}
+ol.ranked a:hover,ol.ranked a:focus-visible{border-color:var(--accent-line);
+  box-shadow:var(--shadow);transform:translateY(-1px)}
+ol.ranked a:hover::before,ol.ranked a:focus-visible::before{transform:scaleY(1)}
+ol.ranked .t{font:400 16px/1.32 var(--serif);letter-spacing:0}
 details.more{margin-top:var(--s4)}
 details.more summary{font:600 13px/1 var(--sans);color:var(--accent);cursor:pointer;
   padding:10px 0;width:max-content}
 details.more ol.ranked{margin-top:var(--s3)}
+
+/* The flag on a country page: a plate at the flag's own proportions, shown WHOLE and
+   undistorted at a size where it reads. Not a crop, not a wash. The Saudi flag
+   carries the shahada, so a faded sliver of it behind body text would be the wrong
+   treatment; every flag is therefore presented the same way, intact. */
+/* Sized by HEIGHT, not width. The three flags run from 3:2 to 28:11, so one fixed
+   width made the Saudi panel 193px tall against a 210px header and it collided with
+   the controls below. Equal height is also how flags are actually displayed side by
+   side. */
+.flagplate{display:block;width:max-content;max-width:100%;margin:0 0 var(--s4);
+  border-radius:5px;overflow:hidden;line-height:0;background:var(--paper);
+  box-shadow:0 14px 34px rgba(25,26,23,.13),0 0 0 1px rgba(25,26,23,.12)}
+.flagplate svg{display:block;height:104px;width:auto;max-width:100%}
+@media (min-width:820px){
+  #l2.hasback .l2head{padding-right:350px;min-height:196px}
+  .flagplate{position:absolute;right:0;top:var(--s5);margin:0}
+  .flagplate svg{height:124px}
+  .l2head{position:relative}
+}
+@media (max-width:560px){
+  .flagplate{margin-bottom:var(--s3)}
+  .flagplate svg{height:82px}
+}
 
 /* ---------- flag backdrops ----------
    Drawn as vector here rather than lifted from a news photograph, so it is
@@ -133,31 +169,41 @@ details.more ol.ranked{margin-top:var(--s3)}
    before it reaches any text. Purely decorative, aria-hidden, never a target. */
 .hasback{position:relative;isolation:isolate}
 .hasback > *:not(.flagback){position:relative;z-index:1}
-.flagback{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;
-  border-radius:12px}
+.flagback{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 /* The mask has to finish INSIDE the box on every axis. At 125% it still painted to
    the rectangle boundary, which read as a stray panel rather than a wash. */
 .flagback{
-  --m:radial-gradient(50% 58% at 82% 50%,rgba(0,0,0,.92) 0,rgba(0,0,0,.4) 46%,transparent 70%);
+  --m:linear-gradient(90deg,transparent 0 42%,rgba(0,0,0,.55) 66%,#000 88%);
   -webkit-mask-image:var(--m); mask-image:var(--m);
 }
-.flagback svg{position:absolute;opacity:.13}
-@media (prefers-color-scheme:dark){ .flagback svg{opacity:.20} }
-/* one flag, blown up and cropped, on a country view. It hangs off #l2 as a band so
-   there is room for the geometry to read: pinned to the short header box it showed a
-   single colour band and looked like a stray rectangle. */
-.flagback.one{height:330px;bottom:auto;border-radius:0}
-.flagback.one svg{right:0;top:0;height:100%;width:58%}
-@media (max-width:699px){ .flagback.one{height:250px} .flagback.one svg{width:88%} }
-/* the three side by side, on the landing band */
-.flagback.trio{display:flex;justify-content:flex-end;align-items:center;gap:2.2%}
-.flagback.trio svg{position:static;height:132%;width:auto;flex:0 0 auto}
+.flagback svg{position:absolute;opacity:.30}
+@media (prefers-color-scheme:dark){ .flagback svg{opacity:.34} }
+/* On a country page the backdrop is COLOUR ONLY, taken from that flag, never the
+   artwork: the flag itself is shown whole in the plate above the heading instead. */
+.flagback.one{height:300px;bottom:auto;border-radius:0;
+  background:radial-gradient(58% 62% at 84% 34%,var(--wash) 0,transparent 72%);
+  -webkit-mask-image:none;mask-image:none;opacity:.5}
+@media (prefers-color-scheme:dark){ .flagback.one{opacity:.36} }
+@media (max-width:699px){ .flagback.one{height:220px} }
+/* The three flags across the landing band, each shown WHOLE at its own proportions
+   and set to the right so they sit clear of the eyebrow and the doors. Sizing by
+   height would have cropped them, because the three ratios differ by a factor of
+   nearly two. */
+.flagback.trio{display:flex;justify-content:flex-end;align-items:center;
+  gap:12px;padding:0 max(24px,calc((100% - 1000px) / 2 + 24px)) 0 0}
+/* Each flag is small enough to sit COMPLETE inside the fade. An earlier attempt sized
+   them to 23% of the band, and the mask then cut the Saudi flag through the middle of
+   the shahada, which is not an acceptable way to render a creed. Whole, undistorted,
+   or not at all. */
+.flagback.trio svg{position:static;flex:0 0 auto;width:58px;height:auto}
+@media (max-width:820px){ .flagback.trio{display:none} }
 
 /* ---------- level 2 ---------- */
 .l2head{padding:var(--s4) 0 0}
 .back{display:inline-block;font:600 13px/1 var(--sans);text-decoration:none;padding:8px 0}
 .back:hover{text-decoration:underline}
-h2.sel{font:600 28px/1.2 var(--serif);margin:var(--s2) 0 var(--s1);letter-spacing:-.2px}
+h2.sel{font:400 32px/1.1 var(--serif);margin:var(--s2) 0 var(--s1);letter-spacing:0}
+@media (min-width:700px){ h2.sel{font-size:42px;line-height:1.05} }
 h2.sel:focus,h2.sel:focus-visible{outline:none}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
 
@@ -213,10 +259,15 @@ li.rec{border-bottom:1px solid var(--line)}
   padding:var(--s3) var(--s2);font:inherit;color:inherit;border-radius:8px;
   transition:background .14s ease;
 }
-.rowbtn:hover{background:var(--accent-soft)}
-.rowbtn .nm{font:600 18px/1.4 var(--serif);color:var(--accent);letter-spacing:.1px}
-.rowbtn:hover .nm{text-decoration:underline}
-.rowbtn[aria-expanded="true"] .nm{color:var(--ink)}
+.rowbtn{position:relative}
+.rowbtn::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;
+  background:transparent;border-radius:1px;transition:background .16s ease}
+.rowbtn:hover::before,.rowbtn[aria-expanded="true"]::before{background:var(--accent)}
+.rowbtn:hover{background:transparent}
+.rowbtn .nm{font:400 19px/1.34 var(--serif);color:var(--ink);letter-spacing:0;
+  transition:color .16s ease}
+.rowbtn:hover .nm,.rowbtn:focus-visible .nm{color:var(--accent)}
+.rowbtn[aria-expanded="true"] .nm{color:var(--accent)}
 .caret{flex:0 0 auto;width:22px;height:22px;position:relative}
 .caret::before,.caret::after{content:"";position:absolute;background:var(--ink-3);
   border-radius:1px;transition:transform .18s ease,opacity .18s ease}
@@ -281,6 +332,16 @@ nav.pager .pg-sm{display:none}
   border:1px solid var(--accent-line);border-radius:20px;padding:11px 16px;
   cursor:pointer;margin-top:var(--s3)}
 
+/* one quiet line, set to the right, in the serif so it reads as a signature rather
+   than as another piece of interface */
+footer.sig{border-top:1px solid var(--line);margin-top:var(--s5)}
+footer.sig .wrap{padding-top:var(--s3);padding-bottom:var(--s4)}
+footer.sig p{margin:0;text-align:right;font:400 12.5px/1.6 var(--sans);color:var(--ink-3)}
+footer.sig a{font:italic 600 14px/1.6 var(--serif);color:var(--accent);
+  text-decoration:none;border-bottom:1px solid transparent;letter-spacing:.15px;
+  transition:border-color .16s ease}
+footer.sig a:hover,footer.sig a:focus-visible{border-bottom-color:currentColor}
+
 #state{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
 #state button{font:600 13px/1 var(--sans);color:var(--accent);background:none;
   border:1px solid var(--accent-line);border-radius:20px;padding:9px 14px;
@@ -298,7 +359,7 @@ main{padding-bottom:var(--s5)}
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
-  <div class="wrap"><h1>GCC Philanthropy, Donors and Funders</h1></div>
+  <div class="wrap"><h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy, Donors and Funders</a></h1></div>
 </header>
 
 <main id="main" class="wrap">
@@ -325,6 +386,7 @@ main{padding-bottom:var(--s5)}
   <div id="l2" hidden>
     <div class="l2head">
       <a class="back" href="#" id="back">Back to countries and types</a>
+      <span class="flagplate" id="flagplate" aria-hidden="true" hidden></span>
       <h2 class="sel" id="selname" tabindex="-1"></h2>
       <p class="sel-sub" id="selsub"></p>
     </div>
@@ -354,6 +416,11 @@ main{padding-bottom:var(--s5)}
     </div>
   </div>
 </main>
+
+<footer class="sig"><div class="wrap">
+  <p>Compiled by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
+     target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></p>
+</div></footer>
 
 <script>
 (function(){
@@ -408,41 +475,73 @@ function svgEl(tag,attrs){
 /* Flag-DERIVED marks, not flag reproductions. Windows browsers do not render
    regional-indicator flag emoji, and the Saudi flag carries the shahada, which
    should not be approximated in hand-drawn geometry. */
-function countryMark(name,cls,keepRatio){
-  var s=svgEl("svg",{viewBox:"0 0 60 40","aria-hidden":"true",
-                     preserveAspectRatio:(keepRatio ? "xMidYMid slice" : "none"),
+/* THE THREE FLAGS, drawn to their official proportions. Notes and sources in
+   flags.js.txt beside this file. Each returns an <svg> at the flag's own aspect
+   ratio, so nothing is stretched. A previous build reduced Saudi Arabia to a plain
+   green rectangle, which is not the flag: the shahada is real Arabic text set in a
+   system Arabic face, and the sword is beneath it pointing to the hoist. */
+var FLAG_BOX={"united arab emirates":[60,30],"saudi arabia":[60,40],"qatar":[56,22]};
+var AR_FACE="'Traditional Arabic','Arabic Typesetting','Noto Naskh Arabic',"
+          + "'Segoe UI','Times New Roman',serif";
+
+function flagRatio(name){
+  var b=FLAG_BOX[norm(name)];
+  return b ? b[0]/b[1] : 1.5;
+}
+function countryMark(name,cls){
+  var n=norm(name), box=FLAG_BOX[n]||[60,40];
+  var s=svgEl("svg",{viewBox:"0 0 "+box[0]+" "+box[1],"aria-hidden":"true",
                      class:(cls||"mark")});
-  var n=norm(name);
   if(n==="united arab emirates"){
-    s.appendChild(svgEl("rect",{x:15,y:0,width:45,height:13.34,fill:"#00732F"}));
-    s.appendChild(svgEl("rect",{x:15,y:13.34,width:45,height:13.33,fill:"#FFFFFF"}));
-    s.appendChild(svgEl("rect",{x:15,y:26.67,width:45,height:13.33,fill:"#111111"}));
-    s.appendChild(svgEl("rect",{x:0,y:0,width:15,height:40,fill:"#CE1126"}));
+    /* red band one quarter of the length at the hoist, then green, white, black */
+    s.appendChild(svgEl("rect",{x:15,y:0,width:45,height:10,fill:"#00732F"}));
+    s.appendChild(svgEl("rect",{x:15,y:10,width:45,height:10,fill:"#FFFFFF"}));
+    s.appendChild(svgEl("rect",{x:15,y:20,width:45,height:10,fill:"#000000"}));
+    s.appendChild(svgEl("rect",{x:0,y:0,width:15,height:30,fill:"#CE1126"}));
   }else if(n==="saudi arabia"){
-    /* The green field alone. An earlier version added a small white band to evoke
-       the sword; at tile size it read as a stray dash, and blown up to the 330px
-       backdrop it became a white bar across the wash. The field is the honest
-       abstraction at both sizes, and the shahada is not something to approximate. */
     s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#006C35"}));
+    /* textLength is not decoration here: it is the only way to guarantee the whole
+       shahada fits the field on a machine whose Arabic font has different metrics
+       from ours. Measured without it, the string ran 78 units wide inside a 60 unit
+       viewBox and was clipped at BOTH ends, which is not something to ship. */
+    var t=svgEl("text",{x:30,y:18.5,"text-anchor":"middle",fill:"#FFFFFF",
+      "font-family":AR_FACE,"font-size":"8","font-weight":"400",
+      "textLength":"46","lengthAdjust":"spacingAndGlyphs",
+      "xml:lang":"ar","direction":"rtl"});
+    t.textContent="لا إله إلا الله "
+                + "محمد رسول الله";
+    s.appendChild(t);
+    /* sword: tapered blade pointing to the hoist, then guard, grip and pommel */
+    s.appendChild(svgEl("path",{d:"M8,28 L13,26.4 L45,26.7 L45,29.3 L13,29.6 Z",
+      fill:"#FFFFFF"}));
+    s.appendChild(svgEl("rect",{x:45,y:24.4,width:1.5,height:7.2,fill:"#FFFFFF"}));
+    s.appendChild(svgEl("rect",{x:46.5,y:27.1,width:3.6,height:1.8,fill:"#FFFFFF"}));
+    s.appendChild(svgEl("circle",{cx:50.9,cy:28,r:1.2,fill:"#FFFFFF"}));
   }else if(n==="qatar"){
-    s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#8A1538"}));
-    var pts=["0,0","15,0"], step=40/9, i;
+    s.appendChild(svgEl("rect",{x:0,y:0,width:56,height:22,fill:"#8A1538"}));
+    /* nine points, the number that gives the flag its meaning */
+    var pts=["0,0","13,0"], step=22/9, i;
     for(i=0;i<9;i++){
-      pts.push((22).toFixed(2)+","+((i+0.5)*step).toFixed(2));
-      pts.push((15).toFixed(2)+","+((i+1)*step).toFixed(2));
+      pts.push("19.5,"+((i+0.5)*step).toFixed(3));
+      pts.push("13,"+((i+1)*step).toFixed(3));
     }
-    pts.push("0,40");
+    pts.push("0,22");
     s.appendChild(svgEl("polygon",{points:pts.join(" "),fill:"#FFFFFF"}));
   }else{
-    s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#1F4E3D"}));
+    s.appendChild(svgEl("rect",{x:0,y:0,width:box[0],height:box[1],fill:"#1F4E3D"}));
   }
   return s;
 }
 
-/* Paint a decorative flag behind a block. Vector, drawn above, so there is no
-   third-party image to license and it stays sharp at any size. The element is
-   aria-hidden and never receives pointer events, so it is invisible to assistive
-   technology and cannot be clicked through to. */
+/* the colour each country page is tinted with, taken from that country's flag */
+var FLAG_WASH={"united arab emirates":"#00732F","saudi arabia":"#006C35",
+               "qatar":"#8A1538"};
+
+/* Paint a decorative backdrop behind a block. Level one carries the three flags,
+   shown whole. A country page carries COLOUR ONLY, because its flag is presented
+   intact in the plate beside the heading and a faded crop of the Saudi flag, which
+   carries the shahada, would be the wrong treatment. aria-hidden throughout, never
+   a pointer target. */
 function paintBackdrop(host,countryName){
   var old=host.querySelector(":scope > .flagback");
   if(old) old.parentNode.removeChild(old);
@@ -450,10 +549,10 @@ function paintBackdrop(host,countryName){
   var back=make("div","flagback "+(countryName ? "one" : "trio"));
   back.setAttribute("aria-hidden","true");
   if(countryName){
-    back.appendChild(countryMark(countryName,"",true));
+    back.style.setProperty("--wash",FLAG_WASH[norm(countryName)]||"#1F4E3D");
   }else{
     DATA.meta.countries.forEach(function(c){
-      back.appendChild(countryMark(c.name,"",true));
+      back.appendChild(countryMark(c.name,""));
     });
   }
   host.insertBefore(back,host.firstChild);
@@ -462,6 +561,13 @@ function clearBackdrop(host){
   var old=host.querySelector(":scope > .flagback");
   if(old) old.parentNode.removeChild(old);
   host.classList.remove("hasback");
+}
+function setPlate(countryName){
+  var box=el("flagplate");
+  clear(box);
+  if(!countryName){ box.hidden=true; return; }
+  box.appendChild(countryMark(countryName,""));
+  box.hidden=false;
 }
 
 /* only http and https survive, so a malformed cell cannot become a script link */
@@ -483,7 +589,7 @@ function safeTel(t){ t=txt(t).trim(); return /[0-9]/.test(t) ? t : ""; }
 /* ---------- level 1 ---------- */
 function buildL1(){
   var doors=el("doors");
-  paintBackdrop(doors.parentNode,null);
+  paintBackdrop(document.querySelector("header.top"),null);
   DATA.meta.countries.forEach(function(c){
     var a=make("a","door");
     a.href="#/c/"+slug(c.name);
@@ -493,29 +599,21 @@ function buildL1(){
   });
 
   var ts=DATA.types, head=ts.slice(0,10), rest=ts.slice(10);
-  var peak=head.length ? head[0].count : 1;
+  /* No counts here. The categories are the thing being chosen, and a number beside
+     each one only invited a comparison nobody is making at this point. */
   function rank(list,into){
     list.forEach(function(t){
       var li=document.createElement("li");
       var a=make("a");
       a.href="#/t/"+slug(t.name);
       a.appendChild(make("span","t",t.name));
-      a.appendChild(make("span","c",num(t.count)));
-      var b=make("span","bar");
-      b.setAttribute("aria-hidden","true");
-      var i=document.createElement("i");
-      i.style.width=Math.max(1.5,t.count/peak*100).toFixed(1)+"%";
-      b.appendChild(i);
-      a.appendChild(b);
       li.appendChild(a);
       into.appendChild(li);
     });
   }
   rank(head,el("types"));
   if(rest.length){
-    var sum=rest.reduce(function(a,b){ return a+b.count; },0);
-    el("moresum").textContent=plural(rest.length,"more type","more types")
-      + ", "+plural(sum,"organisation","organisations");
+    el("moresum").textContent="More kinds of funder";
     rank(rest,el("types-rest"));
   }else{
     el("moretypes").hidden=true;
@@ -873,11 +971,11 @@ function route(){
 
   el("l1").hidden=true;
   el("l2").hidden=false;
-  if(sel.kind==="c") paintBackdrop(el("l2"),sel.name);
-  else clearBackdrop(el("l2"));
+  if(sel.kind==="c"){ paintBackdrop(el("l2"),sel.name); setPlate(sel.name); }
+  else { clearBackdrop(el("l2")); setPlate(null); }
   el("selname").textContent=sel.name;
   el("selsub").textContent=sel.sub;
-  document.title=sel.name+" | GCC Philanthropy, Donors and Funders";
+  document.title=sel.name+" | Gulf Cooperation Council (GCC) Philanthropy, Donors and Funders";
   filtered=computeFiltered(sel,readControls());
   render();
   /* render() may have clamped the page, and a stale "in" may have been dropped, so
@@ -898,7 +996,7 @@ function showL1(clean){
   page=1;
   el("l2").hidden=true;
   el("l1").hidden=false;
-  document.title="GCC Philanthropy, Donors and Funders";
+  document.title="Gulf Cooperation Council (GCC) Philanthropy, Donors and Funders";
   if(clean && history.replaceState){
     history.replaceState(null,"",location.pathname+location.search);
   }
@@ -942,6 +1040,11 @@ function wire(){
     render();
     writeHash(false);
     window.scrollTo(0,0);
+  });
+  el("home").addEventListener("click",function(e){
+    e.preventDefault();
+    if(location.hash){ location.hash=""; }
+    else { showL1(true); }
   });
   el("back").addEventListener("click",function(e){
     e.preventDefault();
