@@ -9,210 +9,274 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' rx='3' fill='%231F4E3D'/></svg>">
 <!--
 ANTI_SLOP_BRIEF
-  bold move:  the landing page is the dataset, not an introduction to it. The three
-              country doors are sized in proportion to how many funders each holds,
-              so the shape of Gulf philanthropy is the first thing seen and every
-              element on the page is a way in. Tile SIZE is dampened (square root)
-              for legibility; the BAR and the printed count and percentage carry the
-              true figure, so nothing is visually overstated.
-  type:       system serif for organisation, country and type names; system sans for
-              chrome, figures and contact details. This is a reference register of
-              institutions, closer to a directory than an app, and the serif says
-              record rather than product. No web fonts, so nothing to download and
-              no external request.
+  bold move:  level one is three doors and a ranked list, nothing else. The country
+              doors carry a flag-derived mark and the country name only, no figures,
+              so choosing a place is a single uncomplicated act; the counts live with
+              the funder types, where comparing them is the actual point.
+  type:       system serif for organisation and country names, system sans for chrome,
+              figures and contact details. This is a reference register of
+              institutions, so the serif says record rather than product, and it is
+              also what keeps the borrowed search-results structure from reading as a
+              Google pastiche. No web fonts, so nothing to download.
   colour:     one accent, #1F4E3D, taken from the header rows of the source
-              spreadsheet, so the site and the workbook read as one deliverable.
-              All sixteen foreground and background pairs were measured against
-              WCAG AA; the lowest is 4.84:1.
-  shape:      a SET of independent organisations, entered through two hierarchies
-              (place, kind). So level 1 is two ranked lists and level 2 is a list of
-              records, not a grid of cards, which would imply the rows are peers of
-              each other rather than entries in a register.
-  verifiable: every figure on the page is counted from data.json at run time, and
-              that file is exported from the workbook. The page states no number it
-              did not compute. Each record shows its real email address, phone
-              number and domain as text, so a reader can check a contact without
-              clicking and without trusting a label.
+              spreadsheet, so the site and the workbook read as one deliverable. The
+              country marks are the only other colour and they come from the flags.
+  shape:      a SET of independent organisations reached through two hierarchies
+              (place, kind). Level two is therefore a list of names that open, not a
+              grid of cards: a reader scans names, then asks one of them for detail.
+  verifiable: every figure is counted from data.json at run time, and that file is
+              exported from the workbook. The page states no number it did not
+              compute. An opened record shows its real email address and phone number
+              as text, so a contact can be read without clicking through.
   absent by decision: hero paragraph, About, Contact form, testimonials, decorative
-              icons, onboarding, sponsor logos, any generated commentary or insight.
+              icons, onboarding, sponsor logos, coverage statistics, any generated
+              commentary or insight.
+
+  On the country marks: Windows browsers do not render regional-indicator flag emoji,
+  and the Saudi flag carries the shahada, which should not be approximated in
+  hand-drawn geometry. So these are flag-DERIVED marks, not flag reproductions.
+
+  Borrowed from Google deliberately, on Gemini's advice: a left-aligned result column
+  with a measured line length, a pill search field with a soft shadow that lifts on
+  focus, quiet grey metadata above a prominent title, and numbered pagination.
+  Deliberately NOT borrowed: its palette, its typefaces, its card elevation.
 
   Every node is built with createElement and textContent. There is no innerHTML in
   this file, so no cell of the source data is ever parsed as markup.
 -->
 <style>
 :root{
-  --ink:#1A1A1A; --ink-2:#54545A; --ink-3:#6E6E76;
-  --accent:#1F4E3D; --accent-soft:#E8F0ED; --accent-line:#C0D4CC;
-  --paper:#FFFFFF; --paper-2:#FAFAF8; --line:#E3E3DF;
+  /* ink-3 is #5A5E61 rather than a lighter grey because the small labels sit over
+     the flag wash, where a lighter grey measured 3.66:1. axe cannot composite
+     through a mask, so this one was computed by hand: worst case now 4.96:1. */
+  --ink:#191A17; --ink-2:#4D5156; --ink-3:#5A5E61;
+  --accent:#1F4E3D; --accent-2:#2C6B53; --accent-soft:#EAF2EE; --accent-line:#BFD5CB;
+  --paper:#FFFFFF; --paper-2:#F8F9F7; --line:#E4E6E2; --line-2:#D3D6D1;
   --focus:#1F4E3D;
+  --shadow:0 1px 6px rgba(32,33,36,.16);
+  --shadow-up:0 1px 10px rgba(31,78,61,.22);
   --serif:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
-  --sans:ui-sans-serif,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
 }
 @media (prefers-color-scheme:dark){
   :root{
-    --ink:#F2F2EF; --ink-2:#B8B8B4; --ink-3:#9A9A96;
-    --accent:#8FD1B4; --accent-soft:#17241F; --accent-line:#335347;
-    --paper:#121413; --paper-2:#1A1D1B; --line:#2A2D2B; --focus:#8FD1B4;
+    --ink:#F1F2EF; --ink-2:#BDC1C6; --ink-3:#9AA0A6;
+    --accent:#8FD1B4; --accent-2:#A6DCC4; --accent-soft:#16241F; --accent-line:#335347;
+    --paper:#131513; --paper-2:#1B1E1B; --line:#2B2E2B; --line-2:#3A3E3A;
+    --focus:#8FD1B4;
+    --shadow:0 1px 6px rgba(0,0,0,.5);
+    --shadow-up:0 1px 10px rgba(143,209,180,.22);
   }
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
-  margin:0; background:var(--paper); color:var(--ink);
-  font:16px/1.55 var(--sans);
-  -webkit-font-smoothing:antialiased;
+  margin:0;background:var(--paper);color:var(--ink);
+  font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.wrap{max-width:1000px;margin:0 auto;padding:0 var(--s4)}
 a{color:var(--accent)}
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
     clip:rect(0 0 0 0);white-space:nowrap;border:0}
 .skip{position:absolute;left:-9999px;top:0;background:var(--paper);color:var(--accent);
       padding:10px 14px;z-index:9;border:1px solid var(--accent)}
 .skip:focus{left:12px;top:12px}
 
+/* masthead: the title, and nothing beside it */
 header.top{border-bottom:1px solid var(--line);background:var(--paper-2)}
-header.top .wrap{display:flex;align-items:baseline;gap:14px;
-  flex-wrap:wrap;padding-top:16px;padding-bottom:16px}
-h1{font:600 19px/1.2 var(--serif);margin:0;letter-spacing:.1px}
-.count-strap{font:500 12px/1 var(--sans);letter-spacing:.09em;
-  text-transform:uppercase;color:var(--ink-3);margin:0}
+header.top .wrap{padding-top:var(--s4);padding-bottom:var(--s4)}
+h1{font:600 21px/1.25 var(--serif);margin:0;letter-spacing:.1px}
 
-.eyebrow{font:700 11px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;
-  color:var(--accent);margin:0 0 14px}
-section.band{padding:34px 0}
+.eyebrow{font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);margin:0 0 var(--s4)}
+section.band{padding:var(--s5) 0}
 section.band + section.band{border-top:1px solid var(--line)}
 
-.doors{display:grid;gap:14px}
-@media (min-width:720px){ .doors{grid-template-columns:var(--door-cols,1fr 1fr 1fr)} }
+/* ---------- level 1: country doors, name only ---------- */
+.doors{display:grid;gap:var(--s3);grid-template-columns:1fr}
+@media (min-width:700px){ .doors{grid-template-columns:repeat(3,1fr)} }
 .door{
-  display:block;text-decoration:none;color:inherit;background:var(--paper-2);
-  border:1px solid var(--line);border-left:4px solid var(--accent);
-  padding:20px 20px 17px;transition:background .15s ease,border-color .15s ease;
+  display:flex;align-items:center;gap:var(--s3);text-decoration:none;color:inherit;
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:var(--s4);box-shadow:var(--shadow);
+  transition:box-shadow .16s ease,border-color .16s ease,transform .16s ease;
 }
-.door:hover,.door:focus-visible{background:var(--accent-soft);border-color:var(--accent-line)}
-.door .n{display:block;font:600 40px/1 var(--sans);color:var(--accent);letter-spacing:-1.2px}
-.door .nm{display:block;font:600 17px/1.25 var(--serif);margin:7px 0 13px;color:var(--ink)}
-.door .go{display:block;font:600 12px/1 var(--sans);color:var(--ink-2);letter-spacing:.02em}
+.door:hover,.door:focus-visible{box-shadow:var(--shadow-up);border-color:var(--accent-line);
+  transform:translateY(-1px)}
+.door .mark{flex:0 0 auto;width:46px;height:31px;border-radius:3px;overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,.10) inset;display:block}
+.door .nm{font:600 17px/1.35 var(--serif);color:var(--ink);text-wrap:balance}
 
-.bar{display:block;height:5px;background:var(--accent-soft);margin:0 0 10px;overflow:hidden}
-.bar i{display:block;height:100%;background:var(--accent)}
-
-ol.ranked{list-style:none;margin:0;padding:0;
-  display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
-@media (min-width:720px){ ol.ranked{grid-template-columns:1fr 1fr} }
-ol.ranked a{
-  display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 14px;
-  background:var(--paper);padding:11px 14px;text-decoration:none;color:inherit;
-  height:100%;
-}
+/* ---------- level 1: funder types, where the numbers belong ---------- */
+ol.ranked{list-style:none;margin:0;padding:0;display:grid;gap:1px;
+  background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+@media (min-width:700px){ ol.ranked{grid-template-columns:1fr 1fr} }
+ol.ranked a{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px var(--s3);
+  background:var(--paper);padding:14px var(--s3);text-decoration:none;color:inherit;height:100%}
 ol.ranked a:hover,ol.ranked a:focus-visible{background:var(--accent-soft)}
-ol.ranked .t{font:600 15px/1.3 var(--serif)}
-ol.ranked .c{font:600 14px/1 var(--sans);color:var(--accent);
-  font-variant-numeric:tabular-nums}
-ol.ranked .bar{grid-column:1/-1;margin:5px 0 0}
-details.more{margin-top:16px}
+ol.ranked .t{font:600 15px/1.35 var(--serif)}
+ol.ranked .c{font:600 14px/1 var(--sans);color:var(--accent);font-variant-numeric:tabular-nums}
+.bar{display:block;height:4px;background:var(--accent-soft);border-radius:2px;overflow:hidden;
+  grid-column:1/-1;margin-top:var(--s1)}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:2px}
+details.more{margin-top:var(--s4)}
 details.more summary{font:600 13px/1 var(--sans);color:var(--accent);cursor:pointer;
-  padding:9px 0;width:max-content}
-details.more ol.ranked{margin-top:10px}
+  padding:10px 0;width:max-content}
+details.more ol.ranked{margin-top:var(--s3)}
 
-.l2head{padding:22px 0 0}
-.back{display:inline-block;font:600 13px/1 var(--sans);text-decoration:none;
-  padding:8px 0;margin-bottom:8px}
+/* ---------- flag backdrops ----------
+   Drawn as vector here rather than lifted from a news photograph, so it is
+   licence-clean, stays crisp at any size, and the opacity is ours to control.
+   The mask crops each flag to its distinctive geometry and fades it out well
+   before it reaches any text. Purely decorative, aria-hidden, never a target. */
+.hasback{position:relative;isolation:isolate}
+.hasback > *:not(.flagback){position:relative;z-index:1}
+.flagback{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0;
+  border-radius:12px}
+/* The mask has to finish INSIDE the box on every axis. At 125% it still painted to
+   the rectangle boundary, which read as a stray panel rather than a wash. */
+.flagback{
+  --m:radial-gradient(50% 58% at 82% 50%,rgba(0,0,0,.92) 0,rgba(0,0,0,.4) 46%,transparent 70%);
+  -webkit-mask-image:var(--m); mask-image:var(--m);
+}
+.flagback svg{position:absolute;opacity:.13}
+@media (prefers-color-scheme:dark){ .flagback svg{opacity:.20} }
+/* one flag, blown up and cropped, on a country view. It hangs off #l2 as a band so
+   there is room for the geometry to read: pinned to the short header box it showed a
+   single colour band and looked like a stray rectangle. */
+.flagback.one{height:330px;bottom:auto;border-radius:0}
+.flagback.one svg{right:0;top:0;height:100%;width:58%}
+@media (max-width:699px){ .flagback.one{height:250px} .flagback.one svg{width:88%} }
+/* the three side by side, on the landing band */
+.flagback.trio{display:flex;justify-content:flex-end;align-items:center;gap:2.2%}
+.flagback.trio svg{position:static;height:132%;width:auto;flex:0 0 auto}
+
+/* ---------- level 2 ---------- */
+.l2head{padding:var(--s4) 0 0}
+.back{display:inline-block;font:600 13px/1 var(--sans);text-decoration:none;padding:8px 0}
 .back:hover{text-decoration:underline}
-h2.sel{font:600 26px/1.2 var(--serif);margin:2px 0 4px;letter-spacing:-.2px}
-/* This heading is focused on every route change so a screen reader announces
-   where it landed. It is tabindex="-1", so no keyboard user can reach it and a
-   ring would only ever be a full-width box drawn by that programmatic focus. */
+h2.sel{font:600 28px/1.2 var(--serif);margin:var(--s2) 0 var(--s1);letter-spacing:-.2px}
 h2.sel:focus,h2.sel:focus-visible{outline:none}
-.sel-sub{font:400 14px/1.4 var(--sans);color:var(--ink-2);margin:0 0 18px}
+.sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
 
-.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;
-  padding-bottom:14px;border-bottom:1px solid var(--line)}
-.search{flex:1 1 260px;display:flex}
+.controls{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;
+  padding:var(--s4) 0 var(--s3)}
+/* the pill search, borrowed from Google and tinted to the accent on focus */
+.search{flex:1 1 320px;max-width:560px;display:flex}
 .search input{
-  width:100%;font:15px/1.2 var(--sans);color:var(--ink);background:var(--paper);
-  border:1px solid var(--line);padding:11px 12px;border-radius:0;
+  width:100%;height:48px;font:16px/1.2 var(--sans);color:var(--ink);
+  background:var(--paper);border:1px solid var(--line-2);border-radius:24px;
+  padding:0 var(--s4);box-shadow:var(--shadow);
+  transition:box-shadow .16s ease,border-color .16s ease;
 }
 .search input::placeholder{color:var(--ink-3)}
-.search input:focus{border-color:var(--accent);outline:2px solid var(--focus);
-  outline-offset:-1px}
-fieldset.has{border:0;margin:0;padding:0;display:flex;gap:8px;flex-wrap:wrap;
+.search input:hover{box-shadow:var(--shadow-up)}
+.search input:focus{outline:none;border-color:var(--accent);box-shadow:var(--shadow-up)}
+.search input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+
+.pick{display:flex;align-items:center;gap:var(--s2)}
+.pick label{font:700 10px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3)}
+.pick select{
+  font:500 14px/1 var(--sans);color:var(--ink);background:var(--paper);
+  border:1px solid var(--line-2);border-radius:20px;padding:11px 14px;
+  max-width:240px;cursor:pointer;
+}
+.pick select:hover{border-color:var(--accent-line)}
+
+fieldset.has{border:0;margin:0;padding:0;display:flex;gap:var(--s2);flex-wrap:wrap;
   align-items:center}
-fieldset.has legend{float:left;font:600 11px/36px var(--sans);letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-3);padding:0 8px 0 0}
+fieldset.has legend{float:left;font:700 10px/40px var(--sans);letter-spacing:.13em;
+  text-transform:uppercase;color:var(--ink-3);padding:0 var(--s2) 0 0}
 .chip{position:relative;display:block}
 .chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
 .chip span{display:block;font:600 13px/1 var(--sans);color:var(--ink-2);
-  border:1px solid var(--line);padding:10px 12px;background:var(--paper);
-  transition:background .12s ease,border-color .12s ease}
+  border:1px solid var(--line-2);border-radius:20px;padding:11px 14px;background:var(--paper);
+  transition:background .14s ease,border-color .14s ease,color .14s ease}
 .chip input:hover + span{border-color:var(--accent-line)}
 .chip input:checked + span{background:var(--accent);border-color:var(--accent);color:#FFFFFF}
 @media (prefers-color-scheme:dark){ .chip input:checked + span{color:#0F1412} }
 .chip input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
 
-.tally{font:500 13px/1 var(--sans);color:var(--ink-2);padding:14px 0 4px;
-  font-variant-numeric:tabular-nums;margin:0}
+.tally{font:400 13px/1.5 var(--sans);color:var(--ink-3);margin:0;
+  padding:var(--s2) 0 var(--s3);border-bottom:1px solid var(--line);
+  font-variant-numeric:tabular-nums}
 
+/* ---------- the list: names that open ---------- */
 ul.recs{list-style:none;margin:0;padding:0}
-li.rec{padding:15px 0 16px;border-bottom:1px solid var(--line);
-  display:grid;grid-template-columns:minmax(0,1fr);gap:5px}
-/* Two scan paths, which is what the reviewers converged on: who they are on the
-   left, how to reach them on the right. The contact block is plain text lines
-   rather than bordered chips. Bordered chips were tried and, once rendered, they
-   out-shouted the organisation name and pushed each row to about 140px. */
-@media (min-width:800px){
-  li.rec{grid-template-columns:minmax(0,1fr) 262px;gap:5px 32px;align-items:start;
-    grid-template-areas:"nm contact" "meta contact" "focus contact" "btn contact" "who contact"}
-  .rec .nm{grid-area:nm} .rec .meta{grid-area:meta} .rec .focus{grid-area:focus}
-  .rec .expand{grid-area:btn} .rec .who{grid-area:who} .rec .routes{grid-area:contact}
+li.rec{border-bottom:1px solid var(--line)}
+.rowbtn{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s3);
+  width:100%;background:none;border:0;cursor:pointer;text-align:left;
+  padding:var(--s3) var(--s2);font:inherit;color:inherit;border-radius:8px;
+  transition:background .14s ease;
 }
-.rec .nm{font:600 17px/1.3 var(--serif);margin:0;letter-spacing:.1px}
-.rec .meta{font:400 13px/1.45 var(--sans);color:var(--ink-2);margin:0}
-.rec .meta b{font-weight:600;color:var(--ink);font-size:12px;
-  letter-spacing:.03em;text-transform:uppercase}
-.rec .who{font:400 13px/1.45 var(--sans);color:var(--ink-2);margin:0}
-.rec .focus{font:400 14px/1.5 var(--sans);color:var(--ink);margin:0;max-width:66ch}
-.rec .focus.clamp{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-  overflow:hidden}
-.rec .expand{font:600 12px/1 var(--sans);color:var(--accent);background:none;
-  border:0;padding:6px 0;cursor:pointer;text-align:left;justify-self:start}
-.rec .expand:hover{text-decoration:underline}
+.rowbtn:hover{background:var(--accent-soft)}
+.rowbtn .nm{font:600 18px/1.4 var(--serif);color:var(--accent);letter-spacing:.1px}
+.rowbtn:hover .nm{text-decoration:underline}
+.rowbtn[aria-expanded="true"] .nm{color:var(--ink)}
+.caret{flex:0 0 auto;width:22px;height:22px;position:relative}
+.caret::before,.caret::after{content:"";position:absolute;background:var(--ink-3);
+  border-radius:1px;transition:transform .18s ease,opacity .18s ease}
+.caret::before{left:4px;right:4px;top:10px;height:2px}
+.caret::after{top:4px;bottom:4px;left:10px;width:2px}
+.rowbtn[aria-expanded="true"] .caret::after{transform:scaleY(0);opacity:0}
 
-/* the contact block carries the real values, so an address is readable without
-   clicking. Padding keeps every target at least 24px high. */
-.routes{display:flex;flex-direction:column;gap:1px;margin-top:2px}
-.routes .r{display:flex;align-items:baseline;gap:10px;min-width:0}
-.routes a{font:500 13px/1.35 var(--sans);color:var(--accent);text-decoration:none;
-  padding:4px 0;overflow-wrap:anywhere;min-width:0}
-.routes a:hover,.routes a:focus-visible{text-decoration:underline}
-/* padding, not font size, carries this to the 24px minimum target in WCAG 2.2.
-   At 5px it measured 21px high, which axe does not flag but a thumb does. */
-.routes .copy{font:600 11px/1 var(--sans);color:var(--ink-3);background:none;
-  border:0;padding:7px 6px;cursor:pointer;flex:0 0 auto;letter-spacing:.06em;
-  text-transform:uppercase;min-height:25px}
-.routes .copy:hover{color:var(--accent);text-decoration:underline}
-.routes .none{font:400 13px/1.35 var(--sans);color:var(--ink-3);padding:4px 0}
+.panel{padding:0 var(--s2) var(--s4) var(--s2)}
+dl.rec-dl{margin:0;display:grid;grid-template-columns:1fr;gap:var(--s3)}
+@media (min-width:760px){
+  dl.rec-dl{grid-template-columns:150px minmax(0,1fr);gap:var(--s3) var(--s4);
+    align-items:baseline}
+}
+dl.rec-dl dt{font:700 10px/1.5 var(--sans);letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-3);margin:0}
+dl.rec-dl dd{margin:0;font:400 15px/1.6 var(--sans);color:var(--ink);max-width:68ch}
+@media (max-width:759px){ dl.rec-dl dt{margin-bottom:calc(var(--s1) * -2)} }
 
-.loadmore{margin:22px 0 8px}
-.loadmore button{font:600 14px/1 var(--sans);color:#FFFFFF;background:var(--accent);
-  border:1px solid var(--accent);padding:13px 20px;cursor:pointer;width:100%}
-@media (prefers-color-scheme:dark){ .loadmore button{color:#0F1412} }
-@media (min-width:520px){ .loadmore button{width:auto;min-width:250px} }
-.empty{padding:30px 0 40px;color:var(--ink-2);font-size:15px}
+.routes{display:flex;flex-direction:column;gap:var(--s1);align-items:flex-start}
+.routes .r{display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap}
+.routes a{font:500 15px/1.5 var(--sans);color:var(--accent);text-decoration:none;
+  padding:3px 0;overflow-wrap:anywhere;border-bottom:1px solid transparent}
+.routes a:hover,.routes a:focus-visible{border-bottom-color:currentColor}
+.routes .copy{font:700 10px/1 var(--sans);color:var(--ink-3);background:none;
+  border:1px solid var(--line-2);border-radius:14px;padding:7px 10px;cursor:pointer;
+  letter-spacing:.1em;text-transform:uppercase;min-height:26px}
+.routes .copy:hover{color:var(--accent);border-color:var(--accent-line)}
+.routes .none{font:400 15px/1.5 var(--sans);color:var(--ink-3)}
+
+/* ---------- pagination ---------- */
+nav.pager{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
+  gap:var(--s2);padding:var(--s5) 0 var(--s4)}
+nav.pager a,nav.pager span{font:500 14px/1 var(--sans);min-width:38px;min-height:38px;
+  display:inline-flex;align-items:center;justify-content:center;padding:0 12px;
+  border-radius:20px;text-decoration:none;color:var(--accent)}
+nav.pager a:hover{background:var(--accent-soft)}
+nav.pager .on{background:var(--accent);color:#FFFFFF;font-weight:700}
+@media (prefers-color-scheme:dark){ nav.pager .on{color:#0F1412} }
+nav.pager .gap{color:var(--ink-3);min-width:20px;padding:0 2px}
+nav.pager .edge{font-weight:600}
+/* A spent Previous or Next stays legible. At opacity .5 it composited to 2.67:1 in
+   dark mode: axe called it, and a control you cannot read is not a kindness. It is
+   distinguished by having no hover and no href, not by being faint. */
+nav.pager .off{color:var(--ink-3);pointer-events:none;cursor:default}
+
+.empty{padding:var(--s5) 0;color:var(--ink-2);font-size:15px}
 .empty button{font:600 13px/1 var(--sans);color:var(--accent);background:none;
-  border:1px solid var(--accent-line);padding:9px 12px;cursor:pointer;margin-top:12px}
+  border:1px solid var(--accent-line);border-radius:20px;padding:11px 16px;
+  cursor:pointer;margin-top:var(--s3)}
 
-footer.foot{border-top:1px solid var(--line);margin-top:14px;padding:18px 0 34px}
-footer.foot p{margin:0;font:400 12.5px/1.5 var(--sans);color:var(--ink-3)}
-
-#state{padding:44px 0;font:400 15px/1.5 var(--sans);color:var(--ink-2)}
+#state{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
 #state button{font:600 13px/1 var(--sans);color:var(--accent);background:none;
-  border:1px solid var(--accent-line);padding:9px 12px;cursor:pointer;margin-left:10px}
-noscript p{padding:34px 0;font:400 15px/1.5 var(--sans);color:var(--ink-2);margin:0}
+  border:1px solid var(--accent-line);border-radius:20px;padding:9px 14px;
+  cursor:pointer;margin-left:var(--s3)}
+noscript p{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2);margin:0}
+main{padding-bottom:var(--s5)}
 [hidden]{display:none !important}
 @media (prefers-reduced-motion:reduce){
   *{transition-duration:.01ms !important;animation-duration:.01ms !important}
+  .door:hover{transform:none}
 }
 </style>
 </head>
@@ -220,15 +284,12 @@ noscript p{padding:34px 0;font:400 15px/1.5 var(--sans);color:var(--ink-2);margi
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
-  <div class="wrap">
-    <h1>GCC Philanthropy, Donors and Funders</h1>
-    <p class="count-strap" id="strap">United Arab Emirates, Saudi Arabia, Qatar</p>
-  </div>
+  <div class="wrap"><h1>GCC Philanthropy, Donors and Funders</h1></div>
 </header>
 
 <main id="main" class="wrap">
-  <noscript><p>This register reads its records from a data file in the browser, so
-    it needs JavaScript switched on.</p></noscript>
+  <noscript><p>This register reads its records from a data file in the browser, so it
+    needs JavaScript switched on.</p></noscript>
 
   <div id="state" role="status">Loading the register.</div>
 
@@ -259,6 +320,10 @@ noscript p{padding:34px 0;font:400 15px/1.5 var(--sans);color:var(--ink-2);margi
         <input id="q" type="search" autocomplete="off" spellcheck="false"
                placeholder="Search name, cause, city">
       </div>
+      <div class="pick" id="pickwrap" hidden>
+        <label for="pick" id="picklabel">Where</label>
+        <select id="pick"></select>
+      </div>
       <fieldset class="has">
         <legend>Has</legend>
         <label class="chip"><input type="checkbox" id="f-email"><span>Email</span></label>
@@ -268,17 +333,13 @@ noscript p{padding:34px 0;font:400 15px/1.5 var(--sans);color:var(--ink-2);margi
     </div>
     <p class="tally" id="tally" role="status" aria-live="polite"></p>
     <ul class="recs" id="recs"></ul>
-    <div class="loadmore" id="loadmore" hidden>
-      <button type="button" id="loadmore-btn"></button>
-    </div>
+    <nav class="pager" id="pager" aria-label="Pages"></nav>
     <div class="empty" id="empty" hidden>
       <p id="emptymsg"></p>
       <button type="button" id="clearall">Clear search and filters</button>
     </div>
   </div>
 </main>
-
-<footer class="foot"><div class="wrap"><p id="footnote"></p></div></footer>
 
 <script>
 (function(){
@@ -287,9 +348,7 @@ noscript p{padding:34px 0;font:400 15px/1.5 var(--sans);color:var(--ink-2);margi
 /* Rows are positional arrays to keep the file small. Codex flagged that as a
    maintenance trap, correctly, so index lookup happens in exactly one place: F is
    built from the file's own keys[] and every read goes through val(). Both the key
-   set and each row's length are validated at boot, so a drift between keys[] and
-   rows fails loudly there instead of quietly showing a phone number in the email
-   slot. */
+   set and each row's length are validated at boot. */
 var REQUIRED=["name","type","focus","country","city","website","email","phone",
               "linkedin","contact","title","area"];
 var DATA=null, F=null, ROWS=[], NORM=null;
@@ -300,40 +359,95 @@ function val(row,key){
   return v==null ? "" : String(v);
 }
 
-var PAGE=60, shown=0, current=null, filtered=[], io=null, writing=false;
-var timer=null, renderSeq=0;
+var PER_PAGE=20, page=1, current=null, filtered=[], writing=false;
+var timer=null, seq=0;
 
 function el(id){ return document.getElementById(id); }
 function txt(s){ return String(s==null ? "" : s); }
 function num(n){ return Number(n).toLocaleString("en-GB"); }
-/* Climate/Sustainability Fund holds exactly one row, and read "1 organisations".
-   Every count in the interface goes through this. */
 function plural(n,one,many){ return num(n)+" "+(Number(n)===1 ? one : many); }
 function slug(s){
   return txt(s).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
 }
-/* Search normalisation. Punctuation becomes a space on BOTH sides, because the
-   type names carry slashes, ampersands and brackets: before this, a search for
-   "charity ngo" returned nothing at all while "Charity/NGO" returned 300. */
+/* Search normalisation. Punctuation becomes a space on BOTH sides, because the type
+   names carry slashes, brackets and ampersands: before this, "charity ngo" returned
+   nothing while "Charity/NGO" returned 300. */
 function norm(s){
   return txt(s).toLowerCase().replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim();
 }
 
-/* every node is created and filled with textContent, so a cell of source data can
-   never be parsed as markup. There is no innerHTML in this file. */
+/* every node is created and filled with textContent. There is no innerHTML here. */
 function make(tag,cls,text){
   var n=document.createElement(tag);
   if(cls) n.className=cls;
   if(text!=null && text!=="") n.textContent=txt(text);
   return n;
 }
-function barFor(fraction){
-  var b=make("span","bar");
-  b.setAttribute("aria-hidden","true");
-  var i=document.createElement("i");
-  i.style.width=Math.max(0,Math.min(100,fraction*100)).toFixed(1)+"%";
-  b.appendChild(i);
-  return b;
+function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+
+var SVGNS="http://www.w3.org/2000/svg";
+function svgEl(tag,attrs){
+  var n=document.createElementNS(SVGNS,tag);
+  for(var k in attrs) if(attrs.hasOwnProperty(k)) n.setAttribute(k,attrs[k]);
+  return n;
+}
+/* Flag-DERIVED marks, not flag reproductions. Windows browsers do not render
+   regional-indicator flag emoji, and the Saudi flag carries the shahada, which
+   should not be approximated in hand-drawn geometry. */
+function countryMark(name,cls,keepRatio){
+  var s=svgEl("svg",{viewBox:"0 0 60 40","aria-hidden":"true",
+                     preserveAspectRatio:(keepRatio ? "xMidYMid slice" : "none"),
+                     class:(cls||"mark")});
+  var n=norm(name);
+  if(n==="united arab emirates"){
+    s.appendChild(svgEl("rect",{x:15,y:0,width:45,height:13.34,fill:"#00732F"}));
+    s.appendChild(svgEl("rect",{x:15,y:13.34,width:45,height:13.33,fill:"#FFFFFF"}));
+    s.appendChild(svgEl("rect",{x:15,y:26.67,width:45,height:13.33,fill:"#111111"}));
+    s.appendChild(svgEl("rect",{x:0,y:0,width:15,height:40,fill:"#CE1126"}));
+  }else if(n==="saudi arabia"){
+    /* The green field alone. An earlier version added a small white band to evoke
+       the sword; at tile size it read as a stray dash, and blown up to the 330px
+       backdrop it became a white bar across the wash. The field is the honest
+       abstraction at both sizes, and the shahada is not something to approximate. */
+    s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#006C35"}));
+  }else if(n==="qatar"){
+    s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#8A1538"}));
+    var pts=["0,0","15,0"], step=40/9, i;
+    for(i=0;i<9;i++){
+      pts.push((22).toFixed(2)+","+((i+0.5)*step).toFixed(2));
+      pts.push((15).toFixed(2)+","+((i+1)*step).toFixed(2));
+    }
+    pts.push("0,40");
+    s.appendChild(svgEl("polygon",{points:pts.join(" "),fill:"#FFFFFF"}));
+  }else{
+    s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#1F4E3D"}));
+  }
+  return s;
+}
+
+/* Paint a decorative flag behind a block. Vector, drawn above, so there is no
+   third-party image to license and it stays sharp at any size. The element is
+   aria-hidden and never receives pointer events, so it is invisible to assistive
+   technology and cannot be clicked through to. */
+function paintBackdrop(host,countryName){
+  var old=host.querySelector(":scope > .flagback");
+  if(old) old.parentNode.removeChild(old);
+  host.classList.add("hasback");
+  var back=make("div","flagback "+(countryName ? "one" : "trio"));
+  back.setAttribute("aria-hidden","true");
+  if(countryName){
+    back.appendChild(countryMark(countryName,"",true));
+  }else{
+    DATA.meta.countries.forEach(function(c){
+      back.appendChild(countryMark(c.name,"",true));
+    });
+  }
+  host.insertBefore(back,host.firstChild);
+}
+function clearBackdrop(host){
+  var old=host.querySelector(":scope > .flagback");
+  if(old) old.parentNode.removeChild(old);
+  host.classList.remove("hasback");
 }
 
 /* only http and https survive, so a malformed cell cannot become a script link */
@@ -351,37 +465,16 @@ function safeMail(m){
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m) ? m : "";
 }
 function safeTel(t){ t=txt(t).trim(); return /[0-9]/.test(t) ? t : ""; }
-/* the readable part of a URL, so a website reads as its domain */
-function hostOf(href){
-  try{
-    var u=new URL(href);
-    return u.hostname.replace(/^www\./,"")
-      + (u.pathname.replace(/\/+$/,"") ? "/..." : "");
-  }catch(e){ return href; }
-}
 
 /* ---------- level 1 ---------- */
 function buildL1(){
-  var cs=DATA.meta.countries, total=DATA.meta.total;
-  var top=cs.length ? cs[0].count : 1;
   var doors=el("doors");
-
-  /* Tile width follows the square root of the count so the smallest country stays
-     a usable target with legible text inside it. The bar, the count and the
-     printed percentage all carry the true share, so the dampening never overstates
-     a figure. Gemini argued for strictly linear width; at 128 of 1,344 that makes
-     Qatar a tenth of the row, which cannot hold its own name. */
-  doors.style.setProperty("--door-cols",
-    cs.map(function(c){ return Math.sqrt(c.count).toFixed(2)+"fr"; }).join(" "));
-
-  cs.forEach(function(c){
+  paintBackdrop(doors.parentNode,null);
+  DATA.meta.countries.forEach(function(c){
     var a=make("a","door");
     a.href="#/c/"+slug(c.name);
-    a.appendChild(make("span","n",num(c.count)));
+    a.appendChild(countryMark(c.name));
     a.appendChild(make("span","nm",c.name));
-    a.appendChild(barFor(c.count/top));
-    a.appendChild(make("span","go",
-      (c.count/total*100).toFixed(0)+"% of the register"));
     doors.appendChild(a);
   });
 
@@ -394,7 +487,12 @@ function buildL1(){
       a.href="#/t/"+slug(t.name);
       a.appendChild(make("span","t",t.name));
       a.appendChild(make("span","c",num(t.count)));
-      a.appendChild(barFor(Math.max(0.015,t.count/peak)));
+      var b=make("span","bar");
+      b.setAttribute("aria-hidden","true");
+      var i=document.createElement("i");
+      i.style.width=Math.max(1.5,t.count/peak*100).toFixed(1)+"%";
+      b.appendChild(i);
+      a.appendChild(b);
       li.appendChild(a);
       into.appendChild(li);
     });
@@ -408,24 +506,18 @@ function buildL1(){
   }else{
     el("moretypes").hidden=true;
   }
-
-  el("strap").textContent=num(total)+" organisations";
-  el("footnote").textContent =
-    num(DATA.meta.withEmail)+" have an email, "+num(DATA.meta.withPhone)
-    + " a phone, "+num(DATA.meta.withWebsite)+" a website.";
 }
 
 /* ---------- filtering ---------- */
 var SEARCH_FIELDS=["name","type","country","city","area","focus","contact","title"];
-var VISIBLE_FIELDS=["name","type","country","city","area","contact","title"];
+var VISIBLE_FIELDS=["name"];   /* only the name shows while a row is closed */
 
 function buildNorm(){
   NORM=new Map();
   ROWS.forEach(function(r){
     NORM.set(r,{
       all: norm(SEARCH_FIELDS.map(function(k){ return val(r,k); }).join(" ")),
-      vis: norm(VISIBLE_FIELDS.map(function(k){ return val(r,k); }).join(" ")),
-      foc: norm(val(r,"focus"))
+      nm:  norm(val(r,"name"))
     });
   });
 }
@@ -434,156 +526,232 @@ function matchRow(r,q){
   var n=NORM.get(r);
   return n ? n.all.indexOf(q)>-1 : false;
 }
-/* If the only reason a row matched is text the reader cannot see, that row's focus
-   line opens. Codex's point: a row that matched for no visible reason reads broken. */
-function onlyInFocus(r,q){
+/* A closed row shows only its name, so any match that is not in the name is
+   invisible. Those rows open themselves, otherwise a hit reads as a mystery. */
+function matchedOutsideName(r,q){
   if(!q) return false;
   var n=NORM.get(r);
-  if(!n) return false;
-  return n.vis.indexOf(q)===-1 && n.foc.indexOf(q)>-1;
+  return n ? n.nm.indexOf(q)===-1 : false;
 }
 
 function readControls(){
   return {
     q: norm(el("q").value),
+    pick: el("pickwrap").hidden ? "" : el("pick").value,
     email: el("f-email").checked,
     phone: el("f-phone").checked,
     website: el("f-website").checked
   };
 }
-function computeFiltered(rows,c){
-  return rows.filter(function(r){
+function computeFiltered(sel,c){
+  var field=(sel.kind==="c") ? "city" : "country";
+  var out=sel.rows.filter(function(r){
+    if(c.pick && val(r,field)!==c.pick) return false;
     if(c.email && !val(r,"email")) return false;
     if(c.phone && !val(r,"phone")) return false;
     if(c.website && !val(r,"website")) return false;
     return matchRow(r,c.q);
   });
+  /* Alphabetical by name, always. The review found the order was otherwise an
+     accident of spreadsheet order, alphabetical inside a country view but grouped
+     by city in a type view, which makes a name hard to find across 35 pages. */
+  out.sort(function(a,b){
+    return val(a,"name").localeCompare(val(b,"name"),"en",{sensitivity:"base"});
+  });
+  return out;
 }
-function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
-
-function apply(){
+function apply(resetPage){
   if(!current) return;
-  filtered=computeFiltered(current.rows,readControls());
-  shown=0;
-  renderSeq++;
-  clear(el("recs"));
-  paint();
+  if(resetPage!==false) page=1;
+  filtered=computeFiltered(current,readControls());
+  render();
   writeHash(true);
 }
 
-/* ---------- rows ---------- */
-function contactLine(a,extra){
-  var r=make("div","r");
-  r.appendChild(a);
-  if(extra) r.appendChild(extra);
-  return r;
-}
-function routeLink(href,label,external){
-  var a=make("a",null,label);
-  a.href=href;
-  if(external){ a.target="_blank"; a.rel="noopener noreferrer"; }
-  return a;
-}
+/* ---------- one record ---------- */
 function routesFor(r){
   var box=make("div","routes");
   var w=safeUrl(val(r,"website")), m=safeMail(val(r,"email"));
   var t=safeTel(val(r,"phone")), l=safeUrl(val(r,"linkedin"));
-  var nm=val(r,"name");
+  function line(a,extra){
+    var row=make("div","r");
+    row.appendChild(a);
+    if(extra) row.appendChild(extra);
+    box.appendChild(row);
+  }
+  function link(href,label,external){
+    var a=make("a",null,label);
+    a.href=href;
+    if(external){ a.target="_blank"; a.rel="noopener noreferrer"; }
+    return a;
+  }
   if(m){
     var cp=make("button","copy","Copy");
     cp.type="button";
     cp.setAttribute("data-copy",m);
-    cp.setAttribute("aria-label","Copy the email address for "+nm);
-    box.appendChild(contactLine(routeLink("mailto:"+m,m,false),cp));
+    cp.setAttribute("aria-label","Copy the email address for "+val(r,"name"));
+    line(link("mailto:"+m,m,false),cp);
   }
-  if(t){
-    box.appendChild(contactLine(
-      routeLink("tel:"+t.replace(/[^0-9+]/g,""),t,false)));
-  }
-  if(w) box.appendChild(contactLine(routeLink(w,hostOf(w),true)));
-  if(l) box.appendChild(contactLine(routeLink(l,"LinkedIn",true)));
-  if(!box.firstChild){
-    box.appendChild(make("span","none","No contact published in the source"));
-  }
+  if(t) line(link("tel:"+t.replace(/[^0-9+]/g,""),t,false));
+  /* the label reads Website, never the raw address */
+  if(w) line(link(w,"Website",true));
+  if(l) line(link(l,"LinkedIn",true));
+  if(!box.firstChild) box.appendChild(make("span","none","No contact published in the source"));
   return box;
 }
 
-function recFor(r,i,q){
-  var open=onlyInFocus(r,q);
-  var focus=val(r,"focus");
-  var long=focus.length>170;
-  /* the render sequence is in the id, so an aria-controls pair can never point at
-     a stale node from an earlier filter */
-  var id="f"+renderSeq+"-"+i;
-  var li=make("li","rec");
-
-  li.appendChild(make("p","nm",val(r,"name")));
-
-  var meta=make("p","meta");
-  meta.appendChild(make("b",null,val(r,"type")));
-  var place=[val(r,"city"),val(r,"country")].filter(Boolean).join(", ");
-  if(place) meta.appendChild(document.createTextNode(" · "+place));
-  li.appendChild(meta);
-
-  var f=make("p","focus"+((long && !open) ? " clamp" : ""),focus);
-  f.id=id;
-  li.appendChild(f);
-
-  if(long){
-    var b=make("button","expand",open ? "Show less" : "Show more");
-    b.type="button";
-    b.setAttribute("aria-expanded",open ? "true" : "false");
-    b.setAttribute("aria-controls",id);
-    li.appendChild(b);
+function pairsFor(r){
+  var dl=make("dl","rec-dl");
+  function pair(label,node){
+    if(!node) return;
+    dl.appendChild(make("dt",null,label));
+    var dd=make("dd");
+    dd.appendChild(node);
+    dl.appendChild(dd);
   }
-
+  var focus=val(r,"focus");
+  if(focus) pair("What they fund",document.createTextNode(focus));
+  pair("Kind of funder",document.createTextNode(val(r,"type")));
+  var where=[val(r,"city"),val(r,"country")].filter(Boolean).join(", ");
+  var area=val(r,"area");
+  if(area && area!==val(r,"city")) where=where ? where+" ("+area+")" : area;
+  if(where) pair("Where",document.createTextNode(where));
   var who=val(r,"contact"), title=val(r,"title");
-  if(who) li.appendChild(make("p","who",who+(title ? ", "+title : "")));
+  if(who) pair("Named contact",document.createTextNode(who+(title ? ", "+title : "")));
+  pair("Contact",routesFor(r));
+  return dl;
+}
 
-  li.appendChild(routesFor(r));
+function recFor(r,i,openIt){
+  var id="p"+seq+"-"+i;
+  var li=make("li","rec");
+  var btn=make("button","rowbtn");
+  btn.type="button";
+  btn.setAttribute("aria-expanded",openIt ? "true" : "false");
+  btn.setAttribute("aria-controls",id);
+  btn.appendChild(make("span","nm",val(r,"name")));
+  btn.appendChild(make("span","caret"));
+  li.appendChild(btn);
+  var panel=make("div","panel");
+  panel.id=id;
+  panel.hidden=!openIt;
+  panel.appendChild(pairsFor(r));
+  li.appendChild(panel);
   return li;
 }
 
-function paint(){
-  if(!current) return;
-  var q=readControls().q;
-  var next=filtered.slice(shown,shown+PAGE);
-  if(next.length){
-    var frag=document.createDocumentFragment();
-    next.forEach(function(r,k){ frag.appendChild(recFor(r,shown+k,q)); });
-    el("recs").appendChild(frag);
-    shown+=next.length;
+/* ---------- pagination ---------- */
+function pageCount(){ return Math.max(1,Math.ceil(filtered.length/PER_PAGE)); }
+
+/* Google's shape: previous, a short window of numbers with the first and last always
+   reachable, then next. Nine slots at most, so it never wraps on a phone. */
+function pageWindow(cur,total){
+  var out=[], i;
+  if(total<=7){
+    for(i=1;i<=total;i++) out.push(i);
+    return out;
   }
-  var left=filtered.length-shown;
-  el("loadmore").hidden = left<=0;
-  if(left>0){
-    el("loadmore-btn").textContent =
-      "Show "+Math.min(PAGE,left)+" more of "+num(filtered.length);
+  var from=Math.max(2,cur-2), to=Math.min(total-1,cur+2);
+  if(cur<=4){ from=2; to=5; }
+  if(cur>=total-3){ from=total-4; to=total-1; }
+  out.push(1);
+  if(from>2) out.push("gap");
+  for(i=from;i<=to;i++) out.push(i);
+  if(to<total-1) out.push("gap");
+  out.push(total);
+  return out;
+}
+function buildPager(){
+  var nav=el("pager");
+  clear(nav);
+  var total=pageCount();
+  if(filtered.length<=PER_PAGE){ nav.hidden=true; return; }
+  nav.hidden=false;
+  function step(label,target,enabled,cls){
+    var n;
+    if(enabled){
+      n=make("a",cls,label);
+      n.href=hashFor(target);
+    }else{
+      n=make("span",cls+" off",label);
+    }
+    nav.appendChild(n);
   }
-  el("tally").textContent = filtered.length
-    ? ("Showing "+num(shown)+" of "+num(filtered.length)
-        + (filtered.length!==current.rows.length
-            ? ", filtered from "+num(current.rows.length) : ""))
-    : "";
-  var none=el("empty");
-  if(!filtered.length){
-    el("emptymsg").textContent="Nothing in "+current.name+" matches that.";
-    none.hidden=false;
-  }else{
-    none.hidden=true;
-  }
-  observeTail();
+  step("Previous",page-1,page>1,"edge");
+  pageWindow(page,total).forEach(function(p){
+    if(p==="gap"){ nav.appendChild(make("span","gap","...")); return; }
+    if(p===page){
+      var on=make("span","on",num(p));
+      on.setAttribute("aria-current","page");
+      nav.appendChild(on);
+      return;
+    }
+    var a=make("a",null,num(p));
+    a.href=hashFor(p);
+    a.setAttribute("aria-label","Page "+p);
+    nav.appendChild(a);
+  });
+  step("Next",page+1,page<total,"edge");
 }
 
-/* auto-append near the bottom, with the button always present as the deterministic
-   control. Codex: infinite scroll on its own is an accessibility trap. */
-function observeTail(){
-  if(io) io.disconnect();
-  if(el("loadmore").hidden || !("IntersectionObserver" in window)) return;
-  io=new IntersectionObserver(function(entries){
-    if(entries[0].isIntersecting) paint();
-  },{rootMargin:"600px 0px"});
-  io.observe(el("loadmore"));
+function render(){
+  if(!current) return;
+  var total=pageCount();
+  if(page>total) page=total;
+  if(page<1) page=1;
+  var c=readControls();
+  var start=(page-1)*PER_PAGE;
+  var slice=filtered.slice(start,start+PER_PAGE);
+  seq++;
+  var list=el("recs");
+  clear(list);
+  var frag=document.createDocumentFragment();
+  slice.forEach(function(r,k){
+    frag.appendChild(recFor(r,start+k,matchedOutsideName(r,c.q)));
+  });
+  list.appendChild(frag);
+
+  if(filtered.length){
+    el("tally").hidden=false;
+    el("tally").textContent="Showing "+num(start+1)+" to "+num(start+slice.length)
+      + " of "+plural(filtered.length,"organisation","organisations")
+      + (filtered.length!==current.rows.length
+          ? ", filtered from "+num(current.rows.length) : "");
+    el("empty").hidden=true;
+  }else{
+    el("tally").hidden=true;
+    el("emptymsg").textContent="Nothing in "+current.name+" matches that.";
+    el("empty").hidden=false;
+  }
+  buildPager();
+}
+
+/* ---------- the second filter, which depends on the level-1 choice ---------- */
+function fillPick(sel){
+  var wrap=el("pickwrap"), sl=el("pick");
+  clear(sl);
+  var field=(sel.kind==="c") ? "city" : "country";
+  var counts={};
+  sel.rows.forEach(function(r){
+    var v=val(r,field);
+    if(v) counts[v]=(counts[v]||0)+1;
+  });
+  var names=Object.keys(counts).sort(function(a,b){
+    return counts[b]-counts[a] || a.localeCompare(b);
+  });
+  if(!names.length){ wrap.hidden=true; return; }
+  el("picklabel").textContent=(sel.kind==="c") ? "City" : "Country";
+  var all=make("option",null,(sel.kind==="c")
+    ? "All cities ("+num(sel.rows.length)+")"
+    : "All countries ("+num(sel.rows.length)+")");
+  all.value="";
+  sl.appendChild(all);
+  names.forEach(function(n){
+    var o=make("option",null,n+" ("+num(counts[n])+")");
+    o.value=n;
+    sl.appendChild(o);
+  });
+  wrap.hidden=false;
 }
 
 /* ---------- routing ---------- */
@@ -593,10 +761,7 @@ function buildSlugs(){
     list.forEach(function(item){
       var s=slug(item.name);
       if(SLUGS[kind][s]){
-        /* not present in the current data, checked; this keeps a future rename
-           from silently merging two categories under one slug */
-        console.warn("duplicate slug "+kind+"/"+s+": "
-          + SLUGS[kind][s].name+" and "+item.name);
+        console.warn("duplicate slug "+kind+"/"+s);
         return;
       }
       SLUGS[kind][s]=item;
@@ -612,9 +777,9 @@ function select(kind,s){
   var list=ROWS.filter(function(r){ return val(r,field)===item.name; });
   var keys={}, sub;
   if(kind==="c"){
-    list.forEach(function(r){ var a=val(r,"area"); if(a) keys[a]=1; });
-    sub=plural(list.length,"organisation","organisations")+" across "
-      + plural(Object.keys(keys).length,"city or region","cities and regions");
+    list.forEach(function(r){ var v=val(r,"city"); if(v) keys[v]=1; });
+    sub=plural(list.length,"organisation","organisations")+" in "
+      + plural(Object.keys(keys).length,"city","cities");
   }else{
     list.forEach(function(r){ keys[val(r,"country")]=1; });
     sub=plural(list.length,"organisation","organisations")+" in "
@@ -623,13 +788,18 @@ function select(kind,s){
   return {kind:kind,slug:s,name:item.name,sub:sub,rows:list};
 }
 
-function writeHash(replace){
-  if(!current) return;
+function hashFor(targetPage){
   var c=readControls(), p=[];
   if(c.q) p.push("q="+encodeURIComponent(el("q").value.trim()));
+  if(c.pick) p.push("in="+encodeURIComponent(c.pick));
   var has=["email","phone","website"].filter(function(k){ return c[k]; });
   if(has.length) p.push("has="+has.join(","));
-  var h="#/"+current.kind+"/"+current.slug+(p.length ? "?"+p.join("&") : "");
+  if(targetPage && targetPage>1) p.push("p="+targetPage);
+  return "#/"+current.kind+"/"+current.slug+(p.length ? "?"+p.join("&") : "");
+}
+function writeHash(replace){
+  if(!current) return;
+  var h=hashFor(page);
   if(location.hash===h) return;
   writing=true;
   if(replace && history.replaceState) history.replaceState(null,"",h);
@@ -637,9 +807,21 @@ function writeHash(replace){
   setTimeout(function(){ writing=false; },0);
 }
 
+function parseQuery(qs){
+  var p={};
+  qs.split("&").forEach(function(kv){
+    if(!kv) return;
+    var eq=kv.indexOf("="), k=eq<0 ? kv : kv.slice(0,eq);
+    var v=eq<0 ? "" : kv.slice(eq+1);
+    try{ p[k]=decodeURIComponent(v.replace(/\+/g," ")); }
+    catch(e){ p[k]=v; }
+  });
+  return p;
+}
+
 function route(){
   if(writing) return;
-  clearTimeout(timer);          /* a pending search must not land on a new route */
+  clearTimeout(timer);
   var raw=location.hash.replace(/^#\/?/,"");
   if(!raw){ showL1(false); return; }
   var qs="", i=raw.indexOf("?");
@@ -651,42 +833,43 @@ function route(){
   if((kind!=="c" && kind!=="t") || !s){ showL1(true); return; }
   var sel=select(kind,s);
   if(!sel){ showL1(true); return; }
-  current=sel;
 
-  /* split on the FIRST equals only, so a query containing one survives */
-  var p={};
-  qs.split("&").forEach(function(kv){
-    if(!kv) return;
-    var eq=kv.indexOf("="), k=eq<0 ? kv : kv.slice(0,eq);
-    var v=eq<0 ? "" : kv.slice(eq+1);
-    try{ p[k]=decodeURIComponent(v.replace(/\+/g," ")); }
-    catch(e){ p[k]=v; }
-  });
+  var sameSelection = current && current.kind===sel.kind && current.slug===sel.slug;
+  current=sel;
+  var p=parseQuery(qs);
+
   el("q").value=p.q||"";
+  fillPick(sel);
+  var want=p["in"]||"";
+  var ok=false, opts=el("pick").options, j;
+  for(j=0;j<opts.length;j++) if(opts[j].value===want){ ok=true; break; }
+  el("pick").value = ok ? want : "";
   var has=(p.has||"").split(",");
   el("f-email").checked=has.indexOf("email")>-1;
   el("f-phone").checked=has.indexOf("phone")>-1;
   el("f-website").checked=has.indexOf("website")>-1;
+  page=Math.max(1,parseInt(p.p,10)||1);
 
   el("l1").hidden=true;
   el("l2").hidden=false;
+  if(sel.kind==="c") paintBackdrop(el("l2"),sel.name);
+  else clearBackdrop(el("l2"));
   el("selname").textContent=sel.name;
   el("selsub").textContent=sel.sub;
   document.title=sel.name+" | GCC Philanthropy, Donors and Funders";
-  filtered=computeFiltered(sel.rows,readControls());
-  shown=0;
-  renderSeq++;
-  clear(el("recs"));
-  paint();
+  filtered=computeFiltered(sel,readControls());
+  render();
   window.scrollTo(0,0);
-  el("selname").focus();
+  /* moving focus on every paging click would fight the reader, so the heading is
+     only announced when the selection itself changes */
+  if(!sameSelection) el("selname").focus();
 }
 
 function showL1(clean){
   clearTimeout(timer);
   current=null;
   filtered=[];
-  if(io) io.disconnect();
+  page=1;
   el("l2").hidden=true;
   el("l1").hidden=false;
   document.title="GCC Philanthropy, Donors and Funders";
@@ -699,29 +882,26 @@ function showL1(clean){
 /* ---------- events ---------- */
 function onSearch(){
   clearTimeout(timer);
-  /* remember which selection this keystroke belongs to, so a debounced apply
-     cannot run against a selection the user has since left */
   var owner=current;
   timer=setTimeout(function(){
-    if(current===owner) apply();
-  },160);
+    if(current===owner) apply(true);
+  },180);
 }
 
 function wire(){
   el("q").addEventListener("input",onSearch);
+  el("pick").addEventListener("change",function(){ apply(true); });
   ["f-email","f-phone","f-website"].forEach(function(id){
-    el(id).addEventListener("change",apply);
+    el(id).addEventListener("change",function(){ apply(true); });
   });
-  el("loadmore-btn").addEventListener("click",paint);
   el("clearall").addEventListener("click",function(){
     el("q").value="";
+    el("pick").value="";
     el("f-email").checked=false;
     el("f-phone").checked=false;
     el("f-website").checked=false;
-    apply();
+    apply(true);
   });
-  /* deterministic: always go to level 1. history.length cannot tell us whether the
-     previous entry belongs to this site, so history.back() could leave it. */
   el("back").addEventListener("click",function(e){
     e.preventDefault();
     if(location.hash){ location.hash=""; }
@@ -730,13 +910,12 @@ function wire(){
   /* one delegated listener for the whole list, however long it grows */
   el("recs").addEventListener("click",function(e){
     if(!e.target.closest) return;
-    var ex=e.target.closest(".expand");
-    if(ex){
-      var p=document.getElementById(ex.getAttribute("aria-controls"));
-      var open=ex.getAttribute("aria-expanded")==="true";
-      ex.setAttribute("aria-expanded",open ? "false" : "true");
-      ex.textContent = open ? "Show more" : "Show less";
-      if(p) p.classList.toggle("clamp",open);
+    var btn=e.target.closest(".rowbtn");
+    if(btn){
+      var panel=document.getElementById(btn.getAttribute("aria-controls"));
+      var open=btn.getAttribute("aria-expanded")==="true";
+      btn.setAttribute("aria-expanded",open ? "false" : "true");
+      if(panel) panel.hidden=open;
       return;
     }
     var cp=e.target.closest(".copy");
