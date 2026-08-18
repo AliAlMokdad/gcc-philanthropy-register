@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gulf Cooperation Council (GCC) Philanthropy, Donors and Funders</title>
+<title>Gulf Cooperation Council (GCC) Philanthropy</title>
 <meta name="description" content="Directory of philanthropic funders, foundations, corporate giving programmes and endowments in the United Arab Emirates, Saudi Arabia and Qatar.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' rx='10' fill='%23006C35'/><path d='M0 10a10 10 0 0 1 10-10h6v48h-6a10 10 0 0 1-10-10z' fill='%23CE1126'/><path d='M32 0h6a10 10 0 0 1 10 10v28a10 10 0 0 1-10 10h-6z' fill='%238A1538'/></svg>">
@@ -53,10 +53,18 @@ ANTI_SLOP_BRIEF
   --accent:#1F4E3D; --accent-2:#2C6B53; --accent-soft:#EAF2EE; --accent-line:#BFD5CB;
   --paper:#FFFFFF; --paper-2:#F8F9F7; --line:#E4E6E2; --line-2:#D3D6D1;
   --focus:#1F4E3D;
+  --bg-a:rgba(31,78,61,.055); --bg-b:rgba(31,78,61,.035);
   --shadow:0 1px 3px rgba(25,26,23,.10);
   --shadow-up:0 6px 20px rgba(25,26,23,.10);
-  --serif:ui-serif,Georgia,"Iowan Old Style","Times New Roman",serif;
-  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  /* the Microsoft stack. Segoe UI Variable first, then Segoe UI, then whatever the
+     machine has: nothing is downloaded, so a machine without Segoe falls through to
+     its own system face rather than to a blank. */
+  --display:"Segoe UI Variable Display","Segoe UI Variable Text","Segoe UI Variable",
+            "Segoe UI",system-ui,-apple-system,BlinkMacSystemFont,Roboto,Arial,sans-serif;
+  --serif:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI",system-ui,
+          -apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --sans:"Segoe UI Variable Text","Segoe UI Variable","Segoe UI",system-ui,
+         -apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",Arial,sans-serif;
   --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
 }
 @media (prefers-color-scheme:dark){
@@ -65,6 +73,7 @@ ANTI_SLOP_BRIEF
     --accent:#8FD1B4; --accent-2:#A6DCC4; --accent-soft:#16241F; --accent-line:#335347;
     --paper:#131513; --paper-2:#1B1E1B; --line:#2B2E2B; --line-2:#3A3E3A;
     --focus:#8FD1B4;
+    --bg-a:rgba(143,209,180,.055); --bg-b:rgba(143,209,180,.035);
     --shadow:0 1px 6px rgba(0,0,0,.5);
     --shadow-up:0 1px 10px rgba(143,209,180,.22);
   }
@@ -72,9 +81,17 @@ ANTI_SLOP_BRIEF
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;overflow-x:clip}
 body{overflow-x:clip}
+/* two soft pools of the accent in the upper corners, on paper. A wash, not a
+   picture: fixed so it does not travel with the scroll, and light enough that every
+   text pair still clears AA over it. */
 body{
-  margin:0;background:var(--paper);color:var(--ink);
+  margin:0;color:var(--ink);
   font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased;
+  background:var(--paper);
+  background-image:
+    radial-gradient(58rem 30rem at 12% -8%,var(--bg-a),transparent 60%),
+    radial-gradient(46rem 26rem at 96% 2%,var(--bg-b),transparent 62%);
+  background-attachment:fixed;background-repeat:no-repeat;
 }
 .wrap{max-width:1240px;margin:0 auto;padding:0 var(--s5)}
 @media (max-width:700px){ .wrap{padding:0 var(--s4)} }
@@ -89,17 +106,21 @@ a{color:var(--accent)}
 /* masthead: the title, and nothing beside it */
 header.top{border-bottom:1px solid var(--line);background:var(--paper-2)}
 header.top .wrap{padding-top:var(--s4);padding-bottom:var(--s4)}
-h1{font:400 22px/1.2 var(--serif);margin:0;letter-spacing:-.2px}
+h1{font:600 20px/1.25 var(--display);margin:0;letter-spacing:0}
 h1 a{color:inherit;text-decoration:none;display:inline-block}
 h1 a:hover{color:var(--accent)}
 h1 .abbr{color:var(--ink-3);font-weight:400}
 
-.eyebrow{font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--accent);margin:0 0 var(--s4);display:flex;align-items:center;
-  gap:var(--s3);flex-wrap:nowrap}
-.eyebrow::after{content:"";flex:1 1 auto;height:1px;background:var(--line);order:1;
-  min-width:16px}
-.eyebrow .tail{order:2;flex:0 0 auto;font:400 11px/1 var(--sans);letter-spacing:.05em;
+/* not shouted: a dot in the accent, the label at reading size, and a rule that fades
+   out as it travels toward the count */
+.eyebrow{font:600 15px/1.25 var(--sans);letter-spacing:0;text-transform:none;
+  color:var(--ink);margin:0 0 var(--s4);display:flex;align-items:center;
+  gap:12px;flex-wrap:nowrap}
+.eyebrow::before{content:"";flex:0 0 auto;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+.eyebrow::after{content:"";flex:1 1 auto;height:1px;order:1;min-width:16px;
+  background:linear-gradient(90deg,var(--accent-line),transparent)}
+.eyebrow .tail{order:2;flex:0 0 auto;font:400 13px/1.25 var(--sans);letter-spacing:0;
   text-transform:none;color:var(--ink-3);font-variant-numeric:tabular-nums}
 section.band{padding:var(--s5) 0 calc(var(--s5) + var(--s2))}
 section.band + section.band{border-top:1px solid var(--line)}
@@ -127,35 +148,55 @@ section.band + section.band{border-top:1px solid var(--line)}
 .door .mark{display:block;height:100%;width:auto;max-width:100%;
   border-radius:3px;box-shadow:0 2px 10px rgba(25,26,23,.18),0 0 0 1px rgba(25,26,23,.10)}
 .door:hover .plate{background:var(--accent-soft)}
-.door .nm{display:block;font:400 21px/1.25 var(--serif);color:var(--ink);
-  letter-spacing:-.3px;padding:var(--s4) var(--s4) 0;text-wrap:balance}
-.door .go{display:block;font:600 11px/1 var(--sans);letter-spacing:.12em;
-  text-transform:uppercase;color:var(--accent);padding:var(--s3) var(--s4) 0;
-  opacity:0;transform:translateY(-3px);
-  transition:opacity .2s ease,transform .2s ease}
-.door:hover .go,.door:focus-visible .go{opacity:1;transform:none}
+.door .nm{display:block;font:600 20px/1.25 var(--display);color:var(--ink);
+  letter-spacing:0;padding:var(--s4) var(--s4) 0;text-wrap:balance}
+/* Permanently visible, not hover-only. Hidden, it left the card as a name floating at
+   the top of a tall empty box; shown, it closes the card and tells a first-time visitor
+   what a click will do. Hover moves it rather than revealing it. */
+.door .go{display:inline-flex;width:max-content;align-items:center;gap:7px;
+  margin:14px var(--s4) 0;padding:8px 13px;
+  font:600 13px/1 var(--sans);letter-spacing:0;text-transform:none;
+  color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);
+  border-radius:999px;transition:gap .18s ease,background-color .18s ease}
+.door .go::after{content:"→";font-size:15px;line-height:1}
+.door:hover .go,.door:focus-visible .go{gap:11px;
+  background:color-mix(in srgb,var(--accent-soft) 72%,var(--accent) 8%)}
 
 /* ---------- level 1: the kinds of funder, as tiles ---------- */
-ol.ranked{list-style:none;margin:0;padding:0;display:grid;gap:var(--s2);
+ol.ranked{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3);
   grid-template-columns:1fr}
 @media (min-width:560px){ ol.ranked{grid-template-columns:1fr 1fr} }
 @media (min-width:860px){ ol.ranked{grid-template-columns:1fr 1fr 1fr} }
+/* a faint corner light, and a rule along the foot that draws itself in on hover
+   rather than sitting there as a static border */
 ol.ranked a{
-  display:flex;align-items:center;min-height:60px;
-  background:var(--paper);border:1px solid var(--line);border-radius:6px;
-  padding:14px var(--s3) 14px calc(var(--s3) + 4px);text-decoration:none;color:inherit;
+  display:flex;align-items:center;min-height:64px;
+  border:1px solid var(--line);border-radius:8px;
+  background:
+    radial-gradient(150px 90px at 100% 0%,var(--accent-soft),transparent 72%),
+    linear-gradient(135deg,var(--paper) 0%,var(--paper-2) 100%);
+  padding:16px var(--s4);text-decoration:none;color:inherit;
   position:relative;overflow:hidden;
-  transition:border-color .16s ease,box-shadow .16s ease,transform .16s ease;
+  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
 }
 /* a hairline of the accent down the leading edge, which grows on hover: the one
    moving part on this page, so it reads as a response rather than decoration */
-ol.ranked a::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
-  background:var(--accent);transform:scaleY(.34);transform-origin:center;
-  transition:transform .2s ease}
+ol.ranked a::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:linear-gradient(90deg,var(--accent) 0%,var(--accent-2) 54%,
+    rgba(31,78,61,0) 100%);
+  transform:scaleX(.34);transform-origin:left center;opacity:.7;
+  transition:transform .22s ease,opacity .22s ease}
 ol.ranked a:hover,ol.ranked a:focus-visible{border-color:var(--accent-line);
-  box-shadow:var(--shadow);transform:translateY(-1px)}
-ol.ranked a:hover::before,ol.ranked a:focus-visible::before{transform:scaleY(1)}
-ol.ranked .t{font:400 16px/1.32 var(--serif);letter-spacing:0}
+  box-shadow:0 8px 22px rgba(25,26,23,.10);transform:translateY(-2px)}
+ol.ranked a:hover::before,ol.ranked a:focus-visible::before{transform:scaleX(1);opacity:1}
+@media (prefers-color-scheme:dark){
+  ol.ranked a{border-color:rgba(143,209,180,.22);
+    background:
+      radial-gradient(150px 90px at 100% 0%,rgba(143,209,180,.13),transparent 72%),
+      linear-gradient(135deg,#1B1E1B 0%,#17201C 52%,#16241F 100%)}
+  ol.ranked a:hover{box-shadow:0 8px 22px rgba(0,0,0,.40)}
+}
+ol.ranked .t{font:500 15.5px/1.34 var(--sans);letter-spacing:0}
 details.more{margin-top:var(--s4)}
 details.more summary{font:600 13px/1 var(--sans);color:var(--accent);cursor:pointer;
   padding:10px 0;width:max-content}
@@ -189,16 +230,36 @@ details.more ol.ranked{margin-top:var(--s3)}
     radial-gradient(120% 150% at 88% 0%,var(--wash-a) 0,transparent 62%),
     linear-gradient(180deg,var(--wash-b) 0,transparent 78%)}
 
-/* the flag itself, whole, large, and quiet */
-.flagplate{position:absolute;z-index:1;right:max(24px,calc((100vw - 1240px)/2 + 24px));
-  top:50%;transform:translateY(-50%);width:min(38vw,430px);
-  line-height:0;pointer-events:none;opacity:.22;
-  filter:drop-shadow(0 18px 40px rgba(0,0,0,.16))}
-.flagplate svg{display:block;width:100%;height:auto;border-radius:4px}
-@media (prefers-color-scheme:dark){ .flagplate{opacity:.30} }
-@media (min-width:900px){ .l2head > .inner{padding-right:min(42vw,500px)} }
+/* The flag itself: whole, large and quiet.
+   Sized by HEIGHT, not width, and this is the fix for a real clip. The band is a fixed
+   269px at desktop; with the box pinned to a width instead, each flag's height came out
+   of its own aspect ratio, so UAE at 1:2 and Qatar at 11:28 fitted with room to spare
+   while Saudi at 2:3 needed 287px and the band's overflow:hidden sliced 9.3px off its
+   top and 8.3px off its bottom at every desktop width. Height-first makes all three the
+   same height by construction, so no ratio can outgrow the band. */
+.flagplate{position:absolute;z-index:1;right:max(16px,calc((100vw - 1240px)/2 + 16px));
+  /* 172px, not 190, because height governs width through each flag's own ratio and
+     Qatar is the widest at 28:11: at 190 it came out 484px and pushed 30px into the
+     heading column, where at 172 it is 438px and clears it. The box hugs the flag
+     exactly, which matters because the scrim below is painted on this box. */
+  top:50%;transform:translateY(-50%);height:min(26vw,172px);
+  line-height:0;pointer-events:none;opacity:.20}
+/* Faded by a MASK on the flag's own alpha, so there is no edge anywhere to see.
+   A scrim was tried first and was wrong: laying a paper-coloured gradient OVER the flag
+   painted a flat rectangle across the band's green wash, so what appeared was a box with
+   hard left and bottom edges rather than a fade. A radial mask instead dissolves the
+   flag itself on every side, densest toward the outer edge where the eye expects it, and
+   it changes only opacity, so no part of the artwork is cut. That matters here: the
+   Saudi flag carries the shahada, which may never be cropped. */
+.flagplate svg{display:block;height:100%;width:auto;
+  -webkit-mask-image:radial-gradient(54% 62% at 52% 50%,
+     #000 0%,rgba(0,0,0,.62) 38%,rgba(0,0,0,0) 80%);
+          mask-image:radial-gradient(54% 62% at 52% 50%,
+     #000 0%,rgba(0,0,0,.62) 38%,rgba(0,0,0,0) 80%)}
+@media (prefers-color-scheme:dark){ .flagplate{opacity:.26} }
+@media (min-width:900px){ .l2head > .inner{padding-right:min(40vw,470px)} }
 @media (max-width:899px){
-  .flagplate{width:min(58vw,320px);opacity:.16;right:-4%}
+  .flagplate{height:min(34vw,132px);opacity:.10;right:-6%}
 }
 
 /* ---------- flag backdrops ----------
@@ -215,11 +276,11 @@ details.more ol.ranked{margin-top:var(--s3)}
 .l2head{padding:var(--s4) 0 0}
 .back{display:inline-block;font:600 13px/1 var(--sans);text-decoration:none;padding:8px 0}
 .back:hover{text-decoration:underline}
-h2.sel{font:400 34px/1.06 var(--serif);margin:var(--s2) 0 var(--s3);
-  letter-spacing:-.5px;position:relative;padding-bottom:var(--s3)}
+h2.sel{font:600 32px/1.08 var(--display);margin:var(--s2) 0 var(--s3);
+  letter-spacing:0;position:relative;padding-bottom:var(--s3)}
 h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
   background:var(--accent);border-radius:1px}
-@media (min-width:700px){ h2.sel{font-size:50px;line-height:1;letter-spacing:-1.1px} }
+@media (min-width:700px){ h2.sel{font-size:46px;line-height:1.04;letter-spacing:0} }
 h2.sel:focus,h2.sel:focus-visible{outline:none}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
 
@@ -240,7 +301,7 @@ h2.sel:focus,h2.sel:focus-visible{outline:none}
 .search input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 
 .pick{display:flex;align-items:center;gap:var(--s2)}
-.pick label{font:700 10px/1 var(--sans);letter-spacing:.13em;text-transform:uppercase;
+.pick label{font:600 13px/1 var(--sans);letter-spacing:0;text-transform:none;
   color:var(--ink-3)}
 .pick select{
   font:500 14px/1 var(--sans);color:var(--ink);background:var(--paper);
@@ -251,8 +312,10 @@ h2.sel:focus,h2.sel:focus-visible{outline:none}
 
 fieldset.has{border:0;margin:0;padding:0;display:flex;gap:var(--s2);flex-wrap:wrap;
   align-items:center}
-fieldset.has legend{float:left;font:700 10px/40px var(--sans);letter-spacing:.13em;
-  text-transform:uppercase;color:var(--ink-3);padding:0 var(--s2) 0 0}
+/* matched to the City and Category labels beside it: taking the uppercase off and
+   leaving the tracking behind made it read as H a s */
+fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
+  text-transform:none;color:var(--ink-3);padding:0 var(--s2) 0 0}
 .chip{position:relative;display:block}
 .chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
 .chip span{display:block;font:600 13px/1 var(--sans);color:var(--ink-2);
@@ -292,7 +355,7 @@ li.rec{border-bottom:1px solid var(--line)}
   background:transparent;border-radius:1px;transition:background .16s ease}
 .rowbtn:hover::before,.rowbtn[aria-expanded="true"]::before{background:var(--accent)}
 .rowbtn:hover{background:transparent}
-.rowbtn .nm{font:400 19px/1.34 var(--serif);color:var(--ink);letter-spacing:0;
+.rowbtn .nm{font:500 18px/1.36 var(--sans);color:var(--ink);letter-spacing:0;
   transition:color .16s ease}
 .rowbtn:hover .nm,.rowbtn:focus-visible .nm{color:var(--accent)}
 .rowbtn[aria-expanded="true"] .nm{color:var(--accent)}
@@ -365,7 +428,7 @@ nav.pager .pg-sm{display:none}
 footer.sig{border-top:1px solid var(--line);margin-top:var(--s5)}
 footer.sig .wrap{padding-top:var(--s3);padding-bottom:var(--s4)}
 footer.sig p{margin:0;text-align:right;font:400 12.5px/1.6 var(--sans);color:var(--ink-3)}
-footer.sig a{font:italic 600 14px/1.6 var(--serif);color:var(--accent);
+footer.sig a{font:600 14px/1.6 var(--sans);color:var(--accent);
   text-decoration:none;border-bottom:1px solid transparent;letter-spacing:.15px;
   transition:border-color .16s ease}
 footer.sig a:hover,footer.sig a:focus-visible{border-bottom-color:currentColor}
@@ -387,7 +450,7 @@ main{padding-bottom:var(--s5)}
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="top">
-  <div class="wrap"><h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy, Donors and Funders</a></h1></div>
+  <div class="wrap"><h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1></div>
 </header>
 
 <main id="main" class="wrap">
@@ -398,11 +461,11 @@ main{padding-bottom:var(--s5)}
 
   <div id="l1" hidden>
     <section class="band" aria-labelledby="h-country">
-      <p class="eyebrow" id="h-country">By country</p>
+      <p class="eyebrow" id="h-country">Countries</p>
       <div class="doors" id="doors"></div>
     </section>
     <section class="band" aria-labelledby="h-type">
-      <p class="eyebrow" id="h-type">Category of organisation<span class="tail" id="typetail"></span></p>
+      <p class="eyebrow" id="h-type">Organisation categories<span class="tail" id="typetail"></span></p>
       <ol class="ranked" id="types"></ol>
       <details class="more" id="moretypes">
         <summary id="moresum"></summary>
@@ -530,10 +593,10 @@ function countryMark(name,cls){
                      class:(cls||"mark")});
   if(n==="united arab emirates"){
     /* red band one quarter of the length at the hoist, then green, white, black */
-    s.appendChild(svgEl("rect",{x:15,y:0,width:45,height:10,fill:"#00732F"}));
+    s.appendChild(svgEl("rect",{x:15,y:0,width:45,height:10,fill:"#00843D"}));
     s.appendChild(svgEl("rect",{x:15,y:10,width:45,height:10,fill:"#FFFFFF"}));
     s.appendChild(svgEl("rect",{x:15,y:20,width:45,height:10,fill:"#000000"}));
-    s.appendChild(svgEl("rect",{x:0,y:0,width:15,height:30,fill:"#CE1126"}));
+    s.appendChild(svgEl("rect",{x:0,y:0,width:15,height:30,fill:"#C8102E"}));
   }else if(n==="saudi arabia"){
     s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#006C35"}));
     /* textLength is not decoration here: it is the only way to guarantee the whole
@@ -573,7 +636,7 @@ function countryMark(name,cls){
 /* two tints per country, taken from its flag: one for the corner bloom and one for
    the band that carries across the width */
 var FLAG_WASH={
-  "united arab emirates":["rgba(0,115,47,.26)","rgba(206,17,38,.10)"],
+  "united arab emirates":["rgba(0,132,61,.26)","rgba(200,16,46,.10)"],
   "saudi arabia":["rgba(0,108,53,.30)","rgba(0,108,53,.10)"],
   "qatar":["rgba(138,21,56,.26)","rgba(138,21,56,.09)"]
 };
@@ -626,11 +689,11 @@ function buildL1(){
     plate.appendChild(countryMark(c.name));
     a.appendChild(plate);
     a.appendChild(make("span","nm",c.name));
-    a.appendChild(make("span","go","See the funders"));
+    a.appendChild(make("span","go","Full details"));
     doors.appendChild(a);
   });
 
-  var ts=DATA.types, head=ts.slice(0,10), rest=ts.slice(10);
+  var ts=DATA.types, head=ts.slice(0,12), rest=ts.slice(12);
   /* No counts here. The categories are the thing being chosen, and a number beside
      each one only invited a comparison nobody is making at this point. */
   function rank(list,into){
@@ -644,8 +707,7 @@ function buildL1(){
     });
   }
   rank(head,el("types"));
-  el("typetail").textContent=plural(ts.length,"category","categories")+", "
-    + plural(DATA.meta.total,"organisation","organisations");
+  el("typetail").textContent=plural(DATA.meta.total,"organisation","organisations");
   if(rest.length){
     var restSum=rest.reduce(function(a,b){ return a+b.count; },0);
     el("moresum").textContent=rest.length+" more categories, "
@@ -716,6 +778,7 @@ function computeFiltered(sel,c){
 function apply(resetPage){
   if(!current) return;
   if(resetPage!==false) page=1;
+  aiRanked=false;              /* this list is the word pass again */
   filtered=computeFiltered(current,readControls());
   render();
   writeHash(true);
@@ -881,7 +944,12 @@ function render(){
   }else{
     el("tally").textContent="";
     el("tally").hidden=true;
-    el("emptymsg").textContent="Nothing in "+current.name+" matches that.";
+    /* do not claim there is nothing while the meaning search is still running: an
+       empty word pass is the NORMAL case for a phrase, and the answer lands a
+       second or two later */
+    el("emptymsg").textContent = aiPending
+      ? "Still looking for what you meant."
+      : "Nothing in "+current.name+" matches that.";
     el("empty").hidden=false;
   }
   buildPager();
@@ -1010,6 +1078,7 @@ function parseQuery(qs){
 function route(){
   if(writing) return;
   clearTimeout(timer);
+  abandonSearch();          /* the previous page's answer must not follow us here */
   var raw=location.hash.replace(/^#\/?/,"");
   if(!raw){ showL1(false); return; }
   var qs="", i=raw.indexOf("?");
@@ -1048,7 +1117,7 @@ function route(){
   setPlate(sel.kind==="c" ? sel.name : null);
   el("selname").textContent=sel.name;
   el("selsub").textContent=sel.sub;
-  document.title=sel.name+" | Gulf Cooperation Council (GCC) Philanthropy, Donors and Funders";
+  document.title=sel.name+" | Gulf Cooperation Council (GCC) Philanthropy";
   filtered=computeFiltered(sel,readControls());
   render();
   /* render() may have clamped the page, and a stale "in" may have been dropped, so
@@ -1056,6 +1125,19 @@ function route(){
      ?p=999 showed page 35 and ?in=Nope showed no filter while both stayed in the
      address bar, and a copied link misrepresented the view. */
   if(location.hash!==hashFor(page)) writeHash(true);
+  /* A link carrying ?q= has to REPLAY the meaning search, not just refill the box. Typing
+     "digital skills for young people" returned seven organisations; opening that same URL
+     returned none, because route() restored the words and then only ever ran the literal
+     pass. A register meant to be shared cannot show the recipient less than the sender. */
+  if(el("q").value.trim().length >= AI_MIN_CHARS){
+    aiPending = true;
+    render();
+    (function(owner){
+      aiTimer = setTimeout(function(){
+        if(current === owner) runMeaningSearch();
+      }, 220);
+    })(current);
+  }
   window.scrollTo(0,0);
   /* moving focus on every paging click would fight the reader, so the heading is
      only announced when the selection itself changes */
@@ -1064,12 +1146,13 @@ function route(){
 
 function showL1(clean){
   clearTimeout(timer);
+  abandonSearch();
   current=null;
   filtered=[];
   page=1;
   el("l2").hidden=true;
   el("l1").hidden=false;
-  document.title="Gulf Cooperation Council (GCC) Philanthropy, Donors and Funders";
+  document.title="Gulf Cooperation Council (GCC) Philanthropy";
   if(clean && history.replaceState){
     history.replaceState(null,"",location.pathname+location.search);
   }
@@ -1100,8 +1183,18 @@ function showL1(clean){
    pack behind it. Otherwise the word matches stand and the page says so.
 ================================================================================== */
 var WORKER = "https://gcc-funder-search.ankommer.workers.dev";
+/* Not a secret, and it is not pretending to be one: this page is public, so the key
+   is visible to anyone who reads the source. It exists because CORS only decides
+   what a BROWSER will hand back to a script; the worker still ran the request for
+   anybody using curl. The /explain route makes a 70B generation call, so without
+   this the worker was a free open LLM proxy that could exhaust a shared free-tier
+   budget and take search down for real readers. This stops blind scraping. */
+var SEARCH_HEADERS = { "Content-Type": "application/json",
+                       "X-Site-Key": "gcc-register-2026" };
 var VEC = null, VDIMS = 0, VSCALE = 127, vecLoading = null, vecFailed = false;
-var aiSeq = 0, aiTimer = null, aiCache = Object.create(null);
+var aiSeq = 0, aiTimer = null, aiCache = Object.create(null), aiPending = false;
+/* true while the list on screen is the meaning-ranked one rather than the word pass */
+var aiRanked = false;
 /* CALIBRATED, not guessed. Twenty probe queries against this actual index:
    twelve real ones scored 0.619 to 0.783 (orphan care 0.728, eye care 0.783,
    scholarships 0.765, housing 0.777, entrepreneurs 0.619) and eight nonsense ones
@@ -1112,12 +1205,16 @@ var aiSeq = 0, aiTimer = null, aiCache = Object.create(null);
    societies carry near-identical general mandates, so a perfectly good query has a
    margin of 0.02 and was being thrown away. Dropped. */
 var AI_MIN_CHARS = 3, AI_FLOOR = 0.59, AI_TAKE = 48;
-/* The cross-encoder reads the query and a mandate TOGETHER, so it judges relevance far
-   better than two vectors compared at a distance. Measured on this index: a mandate
-   about visual impairment scores 0.999 against "help for blind people", one about eye
-   surgery 0.167, and football and scholarships 0.00004. Four orders of magnitude, so a
-   floor at 0.02 separates cleanly and the vector pass is only a shortlist. */
-var RERANK_FLOOR = 0.02, RERANK_KEEP = 48;
+/* The cross-encoder reads the query and a mandate TOGETHER, so it ORDERS much better
+   than two vectors compared at a distance. Its score is NOT comparable across
+   queries though, which a fixed floor assumed. Measured inside Saudi Arabia:
+   "support for orphans" peaks at 0.982 and "housing for poor families" at 0.922, but
+   "clean water" peaks at 0.0054 while its best hits are the SWA Water Academy and the
+   ACWA Power Water Academy, which are right. A floor of 0.02 discarded them.
+   So: the reranker decides ORDER, the calibrated vector floor decides whether there
+   is an answer at all, and how many to keep is measured against this query's own
+   best score rather than an absolute. */
+var RERANK_KEEP = 48, RERANK_REL = 0.03, RERANK_MIN = 0.0008, RERANK_MAX_OUT = 40;
 
 function loadVectors(){
   if(VEC) return Promise.resolve(true);
@@ -1211,6 +1308,37 @@ function lexicalPin(r, q){
 
 /* The search is doing real work between keystroke and answer, and in silence that
    looked like nothing happening. It now says which state it is in. */
+/* Anything the meaning search is doing is now void. Every state change that alters
+   what SHOULD be on screen has to call this, not just a new keystroke: a filter
+   change and a navigation both used to leave a search running whose answer then
+   overwrote the very thing the user had just asked for. */
+function abandonSearch(){
+  aiSeq++;
+  clearTimeout(aiTimer);
+  aiPending = false;
+  setAiNote("");
+}
+
+/* Rebuild the list for the state the controls are in NOW, and if a query is still in the
+   box, ask the meaning search again.
+
+   abandonSearch on its own was only half an answer. It correctly voided an answer already
+   in the air, which was a real bug, but it left the person looking at plain word matches
+   for a question they had asked in meaning, with their words still in the box and nothing
+   saying the ranking had been thrown away. Every route back into a filtered list goes
+   through here, so the two can no longer drift apart. */
+function refreshSearch(){
+  abandonSearch();
+  apply(true);
+  if(el("q").value.trim().length >= AI_MIN_CHARS){
+    aiPending = true;
+    render();                       /* so the empty state says looking, not nothing */
+    var owner = current;
+    aiTimer = setTimeout(function(){
+      if(current === owner) runMeaningSearch();
+    }, 200);
+  }
+}
 function setAiNote(text, state){
   var n = el("ainote");
   if(!n) return;
@@ -1226,26 +1354,39 @@ function runMeaningSearch(){
   if(q.length < AI_MIN_CHARS){ setAiNote(""); return; }
   var key = norm(q);
 
+  aiPending = true;
   setAiNote("Reading "+num(sel.rows.length)+" mandates for what you meant.","working");
   var proceed = function(qv){
     if(mySeq !== aiSeq || current !== sel) return;      /* a newer query won */
     return loadVectors().then(function(ready){
+      if(mySeq !== aiSeq || current !== sel) return;
       if(!ready){
+        aiPending = false; render();
         setAiNote("Meaning search is unavailable, so these are word matches.","quiet");
         return;
       }
       if(mySeq !== aiSeq || current !== sel) return;
       var scores = cosineAll(qv), idx = [], i;
+      /* The gate asks the WHOLE index, because the floor was calibrated against the
+         whole index. Asking only the current country made the same query look worse
+         the narrower the view got: "clean water" scores 0.566 inside Saudi Arabia
+         and was refused there while its best matches, the SWA Water Academy and the
+         ACWA Power Water Academy, sat waiting. Ranking stays confined to the view. */
+      var globalTop = 0;
+      for(i = 0; i < scores.length; i++) if(scores[i] > globalTop) globalTop = scores[i];
       for(i = 0; i < ROWS.length; i++) if(inScope(ROWS[i], sel, c)) idx.push(i);
-      if(!idx.length){ setAiNote(""); return; }
+      if(!idx.length){ aiPending = false; render(); setAiNote(""); return; }
       idx.sort(function(a, b){ return scores[b] - scores[a]; });
       var top = idx.slice(0, AI_TAKE);
-      var top1 = scores[top[0]];
+      var top1 = globalTop;
       /* a nearest neighbour always returns SOMETHING, so nothing is offered unless the
          best match clears the calibrated floor */
       if(top1 < AI_FLOOR){
-        setAiNote("Nothing here is close enough in meaning to rank, so these are word "
-          + "matches.","quiet");
+        aiPending = false; render();
+        /* distinct wording on purpose: the reranker has its own refusal, and when both
+           said the same thing a diagnosis blamed the wrong gate for a whole round */
+        setAiNote("That does not look like something this register covers, so these "
+          + "are word matches.","quiet");
         return;
       }
       /* the vector pass is only a shortlist; the cross-encoder decides */
@@ -1255,20 +1396,18 @@ function runMeaningSearch(){
       });
       setAiNote("Weighing " + num(docs.length) + " closest mandates against what you asked.",
         "working");
-      return fetch(WORKER + "/rerank", { method: "POST",
-          headers: { "Content-Type": "application/json" },
+      return fetch(WORKER + "/rerank", { method: "POST", headers: SEARCH_HEADERS,
           body: JSON.stringify({ q: q, docs: docs }) })
         .then(function(r){ return r.ok ? r.json() : null; })
         .then(function(rr){
           if(mySeq !== aiSeq || current !== sel) return;
           var order, kept;
           if(rr && Array.isArray(rr.ranked) && rr.ranked.length){
-            kept = rr.ranked.filter(function(x){ return x.score >= RERANK_FLOOR; });
-            if(!kept.length){
-              setAiNote("Nothing here is close enough in meaning to rank, so these are "
-                + "word matches.","quiet");
-              return;
-            }
+            var best = rr.ranked[0].score;
+            var cut = Math.max(best * RERANK_REL, RERANK_MIN);
+            kept = rr.ranked.filter(function(x){ return x.score >= cut; })
+                            .slice(0, RERANK_MAX_OUT);
+            if(!kept.length) kept = rr.ranked.slice(0, 10);
             order = kept.map(function(x){ return x.id; });
           }else{
             /* the reranker is unavailable, so fall back to the vector order rather
@@ -1283,6 +1422,8 @@ function runMeaningSearch(){
             return order.indexOf(ROW_INDEX.get(a)) - order.indexOf(ROW_INDEX.get(b));
           });
           if(mySeq !== aiSeq || current !== sel) return;
+          aiPending = false;
+          aiRanked = true;
           filtered = rowsOut;
           page = 1;
           seq++;
@@ -1296,8 +1437,7 @@ function runMeaningSearch(){
           var texts = rowsOut.slice(0, 8).map(function(r){ return val(r, "focus"); })
             .filter(Boolean);
           if(!texts.length) return;
-          return fetch(WORKER + "/explain", { method: "POST",
-              headers: { "Content-Type": "application/json" },
+          return fetch(WORKER + "/explain", { method: "POST", headers: SEARCH_HEADERS,
               body: JSON.stringify({ q: q, texts: texts }) })
             .then(function(r){ return r.ok ? r.json() : null; })
             .then(function(ex){
@@ -1309,8 +1449,23 @@ function runMeaningSearch(){
     });
   };
 
-  if(aiCache[key]) return proceed(aiCache[key]);
-  fetch(WORKER, { method: "POST", headers: { "Content-Type": "application/json" },
+  if(aiCache[key]){
+    /* the same catch as the uncached path below. Without it, asking the same thing twice
+       while the reranker was unreachable left aiPending true and the page said it was
+       still looking with nothing ever arriving. */
+    return Promise.resolve()
+      .then(function(){ return proceed(aiCache[key]); })
+      .catch(function(err){
+        console.error("meaning search failed (cached):", err && err.message);
+        if(mySeq === aiSeq && current === sel){
+          aiPending = false;
+          render();
+          setAiNote("Meaning search is unavailable just now, so these are word matches.",
+            "quiet");
+        }
+      });
+  }
+  fetch(WORKER, { method: "POST", headers: SEARCH_HEADERS,
                   body: JSON.stringify({ q: q }) })
     .then(function(r){ return r.ok ? r.json() : null; })
     .then(function(d){
@@ -1322,9 +1477,12 @@ function runMeaningSearch(){
       /* log the real fault: an early version reported every error here as a network
          failure, which hid a wrong variable name for several test rounds */
       console.error("meaning search failed:", err && err.message);
-      if(mySeq === aiSeq)
+      if(mySeq === aiSeq && current === sel){
+        aiPending = false;
+        render();
         setAiNote("Meaning search is unavailable just now, so these are word matches.",
           "quiet");
+      }
     });
 }
 
@@ -1333,6 +1491,9 @@ function onSearch(){
   clearTimeout(timer);
   clearTimeout(aiTimer);
   aiSeq++;                     /* anything in flight is now stale */
+  /* set from the keystroke, before the debounce, so the empty state never flashes
+     "nothing matches" in the gap */
+  aiPending = el("q").value.trim().length >= AI_MIN_CHARS;
   setAiNote("");
   var owner=current;
   timer=setTimeout(function(){
@@ -1344,10 +1505,12 @@ function onSearch(){
 
 function wire(){
   el("q").addEventListener("input",onSearch);
-  el("pick").addEventListener("change",function(){ apply(true); });
-  el("pick2").addEventListener("change",function(){ apply(true); });
+  /* each of these changes what should be on screen, so a search already in the air
+     is void: without this its answer landed later and threw the filter away */
+  el("pick").addEventListener("change",refreshSearch);
+  el("pick2").addEventListener("change",refreshSearch);
   ["f-email","f-phone","f-website"].forEach(function(id){
-    el(id).addEventListener("change",function(){ apply(true); });
+    el(id).addEventListener("change",refreshSearch);
   });
   el("clearall").addEventListener("click",function(){
     aiSeq++; clearTimeout(aiTimer); setAiNote("");
@@ -1369,7 +1532,10 @@ function wire(){
     e.preventDefault();
     clearTimeout(timer);
     page=Math.max(1,parseInt(a.getAttribute("data-page"),10)||1);
-    filtered=computeFiltered(current,readControls());
+    /* Only recompute when the list on screen IS the word-match list. When a meaning
+       search has ranked it, recomputing threw that ranking away, so page two of an
+       answer quietly became page two of a different list. */
+    if(!aiRanked) filtered=computeFiltered(current,readControls());
     render();
     writeHash(false);
     window.scrollTo(0,0);
