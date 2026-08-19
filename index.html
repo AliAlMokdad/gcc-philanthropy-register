@@ -928,6 +928,16 @@ ol.ranked a::before{top:9px;bottom:9px}
   .i-colv{font-size:10.5px}
 }
 </style>
+<style id="find-skin">
+/* the search excerpt.  Tokens only, so dark mode follows the house palette. */
+.rowsnip{margin-top:5px;font:400 13.5px/1.5 var(--sans);color:var(--ink-2);
+  max-width:80ch;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden}
+.rowsnip mark{background:var(--accent-soft);color:var(--ink);font-weight:600;
+  padding:0 2px;border-radius:2px}
+.rowbtn[aria-expanded="true"] .rowsnip{display:none}
+@media (max-width:560px){ .rowsnip{font-size:13px;-webkit-line-clamp:3} }
+</style>
 </head>
 <body>
 <svg id="brushes" aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
@@ -992,7 +1002,7 @@ ol.ranked a::before{top:9px;bottom:9px}
       </div>
       <form class="portal-search" role="search" id="homeform">
         <label class="sr" for="hq">Search the register by mandate, focus area or location</label>
-        <input id="hq" type="search" autocomplete="off" spellcheck="false"
+        <input id="hq" type="search" autocomplete="off" spellcheck="false" maxlength="300"
                placeholder="Describe mandate, focus area or location">
         <button type="submit" class="portal-go" aria-label="Search the register">Search</button>
       </form>
@@ -1027,7 +1037,7 @@ ol.ranked a::before{top:9px;bottom:9px}
     <div class="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
-        <input id="q" type="search" autocomplete="off" spellcheck="false"
+        <input id="q" type="search" autocomplete="off" spellcheck="false" maxlength="300"
                placeholder="Describe what you fund, in your own words">
       </div>
       <div class="pick" id="pickwrap" hidden>
@@ -1112,7 +1122,13 @@ function slug(s){
    names carry slashes, brackets and ampersands: before this, "charity ngo" returned
    nothing while "Charity/NGO" returned 300. */
 function norm(s){
-  return txt(s).toLowerCase().replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim();
+  /* Unicode letters and digits are KEPT.  Stripping them left a query written in
+     Arabic as the empty string, and empty means "no filter", so searching in Arabic
+     silently returned the whole register as though all 1,862 rows had matched.
+     Every field in data.json is pure ASCII, so not one row string changes. Checked
+     against all 1,862 rows under both normalisers, and against every field for a
+     non-ASCII character, before this was changed. */
+  return txt(s).toLowerCase().replace(/[^\p{L}\p{N}]+/gu," ").replace(/\s+/g," ").trim();
 }
 
 /* every node is created and filled with textContent. There is no innerHTML here. */
@@ -1397,28 +1413,348 @@ function buildNorm(){
   ROWS.forEach(function(r,i){ ROW_INDEX.set(r,i); });
   NORM=new Map();
   ROWS.forEach(function(r){
-    NORM.set(r,{
-      all: norm(SEARCH_FIELDS.map(function(k){ return val(r,k); }).join(" ")),
-      nm:  norm(val(r,"name"))
+    var all=norm(SEARCH_FIELDS.map(function(k){ return val(r,k); }).join(" "));
+    var nm=norm(val(r,"name"));
+    /* padded with a space at each end so " word" is a word-START test and
+       " word " is a whole-word test, both by plain indexOf */
+    /* flen is the mandate on its own.  The divisor used to be the whole concatenated
+       record, so a long contact name or job title quietly lowered an organisation's
+       rank, which is not what the comment on it claimed. */
+    NORM.set(r,{ all: all, nm: nm, pad: " "+all+" ", npad: " "+nm+" ",
+      flen: norm(val(r,"focus")).length });
+  });
+  buildDF();
+}
+/* ============================ SEARCH ENGINE ================================
+   The word pass used to be one whole-string indexOf, which had two consequences a
+   reader would call broken.  A two word query only matched when those words sat
+   adjacent in that order, so "orphan education" returned NOTHING while 31 mandates
+   cover both.  And it matched inside words, so "men" returned 863 rows on the
+   strength of "development" and "management", and "ship" returned 291 on
+   "partnerships".  Counts measured against this data.json, not estimated.
+
+   Now: the query is split into words, every word that CARRIES MEANING must match, a word
+   matches at a word BOUNDARY, and a word can also be satisfied by a plural or a known
+   alternative.  The filler of this domain, support and services and funding, does not gate
+   the answer but still scores when present, and when nothing carries the whole query the
+   answer falls back to part of it and says so.  How rare a word is decides how much it
+   counts, and a short mandate that is ABOUT the thing beats a long one that mentions it in
+   passing.
+   ========================================================================== */
+
+/* TWO structures, because one symmetric map was wrong.  With "autism" simply sitting
+   inside a broad disability group it inherited every member of that group, so a search
+   for autism went from 17 rows to 79 and buried the actual autism centres.  So
+   CONCEPTS are true alternatives, safe in both directions, and BROADENS is one way
+   only: "disability" reaches the autism centre, but "autism" stays specific.
+   Both are grounded in the words the mandates actually use, counted from the corpus:
+   "endowment" appears 107 times in the mandates and "waqf" 27 times, so whichever of the
+   two a reader types they have to reach the other. */
+var CONCEPTS=[
+  ["orphan","orphans","orphanage","orphaned"],
+  ["men","man","male","males"],
+  ["women","woman","womens","female"],
+  ["youth","young"],
+  ["child","children","childhood","kids"],
+  ["disability","disabled","disabilities","impairment"],
+  ["health","healthcare","medical","medicine"],
+  ["education","educational","schooling"],
+  ["water","sanitation","wash"],
+  ["food","nutrition","hunger"],
+  ["shelter","housing","homes","accommodation"],
+  ["livelihood","livelihoods"],
+  ["employment","jobs","job","workforce"],
+  ["refugee","refugees","displaced","displacement","idp","idps"],
+  ["relief","humanitarian","emergency","disaster"],
+  ["waqf","endowment","endowments","awqaf"],
+  ["zakat","sadaqah","alms","almsgiving"],
+  ["poverty","poor","needy","destitute","underprivileged","deprived"],
+  ["environment","environmental","conservation"],
+  ["sustainability","sustainable"],
+  ["culture","cultural"],
+  ["research","scientific","science"],
+  ["cancer","oncology","tumour","tumor"],
+  ["elderly","aged","seniors","ageing","aging"],
+  ["entrepreneurship","entrepreneurs","enterprise"],
+  ["sport","sports","athletic","athletes"],
+  ["technology","digital","tech"],
+  ["volunteer","volunteers","volunteering","voluntary"],
+  ["grant","grants","grantmaking"],
+  ["donation","donations","giving","philanthropy"],
+  ["mosque","mosques"],
+  ["mental","psychological","psychosocial","counselling","counseling"],
+  ["autism","autistic"],["diabetes","diabetic"],
+  ["media","journalism","publishing","press"],
+  ["agriculture","agricultural","farming","farmers"],
+  ["energy","electricity"]
+];
+var BROADENS={
+  disability:["autism","autistic","blind","deaf","wheelchair"],
+  health:["clinic","clinics","hospital","hospitals","patients","cancer","diabetes","treatment"],
+  education:["school","schools","scholarship","scholarships","literacy","university",
+    "universities","tuition","learning","teaching"],
+  water:["hygiene","wells","desalination"],
+  culture:["arts","art","museum","museums","music","literature","theatre","heritage"],
+  /* NOT "income": a mandate saying "low-income families" is describing who it serves, not
+     doing livelihood work, and it put hospital care and home renovation into the answer */
+  livelihood:["employment","jobs","vocational","skills","training"],
+  relief:["famine","earthquake","flood","crisis","aid"],
+  environment:["recycling","biodiversity","green","climate"],
+  climate:["sustainability","sustainable"],
+  charity:["zakat","sadaqah","waqf","endowment","philanthropy","donation"],
+  welfare:["poverty","poor","needy","orphan","widows"],
+  women:["maternal","mothers","gender","businesswomen","girls","girl"],
+  child:["infant","infants","paediatric","pediatric"],
+  youth:["adolescent","teenagers","students"],
+  food:["meals","feeding","iftar"],
+  refugee:["asylum","migrant","migrants"],
+  employment:["vocational"],
+  research:["innovation","laboratory","studies"],
+  technology:["ai","robotics","software"],
+  energy:["solar","renewable"],
+  religious:["mosque","mosques","quran"],
+  business:["sme","smes","startup","startups","entrepreneurship","venture","incubator"],
+  sport:["football","olympic","paralympic"]
+};
+/* the query own filler must not constrain it: left in, "sports for disabled" forces
+   every mandate to contain the word "for" */
+/* not, no and or are NOT here on purpose.  Deleting them did not ignore the reader's
+   intent, it reversed it: "no cancer" came back with 48 cancer organisations. This search
+   does not support negation, so those words stay in as ordinary words and the answer falls
+   through to the labelled partial set rather than confidently returning the opposite. */
+var QSTOP=("a an and the for of in to with on at by from as is are be that this who "
+  + "whom which their its our my your all any some more most").split(" ");
+/* Words that mean almost nothing HERE.  Every entry in this register funds, supports,
+   provides services and is an organisation, so requiring one of these threw away the word
+   the reader actually cared about: "support for widows" returned 2 rows instead of the 5
+   that mention widows, because "support" appears in 260 mandates and had to match too, and
+   "mental health services" returned 1. They are OPTIONAL, not dropped: a row that carries
+   one still scores for it, so an entry whose name holds the filler word ranks above one
+   that does not, rather than the word being lost altogether.
+   The list follows the judgement already in this file, in the STOP list that the meaning
+   search uses to explain a result set. */
+var SOFT=("support supports supporting supported assistance aid help helping provide provides "
+  + "providing provision services service programme programmes program programs project "
+  + "projects initiative initiatives activities work works organisation organisations "
+  + "organization organizations foundation foundations fund funds funding funder funders "
+  + "charity charitable society societies association associations company group centre "
+  + "center institution institutions body bodies general national local sector focus "
+  + "focused areas area based who what which where find looking want need best top main").split(" ");
+
+/* words a naive -s rule would wreck */
+var NOSTEM=("business press class series diabetes analysis basis crisis campus status "
+  + "access process progress illness wellness awareness fitness news means goods needs "
+  + "this is as us its").split(" ");
+var IRREG={women:"woman",woman:"women",children:"child",child:"children",men:"man",man:"men"};
+
+var SYNMAP=null;
+function synIndex(){
+  if(SYNMAP) return SYNMAP;
+  SYNMAP=Object.create(null);
+  CONCEPTS.forEach(function(g){
+    g.forEach(function(w){
+      if(!SYNMAP[w]) SYNMAP[w]=Object.create(null);
+      g.forEach(function(o){ if(o!==w) SYNMAP[w][o]=1; });
     });
   });
+  /* A broadening belongs to the whole family of the word it is keyed on, not just to that
+     one spelling.  Keyed on "livelihood" alone it gave "livelihood" 160 answers and
+     "livelihoods" 2, for the same question asked in the more natural plural.
+     One hop only: the narrow terms do NOT inherit the broadening back, which is the whole
+     point of keeping this map one-way. */
+  Object.keys(BROADENS).forEach(function(w){
+    var family=[w], k;
+    if(SYNMAP[w]) for(k in SYNMAP[w]) family.push(k);
+    family.forEach(function(m){
+      if(!SYNMAP[m]) SYNMAP[m]=Object.create(null);
+      BROADENS[w].forEach(function(o){ if(o!==m) SYNMAP[m][o]=1; });
+    });
+  });
+  return SYNMAP;
 }
+
+/* plural and singular in BOTH directions, conservatively: anything ending -ss, -us or
+   -is is left alone so business, campus and analysis survive */
+function stems(w){
+  var out=[];
+  if(IRREG[w]) out.push(IRREG[w]);
+  if(NOSTEM.indexOf(w)>-1) return out;
+  if(/(ss|us|is)$/.test(w)) return out;
+  if(/ies$/.test(w) && w.length>4) out.push(w.slice(0,-3)+"y");
+  /* both cuts, because this branch used to take only the two character one: "houses"
+     became "hous", which matches nothing, and never reached "house" at all */
+  else if(/(ches|shes|xes|ses|zes)$/.test(w)) out.push(w.slice(0,-2),w.slice(0,-1));
+  else if(/es$/.test(w) && w.length>4) out.push(w.slice(0,-1),w.slice(0,-2));
+  else if(/s$/.test(w) && w.length>3) out.push(w.slice(0,-1));
+  else{
+    if(/y$/.test(w) && w.length>3) out.push(w.slice(0,-1)+"ies");
+    out.push(w+"s");
+  }
+  return out.filter(function(x){ return x.length>2; });
+}
+
+var PLAN_Q=null, PLAN=null;
+function plan(q){
+  var n=norm(q);
+  if(PLAN_Q===n) return PLAN;
+  PLAN_Q=n;
+  if(!n){ PLAN=null; return null; }
+  var syn=synIndex();
+  var raw=n.split(" ").filter(Boolean);
+  var kept=raw.filter(function(w){
+    /* A single character carries no information, and left in it drove a partial match:
+       a pasted script tag reduces to the words script, alert and 1, and that lone 1
+       returned twenty rows for a query that plainly matches nothing.
+       Note the wording here deliberately avoids writing a closing script tag: an HTML
+       parser ends this block at that sequence even inside a comment, which broke the
+       whole page once. */
+    return w.length>1 && QSTOP.indexOf(w)===-1;
+  });
+  /* a pasted paragraph is not a query. 100 words cost 365ms of blocking work on this
+     corpus, which on a phone is felt. */
+  if(kept.length>24) kept=kept.slice(0,24);
+  if(!kept.length) kept=raw.filter(function(w){ return w.length>1; });
+  /* Nothing usable left, so there is nothing to filter on.  Returning a plan with no
+     words made every row score zero and a single typed letter answered "nothing
+     matches", which is the wrong thing to say to someone halfway through a word. */
+  if(!kept.length){ PLAN=null; return null; }
+  PLAN={ q:n, phrase:(n.indexOf(" ")>-1 ? n : null), toks:kept.map(function(w){
+    var alts=Object.create(null), k;
+    stems(w).forEach(function(x){ alts[x]=1; });
+    if(syn[w]) for(k in syn[w]) alts[k]=1;
+    Object.keys(alts).forEach(function(a){ stems(a).forEach(function(x){ alts[x]=1; }); });
+    delete alts[w];
+    return { lit:w, alts:Object.keys(alts), soft:SOFT.indexOf(w)>-1 };
+  })};
+  /* if every word is a soft one, they are all this query has, so they all count */
+  var hard=0, z;
+  for(z=0;z<PLAN.toks.length;z++) if(!PLAN.toks[z].soft) hard++;
+  if(!hard) for(z=0;z<PLAN.toks.length;z++) PLAN.toks[z].soft=false;
+  return PLAN;
+}
+
+/* 2 = whole word, 1 = starts a word, 0 = absent.  Matching only at a word start is
+   what stops "men" reaching "development" while "orphan" still reaches "orphans".
+   A token of three characters or less, and every plural or alternative, must match a
+   WHOLE word: prefix matching let the variant "man" reach "management" and put 186
+   irrelevant rows behind a search for "men". */
+function hit(pad,w,whole){
+  if(pad.indexOf(" "+w+" ")>-1) return 2;
+  if(whole || w.length<4) return 0;
+  return pad.indexOf(" "+w)>-1 ? 1 : 0;
+}
+
+/* How rare a word is decides how much a match on it counts.  Without it a search for
+   "food security Yemen" that finds no row carrying all three treats 85 rows that merely
+   say "food" as equally close.  It is a weight, not a guarantee of order: two common
+   words still outscore one rare word, which is usually right and does mean the Yemen
+   programme can sit below a row that matched two of the three. */
+var DF=null, NDOC=0, AVGLEN=1;
+function buildDF(){
+  DF=Object.create(null); NDOC=ROWS.length;
+  var tot=0;
+  ROWS.forEach(function(r){
+    var n=NORM.get(r); if(!n) return;
+    tot+=n.flen;
+    var seen=Object.create(null);
+    n.all.split(" ").forEach(function(w){
+      if(!w||seen[w]) return;
+      seen[w]=1; DF[w]=(DF[w]||0)+1;
+    });
+  });
+  AVGLEN=tot/Math.max(1,ROWS.length);
+}
+function idf(w){
+  if(!DF) return 1;
+  return Math.log((NDOC+1)/((DF[w]||0)+1))+1;
+}
+
+/* tier 0 the words in the order asked for, 1 every word literally, 2 every word but
+   some by plural or alternative, 3 only some of the words */
+function scoreRow(r,P){
+  var n=NORM.get(r);
+  if(!n) return null;
+  var pad=n.pad, npad=n.npad;
+  var i,t,h,j,a,bestAlt,viaSyn=false,matched=0,sc=0,need=0,got=0;
+  for(i=0;i<P.toks.length;i++){
+    t=P.toks[i];
+    if(!t.soft) need++;
+    h=hit(pad,t.lit,false);
+    if(h){
+      matched++;
+      if(!t.soft) got++;
+      sc+=(h===2?10:6)*idf(t.lit);
+      if(hit(npad,t.lit,false)) sc+=14*idf(t.lit);
+      continue;
+    }
+    bestAlt=null;
+    for(j=0;j<t.alts.length;j++){
+      a=hit(pad,t.alts[j],true);
+      if(a>h){ h=a; bestAlt=t.alts[j]; }
+      if(h===2) break;
+    }
+    if(h){
+      matched++;
+      if(!t.soft){ got++; viaSyn=true; }
+      sc+=4*idf(bestAlt||t.lit);
+    }
+  }
+  if(!matched) return null;
+  var tier;
+  /* the words that carry meaning decide whether this row belongs in the answer at all */
+  if(got<need) tier=3;
+  else if(viaSyn) tier=2;
+  else if(P.phrase && pad.indexOf(" "+P.phrase)>-1) tier=0;
+  else tier=1;
+  /* NOT set when an optional filler word is merely absent. That is not a related-wording
+     match, and saying so labelled 47 of the 48 answers to "cancer services" as though none
+     of them had matched the word cancer itself. */
+  if(tier===0) sc+=25;
+  /* A short mandate that is ABOUT the thing beats a long one that mentions it in
+     passing.  Without this a car dealership whose long CSR paragraph happens to carry
+     both "sports" and "disabled" outranked four Special Olympics bodies whose mandates
+     say "disabilities", because two literal hits beat one literal plus one alternative.
+     It divides by the MANDATE length, not the whole record. */
+  sc=sc/(0.4+0.6*((n.flen||1)/(AVGLEN||1)));
+  return { tier:tier, s:sc, matched:matched, viaSyn:viaSyn };
+}
+
 function matchRow(r,q){
   if(!q) return true;
-  var n=NORM.get(r);
-  return n ? n.all.indexOf(q)>-1 : false;
+  var P=plan(q);
+  return P ? !!scoreRow(r,P) : true;
 }
+
 /* A closed row shows only its name, so any match that is not in the name is
    invisible. Those rows open themselves, otherwise a hit reads as a mystery. */
 function matchedOutsideName(r,q){
   if(!q) return false;
   var n=NORM.get(r);
-  return n ? n.nm.indexOf(q)===-1 : false;
+  if(!n) return false;
+  var P=plan(q);
+  if(!P) return false;
+  /* Any word of the query reaching the name is enough for the name to explain the hit.
+     Asking for the whole query string as one substring, which is what this did, made
+     every multi-word search "outside the name" and opened all nine cards on a country
+     page at once. */
+  var i,t;
+  for(i=0;i<P.toks.length;i++){
+    t=P.toks[i];
+    if(hit(n.npad,t.lit,false)) return false;
+    if(t.alts.length){
+      var j;
+      for(j=0;j<t.alts.length;j++) if(hit(n.npad,t.alts[j],true)) return false;
+    }
+  }
+  return true;
 }
 
+var Q_MAX = 300;
 function readControls(){
   return {
-    q: norm(el("q").value),
+    /* clamped here as well as on the field, because a query arriving in a shared link is
+       assigned programmatically and maxlength does not apply to that */
+    q: norm(el("q").value.slice(0, Q_MAX)),
     pick: el("pickwrap").hidden ? "" : el("pick").value,
     pick2: el("pick2wrap").hidden ? "" : el("pick2").value,
     email: el("f-email").checked,
@@ -1426,23 +1762,107 @@ function readControls(){
     website: el("f-website").checked
   };
 }
+/* what the last word pass did, so the count can be described honestly */
+var FIND={q:"",partial:false,related:0,total:0};
+
 function computeFiltered(sel,c){
   var field=(sel.kind==="c") ? "city" : "country";
-  var out=sel.rows.filter(function(r){
-    if(c.pick && val(r,field)!==c.pick) return false;
+  var P=plan(c.q);
+  var SC=new Map(), strict=[], loose=[];
+  sel.rows.forEach(function(r){
+    if(c.pick && val(r,field)!==c.pick) return;
     /* the category filter exists only on a country page */
-    if(c.pick2 && val(r,"type")!==c.pick2) return false;
-    if(c.email && !val(r,"email")) return false;
-    if(c.phone && !val(r,"phone")) return false;
-    if(c.website && !val(r,"website")) return false;
-    return matchRow(r,c.q);
+    if(c.pick2 && val(r,"type")!==c.pick2) return;
+    if(c.email && !val(r,"email")) return;
+    if(c.phone && !val(r,"phone")) return;
+    if(c.website && !val(r,"website")) return;
+    if(!P){ strict.push(r); return; }
+    var sc=scoreRow(r,P);
+    if(!sc) return;
+    SC.set(r,sc);
+    (sc.tier===3 ? loose : strict).push(r);
   });
-  /* Alphabetical by name, always. The review found the order was otherwise an
-     accident of spreadsheet order, alphabetical inside a country view but grouped
-     by city in a type view, which makes a name hard to find across 35 pages. */
-  out.sort(function(a,b){
-    return val(a,"name").localeCompare(val(b,"name"),"en",{sensitivity:"base"});
-  });
+  /* Every word beats some of the words.  The partial set is offered only when nothing
+     at all carries the whole query, and it is labelled when it is: without that rule a
+     search for "clean water" abandoned its 3 real answers and returned 56 rows that
+     merely said one of the two words. */
+  var out=strict.length ? strict : loose;
+  FIND={ q:c.q||"", partial:(!strict.length && loose.length>0), total:out.length,
+    related:0 };
+  if(P){
+    out.forEach(function(r){ var sc=SC.get(r); if(sc && sc.viaSyn) FIND.related++; });
+    /* Relevance while searching, so the closest mandate is first rather than whichever
+       name happens to start with A.  With no query it stays alphabetical, because
+       browsing order was a deliberate earlier decision and 1,862 rows are unfindable
+       without it. */
+    out.sort(function(a,b){
+      var x=SC.get(a), y=SC.get(b);
+      return (y.s-x.s) || val(a,"name").localeCompare(val(b,"name"),"en",{sensitivity:"base"});
+    });
+  }else{
+    out.sort(function(a,b){
+      return val(a,"name").localeCompare(val(b,"name"),"en",{sensitivity:"base"});
+    });
+  }
+  return out;
+}
+
+/* The excerpt under a name while searching, with the words that matched marked.
+   Before this a search returned a column of names and the reader had to open each one
+   to learn what the organisation actually does, which is the whole question they came
+   with.  Built with textContent only, never innerHTML: the mandate is data. */
+function snippetFor(r){
+  var P=PLAN;
+  if(!P || !P.toks.length) return null;
+  var text=val(r,"focus");
+  if(!text) return null;
+  var pieces=text.split(/([^\p{L}\p{N}]+)/u), i, j, t, w, lw, isHit;
+  /* j is reused below for the leftover scan */
+  var flags=[], firstHit=-1;
+  for(i=0;i<pieces.length;i++){
+    w=pieces[i];
+    isHit=false;
+    if(i%2===0 && w){
+      lw=norm(w);
+      for(j=0;j<P.toks.length && !isHit;j++){
+        t=P.toks[j];
+        if(lw===t.lit || (t.lit.length>3 && lw.indexOf(t.lit)===0)) isHit=true;
+        else if(t.alts.indexOf(lw)>-1) isHit=true;
+      }
+    }
+    flags.push(isHit);
+    if(isHit && firstHit<0) firstHit=i;
+  }
+  if(firstHit<0) return null;
+  /* start a little before the first match so the excerpt reads as a sentence */
+  var start=0, budget=52;
+  for(i=firstHit-1;i>=0;i--){
+    budget-=pieces[i].length;
+    if(budget<=0){ start=i+1; break; }
+  }
+  /* split with a capture group alternates word, separator, word, so an odd index is
+     punctuation and starting there printed an ellipsis followed by a comma */
+  if(start % 2 === 1) start++;
+  var out=make("span","rowsnip"), used=0, LIMIT=190, cut=false;
+  if(start>0) out.appendChild(document.createTextNode("\u2026"));
+  for(i=start;i<pieces.length && used<LIMIT;i++){
+    w=pieces[i];
+    if(used+w.length>LIMIT){ w=w.slice(0,Math.max(0,LIMIT-used)); cut=true; }
+    if(!w) break;              /* split leaves a trailing empty piece: not a truncation */
+    used+=w.length;
+    if(flags[i]){
+      var m=document.createElement("mark");
+      m.textContent=w;
+      out.appendChild(m);
+    }else{
+      out.appendChild(document.createTextNode(w));
+    }
+  }
+  /* only what remains that is not empty counts as left out */
+  for(j=i;j<pieces.length;j++) if(pieces[j]){ cut=true; break; }
+  /* only claim the excerpt was cut if something was actually left out: it used to add an
+     ellipsis whenever the text happened to end on the limit */
+  if(cut) out.appendChild(document.createTextNode("\u2026"));
   return out;
 }
 function apply(resetPage){
@@ -1511,6 +1931,12 @@ function pairsFor(r){
 function recFor(r,i,openIt){
   var id="p"+seq+"-"+i;
   var li=make("li","rec");
+  var snip=snippetFor(r);
+  /* A row opened itself when its match was not in its name, because a closed row showed
+     only the name and the hit read as a mystery.  The excerpt answers that better and
+     without the wall: nine results on a country page all opened at once.  So the row
+     still opens itself when there is no excerpt to explain it, and only then. */
+  if(snip) openIt=false;
   var btn=make("button","rowbtn");
   btn.type="button";
   btn.setAttribute("aria-expanded",openIt ? "true" : "false");
@@ -1523,6 +1949,7 @@ function recFor(r,i,openIt){
     var ctx=[val(r,"country"),val(r,"type")].filter(Boolean).join(" · ");
     if(ctx) main.appendChild(make("span","rowctx",ctx));
   }
+  if(snip) main.appendChild(snip);
   btn.appendChild(main);
   btn.appendChild(make("span","caret"));
   li.appendChild(btn);
@@ -1615,8 +2042,18 @@ function render(){
 
   if(filtered.length){
     el("tally").hidden=false;
-    el("tally").textContent="Showing "+num(start+1)+" to "+num(start+slice.length)
+    var tally="Showing "+num(start+1)+" to "+num(start+slice.length)
       + " of "+plural(filtered.length,"organisation","organisations");
+    /* Say how the answer was reached.  A count of matches that quietly includes rows
+       found through a plural or a related word reads as though every one of them used
+       the reader's own wording, and they have no way to tell. */
+    if(!aiRanked && FIND.q){
+      if(FIND.partial) tally+=". Nothing carries the whole phrase, so these match part of it";
+      else if(FIND.related===FIND.total && FIND.total)
+        tally+=", all found through related wording";
+      else if(FIND.related) tally+=", "+num(FIND.related)+" of them through related wording";
+    }
+    el("tally").textContent=tally;
     el("empty").hidden=true;
   }else{
     el("tally").textContent="";
@@ -1861,23 +2298,27 @@ function showL1(clean){
    query's words. "helping orphans" reaches a society whose mandate says "care for
    children who have lost parents".
 
-   HOW IT IS ARRANGED, and why. Codex reviewed the first design and two of its findings
-   changed it. Vectorize was over-engineered for 1,344 rows and may require a paid
-   plan, so the vectors ship as a 504 KB static file and the browser does the
-   arithmetic: 1,344 by 384 is about half a million multiply-adds, which is nothing.
-   And a worker that ranks results and writes a sentence about them can describe rows
-   the page then filters away, and can assert something no mandate says. So the worker
-   embeds the QUERY and nothing else. The page ranks, filters and explains, and the
-   explanation is assembled from words already present in the mandates on screen.
+   HOW IT IS ARRANGED, and why. A managed vector database was over-engineered for a set
+   this size and may require a paid plan, so the vectors ship as a static file, currently
+   715,008 bytes for 1,862 rows, and the browser does the arithmetic: 1,862 by 384 is about
+   715 thousand multiply-adds, which is nothing.
+
+   The worker does three things and each one is checked here rather than trusted. It embeds
+   the query. It reranks a shortlist THIS PAGE chose, and every id it returns is checked
+   against that shortlist and against the current scope before it can reach the screen. And
+   it writes one sentence, which is discarded unless every substantive word of it appears in
+   the mandates on screen. A remote service can be wrong or unreachable; none of those three
+   failures may put a row or a claim in front of a reader.
 
    Ranking is hybrid, not semantic alone. Pure cosine buries an exact name match under
    things that are merely similar, so exact and prefix name matches are pinned above
-   everything and the remainder is reciprocal rank fusion of the keyword and meaning
-   orders.
+   everything and the rest follows the reranker's order, with every remaining word match
+   below it rather than discarded.
 
-   And it can say no. A nearest-neighbour search always returns something, so a result
-   is only offered when the best match clears an absolute floor AND stands clear of the
-   pack behind it. Otherwise the word matches stand and the page says so.
+   And it can say no. A nearest-neighbour search always returns something, so nothing is
+   offered unless the best match clears a calibrated floor. The earlier version also
+   required it to stand clear of the pack behind it; that test was dropped, because hundreds
+   of these mandates are near-identical and it threw away good answers.
 ================================================================================== */
 var WORKER = "https://gcc-funder-search.ankommer.workers.dev";
 /* Not a secret, and it is not pretending to be one: this page is public, so the key
@@ -1975,6 +2416,46 @@ var STOP = ("and the for of in to a an with on its their this that from by as at
   + "organisation organisations foundation fund funds funding charitable charity society "
   + "company group holding based established via also which while both").split(" ");
 
+/* Is every substantive word of this sentence actually present in the mandates it claims to
+   describe. Connectives and the query's own words are exempt; anything else that names a
+   thing has to be there. A remote model writing a sentence about a screen it cannot see is
+   the one place on this page where a confident falsehood could reach a reader unchallenged. */
+function groundedIn(line, texts){
+  var hay = " " + norm(texts.join(" ")) + " ";
+  var words = norm(line).split(" "), i, w;
+  var GLUE = ("that these those they their them this there here and but with from into "
+    + "also both each many most some more other others such than then when where which who "
+    + "while your ours mention mentions mentioned common share shares shared across "
+    + "between among mainly mostly largely often usually typically several various").split(" ");
+  var j, v, found;
+  for(i = 0; i < words.length; i++){
+    w = words[i];
+    if(w.length < 5) continue;                 /* short words are glue or inflection */
+    /* SOFT is the same list that says these words carry no information in this register.
+       A word that means nothing here also asserts nothing, so it needs no grounding: the
+       first version discarded a perfectly good sentence over "organisations". */
+    if(GLUE.indexOf(w) > -1 || SOFT.indexOf(w) > -1) continue;
+    if(hay.indexOf(" " + w) > -1) continue;    /* present, allowing an inflected ending */
+    /* and the other direction, so "endowments" is grounded by a mandate saying endowment */
+    found = false;
+    v = stems(w);
+    for(j = 0; j < v.length; j++) if(hay.indexOf(" " + v[j]) > -1){ found = true; break; }
+    /* a TRUE synonym counts, because this file already asserts those words are the same
+       thing: a mandate saying "youth" grounds a sentence saying "young". The one-way
+       broadenings deliberately do NOT count here. "youth" reaching "students" is fine for
+       finding a row, but it would let this sentence be more specific than the mandate it
+       claims to describe, which is the exact failure this check exists to stop. */
+    if(!found) for(j = 0; j < CONCEPTS.length; j++){
+      if(CONCEPTS[j].indexOf(w) < 0) continue;
+      for(var m = 0; m < CONCEPTS[j].length; m++)
+        if(hay.indexOf(" " + CONCEPTS[j][m]) > -1){ found = true; break; }
+      if(found) break;
+    }
+    if(!found) return false;
+  }
+  return true;
+}
+
 function rationale(rowsShown, q){
   var qt = norm(q).split(" ").filter(function(w){ return w.length > 2; });
   var freq = Object.create(null);
@@ -2015,6 +2496,9 @@ function abandonSearch(){
   aiSeq++;
   clearTimeout(aiTimer);
   aiPending = false;
+  /* whatever is about to be built is a word pass until a meaning pass says otherwise.
+     Leaving this set let a plain list keep describing itself as meaning ranked. */
+  aiRanked = false;
   setAiNote("");
 }
 
@@ -2048,7 +2532,7 @@ function setAiNote(text, state){
 
 function runMeaningSearch(){
   if(!current) return;
-  var c = readControls(), q = el("q").value.trim();
+  var c = readControls(), q = el("q").value.trim().slice(0, Q_MAX);
   var sel = current, mySeq = ++aiSeq;
   if(q.length < AI_MIN_CHARS){ setAiNote(""); return; }
   var key = norm(q);
@@ -2101,17 +2585,38 @@ function runMeaningSearch(){
         .then(function(rr){
           if(mySeq !== aiSeq || current !== sel) return;
           var order, kept;
+          /* Only ids that were in the shortlist WE sent, each one once, and each still in
+             scope. The worker is remote, so its answer is input, not instruction: an id it
+             invented would otherwise land a Saudi row on the Kuwait page, a repeated id
+             would show an organisation twice, and an id out of range would become
+             undefined and take the sort down with it. */
+          var allowed = Object.create(null), okId = Object.create(null);
+          shortlist.forEach(function(k){ allowed[k] = 1; });
+          var validId = function(k){
+            /* No coercion. An earlier version called Number(k) inside here, which changed
+               a local copy while filter() kept the original, so an id of 7.9 passed the
+               check meant for 7 and ROWS[7.9] came back undefined. A whole number, in the
+               shortlist we sent, not already used, and still in scope. */
+            if(typeof k !== "number" || !Number.isInteger(k)) return false;
+            if(!allowed[k] || okId[k]) return false;
+            if(!ROWS[k] || !inScope(ROWS[k], sel, c)) return false;
+            okId[k] = 1;
+            return true;
+          };
           if(rr && Array.isArray(rr.ranked) && rr.ranked.length){
             var best = rr.ranked[0].score;
             var cut = Math.max(best * RERANK_REL, RERANK_MIN);
-            kept = rr.ranked.filter(function(x){ return x.score >= cut; })
-                            .slice(0, RERANK_MAX_OUT);
+            /* validate first, THEN take the top slice: cutting to forty before checking
+               let forty unusable entries crowd out the good rows behind them */
+            kept = rr.ranked.filter(function(x){ return x && x.score >= cut; });
             if(!kept.length) kept = rr.ranked.slice(0, 10);
-            order = kept.map(function(x){ return x.id; });
+            order = kept.map(function(x){ return x && x.id; })
+                        .filter(validId).slice(0, RERANK_MAX_OUT);
           }else{
             /* the reranker is unavailable, so fall back to the vector order rather
-               than showing nothing */
-            order = shortlist.filter(function(k){ return scores[k] >= Math.max(0.50, top1 - 0.10); });
+               than showing nothing.  The word matches are appended below either way. */
+            order = shortlist.filter(function(k){ return scores[k] >= Math.max(0.50, top1 - 0.10); })
+                             .filter(validId);
           }
           /* an exact or prefix name match still wins outright, whatever the model says */
           var rowsOut = order.map(function(k){ return ROWS[k]; });
@@ -2121,6 +2626,17 @@ function runMeaningSearch(){
             return order.indexOf(ROW_INDEX.get(a)) - order.indexOf(ROW_INDEX.get(b));
           });
           if(mySeq !== aiSeq || current !== sel) return;
+          /* The meaning pass ORDERS, it does not delete.  It used to replace the word
+             pass outright, and the arithmetic of that was indefensible: a search for
+             "waqf" found 199 organisations, then the ranked set replaced them with 36,
+             so 163 real matches vanished, bodies literally named "Waqf ..." among them,
+             and the count fell with nothing on screen to say why.  The model is good at
+             deciding what to read FIRST.  It is not entitled to decide what the register
+             contains.  So the ranked ones lead and every remaining word match follows. */
+          var words = computeFiltered(sel, c);
+          var seen = new Set(rowsOut);
+          var ranked = rowsOut.length;
+          words.forEach(function(r){ if(!seen.has(r)){ seen.add(r); rowsOut.push(r); } });
           aiPending = false;
           aiRanked = true;
           filtered = rowsOut;
@@ -2128,11 +2644,23 @@ function runMeaningSearch(){
           seq++;
           clear(el("recs"));
           render();
-          var head = num(rowsOut.length) + (rowsOut.length === 1 ? " match" : " matches")
-            + ", ordered by how closely each mandate answers what you described. ";
-          setAiNote(head + rationale(rowsOut, q), "ok");
-          /* then ask for a sentence about them, and use it only if the worker's own
-             check confirmed every word of it already appears in these mandates */
+          var extra = rowsOut.length - ranked;
+          /* computeFiltered has just told us whether anything carried the whole query, and
+             that fact has to survive into this note: the tally said "these match part of it"
+             and then this line replaced it with a claim that they match the wording. */
+          var tail = FIND.partial
+            ? " more that match part of what you typed. "
+            : " more that match your wording or a related term. ";
+          var head = extra
+            ? "The " + num(ranked) + " closest in meaning first, then " + num(extra) + tail
+            : num(ranked) + (ranked === 1 ? " match" : " matches")
+                + ", ordered by how closely each mandate answers what you described. ";
+          setAiNote(head + rationale(rowsOut.slice(0, ranked), q), "ok");
+          /* then ask for a sentence about them, and check it HERE before showing it. The
+             comment used to say the worker had confirmed every word appeared in these
+             mandates. Nothing on this page verified that, so the claim was worth exactly
+             the remote model's word. Now a line naming something the mandates on screen do
+             not say is discarded and the deterministic sentence stands. */
           var texts = rowsOut.slice(0, 8).map(function(r){ return val(r, "focus"); })
             .filter(Boolean);
           if(!texts.length) return;
@@ -2141,7 +2669,8 @@ function runMeaningSearch(){
             .then(function(r){ return r.ok ? r.json() : null; })
             .then(function(ex){
               if(mySeq !== aiSeq || current !== sel) return;
-              if(ex && ex.ok && ex.line) setAiNote(head + ex.line, "ok");
+              if(ex && ex.ok && ex.line && groundedIn(ex.line, texts))
+                setAiNote(head + ex.line, "ok");
             })
             .catch(function(){ /* the deterministic line already stands */ });
         });
@@ -2193,6 +2722,10 @@ function onSearch(){
   /* set from the keystroke, before the debounce, so the empty state never flashes
      "nothing matches" in the gap */
   aiPending = el("q").value.trim().length >= AI_MIN_CHARS;
+  /* from the keystroke, not from the debounce: whatever is on screen stopped being a
+     meaning-ranked answer to THIS query the moment the query changed, and a pager click
+     inside the 180ms gap refused to rebuild and froze the old list under the new words */
+  aiRanked = false;
   setAiNote("");
   var owner=current;
   timer=setTimeout(function(){
@@ -2303,7 +2836,7 @@ function wire(){
     el(id).addEventListener("change",refreshSearch);
   });
   el("clearall").addEventListener("click",function(){
-    aiSeq++; clearTimeout(aiTimer); setAiNote("");
+    abandonSearch();          /* was three of its four lines, and missed aiPending */
     el("q").value="";
     el("pick").value="";
     el("pick2").value="";
@@ -2982,19 +3515,44 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
      all 1,862, and a reader would fairly read the total as belonging to their results.
      Paging is not a filter, so ?p= keeps the briefing. The filter names are the register's
      own: q for the search, in for the place, cat for the category, has for the contact
-     filters. Nothing here touches their router or their search code. */
-  var FILTERS=["q","in","cat","has"];
+     filters. This block adds no elements to their page and changes none of theirs; it does
+     READ the six controls and listen for their events, because the controls are what decide
+     whether the whole register is on screen. */
+  var FILTERS=["q","in","cat","has"], touched=false;
   function isAllView(){
     var raw=location.hash.replace(/^#\/?/,"");
     var parts=raw.split("?");
     if(parts[0]!=="a/all") return false;
+    /* The controls are the truth, the URL only reports it afterwards.  Reading the
+       address bar left this panel a beat behind the list it sits above, because the
+       hash is written on a debounce, and a hash that changed and changed back between
+       two polls was never noticed at all. */
+    var box=document.getElementById("q");
+    if(box && box.value.trim()) return false;
+    var i, ids=["f-email","f-phone","f-website"], c;
+    for(i=0;i<ids.length;i++){
+      c=document.getElementById(ids[i]);
+      if(c && c.checked) return false;
+    }
+    var w=document.getElementById("pickwrap"), sel=document.getElementById("pick");
+    if(w && !w.hidden && sel && sel.value) return false;
+    var w2=document.getElementById("pick2wrap"), sel2=document.getElementById("pick2");
+    if(w2 && !w2.hidden && sel2 && sel2.value) return false;
+    /* The URL is honoured only until the reader touches something.  It is needed for a
+       shared link that arrives already filtered, where the panel would otherwise flash
+       before the router fills the box, but once a control has been used the controls are
+       the only truth: reading a stale hash kept the panel hidden for a second after the
+       box was cleared. */
+    if(touched) return true;
     var qs=parts.slice(1).join("?");
     if(!qs) return true;
-    var pairs=qs.split("&"), i, kv;
+    var pairs=qs.split("&"), kv, nm;
     for(i=0;i<pairs.length;i++){
       kv=pairs[i].split("=");
-      if(FILTERS.indexOf(decodeURIComponent(kv[0]))>-1 &&
-         (kv[1]||"").length) return false;
+      /* a hand-edited or truncated link can carry a stray percent sign, and
+         decodeURIComponent throws on it, inside the watcher */
+      try{ nm=decodeURIComponent(kv[0]); }catch(e){ nm=kv[0]; }
+      if(FILTERS.indexOf(nm)>-1 && (kv[1]||"").length) return false;
     }
     return true;
   }
@@ -3031,13 +3589,39 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
      Verified in their writeHash(). Rather than guess at which of their inputs to listen to,
      or patch a global history method on a page another session owns, this compares the hash
      string a few times a second and does nothing at all unless it changed. */
-  var lastHash=null;
+  /* The whole state, not just the address. Watching the hash alone failed in both
+     directions: the register writes the URL on a debounce, so the panel lagged the list it
+     sits above, and on a navigation the watcher recorded the new hash, read controls the
+     router had not yet refilled, and never looked again. This key changes whenever anything
+     that decides the answer changes, including a control set programmatically, which fires
+     no event at all. */
+  var lastKey=null, lastHash=null;
+  function stateKey(){
+    var g=function(id){ var n=document.getElementById(id); return n ? (n.value||"") : ""; };
+    var c=function(id){ var n=document.getElementById(id); return n && n.checked ? "1" : "0"; };
+    return location.hash + "|" + g("q") + "|" + g("pick") + "|" + g("pick2")
+      + "|" + c("f-email") + c("f-phone") + c("f-website");
+  }
   function watch(){
-    if(location.hash===lastHash) return;
-    lastHash=location.hash;
+    var k=stateKey();
+    if(k===lastKey) return;
+    lastKey=k;
+    if(location.hash!==lastHash){
+      lastHash=location.hash;
+      /* a new view means the URL leads again until the reader touches something in it */
+      touched=false;
+    }
     sync();
   }
   window.addEventListener("hashchange",watch);
+  /* the controls fire immediately, so the panel moves with the list */
+  ["q","f-email","f-phone","f-website","pick","pick2"].forEach(function(id){
+    var n=document.getElementById(id);
+    if(!n) return;
+    var go=function(){ touched=true; sync(); };
+    n.addEventListener("input",go);
+    n.addEventListener("change",go);
+  });
   window.addEventListener("popstate",watch);
   setInterval(watch,300);
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",watch);

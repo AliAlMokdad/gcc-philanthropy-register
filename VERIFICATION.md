@@ -67,6 +67,68 @@ registry was reachable. Bahrain's evidence is therefore only:
 - It is not a duplicate of another row, on a normalised name within a country.
 - No em dashes, no malformed emails, no malformed URLs.
 
+## The search, rewritten 19 August 2026, and what was measured
+
+The word pass used to be a single whole-string `indexOf` over eight concatenated fields,
+sorted alphabetically. Two consequences, both measured against this `data.json` rather than
+estimated:
+
+- A two word query only matched when those words sat adjacent in that order. **"orphan
+  education" returned 0** while 31 mandates cover both. So did "Saudi orphans",
+  "entrepreneurship women" and "refugees education".
+- It matched inside words. **"men" returned 863 rows** on the strength of "development" and
+  "management". "ship" returned 291 on "partnerships". "art" returned 261 on "partner".
+- A query written in Arabic normalised to the empty string, and empty meant no filter, so it
+  **returned all 1,862 rows as though every one had matched**. There is no Arabic anywhere in
+  the data, so the honest answer is none.
+
+### What was checked
+
+- **All 1,862 row strings are byte-identical under the old and new normaliser.** Every field
+  in data.json was also checked for a non-ASCII character: there are none. So widening the
+  normaliser to keep Unicode letters changes what a QUERY can be and nothing about the data.
+- **54 assertions** run against the engine sliced verbatim out of `index.html`, so the test
+  cannot drift from what ships. Word pass only, no network, so every number is repeatable.
+  They live in `tools/search-test/`, and `node tools/search-test/run.js` re-runs them. A test
+  that is not in the repository cannot be checked by anyone else, which a reviewer rightly
+  said of the earlier version of this claim.
+- Precision was checked against the data itself, not against the engine's own opinion:
+  Kuwait plus "orphan" returns exactly the 12 Kuwaiti rows whose text says orphan, no more and
+  no fewer; "cancer" and "widows" each return every row whose text carries the word.
+- Three independent review passes. The first returned NOT READY with 8 accuracy findings and
+  5 bug findings. The second, after those fixes, returned NOT READY again with 8 more,
+  including one the first round's fix had introduced: a coercion inside the id check changed
+  a local copy while the filter kept the original, so a fractional id could pass a check
+  meant for a whole one. It also caught four claims in code comments that were false as
+  written, among them a stale architecture note still describing 1,344 rows, a 504 KB vector
+  file and a rank-fusion step the code no longer performs. All of those were fixed.
+  A sentence in an earlier draft of THIS section said the second review found no defects.
+  That was written before the second review returned, and it was false.
+
+### Counts, and the distinction that matters
+
+A word-pass count and a final count are different numbers, because the meaning pass adds rows
+the words never reached. Quoting one as the other is how a figure here would become wrong.
+
+| Query | Word pass | Final, after the meaning pass |
+|---|---:|---:|
+| orphan education | 31 | 34 |
+| waqf | 199 | 201 |
+| support for widows | 6 | 24 |
+| clean water | 3 | 3 |
+
+### What the search does NOT do
+
+- **No negation.** "no cancer" is not read as "everything except cancer". The words are left in
+  rather than deleted, so the answer falls through to the labelled partial set instead of
+  confidently returning the opposite, which is what deleting them did.
+- **No Arabic.** The normaliser no longer destroys an Arabic query, but the data is English and
+  the embedding model is English, so an Arabic search is not supported, it merely fails
+  honestly now.
+- **The synonym and broadening maps are hand-written.** They are grounded in vocabulary counted
+  from the corpus, not invented, but they are a judgement. Where a row is reached through one
+  rather than through the reader's own words, the count says so.
+
 ## The rule that produced this file
 
 Domain resolution proves a domain exists. It does not prove an organisation funds anything,
