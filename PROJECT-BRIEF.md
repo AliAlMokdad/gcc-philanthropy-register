@@ -160,24 +160,69 @@ links to two of the domains that had been cleared.
 
 ---
 
-## 6. Design. Another session owns the look.
+## 6. Design. index.html only, and far past the first pass.
 
-A different Claude session restyled the site on 19 August (commits `3bdfc98`, `4c19870`):
-ink and slate, Source Serif 4 and IBM Plex Mono, a spectrum ribbon under the header, flat
-controls and hairlines instead of pills and glows, a keyline around the flags. **That work
-is CSS-only. Build underneath it and do not overwrite it.**
+The look is a deliberate, reviewed design system now. It is CSS plus a little vanilla JS
+inside `index.html`; the DATA lane (data.json, vectors, the Excel) is untouched by it.
+Build underneath it, do not overwrite it. Full session log: decision-log #1390. Live HEAD
+at time of writing: `c606784`.
 
-The header kicker is now built from the data by `paintKick()`. It used to be hardcoded and
-said three countries on the day the register began covering six.
+**Earlier pass (kept):** ink and slate house style, Source Serif 4 and IBM Plex Mono, a
+spectrum ribbon, flat controls and hairlines, a keyline around the flags. The header kicker
+is built from the data by `paintKick()` (was hardcoded at three countries).
 
-**Flags are drawn as vector to each issuing state's own specification, and
-`C:\repos\gcc-philanthropy-register\FLAGS.md` exists so a later session does not
-"simplify" them.** Read it before touching `countryMark()`. Highlights: UAE red and green
-were wrong until corrected to Pantone 186 and 348; Bahrain has exactly five points, fixed
-in 2002 for the Five Pillars, and the polygon is built by a loop so the count cannot drift;
-the Saudi shahada must never be cropped, which is why the country-page flag fades by a mask
-on its own alpha rather than by a scrim or a crop; Oman's emblem is a deliberate
-simplification and the file explains the two failed attempts.
+**Current pass (19 August, the blueberry redesign).** Palette is a cool very-light
+BLUEBERRY, one accent `#3E4CC4`, light and dark tokens on `:root`. How the main pieces work:
+
+- **Per-country theming.** `COUNTRY_THEME` map plus `paintPage()` set and clear about
+  eleven CSS custom properties on `document.body` (accent, mast, bg, `--cw1`/`--cw2`) with
+  dark-mode-safe accent variants chosen via `matchMedia`, and toggle a `body.country-view`
+  class. A country page gets a deep flag-colour masthead, a soft flag wash in the head band,
+  flag-colour accents, a faint flag watermark (`.flagplate`, opacity .16), and a full-page
+  painterly flag-colour wash (`#cwash`: a fixed turbulence-brushed SVG whose ellipse fills
+  are `var(--cw1)`/`var(--cw2)` per country, opacity .055 light and .11 dark, shown only
+  under `body.country-view`). The whole theme resets on every non-country page; this was
+  the most-tested behaviour and it does not leak.
+- **All-register view** (`#/a/all`) wears the GCC emblem as a side watermark
+  (`setEmblem`/`paintWashAll`) over a blueberry wash.
+- **Home:** painterly light-orange and light-blue brush washes (`#brushes`, turbulence,
+  home-only); a cursor-follow blueberry glow (`#berryglow`/`initBerry`, colour only, off on
+  touch and under reduced-motion); the wordmark is all one ink colour, lifted up, and the
+  ring of flags nudged down.
+- **Footer signature:** a circular avatar `ali.jpg` (a 256px crop of
+  `Desktop\2 Ali Al Mokdad.JPG`) linking to https://www.linkedin.com/in/ali-al-mokdad/ ,
+  with a hover grow plus yellow glow and a soft yellow painterly splash in the corners.
+- **Sound:** Web Audio chimes, `chime()` on the home Search and `sigChime()` on the footer
+  name and photo, sharing a lazily created `_actx`.
+- Orange home accents, restacked org-detail fields (label above value, sentence case, not
+  all capitals), and rounded, consistent search inputs, dropdowns and chips.
+
+**Reviewed.** Codex (gpt-5.6-sol) plus two Claude agents. Every objective finding was
+fixed: the masthead link focus outline is now white (it was under 3:1 on the deep band);
+the country back link uses `--accent-2` (Kuwait and Bahrain were under 4.5:1 on the wash);
+the glow is skipped under reduced-motion; and `#cwash` light opacity was trimmed to .055 so
+the muted meta text stays at or above 4.6:1 over the red washes. All contrast was checked
+against the composed washed backgrounds, not bare paper.
+
+**Flags: read `FLAGS.md` before touching `countryMark()`.** They are drawn to each state's
+own spec and must not be "simplified": UAE colours were wrong until corrected; Bahrain has
+exactly five points (Five Pillars, 2002), built by a loop so the count cannot drift; the
+Saudi shahada must never be cropped, which is why the country-page flag fades by an alpha
+mask, not a crop; Oman's emblem is a deliberate simplification with two failed attempts
+documented. Codex re-verified the country ACCENT hexes this session (Qatar `#8A1538` exact;
+UAE accent `#00702E` intentionally darker than the official flag green `#00843D` so it
+clears AA as link text).
+
+**Deploy quirks (design lane).** `index.html` only; push to origin, GitHub Pages builds.
+MAX_PATH breaks `git rebase` in a deep clone, so MERGE `origin/main` (the two lanes touch
+different files) with `core.longpaths`, never rebase. The autoreview pre-push hook needs
+`~/.claude/hooks/.autoreview-ok` written as a separate step just before the push. Test with
+a `?v=` cache-buster. Localhost meaning-search "Failed to fetch" is EXPECTED (the worker is
+origin-locked to the live domain); it works on the live site.
+
+**Parked idea (do not start without Ali):** two new sections, News and Data, fed by free
+verified APIs (ReliefWeb, Qatar QFFD, IATI, OCHA FTS), same static-page-plus-Cloudflare-
+Worker pattern as his other bots. Full plan and the API shortlist: decision-log #1391.
 
 ---
 
