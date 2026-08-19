@@ -57,7 +57,7 @@ ANTI_SLOP_BRIEF
   --paper:#F5F8FD; --paper-2:#EBF1FB; --line:#DEE7F4; --line-2:#CBD8EC;
   --focus:#3E4CC4; --mast:#232C5C;
   --berry:#5B63E6; --berry-soft:#9AA2EE;
-  --orange:#A55A12; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.13);
+  --orange:#A55A12; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.13); --orange-strong:#8A4A0E;
   --spectrum:linear-gradient(120deg,#E3008C,#7B61FF,#0078D4,#00BCF2,#13A10E,#FFB900);
   --bg-a:rgba(62,76,196,.05); --bg-b:rgba(62,76,196,.03);
   /* Source Serif 4 for the record voice, IBM Plex Mono for labels and chrome, both from
@@ -76,7 +76,7 @@ ANTI_SLOP_BRIEF
     --paper:#0E1018; --paper-2:#161A26; --line:#282E40; --line-2:#38405C;
     --focus:#AAB4F0; --mast:#1A2140;
     --berry:#7A82F0; --berry-soft:#6B74D8;
-    --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16);
+    --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16); --orange-strong:#EDAA55;
     --bg-a:rgba(122,130,240,.07); --bg-b:rgba(122,130,240,.04);
   }
 }
@@ -638,13 +638,13 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 /* the link to the whole list, a wide bar under the categories */
 .portal-all{margin:var(--s5) 0 0}
 .portal-all a{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;
-  padding:0 18px;font:600 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--orange);text-decoration:none;border:1px solid var(--line-2);border-radius:7px;
+  padding:0 18px;font:700 14px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--orange-strong);text-decoration:none;border:1px solid var(--line-2);border-radius:7px;
   background:linear-gradient(180deg,var(--paper),var(--paper-2));
   box-shadow:0 1px 2px rgba(20,24,36,.05);
   transition:border-color .14s ease-out,background-color .14s ease-out,box-shadow .14s ease-out,transform .14s ease-out}
-.portal-all a:hover,.portal-all a:focus-visible{border-color:var(--orange);background:var(--orange-soft);
-  color:var(--orange);transform:translateY(-1px);box-shadow:0 4px 12px rgba(226,133,58,.16)}
+.portal-all a:hover,.portal-all a:focus-visible{border-color:var(--orange-strong);background:var(--orange-soft);
+  color:var(--orange-strong);transform:translateY(-1px);box-shadow:0 4px 12px rgba(226,133,58,.16)}
 
 /* a record in the all-register results carries its country and category as a quiet line */
 .rowbtn .rowmain{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start}
@@ -789,10 +789,10 @@ ol.ranked a::before{top:9px;bottom:9px}
     </filter>
   </defs>
   <g filter="url(#fbrush)">
-    <ellipse cx="600" cy="70" rx="280" ry="52" fill="#F6CB5E" opacity="0.12" transform="rotate(-5 600 70)"/>
-    <ellipse cx="652" cy="52" rx="168" ry="34" fill="#F3C24C" opacity="0.09" transform="rotate(9 652 52)"/>
-    <ellipse cx="520" cy="92" rx="190" ry="26" fill="#EFB63A" opacity="0.07" transform="rotate(-11 520 92)"/>
-    <ellipse cx="770" cy="82" rx="150" ry="24" fill="#F6CB5E" opacity="0.06" transform="rotate(5 770 82)"/>
+    <ellipse cx="70" cy="66" rx="240" ry="50" fill="#F6CB5E" opacity="0.08" transform="rotate(-12 70 66)"/>
+    <ellipse cx="1130" cy="70" rx="250" ry="48" fill="#F3C24C" opacity="0.08" transform="rotate(11 1130 70)"/>
+    <ellipse cx="-10" cy="104" rx="150" ry="30" fill="#EFB63A" opacity="0.05" transform="rotate(-6 -10 104)"/>
+    <ellipse cx="1210" cy="40" rx="150" ry="28" fill="#F6CB5E" opacity="0.05" transform="rotate(6 1210 40)"/>
   </g>
 </svg>
 <div class="wrap">
