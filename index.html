@@ -437,22 +437,25 @@ nav.pager .pg-sm{display:none}
 
 /* one quiet line, set to the right, in the serif so it reads as a signature rather
    than as another piece of interface */
-footer.sig{border-top:1px solid var(--line);margin-top:var(--s5)}
-footer.sig .wrap{padding-top:var(--s3);padding-bottom:var(--s4)}
+footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);margin-top:var(--s5)}
+/* a light, transparent yellow brush washed across the whole footer, painterly, no edge */
+.foot-brush{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+footer.sig .wrap{position:relative;z-index:1;padding-top:var(--s4);padding-bottom:var(--s4)}
 footer.sig p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
-  font:400 12.5px/1.6 var(--sans);color:var(--ink-3)}
+  font:500 12.5px/1.6 var(--sans);color:var(--ink-3)}
 footer.sig a{display:inline-flex;align-items:center;min-height:40px;
   font:600 14px/1.6 var(--sans);color:var(--accent);
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
   letter-spacing:.15px}
 footer.sig a:hover{color:var(--accent-2)}
-/* a small circular portrait beside the credit, a quiet signature that also links out */
+/* a small circular portrait beside the credit; on hover it grows a touch and glows warm */
 footer.sig a.sig-ava{flex:0 0 auto;min-height:0;border-radius:50%;line-height:0;
   text-decoration:none;box-shadow:0 0 0 1px var(--line-2),0 2px 7px rgba(20,24,36,.14);
-  transition:box-shadow .16s ease,transform .16s ease}
+  transition:box-shadow .18s ease,transform .18s ease}
 footer.sig a.sig-ava img{width:40px;height:40px;border-radius:50%;display:block;object-fit:cover}
-footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:translateY(-1px);
-  box-shadow:0 0 0 1px var(--accent),0 5px 12px rgba(62,76,196,.20)}
+footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:scale(1.14);
+  box-shadow:0 0 0 1px #E7B23A,0 0 16px 3px rgba(242,194,74,.55)}
+@media (prefers-reduced-motion:reduce){ footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:none} }
 
 #state{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
 #state button{min-height:40px;font:600 11px/1 var(--mono);letter-spacing:.1em;
@@ -535,12 +538,12 @@ footer.sig a{font-family:var(--serif)}
 body:has(#l1:not([hidden])) header.top{display:none}
 body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 
-.portal{margin:0 auto;padding:calc(var(--s5) + var(--s4)) 0 0;text-align:center}
+.portal{margin:0 auto;padding:calc(var(--s5) + var(--s2)) 0 0;text-align:center}
 .portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
   text-transform:uppercase;color:var(--ink-3)}
-.portal-word{max-width:720px;margin:0 auto;font:500 clamp(23px,3.3vw,35px)/1.16 var(--display);
+.portal-word{max-width:740px;margin:0 auto;font:500 clamp(24px,3.5vw,38px)/1.16 var(--display);
   color:var(--ink);letter-spacing:-.2px;font-optical-sizing:auto;text-wrap:balance}
-.portal-word .abbr{color:var(--slate);font-weight:400;font-style:italic}
+.portal-word .abbr{color:inherit;font-weight:400;font-style:italic}
 .portal-word::after{content:"";display:block;width:54px;height:3px;margin:14px auto 0;
   background:var(--spectrum);border-radius:2px}
 
@@ -776,7 +779,22 @@ ol.ranked a::before{top:9px;bottom:9px}
   </div>
 </main>
 
-<footer class="sig"><div class="wrap">
+<footer class="sig">
+<svg class="foot-brush" aria-hidden="true" viewBox="0 0 1200 140" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="fbrush" x="-35%" y="-70%" width="170%" height="240%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.014" numOctaves="4" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="62" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  <g filter="url(#fbrush)">
+    <ellipse cx="300" cy="58" rx="390" ry="44" fill="#F3C24C" opacity="0.20" transform="rotate(-7 300 58)"/>
+    <ellipse cx="885" cy="88" rx="360" ry="38" fill="#F6CB5E" opacity="0.17" transform="rotate(6 885 88)"/>
+    <ellipse cx="610" cy="44" rx="300" ry="30" fill="#EFB63A" opacity="0.12" transform="rotate(-3 610 44)"/>
+  </g>
+</svg>
+<div class="wrap">
   <p><a class="sig-ava" href="https://www.linkedin.com/in/ali-al-mokdad/"
      target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
      src="ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
@@ -1949,6 +1967,26 @@ function chime(){
   }catch(e){}
 }
 
+/* a warmer three note flourish for the signature: C5, E5, G5, soft and elegant */
+function sigChime(){
+  try{
+    var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return;
+    _actx=_actx||new AC();
+    if(_actx.state==="suspended") _actx.resume();
+    var t=_actx.currentTime;
+    [[523.25,0],[659.25,0.10],[783.99,0.20]].forEach(function(n){
+      var o=_actx.createOscillator(), g=_actx.createGain();
+      o.type="sine"; o.frequency.value=n[0];
+      var s=t+n[1];
+      g.gain.setValueAtTime(0.0001,s);
+      g.gain.exponentialRampToValueAtTime(0.12,s+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,s+0.85);
+      o.connect(g); g.connect(_actx.destination);
+      o.start(s); o.stop(s+0.9);
+    });
+  }catch(e){}
+}
+
 function wire(){
   /* the home search is an explicit submit, not typeahead: it navigates once to the
      all-register results and lets that page run the meaning search, so the free Worker
@@ -1960,6 +1998,9 @@ function wire(){
     location.hash = "#/a/all" + (q ? "?q="+encodeURIComponent(q) : "");
   });
   initBerry();
+  /* clicking the signature portrait or name plays a short elegant flourish */
+  var sig=document.querySelector("footer.sig");
+  if(sig){ sig.addEventListener("click",function(e){ if(e.target.closest("a")) sigChime(); }); }
   /* keep a themed country page at AA if the reader flips the system colour scheme */
   if(window.matchMedia){
     var _mq=window.matchMedia("(prefers-color-scheme:dark)");
