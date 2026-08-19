@@ -111,6 +111,7 @@ html{scrollbar-color:var(--berry-soft) transparent;scrollbar-width:thin}
   background:radial-gradient(circle,rgba(91,99,230,.13) 0%,rgba(91,99,230,.05) 36%,transparent 60%);
   will-change:transform}
 #berryglow.on{opacity:.4}
+@media (prefers-reduced-motion:reduce){ #berryglow{display:none} }
 @media (prefers-color-scheme:dark){
   #berryglow{mix-blend-mode:screen;
     background:radial-gradient(circle,rgba(122,130,240,.13) 0%,rgba(122,130,240,.05) 36%,transparent 60%)}
@@ -293,9 +294,9 @@ details.more ol.ranked{margin-top:var(--s3)}
 /* ---------- level 2 ---------- */
 .l2head{padding:var(--s4) 0 0}
 .back{display:inline-flex;align-items:center;min-height:40px;font:600 13px/1 var(--sans);
-  color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;
+  color:var(--accent-2);text-decoration:underline;text-decoration-thickness:1px;
   text-underline-offset:3px;padding:0}
-.back:hover{color:var(--accent-2)}
+.back:hover{color:var(--ink)}
 h2.sel{font:600 32px/1.08 var(--display);margin:var(--s2) 0 var(--s3);
   letter-spacing:0;position:relative;padding-bottom:var(--s3)}
 h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
@@ -490,6 +491,8 @@ header.top h1{font:600 27px/1.18 var(--display);color:#F4F3F0;letter-spacing:.1p
 @media (min-width:700px){ header.top h1{font-size:31px} }
 header.top h1 a{color:inherit}
 header.top h1 a:hover{color:#FFFFFF}
+/* the masthead band is deep, so its link focus ring must be light to stay visible on it */
+header.top a:focus-visible{outline-color:#FFFFFF}
 header.top h1 .abbr{color:#BCC7CD;font-weight:400}
 
 /* section eyebrow: a mono label, a hairline, and a mono tail */
@@ -1926,7 +1929,8 @@ function onSearch(){
    pool is glued to the pointer each frame (transform only, so it stays on the compositor),
    and only its opacity eases. skipped entirely on touch, where there is no pointer. */
 function initBerry(){
-  if(window.matchMedia && window.matchMedia("(pointer:coarse)").matches) return;
+  if(window.matchMedia && (window.matchMedia("(pointer:coarse)").matches
+     || window.matchMedia("(prefers-reduced-motion:reduce)").matches)) return;
   var g=document.createElement("div");
   g.id="berryglow"; g.setAttribute("aria-hidden","true");
   document.body.appendChild(g);
