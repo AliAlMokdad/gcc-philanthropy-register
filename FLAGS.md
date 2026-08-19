@@ -71,3 +71,62 @@ out of its own ratio, and the band's `overflow: hidden` sliced 9.3px off the top
 bottom of the Saudi flag at every desktop width, because 2:3 is the tallest of the three. Height
 is capped at 172px rather than 190px because Qatar at 28:11 is the widest: at 190 it came out
 484px and pushed 30px into the heading column, and at 172 it is 438px and clears it.
+
+---
+
+# The three added on 19 August 2026: Kuwait, Bahrain, Oman
+
+Same rule as the first three. Drawn as vector, checked against the issuing state, and the
+places where the source is silent are recorded as silent rather than filled in.
+
+## Kuwait. Geometry is specified in law. The colour is not.
+
+Law No. 26 of 1961 defines the flag: length twice the width, three equal horizontal bands,
+green over white over red, with a black trapezium standing on the hoist. The trapezium is
+the whole construction, and it is drawn from the rule rather than by eye: its base is the
+full height at the hoist and it narrows to exactly the height of the white band, so its
+slanted edges land on the band boundaries. In a `0 0 60 30` viewBox that puts its corners
+at `0,0 15,10 15,20 0,30`.
+
+Colour is where the sources disagree. Some give Pantone 186 C red with 340 C green, the
+Beijing 2008 flag manual gives PMS 032 red with PMS 355 green. No Kuwaiti government source
+publishes a hex. So `#007A3D` green and `#CE1126` red are **the common digital rendering,
+recorded as an approximation**, exactly as Saudi Arabia is above.
+
+## Bahrain. The count of the points is the one detail that must be right.
+
+Ratio 3:5, so the viewBox is `0 0 50 30`. White at the hoist, red field, separated by a
+serrated line of **exactly five** white isosceles triangles. The number is not decorative:
+it was fixed at five in 2002 for the Five Pillars of Islam, having previously been higher.
+The loop that builds the polygon produces five apexes by construction, so the count cannot
+drift if the geometry is ever retuned.
+
+Red is `#CE1126` here. Sources split between Pantone 186 C and 485 C, so this too is the
+common digital rendering rather than a claimed official value.
+
+## Oman. The flag is specified. The emblem is simplified on purpose.
+
+The Ministry of Foreign Affairs states it plainly: "three horizontal bands of white, green
+and red, with a vertical red band on the left (hoist) side that contains the National
+Emblem of Oman in white". The emblem is "a sheathed Khanjar and belt, superimposed on two
+crossed swords". Official ratio 4:7 since 22 May 2004, so the viewBox is `0 0 70 40`.
+Colours `#FFFFFF`, `#DB171B`, `#028002`.
+
+**The emblem here is a simplification and should be read as one.** Getting there took three
+attempts, and the two failures are the reason the third looks as it does:
+
+1. Thin strokes collapsed into a white asterisk. Crossing lines at this size read as a star.
+2. Filled shapes stacked on one centre fused into a single lump.
+3. What worked was composition, not detail: the swords cross LOW, the khanjar stands ABOVE
+   and in front, and the khanjar carries a stroke in the band's own red so its silhouette
+   survives where it overlaps the blades.
+
+A faithful tracing of the ornamented sheath and belt would turn to mud at the size this
+renders. **A muddy national emblem is a worse outcome than a clean simplified one**, which
+is the same principle as never cropping the shahada. Do not "improve" it by adding detail
+without looking at it at card size and at 120px first.
+
+## The rule this file exists to protect
+
+Every one of these was judged by RENDERING it and looking, not by reading the path data.
+The asterisk and the lump both passed every automated check that was run against them.

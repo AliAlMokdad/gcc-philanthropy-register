@@ -434,8 +434,11 @@ header.top{background:var(--ink);border-bottom:0;position:relative}
 header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;
   background:var(--spectrum)}
 header.top .wrap{padding-top:26px;padding-bottom:26px}
-.kick{margin:0 0 10px;font:600 12px/1 var(--mono);letter-spacing:.2em;
-  text-transform:uppercase;color:#AEB7C6}
+/* six names do not fit one line on a phone, so it is allowed to wrap and given a
+   line height to wrap into, with the tracking eased at small sizes */
+.kick{margin:0 0 10px;font:600 12px/1.7 var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;color:#AEB7C6;text-wrap:balance}
+@media (min-width:760px){ .kick{letter-spacing:.2em;line-height:1} }
 header.top h1{font:600 27px/1.18 var(--display);color:#F4F3F0;letter-spacing:.1px}
 @media (min-width:700px){ header.top h1{font-size:31px} }
 header.top h1 a{color:inherit}
@@ -493,7 +496,7 @@ footer.sig a{font-family:var(--serif)}
 
 <header class="top">
   <div class="wrap">
-    <p class="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar</p>
+    <p class="kick" id="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
     <h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1>
   </div>
 </header>
@@ -624,7 +627,8 @@ function svgEl(tag,attrs){
    ratio, so nothing is stretched. A previous build reduced Saudi Arabia to a plain
    green rectangle, which is not the flag: the shahada is real Arabic text set in a
    system Arabic face, and the sword is beneath it pointing to the hoist. */
-var FLAG_BOX={"united arab emirates":[60,30],"saudi arabia":[60,40],"qatar":[56,22]};
+var FLAG_BOX={"united arab emirates":[60,30],"saudi arabia":[60,40],"qatar":[56,22],
+              "kuwait":[60,30],"bahrain":[50,30],"oman":[70,40]};
 var AR_FACE="'Traditional Arabic','Arabic Typesetting','Noto Naskh Arabic',"
           + "'Segoe UI','Times New Roman',serif";
 
@@ -671,6 +675,64 @@ function countryMark(name,cls){
     }
     pts.push("0,22");
     s.appendChild(svgEl("polygon",{points:pts.join(" "),fill:"#FFFFFF"}));
+  }else if(n==="kuwait"){
+    /* Law 26 of 1961: three equal bands, green over white over red, with a black
+       trapezium standing on the hoist edge. The trapezium is the whole design: its
+       base is the full height at the hoist and it narrows to the height of the white
+       band, so its slanted edges meet the band boundaries exactly. Drawn from that
+       rule rather than by eye, which is why the corners land on 10 and 20. */
+    s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:10,fill:"#007A3D"}));
+    s.appendChild(svgEl("rect",{x:0,y:10,width:60,height:10,fill:"#FFFFFF"}));
+    s.appendChild(svgEl("rect",{x:0,y:20,width:60,height:10,fill:"#CE1126"}));
+    s.appendChild(svgEl("polygon",{points:"0,0 15,10 15,20 0,30",fill:"#000000"}));
+  }else if(n==="bahrain"){
+    /* Five points, not the older eight or twenty eight. The count was fixed at five
+       in 2002 for the five pillars of Islam, so it is the one detail that must be
+       right: the loop below builds exactly five apexes. */
+    s.appendChild(svgEl("rect",{x:0,y:0,width:50,height:30,fill:"#CE1126"}));
+    var bp=["0,0","15,0"], bstep=30/5, bi;
+    for(bi=0;bi<5;bi++){
+      bp.push("21,"+((bi+0.5)*bstep).toFixed(3));
+      bp.push("15,"+((bi+1)*bstep).toFixed(3));
+    }
+    bp.push("0,30");
+    s.appendChild(svgEl("polygon",{points:bp.join(" "),fill:"#FFFFFF"}));
+  }else if(n==="oman"){
+    /* White above, green below, with red forming a band across the middle and a band
+       down the hoist, which together read as a T on its side. The national emblem,
+       a sheathed khanjar over two crossed swords, sits in white on the hoist band.
+       It is drawn as a simplified glyph rather than traced in detail: at the size
+       this renders, a faithful outline would turn to mud, and a muddy national
+       emblem is worse than a clean simplified one. */
+    s.appendChild(svgEl("rect",{x:0,y:0,width:70,height:13.34,fill:"#FFFFFF"}));
+    s.appendChild(svgEl("rect",{x:0,y:13.34,width:70,height:13.33,fill:"#DB171B"}));
+    s.appendChild(svgEl("rect",{x:0,y:26.67,width:70,height:13.33,fill:"#028002"}));
+    s.appendChild(svgEl("rect",{x:0,y:0,width:17.5,height:40,fill:"#DB171B"}));
+    /* The national emblem: a sheathed khanjar over two crossed swords.
+
+       Two earlier attempts are the reason this looks the way it does. Thin strokes
+       collapsed into a white asterisk. Filled shapes stacked on the same centre fused
+       into one lump. What separates them is composition, not detail: the swords cross
+       LOW, the khanjar stands ABOVE and in front, and the khanjar carries a stroke in
+       the band's own red so its silhouette stays legible where it overlaps them.
+
+       It is a simplification and is meant to be read as one. A faithful tracing of the
+       ornamented sheath and belt would turn to mud at the size this renders, and a
+       muddy national emblem is a worse outcome than a clean simplified one. */
+    var g=svgEl("g",{});
+    var sw=svgEl("g",{fill:"#FFFFFF"});
+    sw.appendChild(svgEl("path",{d:"M3.5,8.6 L4.5,7.7 L14.1,15.4 L13.2,16.4 Z"}));
+    sw.appendChild(svgEl("path",{d:"M13.2,7.7 L14.1,8.6 L4.5,16.4 L3.5,15.4 Z"}));
+    g.appendChild(sw);
+    var kh=svgEl("g",{fill:"#FFFFFF",stroke:"#DB171B","stroke-width":"0.5",
+                      "stroke-linejoin":"round"});
+    kh.appendChild(svgEl("path",{d:"M8.05,3.5 L9.45,3.5 L9.45,6.1 L8.05,6.1 Z"}));
+    kh.appendChild(svgEl("path",{d:"M6.5,6.4 L11.0,6.4 L11.0,7.7 L6.5,7.7 Z"}));
+    kh.appendChild(svgEl("path",{d:"M7.5,8.0 C7.2,10.4 6.5,12.2 5.1,13.5 "
+                               + "C5.9,14.3 7.0,14.4 7.8,13.7 "
+                               + "C9.2,12.4 9.9,10.3 10.1,8.0 Z"}));
+    g.appendChild(kh);
+    s.appendChild(g);
   }else{
     s.appendChild(svgEl("rect",{x:0,y:0,width:box[0],height:box[1],fill:"#1F4E3D"}));
   }
@@ -683,7 +745,10 @@ function countryMark(name,cls){
 var FLAG_WASH={
   "united arab emirates":["rgba(0,132,61,.26)","rgba(200,16,46,.10)"],
   "saudi arabia":["rgba(0,108,53,.30)","rgba(0,108,53,.10)"],
-  "qatar":["rgba(138,21,56,.26)","rgba(138,21,56,.09)"]
+  "qatar":["rgba(138,21,56,.26)","rgba(138,21,56,.09)"],
+  "kuwait":["rgba(0,122,61,.26)","rgba(206,17,38,.09)"],
+  "bahrain":["rgba(206,17,38,.24)","rgba(206,17,38,.08)"],
+  "oman":["rgba(2,128,2,.24)","rgba(219,23,27,.10)"]
 };
 var ACCENT_WASH=["rgba(31,78,61,.16)","rgba(31,78,61,.06)"];
 
@@ -1189,6 +1254,14 @@ function route(){
   if(!sameSelection) el("selname").focus();
 }
 
+/* The header kicker lists the countries the register actually covers. It is built
+   from the data rather than written into the markup, because the hardcoded version
+   said three countries on the day the register began covering six. */
+function paintKick(){
+  var k=el("kick");
+  if(!k || !DATA.meta || !DATA.meta.countries) return;
+  k.textContent=DATA.meta.countries.map(function(c){ return c.name; }).join(" · ");
+}
 function showL1(clean){
   clearTimeout(timer);
   abandonSearch();
@@ -1661,6 +1734,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   buildNorm();
   buildSlugs();
   el("state").hidden=true;
+  paintKick();
   buildL1();
   wire();
   route();
