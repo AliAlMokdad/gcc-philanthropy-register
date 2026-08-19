@@ -633,16 +633,32 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 
 /* mobile: one centred column. Mark on top, six states in two columns, search full width. */
 @media (max-width:600px){
-  .portal{padding-top:var(--s4)}
-  .ring{max-width:none}
+  .portal{padding-top:32px}
+  .ring{max-width:none;margin:28px auto 24px;gap:12px 10px}
+  .ring-mark{margin-bottom:0}
   .emblem{width:88px}
-  .portal-search{max-width:none}
+  .portal-search{max-width:none;margin:0 auto 24px}
   .portal-go{min-width:88px}
+  .cats{padding-top:28px}
+  .cats-head{margin-bottom:12px}
+  .cats-title{font-size:22px}
+  ol.ranked{gap:8px}
+  ol.ranked a{min-height:44px;padding:7px 14px}
+  ol.ranked a::before{top:8px;bottom:8px}
+  ol.ranked .t{line-height:1.25}
+  details.more{margin-top:14px}
+  details.more summary{padding:8px 0}
+  details.more ol.ranked{margin-top:12px}
+  .portal-all{margin-top:24px}
+  body:has(#l1:not([hidden])) main{padding-bottom:24px}
+  body:has(#l1:not([hidden])) footer.sig{margin-top:0}
 }
 /* on a phone the button drops under a full-width field so the placeholder reads whole */
 @media (max-width:480px){
+  .portal-word{font-size:25px;line-height:1.12}
   .portal-search{flex-wrap:wrap}
-  .portal-search input{flex-basis:100%}
+  .portal-search input{flex-basis:100%;padding:0 14px}
+  .portal-search input::placeholder{font-size:15px}
   .portal-go{flex-basis:100%;width:100%}
 }
 
@@ -2029,6 +2045,10 @@ function wire(){
     location.hash = "#/a/all" + (q ? "?q="+encodeURIComponent(q) : "");
   });
   initBerry();
+  /* the desktop placeholder is a touch long for a narrow phone, so shorten it there */
+  if(window.matchMedia && window.matchMedia("(max-width:480px)").matches){
+    el("hq").placeholder="Search mandate, focus or location";
+  }
   /* clicking the signature portrait or name plays a short elegant flourish */
   var sig=document.querySelector("footer.sig");
   if(sig){ sig.addEventListener("click",function(e){ if(e.target.closest("a")) sigChime(); }); }
