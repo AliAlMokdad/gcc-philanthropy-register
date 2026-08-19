@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gulf Cooperation Council (GCC) Philanthropy</title>
-<meta name="description" content="Directory of philanthropic funders, foundations, corporate giving programmes and endowments in the United Arab Emirates, Saudi Arabia and Qatar.">
+<title>Gulf Cooperation Council (GCC) Philanthropy Register</title>
+<meta name="description" content="A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -481,6 +481,117 @@ footer.sig a{font-family:var(--serif)}
   .door .mark{box-shadow:0 0 0 1px rgba(255,255,255,.18)}
 }
 
+/* ---------- the portal landing: centred mark, a ring of the six states, one search ---------- */
+/* on the home the centred mark is the identity, so the ink masthead and its ribbon step
+   aside; on an inner page the masthead returns */
+body:has(#l1:not([hidden])) header.top{display:none}
+body:has(#l1:not([hidden])) footer.sig p{text-align:center}
+
+.portal{margin:0 auto;padding:calc(var(--s5) + var(--s4)) 0 0;text-align:center}
+.portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
+  text-transform:uppercase;color:var(--ink-3)}
+.portal-word{max-width:840px;margin:0 auto var(--s5);
+  font:600 clamp(30px,4.6vw,50px)/1.08 var(--display);color:var(--ink);
+  letter-spacing:-.4px;font-optical-sizing:auto;text-wrap:balance}
+.portal-word .abbr{color:var(--slate);font-weight:400;font-style:italic}
+.portal-word::after{content:"";display:block;width:66px;height:3px;margin:20px auto 0;
+  background:var(--spectrum);border-radius:2px}
+
+/* the ring: a 3x3 grid, mark in the centre, six states around it. Grid, not absolute
+   coordinates, so DOM order equals reading order and focus stays visible. */
+/* mobile-first: the emblem on top, the six states in two columns */
+.ring{display:grid;justify-items:center;align-items:center;
+  grid-template-columns:1fr 1fr;grid-template-areas:"mk mk" "s1 s2" "s3 s4" "s5 s6";
+  gap:var(--s4) var(--s3);max-width:520px;margin:0 auto calc(var(--s5) + var(--s4))}
+.ring-mark{grid-area:mk;display:flex;align-items:center;justify-content:center;margin-bottom:var(--s2)}
+.emblem-link{display:block;border-radius:4px;transition:opacity .12s ease-out}
+.emblem-link:hover{opacity:.82}
+.emblem-link:focus-visible{outline:2px solid var(--focus);outline-offset:4px}
+.emblem{display:block;width:120px;height:auto;max-width:100%}
+@media (prefers-color-scheme:dark){
+  /* the official emblem carries dark calligraphy that would vanish on a dark page, so it
+     sits on a soft light plate in dark mode */
+  .ring-mark{background:#F4F1EA;border-radius:14px;padding:10px}
+  .emblem{width:104px}
+}
+/* wide screens: the six states orbit the emblem on an oval, breathing, not a boxed grid.
+   Absolute positions, but DOM order stays reading order so keyboard and screen-reader
+   order remain sensible, and it collapses back to the two-column stack below 860px. */
+@media (min-width:860px){
+  .ring{display:block;position:relative;width:100%;max-width:880px;height:480px;
+    margin:var(--s4) auto calc(var(--s5) + var(--s5))}
+  .ring .ring-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);margin:0}
+  .ring a.spoke{position:absolute;transform:translate(-50%,-50%);width:154px;padding:6px}
+  .ring a:nth-of-type(1){left:28%;top:12%}
+  .ring a:nth-of-type(2){left:72%;top:12%}
+  .ring a:nth-of-type(3){left:12%;top:50%}
+  .ring a:nth-of-type(4){left:88%;top:50%}
+  .ring a:nth-of-type(5){left:28%;top:88%}
+  .ring a:nth-of-type(6){left:72%;top:88%}
+}
+.spoke{display:flex;flex-direction:column;align-items:center;gap:9px;width:100%;
+  text-decoration:none;color:inherit;padding:10px 6px;border-radius:2px;
+  transition:background-color .12s ease-out}
+.spoke:hover,.spoke:focus-visible{background:var(--accent-soft)}
+.spoke-flag{display:flex;align-items:center;justify-content:center;height:56px}
+.spoke .mark{display:block;height:100%;width:auto;max-width:104px;border-radius:2px;
+  box-shadow:0 0 0 1px rgba(24,24,36,.16)}
+.spoke-nm{font:600 16px/1.22 var(--serif);color:var(--ink);text-wrap:balance}
+.spoke:hover .spoke-nm,.spoke:focus-visible .spoke-nm{color:var(--accent)}
+.spoke-ct{font:400 12px/1 var(--mono);letter-spacing:.03em;color:var(--ink-3);
+  font-variant-numeric:tabular-nums}
+@media (prefers-color-scheme:dark){ .spoke .mark{box-shadow:0 0 0 1px rgba(255,255,255,.18)} }
+
+/* the one search, centred under the mark, flat and square like the rest of the register */
+.portal-search{display:flex;gap:8px;max-width:560px;margin:0 auto calc(var(--s5) + var(--s2))}
+.portal-search input{flex:1 1 auto;min-width:0;height:52px;font:16px/1.2 var(--sans);
+  color:var(--ink);background:var(--paper);border:1px solid var(--line-2);border-radius:2px;
+  padding:0 var(--s4);transition:border-color .12s ease-out}
+.portal-search input::placeholder{color:var(--ink-3)}
+.portal-search input:hover{border-color:var(--accent-line)}
+.portal-search input:focus{outline:none;border-color:var(--accent)}
+.portal-search input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.portal-go{flex:0 0 auto;height:52px;min-width:100px;font:600 12px/1 var(--mono);
+  letter-spacing:.12em;text-transform:uppercase;color:var(--paper);background:var(--slate);
+  border:1px solid var(--slate);border-radius:2px;cursor:pointer;
+  transition:background-color .12s ease-out}
+.portal-go:hover{background:var(--accent-2);border-color:var(--accent-2)}
+.portal-go:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media (prefers-color-scheme:dark){ .portal-go{color:#0F1218} }
+
+/* the categories keep the quiet typographic list, and span wider than the hero */
+.cats{max-width:none;text-align:left;padding-top:var(--s5);border-top:1px solid var(--line)}
+
+/* mobile: one centred column. Mark on top, six states in two columns, search full width. */
+@media (max-width:600px){
+  .portal{padding-top:var(--s4)}
+  .ring{max-width:none}
+  .emblem{width:88px}
+  .portal-search{max-width:none}
+  .portal-go{min-width:88px}
+}
+
+/* the link to the whole list, a wide bar under the categories */
+.portal-all{margin:var(--s5) 0 0}
+.portal-all a{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;
+  padding:0 18px;font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;border:1px solid var(--line-2);border-radius:2px;
+  transition:border-color .12s ease-out,background-color .12s ease-out}
+.portal-all a:hover,.portal-all a:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
+
+/* a record in the all-register results carries its country and category as a quiet line */
+.rowbtn .rowmain{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start}
+.rowbtn .rowctx{font:400 12px/1.3 var(--mono);letter-spacing:.02em;color:var(--ink-3)}
+
+/* the categories: a titled block with the count set apart, then the quiet list */
+.cats-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);
+  flex-wrap:wrap;margin:0 0 var(--s4)}
+.cats-title{margin:0;font:600 25px/1.14 var(--display);color:var(--ink);letter-spacing:-.3px}
+.cats-title::after{content:"";display:block;width:46px;height:2px;margin:12px 0 0;
+  background:var(--slate);border-radius:1px}
+.cats-count{font:400 12px/1 var(--mono);letter-spacing:.04em;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+
 /* the mono eyebrow label plus its count is wider than a phone, and the base sheet sets
    the eyebrow nowrap, so below 560px drop the connecting rule and let the count fall to
    its own line rather than push the row into a horizontal scroll */
@@ -497,7 +608,7 @@ footer.sig a{font-family:var(--serif)}
 <header class="top">
   <div class="wrap">
     <p class="kick" id="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
-    <h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1>
+    <h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy Register</a></h1>
   </div>
 </header>
 
@@ -508,17 +619,30 @@ footer.sig a{font-family:var(--serif)}
   <div id="state" role="status">Loading the register.</div>
 
   <div id="l1" hidden>
-    <section class="band" aria-labelledby="h-country">
-      <p class="eyebrow" id="h-country">Countries</p>
-      <div class="doors" id="doors"></div>
-    </section>
-    <section class="band" aria-labelledby="h-type">
-      <p class="eyebrow" id="h-type">Organisation categories<span class="tail" id="typetail"></span></p>
-      <ol class="ranked" id="types"></ol>
-      <details class="more" id="moretypes">
-        <summary id="moresum"></summary>
-        <ol class="ranked" id="types-rest"></ol>
-      </details>
+    <section class="portal" aria-labelledby="portal-word">
+      <h2 class="portal-word" id="portal-word">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy Register</h2>
+      <div class="ring" id="ring">
+        <span class="ring-mark"><a href="#/a/all" class="emblem-link"
+              aria-label="See the full list of all organisations across the six GCC states"><img
+              class="emblem" src="gcc-emblem.svg" alt="" width="165" height="170"></a></span>
+      </div>
+      <form class="portal-search" role="search" id="homeform">
+        <label class="sr" for="hq">Search the register by mandate, focus area or location</label>
+        <input id="hq" type="search" autocomplete="off" spellcheck="false"
+               placeholder="Describe mandate, focus area or location">
+        <button type="submit" class="portal-go" aria-label="Search the register">Search</button>
+      </form>
+      <div class="cats" aria-labelledby="cats-title">
+        <div class="cats-head">
+          <h3 class="cats-title" id="cats-title">Organisation categories</h3>
+        </div>
+        <ol class="ranked" id="types"></ol>
+        <details class="more" id="moretypes">
+          <summary id="moresum"></summary>
+          <ol class="ranked" id="types-rest"></ol>
+        </details>
+        <p class="portal-all"><a href="#/a/all" id="fulllist">See the full list</a></p>
+      </div>
     </section>
   </div>
 
@@ -791,16 +915,18 @@ function safeTel(t){ t=txt(t).trim(); return /[0-9]/.test(t) ? t : ""; }
 
 /* ---------- level 1 ---------- */
 function buildL1(){
-  var doors=el("doors");
+  var ring=el("ring");
+  var ccount={};
+  ROWS.forEach(function(r){ var cn=val(r,"country"); if(cn) ccount[cn]=(ccount[cn]||0)+1; });
   DATA.meta.countries.forEach(function(c){
-    var a=make("a","door");
+    var a=make("a","spoke");
     a.href="#/c/"+slug(c.name);
-    var plate=make("span","plate");
-    plate.appendChild(countryMark(c.name));
-    a.appendChild(plate);
-    a.appendChild(make("span","nm",c.name));
-    a.appendChild(make("span","go","Full details"));
-    doors.appendChild(a);
+    var flag=make("span","spoke-flag");
+    flag.appendChild(countryMark(c.name,"mark"));
+    a.appendChild(flag);
+    a.appendChild(make("span","spoke-nm",c.name));
+    a.appendChild(make("span","spoke-ct",plural(ccount[c.name]||0,"organisation","organisations")));
+    ring.appendChild(a);
   });
 
   var ts=DATA.types, head=ts.slice(0,12), rest=ts.slice(12);
@@ -817,11 +943,8 @@ function buildL1(){
     });
   }
   rank(head,el("types"));
-  el("typetail").textContent=plural(DATA.meta.total,"organisation","organisations");
   if(rest.length){
-    var restSum=rest.reduce(function(a,b){ return a+b.count; },0);
-    el("moresum").textContent=rest.length+" more categories, "
-      + plural(restSum,"organisation","organisations");
+    el("moresum").textContent=rest.length+" more categories";
     rank(rest,el("types-rest"));
   }else{
     el("moretypes").hidden=true;
@@ -955,7 +1078,15 @@ function recFor(r,i,openIt){
   btn.type="button";
   btn.setAttribute("aria-expanded",openIt ? "true" : "false");
   btn.setAttribute("aria-controls",id);
-  btn.appendChild(make("span","nm",val(r,"name")));
+  var main=make("div","rowmain");
+  main.appendChild(make("span","nm",val(r,"name")));
+  /* in the all-register scope a name alone is ambiguous (there are two Dolphin Energy
+     records), so each row carries its country and category as a quiet second line */
+  if(current && current.kind==="a"){
+    var ctx=[val(r,"country"),val(r,"type")].filter(Boolean).join(" · ");
+    if(ctx) main.appendChild(make("span","rowctx",ctx));
+  }
+  btn.appendChild(main);
   btn.appendChild(make("span","caret"));
   li.appendChild(btn);
   var panel=make("div","panel");
@@ -1040,7 +1171,8 @@ function render(){
   clear(list);
   var frag=document.createDocumentFragment();
   slice.forEach(function(r,k){
-    frag.appendChild(recFor(r,start+k,matchedOutsideName(r,c.q)));
+    frag.appendChild(recFor(r,start+k,
+      current.kind==="a" ? false : matchedOutsideName(r,c.q)));
   });
   list.appendChild(frag);
 
@@ -1071,7 +1203,7 @@ function render(){
 function fillPick2(sel){
   var wrap=el("pick2wrap"), sl=el("pick2");
   clear(sl);
-  if(sel.kind!=="c"){ wrap.hidden=true; return; }
+  if(sel.kind!=="c" && sel.kind!=="a"){ wrap.hidden=true; return; }
   var counts={};
   sel.rows.forEach(function(r){
     var v=val(r,"type");
@@ -1136,6 +1268,17 @@ function buildSlugs(){
   add("t",DATA.types);
 }
 function select(kind,s){
+  /* the all-register scope, reached from the home search. A first-class selection over
+     every row, so it flows through computeFiltered, fillPick and the pager unchanged,
+     rather than scattering special-case checks through the country/type branches. */
+  if(kind==="a"){
+    var ac={};
+    ROWS.forEach(function(r){ var cn=val(r,"country"); if(cn) ac[cn]=1; });
+    return {kind:"a",slug:"all",name:"Funders, foundations and charities",
+      sub:plural(ROWS.length,"organisation","organisations")+" across "
+        + plural(Object.keys(ac).length,"country","countries"),
+      rows:ROWS.slice()};
+  }
   var item=SLUGS[kind][s];
   if(!item) return null;
   var field=(kind==="c") ? "country" : "type";
@@ -1197,7 +1340,7 @@ function route(){
   var kind=(parts[0]||"").toLowerCase(), s;
   try{ s=slug(decodeURIComponent(parts[1]||"")); }
   catch(e){ s=slug(parts[1]||""); }
-  if((kind!=="c" && kind!=="t") || !s){ showL1(true); return; }
+  if((kind!=="c" && kind!=="t" && kind!=="a") || !s){ showL1(true); return; }
   var sel=select(kind,s);
   if(!sel){ showL1(true); return; }
 
@@ -1227,7 +1370,7 @@ function route(){
   setPlate(sel.kind==="c" ? sel.name : null);
   el("selname").textContent=sel.name;
   el("selsub").textContent=sel.sub;
-  document.title=sel.name+" | Gulf Cooperation Council (GCC) Philanthropy";
+  document.title=sel.name+" | Gulf Cooperation Council (GCC) Philanthropy Register";
   filtered=computeFiltered(sel,readControls());
   render();
   /* render() may have clamped the page, and a stale "in" may have been dropped, so
@@ -1270,7 +1413,7 @@ function showL1(clean){
   page=1;
   el("l2").hidden=true;
   el("l1").hidden=false;
-  document.title="Gulf Cooperation Council (GCC) Philanthropy";
+  document.title="Gulf Cooperation Council (GCC) Philanthropy Register";
   if(clean && history.replaceState){
     history.replaceState(null,"",location.pathname+location.search);
   }
@@ -1375,8 +1518,10 @@ function cosineAll(qv){
 
 /* the page is the final authority on what is in scope, never the worker */
 function inScope(r, sel, c){
-  var key = (sel.kind === "c") ? "country" : "type";
-  if(val(r, key) !== sel.name) return false;
+  if(sel.kind !== "a"){
+    var key = (sel.kind === "c") ? "country" : "type";
+    if(val(r, key) !== sel.name) return false;
+  }
   var field = (sel.kind === "c") ? "city" : "country";
   if(c.pick && val(r, field) !== c.pick) return false;
   if(c.pick2 && val(r, "type") !== c.pick2) return false;
@@ -1622,6 +1767,14 @@ function onSearch(){
 }
 
 function wire(){
+  /* the home search is an explicit submit, not typeahead: it navigates once to the
+     all-register results and lets that page run the meaning search, so the free Worker
+     is not called on every keystroke on the landing */
+  el("homeform").addEventListener("submit",function(e){
+    e.preventDefault();
+    var q=el("hq").value.trim();
+    location.hash = "#/a/all" + (q ? "?q="+encodeURIComponent(q) : "");
+  });
   el("q").addEventListener("input",onSearch);
   /* each of these changes what should be on screen, so a search already in the air
      is void: without this its answer landed later and threw the filter away */
