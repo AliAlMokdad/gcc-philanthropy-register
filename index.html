@@ -774,9 +774,15 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-key em{font-style:normal;font-family:var(--mono);font-variant-numeric:tabular-nums;
   color:var(--ink-2);font-size:12px;font-weight:600}
 
-/* ---- band C, three panels across the landscape ---- */
+/* ---- band C, panels across the landscape ---- */
 .i-three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
   background:var(--line);border-bottom:1px solid var(--line)}
+.i-three.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+/* the share each funder carries, drawn beside the figure */
+.i-fbar{margin-top:7px;height:5px;border-radius:2px;background:var(--paper-2);max-width:260px}
+.i-fbar i{display:block;height:100%;border-radius:2px;background:var(--accent)}
+.i-fpc{font:400 11px/1.3 var(--mono);color:var(--ink-3);text-align:right;margin-top:3px;
+  font-variant-numeric:tabular-nums}
 .i-pane{background:#fff;padding:var(--s4);min-width:0}
 .i-pane header{margin-bottom:14px}
 .i-pane .i-t-meta{margin-top:5px}
@@ -810,7 +816,6 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-rt{grid-column:1 / -1;height:6px;border-radius:2px;background:var(--i-hair);overflow:hidden}
 .i-rt i{display:block;height:100%;border-radius:2px}
 .i-rt.recip i{background:var(--i-slate)}
-.i-rt.crisis i{background:var(--i-c2)}
 .i-rt.country i{background:var(--i-c3)}
 
 /* ---- band D, funders beside the countries ---- */
@@ -998,7 +1003,11 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-tcol.gap{background:repeating-linear-gradient(180deg,var(--i-hair) 0 2px,transparent 2px 5px);
   opacity:.5}
 .oe-tcol.none{background:none}
-.oe-tmeta{display:block;margin-top:6px;font:400 11px/1.45 var(--mono);color:var(--ink-3)}
+.oe-taxis{display:flex;justify-content:space-between;margin-top:4px;
+  font:400 10px/1 var(--mono);color:var(--ink-3)}
+.oe-tmeta{display:block;margin:8px 0 0;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
+.oe-tsub{margin:3px 0 0;font:400 11.5px/1.45 var(--sans);color:var(--ink-3)}
+.oe-tcol.top i{background:var(--i-s1)}
 .oe-scale{margin:var(--s3) 0 0;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
 
 /* the turn between the two records */
@@ -3050,14 +3059,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
    misrepresent a slice. The route is read from the hash, so route() is never touched.
 
    WHAT A READER GETS, in reading order: the total, then the fact that three funders account
-   for most of it, then what the money bought, then three panels across the page for when it
-   moved, who received it and which crises it answered, then the largest funders beside the
-   countries they reached. Depth is folded away and the register's own list follows below.
+   for most of it, then what the money bought, then when it moved and who received it, then
+   the largest funders beside the countries they reached. Depth is folded away and the
+   register's own list follows below.
 
    HONESTY. Not every panel describes the whole total, so each one states the share it
-   speaks for, computed from the data rather than written in. An emergency tag sits on a
-   third of the value and a named recipient on most of it, and saying otherwise would
-   quietly overstate both.
+   speaks for, computed from the data rather than written in. A named recipient sits on most
+   of the value and not all of it, and saying otherwise would quietly overstate it.
 
    All DOM is built with createElement and textContent, so no value from the data is ever
    parsed as HTML. Only explicit http and https links are rendered. */
@@ -3068,7 +3076,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
   var SEC=["var(--i-s1)","var(--i-s2)","var(--i-s3)","var(--i-s4)","var(--i-s5)","var(--i-s6)"];
   var D=null, loading=false, built=false;
-  var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=8;
+  var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=12;
 
   function el(tag,opts,kids){
     var n=document.createElement(tag),k;
@@ -3101,6 +3109,14 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   function fullUsd(n){ return "$"+Math.round(Number(n)||0).toLocaleString("en-GB"); }
   function nm(n){ return (Number(n)||0).toLocaleString("en-GB"); }
   function pc(a,b){ return Math.round((a/(b||1))*100); }
+  /* a share, said in a way that does not round two thirds of a list down to nothing */
+  function share(a,b){
+    var v=(a/(b||1))*100;
+    if(v>=10) return Math.round(v)+"%";
+    if(v>=1) return v.toFixed(1)+"%";
+    if(v>=0.1) return v.toFixed(2)+"%";
+    return "under 0.1%";
+  }
   var SHORT={"United Arab Emirates":"UAE"};
   function shortState(s){ return SHORT[s]||s||""; }
 
@@ -3418,8 +3434,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   function oeTimeBand(){
     var band=el("section",{cls:"i-band oe-band"});
     band.appendChild(paneHead("Over time, one state at a time",
-      "Grant equivalent, current US dollars. Each state on its own scale, so these show "
-      + "direction rather than size."));
+      "Grant equivalent, current US dollars. Each state is drawn against its own highest "
+      + "year, so these show direction rather than size. The darker column is that peak."));
     var all=[];
     OE_STATES.forEach(function(d){ var y=oeYears(OE.oda[d]||{}); all=all.concat(y); });
     if(!all.length) return band;
@@ -3452,19 +3468,30 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
           col=el("span",{cls:"oe-tcol gap"});
           col.setAttribute("title", (OE.names[d]||d)+" "+y+": no observation");
         }else{
-          col=el("span",{cls:"oe-tcol"});
-          col.setAttribute("title", (OE.names[d]||d)+" "+y+": "+oeAmt(v));
+          col=el("span",{cls:"oe-tcol"+(String(y)===pk ? " top" : "")});
+          col.setAttribute("title", (OE.names[d]||d)+" "+y+": "+oeAmt(v)
+            + (String(y)===pk ? ", its highest" : ""));
           col.appendChild(el("i",{style:"height:"+Math.max(2,(v/peak)*100).toFixed(1)+"%"}));
         }
         cols.appendChild(col);
       }
       box.appendChild(cols);
-      var meta=oeAmt(m[String(last)])+" in "+last
-        + (pk===String(last) ? ", the highest in its record"
-                             : ", down from "+oeAmt(peak)+" in "+pk);
-      if(first>lo) meta+=", from "+first;
-      if(inner.length) meta+=", nothing for "+inner.join(" and ");
-      box.appendChild(el("span",{cls:"oe-tmeta",text:meta}));
+      /* the years at each end, so a column can be placed rather than only compared */
+      box.appendChild(el("div",{cls:"oe-taxis"},[
+        el("span",{text:String(lo)}), el("span",{text:String(hi)})
+      ]));
+      var latest=m[String(last)];
+      var line=pk===String(last)
+        ? "Its highest year on record, " + oeAmt(latest) + " in " + last + "."
+        : oeAmt(latest) + " in " + last + ", against a peak of " + oeAmt(peak)
+          + " in " + pk + ".";
+      box.appendChild(el("p",{cls:"oe-tmeta",text:line}));
+      var extra=[];
+      if(first>lo) extra.push("Reporting begins in " + first + ".");
+      if(inner.length) extra.push("No figure for " +
+        (inner.length===1 ? inner[0] : inner.slice(0,-1).join(", ")+" or "+inner[inner.length-1])
+        + ".");
+      if(extra.length) box.appendChild(el("p",{cls:"oe-tsub",text:extra.join(" ")}));
       wrap.appendChild(box);
     });
     band.appendChild(wrap);
@@ -3601,8 +3628,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     band.appendChild(rib); band.appendChild(key);
     card.appendChild(band);
 
-    /* BAND C: when, to whom, and for which crisis */
-    var three=el("div",{cls:"i-three"});
+    /* BAND C: when it moved, and who received it */
+    var three=el("div",{cls:"i-three two"});
 
     /* when: a column chart, so the shape is read rather than six numbers */
     var p1=el("div",{cls:"i-pane"});
@@ -3663,13 +3690,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     p2.appendChild(rowBars((D.desttype||[]).slice(0,6),"recip",m.recipient_usd));
     three.appendChild(p2);
 
-    /* which crisis */
-    var p3=el("div",{cls:"i-pane"});
-    p3.appendChild(paneHead("Which crises",
-      "Only "+nm(m.emerg_flows)+" of "+nm(m.flows_used)+" funding flows carry a named "+
-      "emergency, so this describes "+pc(m.emerg_usd,T)+" per cent of the value, not all of it."));
-    p3.appendChild(rowBars((D.emerg||[]).slice(0,6),"crisis",m.emerg_usd));
-    three.appendChild(p3);
     card.appendChild(three);
 
     /* BAND D: the funders beside the countries */
@@ -3692,9 +3712,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     split.appendChild(fl);
 
     var cr=el("div",{cls:"i-cty"});
+    var CTY_SHOWN=20;
+    var ctyTop=D.dest_country.slice(0,CTY_SHOWN);
+    var ctyShare=ctyTop.reduce(function(a,r){ return a+r[1]; },0);
     cr.appendChild(paneHead("Countries reached",
-      nm(m.countries_reached)+" in all. The ten largest are shown."));
-    cr.appendChild(rowBars(D.dest_country.slice(0,10),"country",T));
+      nm(m.countries_reached)+" in all. The "+CTY_SHOWN+" largest are here and account for "
+      + pc(ctyShare,T)+" per cent of the "+usd(T)+" recorded."));
+    cr.appendChild(rowBars(ctyTop,"country",T));
     cr.appendChild(el("p",{cls:"i-note",text:"A further "+usd(gUsd())+
       " went to global programmes such as WHO, GAVI and UNRWA. No single country receives it, "+
       "so it is not in this list."}));
@@ -3751,9 +3775,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         ["An eighth of the money has no sector.",usd(D.sector_unstated)+", "+
           pc(D.sector_unstated,T)+" per cent of the total, is reported without a sector, so "+
           "the sector figures describe the rest."],
-        ["The crisis panel covers a third of the value.","Only "+nm(m.emerg_flows)+" of "+
-          nm(m.flows_used)+" funding flows name an emergency, so which crises the money "+
-          "answered can be read for "+pc(m.emerg_usd,T)+" per cent of it and no more."],
         ["Only "+m.distinct_source_orgs+" organisations report at all.","Of the "+
           nm(m.register_rows)+" funders in the register, "+m.matched_rows+" appear here. That "+
           "is a limit of what is reported, not a judgement about the others."],
@@ -3825,7 +3846,48 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     return n.slice(0,-1).join(", ")+" and "+n[n.length-1];
   }
   function sortedRows(){
-    var rows=D.rows.filter(function(r){ return !!r.reg; });
+    /* by register identity, not by reported name. An organisation that reports under two
+       names, as Dubai Humanitarian does under its former International Humanitarian City,
+       otherwise appears twice with its money split between the halves. */
+    var byReg={}, order=[];
+    D.rows.forEach(function(r){
+      if(!r.reg) return;
+      var cur=byReg[r.reg];
+      if(!cur){
+        cur=byReg[r.reg]={};
+        for(var k in r) cur[k]=r[k];
+        cur.names=[r.fts];
+        order.push(cur);
+        return;
+      }
+      /* keep the larger half's descriptive fields, add the money and the flows */
+      if(r.usd>cur.usd){
+        var keep={usd:cur.usd, flows:cur.flows, paid:cur.paid, commitment:cur.commitment,
+                  names:cur.names};
+        for(var k2 in r) cur[k2]=r[k2];
+        cur.usd=keep.usd; cur.flows=keep.flows; cur.paid=keep.paid;
+        cur.commitment=keep.commitment; cur.names=keep.names;
+      }
+      cur.usd=(cur.usd||0)+(r.usd||0);
+      cur.flows=(cur.flows||0)+(r.flows||0);
+      cur.paid=(cur.paid||0)+(r.paid||0);
+      cur.commitment=(cur.commitment||0)+(r.commitment||0);
+      cur.names.push(r.fts);
+      /* the breakdowns merge too, or the panel opens on a total of $46.6m above a list of
+         sectors and countries adding to $43.4m, and the reader is right to trust neither */
+      ["dest","sector","years"].forEach(function(f){
+        if(!Array.isArray(r[f])) return;
+        var by={}, out=[];
+        (cur[f]||[]).concat(r[f]).forEach(function(pair){
+          if(!pair) return;
+          if(by[pair[0]]==null){ by[pair[0]]=out.length; out.push([pair[0],0]); }
+          out[by[pair[0]]][1]+=pair[1]||0;
+        });
+        out.sort(function(a,b){ return b[1]-a[1]; });
+        cur[f]=out;
+      });
+    });
+    var rows=order;
     rows.sort(function(x,y){
       var a,b;
       if(sortKey==="name"){ a=(x.reg||x.fts).toLowerCase(); b=(y.reg||y.fts).toLowerCase(); }
@@ -3851,20 +3913,31 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       return;
     }
     var rows=showAll?all:all.slice(0,TOP);
-    rows.forEach(function(r){
-      var i=D.rows.indexOf(r);
+    var traced=all.reduce(function(a,r){ return a+r.usd; },0) || 1;
+    rows.forEach(function(r,ri){
+      var i=(D.rows.indexOf(r)>-1) ? D.rows.indexOf(r) : (1000+ri);
       var sub=[];
       if(r.reg_type) sub.push(r.reg_type);
       if(r.multilateral) sub.push("multilateral");
       var did="i-det-"+i;
+      /* the share each one carries, drawn as well as written: a column of figures alone did
+         not show that the largest moved four times what the second did */
+      var bar=el("div",{cls:"i-fbar"});
+      /* no artificial floor: a minimum width drew a $27m funder and a $10,000 one alike.
+         A hairline is honest about being small. */
+      bar.appendChild(el("i",{style:"width:"+Math.max(0.35,(r.usd/traced)*100).toFixed(2)+"%"}));
       var btn=el("button",{type:"button",cls:"i-row",
         "aria-expanded":String(sel===i),"aria-controls":did},[
         el("div",null,[
           el("div",{cls:"i-nm",text:r.reg||r.fts}),
-          el("div",{cls:"i-ty",text:sub.join(", ")})
+          el("div",{cls:"i-ty",text:sub.join(", ")}),
+          bar
         ]),
         el("div",{cls:"i-from",text:shortState(r.state),title:r.state||""}),
-        el("div",{cls:"i-amt",text:usd(r.usd)})
+        el("div",null,[
+          el("div",{cls:"i-amt",text:usd(r.usd)}),
+          el("div",{cls:"i-fpc",text:share(r.usd,traced)+" of "+usd(traced)})
+        ])
       ]);
       var wrap=el("div",{cls:"i-rw"+(sel===i?" on":"")});
       wrap.setAttribute("data-i",String(i));
@@ -3873,12 +3946,17 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       list.appendChild(wrap);
     });
     var more=panel.querySelector("#i-more");
+    /* "the largest" is only true while the list is sorted by amount. Sorted by name it is
+       simply the first twelve. */
     if(more) more.textContent=showAll
-      ? "Show the largest "+TOP+" only"
-      : "Show all "+all.length+" traced funders";
+      ? (sortKey==="usd" && sortDir<0 ? "Show the largest "+TOP+" only"
+                                      : "Show the first "+TOP+" only")
+      : "Show all "+all.length+" funders";
     var note=panel.querySelector("#i-lwnote");
-    if(note) note.textContent=(showAll?all.length:Math.min(TOP,all.length))+" of "+all.length+
-      " shown, "+fullUsd(all.reduce(function(a,r){ return a+r.usd; },0))+" traced in total";
+    if(note) note.textContent="Showing "+(showAll?all.length:Math.min(TOP,all.length))+" of "+
+      all.length+" register organisations found in the reported funding. The bars and shares "+
+      "below are of the "+usd(all.reduce(function(a,r){ return a+r.usd; },0))+" between them, "+
+      "not of the regional total.";
     var th=panel.querySelector(".i-thead");
     if(th) Array.prototype.forEach.call(th.querySelectorAll("button[data-sort]"),function(b){
       var on=b.getAttribute("data-sort")===sortKey;
@@ -3948,13 +4026,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(!Array.isArray(j.sector_all)||!j.sector_all.length) return false;
     if(!Array.isArray(j.dest_country)||!j.dest_country.length) return false;
     if(!Array.isArray(j.dest_other)) return false;
-    if(!Array.isArray(j.desttype)||!Array.isArray(j.emerg)) return false;
+    if(!Array.isArray(j.desttype)) return false;
     if(!j.years||typeof j.years!=="object") return false;
     if(typeof j.sector_unstated!=="number") return false;
     if(!j.states||typeof j.states!=="object") return false;
     var need=["total_usd","flows_used","matched_rows","register_rows","sectors_count",
               "countries_reached","distinct_source_orgs","non_gcc_source_flows","built",
-              "years","emerg_usd","emerg_flows","recipient_usd","paid_usd","commitment_usd"];
+              "years","recipient_usd","paid_usd","commitment_usd"];
     for(var i=0;i<need.length;i++) if(!(need[i] in m)) return false;
     return true;
   }
