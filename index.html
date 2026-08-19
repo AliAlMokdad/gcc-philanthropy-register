@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><rect width='48' height='48' rx='10' fill='%23006C35'/><path d='M0 10a10 10 0 0 1 10-10h6v48h-6a10 10 0 0 1-10-10z' fill='%23CE1126'/><path d='M32 0h6a10 10 0 0 1 10 10v28a10 10 0 0 1-10 10h-6z' fill='%238A1538'/></svg>">
+<link rel="icon" type="image/svg+xml" href="gcc-emblem.svg">
 <!--
 ANTI_SLOP_BRIEF
   bold move:  level one is three doors and a ranked list, nothing else. The country
@@ -436,9 +436,9 @@ header.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3p
 header.top .wrap{padding-top:26px;padding-bottom:26px}
 /* six names do not fit one line on a phone, so it is allowed to wrap and given a
    line height to wrap into, with the tracking eased at small sizes */
-.kick{margin:0 0 10px;font:600 12px/1.7 var(--mono);letter-spacing:.14em;
-  text-transform:uppercase;color:#AEB7C6;text-wrap:balance}
-@media (min-width:760px){ .kick{letter-spacing:.2em;line-height:1} }
+.kick{margin:10px 0 0;font:600 11px/1.6 var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;color:#9BA5B5;text-wrap:balance}
+@media (min-width:760px){ .kick{letter-spacing:.18em} }
 header.top h1{font:600 27px/1.18 var(--display);color:#F4F3F0;letter-spacing:.1px}
 @media (min-width:700px){ header.top h1{font-size:31px} }
 header.top h1 a{color:inherit}
@@ -456,7 +456,7 @@ header.top h1 .abbr{color:#98A3B4;font-weight:400}
 /* record voice: names in Source Serif, labels and chrome in IBM Plex Mono */
 .door .nm{font-family:var(--display)}
 .door .go{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
-ol.ranked .t{font-family:var(--serif);font-size:16px;line-height:1.3}
+ol.ranked .t{font-family:var(--serif);font-size:14px;line-height:1.3}
 .back{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .sel-sub{font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--ink-3)}
 .pick label,fieldset.has legend{font-family:var(--mono);letter-spacing:.1em;
@@ -490,11 +490,10 @@ body:has(#l1:not([hidden])) footer.sig p{text-align:center}
 .portal{margin:0 auto;padding:calc(var(--s5) + var(--s4)) 0 0;text-align:center}
 .portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
   text-transform:uppercase;color:var(--ink-3)}
-.portal-word{max-width:840px;margin:0 auto var(--s5);
-  font:600 clamp(30px,4.6vw,50px)/1.08 var(--display);color:var(--ink);
-  letter-spacing:-.4px;font-optical-sizing:auto;text-wrap:balance}
+.portal-word{max-width:720px;margin:0 auto;font:500 clamp(23px,3.3vw,35px)/1.16 var(--display);
+  color:var(--ink);letter-spacing:-.2px;font-optical-sizing:auto;text-wrap:balance}
 .portal-word .abbr{color:var(--slate);font-weight:400;font-style:italic}
-.portal-word::after{content:"";display:block;width:66px;height:3px;margin:20px auto 0;
+.portal-word::after{content:"";display:block;width:54px;height:3px;margin:14px auto 0;
   background:var(--spectrum);border-radius:2px}
 
 /* the ring: a 3x3 grid, mark in the centre, six states around it. Grid, not absolute
@@ -554,13 +553,19 @@ body:has(#l1:not([hidden])) footer.sig p{text-align:center}
 .portal-go{flex:0 0 auto;height:52px;min-width:100px;font:600 12px/1 var(--mono);
   letter-spacing:.12em;text-transform:uppercase;color:var(--paper);background:var(--slate);
   border:1px solid var(--slate);border-radius:2px;cursor:pointer;
-  transition:background-color .12s ease-out}
-.portal-go:hover{background:var(--accent-2);border-color:var(--accent-2)}
+  box-shadow:0 1px 2px rgba(20,40,72,.22);
+  transition:background-color .12s ease-out,box-shadow .12s ease-out}
+.portal-go:hover{background:var(--accent-2);border-color:var(--accent-2);
+  box-shadow:0 2px 7px rgba(20,40,72,.26)}
+.portal-search input{box-shadow:0 1px 1px rgba(20,24,36,.04)}
 .portal-go:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 @media (prefers-color-scheme:dark){ .portal-go{color:#0F1218} }
 
 /* the categories keep the quiet typographic list, and span wider than the hero */
-.cats{max-width:none;text-align:left;padding-top:var(--s5);border-top:1px solid var(--line)}
+.cats{max-width:none;text-align:left;padding-top:var(--s5);position:relative}
+/* a stylish divider under the search: a hairline that fades out at both ends */
+.cats::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--line-2) 22%,var(--line-2) 78%,transparent)}
 
 /* mobile: one centred column. Mark on top, six states in two columns, search full width. */
 @media (max-width:600px){
@@ -573,11 +578,17 @@ body:has(#l1:not([hidden])) footer.sig p{text-align:center}
 
 /* the link to the whole list, a wide bar under the categories */
 .portal-all{margin:var(--s5) 0 0}
-.portal-all a{display:flex;align-items:center;justify-content:center;width:100%;min-height:48px;
-  padding:0 18px;font:600 12px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+.portal-all a{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;
+  padding:0 18px;font:600 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
   color:var(--accent);text-decoration:none;border:1px solid var(--line-2);border-radius:2px;
-  transition:border-color .12s ease-out,background-color .12s ease-out}
-.portal-all a:hover,.portal-all a:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
+  background:linear-gradient(180deg,var(--paper),var(--paper-2));
+  box-shadow:0 1px 2px rgba(20,24,36,.05);
+  transition:border-color .12s ease-out,background-color .12s ease-out,box-shadow .12s ease-out}
+.portal-all a::after{content:"";width:20px;height:1px;background:currentColor;opacity:.5;
+  transition:width .14s ease-out,opacity .14s ease-out}
+.portal-all a:hover,.portal-all a:focus-visible{border-color:var(--accent);background:var(--accent-soft);
+  box-shadow:0 3px 10px rgba(20,40,72,.10)}
+.portal-all a:hover::after,.portal-all a:focus-visible::after{width:30px;opacity:1}
 
 /* a record in the all-register results carries its country and category as a quiet line */
 .rowbtn .rowmain{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start}
@@ -586,9 +597,14 @@ body:has(#l1:not([hidden])) footer.sig p{text-align:center}
 /* the categories: a titled block with the count set apart, then the quiet list */
 .cats-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);
   flex-wrap:wrap;margin:0 0 var(--s4)}
-.cats-title{margin:0;font:600 25px/1.14 var(--display);color:var(--ink);letter-spacing:-.3px}
-.cats-title::after{content:"";display:block;width:46px;height:2px;margin:12px 0 0;
+.cats-title{margin:0;font:600 19px/1.2 var(--display);color:var(--ink);letter-spacing:-.2px}
+.cats-title::after{content:"";display:block;width:38px;height:2px;margin:10px 0 0;
   background:var(--slate);border-radius:1px}
+.cats-head{margin-bottom:var(--s3)}
+/* the categories are the quieter, lower band, smaller than the hero, Wikipedia-style */
+ol.ranked{gap:10px}
+ol.ranked a{min-height:46px;padding:9px 16px}
+ol.ranked a::before{top:9px;bottom:9px}
 .cats-count{font:400 12px/1 var(--mono);letter-spacing:.04em;color:var(--ink-3);
   font-variant-numeric:tabular-nums;white-space:nowrap}
 
@@ -607,8 +623,8 @@ body:has(#l1:not([hidden])) footer.sig p{text-align:center}
 
 <header class="top">
   <div class="wrap">
-    <p class="kick" id="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
     <h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy Register</a></h1>
+    <p class="kick" id="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
   </div>
 </header>
 
@@ -916,8 +932,6 @@ function safeTel(t){ t=txt(t).trim(); return /[0-9]/.test(t) ? t : ""; }
 /* ---------- level 1 ---------- */
 function buildL1(){
   var ring=el("ring");
-  var ccount={};
-  ROWS.forEach(function(r){ var cn=val(r,"country"); if(cn) ccount[cn]=(ccount[cn]||0)+1; });
   DATA.meta.countries.forEach(function(c){
     var a=make("a","spoke");
     a.href="#/c/"+slug(c.name);
@@ -925,7 +939,6 @@ function buildL1(){
     flag.appendChild(countryMark(c.name,"mark"));
     a.appendChild(flag);
     a.appendChild(make("span","spoke-nm",c.name));
-    a.appendChild(make("span","spoke-ct",plural(ccount[c.name]||0,"organisation","organisations")));
     ring.appendChild(a);
   });
 
@@ -1179,9 +1192,7 @@ function render(){
   if(filtered.length){
     el("tally").hidden=false;
     el("tally").textContent="Showing "+num(start+1)+" to "+num(start+slice.length)
-      + " of "+plural(filtered.length,"organisation","organisations")
-      + (filtered.length!==current.rows.length
-          ? ", filtered from "+num(current.rows.length) : "");
+      + " of "+plural(filtered.length,"organisation","organisations");
     el("empty").hidden=true;
   }else{
     el("tally").textContent="";
@@ -1272,12 +1283,8 @@ function select(kind,s){
      every row, so it flows through computeFiltered, fillPick and the pager unchanged,
      rather than scattering special-case checks through the country/type branches. */
   if(kind==="a"){
-    var ac={};
-    ROWS.forEach(function(r){ var cn=val(r,"country"); if(cn) ac[cn]=1; });
     return {kind:"a",slug:"all",name:"Funders, foundations and charities",
-      sub:plural(ROWS.length,"organisation","organisations")+" across "
-        + plural(Object.keys(ac).length,"country","countries"),
-      rows:ROWS.slice()};
+      sub:"",rows:ROWS.slice()};
   }
   var item=SLUGS[kind][s];
   if(!item) return null;
