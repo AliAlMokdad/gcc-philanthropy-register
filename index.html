@@ -963,30 +963,14 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-none{margin:0 0 6px;font:600 14px/1.3 var(--sans);color:var(--ink-3)}
 .oe-nonesub{margin:0;font:400 12px/1.45 var(--sans);color:var(--ink-3)}
 
-/* one colour per category, shared by every bar on the page */
 .oe-seg{display:block;height:100%}
-.oe-seg.s1{background:var(--i-s1)} .oe-seg.s2{background:var(--i-s2)}
-.oe-seg.s3{background:var(--i-s3)} .oe-seg.s4{background:var(--i-s4)}
-.oe-seg.s5{background:var(--i-s5)} .oe-seg.s6{background:var(--i-s6)}
-.oe-seg.s7{background:var(--i-slate-soft)}
-/* the four delivery groups, well separated on purpose */
+/* the four delivery groups, kept well apart from one another on purpose */
 .oe-seg.g1{background:var(--i-s1)} .oe-seg.g2{background:var(--i-s3)}
 .oe-seg.g3{background:var(--i-s5)} .oe-seg.g4{background:var(--i-slate-soft)}
 .oe-key li.g1::before{background:var(--i-s1)} .oe-key li.g2::before{background:var(--i-s3)}
 .oe-key li.g3::before{background:var(--i-s5)} .oe-key li.g4::before{background:var(--i-slate-soft)}
 .oe-chfoot{margin:var(--s2) 0 0;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
-/* one colour per DAC sector group, fixed, so the same band means the same thing on every
-   card. Nine steps that stay apart from one another rather than a single ramp. */
-.oe-seg.k1{background:var(--i-s2)} .oe-seg.k2{background:var(--i-c3)}
-.oe-seg.k3{background:var(--i-s4)} .oe-seg.k4{background:var(--i-c5)}
-.oe-seg.k5{background:var(--i-s1)} .oe-seg.k6{background:var(--i-slate)}
-.oe-seg.k7{background:var(--i-c1)} .oe-seg.k8{background:var(--i-s6)}
-.oe-seg.k9{background:var(--i-slate-soft)}
-.oe-key li.k1::before{background:var(--i-s2)} .oe-key li.k2::before{background:var(--i-c3)}
-.oe-key li.k3::before{background:var(--i-s4)} .oe-key li.k4::before{background:var(--i-c5)}
-.oe-key li.k5::before{background:var(--i-s1)} .oe-key li.k6::before{background:var(--i-slate)}
-.oe-key li.k7::before{background:var(--i-c1)} .oe-key li.k8::before{background:var(--i-s6)}
-.oe-key li.k9::before{background:var(--i-slate-soft)}
+.oe-seg.lead{background:var(--i-s1)}
 .oe-chyr{font:400 10.5px/1 var(--mono);color:var(--ink-3);text-align:right}
 .oe-notes{padding-top:0}
 .oe-prov{margin:var(--s2) 0 0;padding-top:var(--s2);border-top:1px solid var(--i-hair);font:400 11px/1.6 var(--mono);color:var(--ink-3);word-break:break-word}
@@ -1002,10 +986,6 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-key li{position:relative;padding-left:16px;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
 .oe-key li::before{content:"";position:absolute;left:0;top:5px;width:10px;height:10px;
   border-radius:2px;background:var(--i-hair)}
-.oe-key li.s1::before{background:var(--i-s1)} .oe-key li.s2::before{background:var(--i-s2)}
-.oe-key li.s3::before{background:var(--i-s3)} .oe-key li.s4::before{background:var(--i-s4)}
-.oe-key li.s5::before{background:var(--i-s5)} .oe-key li.s6::before{background:var(--i-s6)}
-.oe-key li.s7::before{background:var(--i-slate-soft)}
 
 /* over time, one state at a time */
 .oe-times{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);margin-top:var(--s3)}
@@ -3228,9 +3208,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   }
 
   var OE_STATES = ["SAU","ARE","QAT","KWT","OMN","BHR"];
-  /* one colour per DAC sector group, the same on every card */
-  var SECTOR_CLS = {"100":"k1","200":"k2","300":"k3","400":"k4","500":"k5",
-                    "600":"k6","700":"k7","910":"k8","930":"k8","998":"k9"};
   function oeYears(m){ return Object.keys(m||{}).map(Number).sort(function(a,b){return a-b;}); }
   function oeLast(m){ var y=oeYears(m); return y.length ? String(y[y.length-1]) : null; }
 
@@ -3286,8 +3263,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   function oeStatesBand(){
     var band=el("section",{cls:"i-band oe-band"});
     band.appendChild(paneHead("What the six states report as official aid",
-      "OECD, grant equivalent, current US dollars. Each figure carries its own year "
-      + "because the states do not all report to the same one."));
+      "OECD, grant equivalent, current US dollars. Each figure carries its own year."));
     var grid=el("div",{cls:"oe-grid"});
     OE_STATES.forEach(function(d){
       var card=el("article",{cls:"oe-card"});
@@ -3299,9 +3275,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
            absence of OECD observations means. */
         card.appendChild(el("p",{cls:"oe-none",text:"No OECD observations"}));
         card.appendChild(el("p",{cls:"oe-nonesub",
-          text:"The OECD's headline aid table returns nothing for this state. That is what "
-             + "was asked and what came back, and it is a gap in this record rather than a "
-             + "statement about what the state gives."}));
+          text:"A gap in this record, not a statement about its giving."}));
         grid.appendChild(card);
         return;
       }
@@ -3326,16 +3300,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
           el("span",{cls:"oe-mixk",text:OE.sector_names[top[0]]||top[0]}),
           el("span",{cls:"oe-mixv",text:Math.round(top[1]*100)+"% of "+mix.span})
         ]));
-        /* the colour is fixed to the SECTOR, never to its rank. Assigning by position meant
-           the darkest band was commodity aid on one card and humanitarian aid on the next,
-           so the four strips looked comparable and were not. */
+        /* one bar for the share just named, rather than six bands needing a legend */
         var strip=el("div",{cls:"oe-strip"});
-        mix.list.forEach(function(p){
-          if(p[1]<0.005) return;
-          strip.appendChild(el("i",{cls:"oe-seg "+(SECTOR_CLS[p[0]]||"k9"),
-            style:"width:"+(p[1]*100).toFixed(2)+"%",
-            title:(OE.sector_names[p[0]]||p[0])+"  "+(p[1]*100).toFixed(1)+"%"}));
-        });
+        strip.appendChild(el("i",{cls:"oe-seg lead",style:"width:"+(top[1]*100).toFixed(2)+"%",
+          title:(OE.sector_names[top[0]]||top[0])+"  "+(top[1]*100).toFixed(1)+"%"}));
         card.appendChild(strip);
       }
       var rc=cy ? oeTopRecipient(d,cy) : null;
@@ -3344,27 +3312,15 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       grid.appendChild(card);
     });
     band.appendChild(grid);
-    var seen={}, key=el("ul",{cls:"oe-key"});
-    OE_STATES.forEach(function(d){
-      var mix=oeSectorMix(d);
-      if(mix) mix.list.forEach(function(p){ if(p[1]>=0.005) seen[p[0]]=1; });
-    });
-    Object.keys(seen).sort().forEach(function(k){
-      key.appendChild(el("li",{cls:SECTOR_CLS[k]||"k9",text:OE.sector_names[k]||k}));
-    });
-    if(key.childNodes.length) band.appendChild(key);
     return band;
   }
 
   /* ---------------------------------------------------------------- band: who delivers */
   function oeChannelBand(){
     var band=el("section",{cls:"i-band oe-band"});
-    band.appendChild(paneHead("Who the money was reported as going through",
-      "Share of each state's gross bilateral aid by the kind of body named as the FIRST "
-      + "implementing partner. That is the nearest thing this record holds to whether money "
-      + "moves through organisations at all, and a sector code is not: budget support, food "
-      + "aid and commodity aid share one code. It is not the ultimate deliverer, and a share "
-      + "here is a description of what has happened, not evidence that funding is open."));
+    band.appendChild(paneHead("Who the money went through",
+      "Share of gross bilateral aid by the kind of body named as the first implementing "
+      + "partner. Not the ultimate deliverer, and not evidence that funding is open."));
     var host=el("div",{cls:"oe-chans"});
     /* NGOs FIRST, and darkest. Seven sequential steps of one hue blurred together and the two
        lightest were indistinguishable. Four groups instead, ordered by what the reader of a
@@ -3401,9 +3357,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     });
     band.appendChild(host);
     band.appendChild(el("p",{cls:"oe-chfoot",
-      text:"The figure on the right is the share whose first implementing partner was an NGO "
-         + "or a civil society body. Past use is not an invitation, and none of this says "
-         + "whether a given organisation could obtain any of it."}));
+      text:"The figure on the right is the NGO and civil society share."}));
     var key=el("ul",{cls:"oe-key"});
     GROUPS.forEach(function(g){ key.appendChild(el("li",{cls:g.cls,text:g.name})); });
     band.appendChild(key);
@@ -3418,27 +3372,22 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       ["Two of the six states are missing entirely.",
        "Oman and Bahrain report no development assistance to the OECD. Nothing here says "
        + "what they give, only that this record does not hold it."],
-      ["The headline is the grant equivalent, not cash out of the door.",
-       "Since 2018 that is the measure the OECD reports. On net cash Kuwait's 2023 figure "
-       + "reads $11m and the obvious conclusion is that its aid stopped. On the headline "
-       + "measure it is $82m, and $218m in 2025. Both numbers are real and they tell "
-       + "different stories, which is why this says which one it is showing."],
+      ["The headline is the grant equivalent, not cash paid out.",
+       "That has been the OECD's headline measure since 2018. On net cash Kuwait's 2023 "
+       + "figure reads $11m and looks like a stop. On the headline it is $82m, and $218m "
+       + "in 2025."],
       ["The breakdowns are a different measure, not a share of the headline.",
-       "Sector, destination and delivery are gross bilateral disbursements. The headline is "
-       + "the grant equivalent. Neither contains the other: core money given to multilateral "
-       + "organisations is inside the headline and outside the breakdowns, while gross "
-       + "disbursements count what went out without netting repayments. For the UAE and for "
-       + "Kuwait the breakdown total is LARGER than the headline. Do not read the shares as "
-       + "slices of the figure on the card."],
-      ["The latest year is not the same year for everyone.",
-       "Each figure carries its own. Saudi Arabia's headline stops at 2024 while the others "
-       + "reach 2025, so any regional total would measure who reported rather than who gave."],
+       "Sector, destination and delivery are gross bilateral disbursements. Neither measure "
+       + "contains the other, and for the UAE and Kuwait the breakdown total is larger than "
+       + "the headline. They are not slices of the figure on the card."],
+      ["The latest year is not the same for everyone.",
+       "Saudi Arabia's headline stops at 2024 while the others reach 2025, which is why "
+       + "there is no regional total anywhere on this page."],
       ["This record holds state aid only.",
-       "Zakat, sadaqah, waqf and private and family giving are outside it, because it is a "
-       + "record of what governments report. They are NOT outside the humanitarian record "
-       + "below, where charities, foundations and societies make up most of the reporting "
-       + "bodies. How much of all Gulf giving either record captures is not known, and "
-       + "nothing here should be read as a share of a total nobody has measured."]
+       "Zakat, sadaqah, waqf and private and family giving are outside it. They are not "
+       + "outside the humanitarian record below, where charities and foundations are most "
+       + "of the reporting bodies. How much of all Gulf giving either one captures is "
+       + "unknown."]
     ];
     var ul=el("ul",{cls:"i-lim"});
     items.forEach(function(t){
@@ -3469,9 +3418,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   function oeTimeBand(){
     var band=el("section",{cls:"i-band oe-band"});
     band.appendChild(paneHead("Over time, one state at a time",
-      "Grant equivalent, current US dollars. Deliberately NOT summed into a regional line: "
-      + "the states report different years, so a combined series would rise and fall with "
-      + "who happened to report rather than with what was given."));
+      "Grant equivalent, current US dollars. Each state on its own scale, so these show "
+      + "direction rather than size."));
     var all=[];
     OE_STATES.forEach(function(d){ var y=oeYears(OE.oda[d]||{}); all=all.concat(y); });
     if(!all.length) return band;
@@ -3521,10 +3469,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     });
     band.appendChild(wrap);
     band.appendChild(el("p",{cls:"oe-scale",
-      text:lo+" to "+hi+". Each state is drawn to ITS OWN peak, named beneath it, so the "
-         + "heights show direction and not size: compare a state with itself here and with "
-         + "the others in the figures above. A faint column means no observation for a year "
-         + "inside a state's own range; blank means the year sits outside it."}));
+      text:lo+" to "+hi+". A faint column is a year with no observation. Blank is a year "
+         + "outside that state's record."}));
     return band;
   }
 
@@ -3543,31 +3489,28 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        one is worse than showing one and saying so. */
     frame.appendChild(el("p",{cls:"oe-lede",
       text:OE
-        ? "Two separate records of Gulf giving, kept by two bodies, counting different "
-          + "things in different units. Neither is a list of money available to the "
-          + "organisations below."
+        ? "Two records of Gulf giving, kept by different bodies and counting different "
+          + "things. Neither is a list of money available to the organisations below."
         : "A record of Gulf humanitarian giving, kept by UN OCHA. It is not a list of money "
           + "available to the organisations below."}));
     var two=el("div",{cls:"oe-two"});
     if(OE) two.appendChild(el("div",{cls:"oe-half"},[
       el("span",{cls:"oe-half-k",text:"Official aid"}),
       el("p",{cls:"oe-half-t",
-        text:"What four of the six states report to the OECD as development assistance. "
-           + "The headline is a grant equivalent, a measure of effort rather than cash out "
-           + "of the door. Humanitarian work is one sector inside it."})
+        text:"What four of the six states report to the OECD. The headline is a grant "
+           + "equivalent, a measure of effort rather than cash paid out."})
     ]));
     two.appendChild(el("div",{cls:"oe-half"},[
       el("span",{cls:"oe-half-k",text:"Humanitarian flows"}),
       el("p",{cls:"oe-half-t",
-        text:"What any funder chose to report to UN OCHA as humanitarian money, states and "
-           + "private bodies alike. Reporting is voluntary and it counts commitments as well "
-           + "as money paid, so it is neither a total nor a simple floor."})
+        text:"What funders chose to report to UN OCHA, states and private bodies alike. "
+           + "Voluntary, and it counts commitments as well as money paid."})
     ]));
     if(!OE) two.className="oe-two one";
     frame.appendChild(two);
     if(OE) frame.appendChild(el("p",{cls:"oe-warn",
-      text:"The same activity can appear in both, and no reconciliation between them exists. "
-         + "Nothing here adds them together, and neither should a reader."}));
+      text:"Humanitarian work sits inside official aid as one sector, so the same activity "
+         + "can appear in both. They cannot be added."}));
     card.appendChild(frame);
 
     /* the official aid lane, when its file loaded */
@@ -3585,14 +3528,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       ? el("section",{cls:"i-band oe-turn"},[
           el("span",{cls:"oe-turn-k",text:"The second record"}),
           el("p",{cls:"oe-turn-t",
-            text:"Everything from here is UN OCHA's humanitarian tracking, a different count "
-               + "on different years. It is neither a share nor a total of the figures above."})
+            text:"Everything below is UN OCHA's humanitarian tracking, on its own years."})
         ])
       : el("section",{cls:"i-band oe-turn"},[
           el("span",{cls:"oe-turn-k",text:"One record, not two"}),
           el("p",{cls:"oe-turn-t",
-            text:"The official aid figures could not be loaded, so only UN OCHA's humanitarian "
-               + "tracking is shown below. Nothing else on this page depends on them."})
+            text:"The official aid figures could not be loaded, so only UN OCHA's "
+               + "humanitarian tracking is shown below."})
         ]));
 
     /* BAND A: the headline, and the concentration finding as its counterweight */
@@ -3815,11 +3757,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         ["Only "+m.distinct_source_orgs+" organisations report at all.","Of the "+
           nm(m.register_rows)+" funders in the register, "+m.matched_rows+" appear here. That "+
           "is a limit of what is reported, not a judgement about the others."],
-        ["It overlaps the official aid figures above, and cannot be added to them.",
-          "This is humanitarian funding voluntarily reported to one system. Official "+
-          "development assistance is a different count on different rules, and humanitarian "+
-          "work sits inside it as one sector, so the same activity can appear in both. No "+
-          "reconciliation between the two exists."],
+        ["It overlaps the official aid figures above.",
+          "Humanitarian work sits inside official development assistance as one sector, so "+
+          "the same activity can appear in both records. No reconciliation between them "+
+          "exists, and they cannot be added."],
         ["Absence is not evidence.",thinReporters()+" That is a fact about reporting, not "+
           "about their giving."]
       ];
