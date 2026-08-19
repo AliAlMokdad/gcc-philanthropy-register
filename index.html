@@ -123,6 +123,14 @@ html{scrollbar-color:var(--berry-soft) transparent;scrollbar-width:thin}
   display:none}
 body:has(#l1:not([hidden])) #brushes{display:block}
 @media (prefers-color-scheme:dark){ #brushes{opacity:.6} }
+/* an individual country page wears its flag as a soft painterly wash across the whole
+   page, in the flag's own colours, faint enough that the text stays the subject */
+#cwash{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:none}
+body.country-view #cwash{display:block}
+#cwash .cwa{fill:var(--cw1)}
+#cwash .cwb{fill:var(--cw2)}
+#cwash ellipse{opacity:.055}
+@media (prefers-color-scheme:dark){ #cwash ellipse{opacity:.11} }
 .wrap{max-width:1240px;margin:0 auto;padding:0 var(--s5)}
 @media (max-width:700px){ .wrap{padding:0 var(--s4)} }
 a{color:var(--accent)}
@@ -255,7 +263,7 @@ details.more ol.ranked{margin-top:var(--s3)}
      heading column, where at 172 it is 438px and clears it. The box hugs the flag
      exactly, which matters because the scrim below is painted on this box. */
   top:50%;transform:translateY(-50%);height:min(34vw,244px);
-  line-height:0;pointer-events:none;opacity:.28}
+  line-height:0;pointer-events:none;opacity:.16}
 /* Faded by a MASK on the flag's own alpha, so there is no edge anywhere to see.
    A scrim was tried first and was wrong: laying a paper-coloured gradient OVER the flag
    painted a flat rectangle across the band's green wash, so what appeared was a box with
@@ -268,7 +276,7 @@ details.more ol.ranked{margin-top:var(--s3)}
      #000 0%,rgba(0,0,0,.78) 48%,rgba(0,0,0,0) 86%);
           mask-image:radial-gradient(62% 72% at 50% 50%,
      #000 0%,rgba(0,0,0,.78) 48%,rgba(0,0,0,0) 86%)}
-@media (prefers-color-scheme:dark){ .flagplate{opacity:.28} }
+@media (prefers-color-scheme:dark){ .flagplate{opacity:.20} }
 /* the GCC emblem on the whole-register head: the same soft side watermark, circular,
    dissolved at the edge, low enough that the heading text stays the subject */
 .flagplate.is-emblem{opacity:.18}
@@ -541,7 +549,7 @@ footer.sig a{font-family:var(--serif)}
 body:has(#l1:not([hidden])) header.top{display:none}
 body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 
-.portal{margin:0 auto;padding:calc(var(--s5) + var(--s2)) 0 0;text-align:center}
+.portal{margin:0 auto;padding:var(--s4) 0 0;text-align:center}
 .portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
   text-transform:uppercase;color:var(--ink-3)}
 .portal-word{max-width:740px;margin:0 auto;font:500 clamp(24px,3.5vw,38px)/1.16 var(--display);
@@ -555,7 +563,7 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 /* mobile-first: the emblem on top, the six states in two columns */
 .ring{display:grid;justify-items:center;align-items:center;
   grid-template-columns:1fr 1fr;grid-template-areas:"mk mk" "s1 s2" "s3 s4" "s5 s6";
-  gap:var(--s4) var(--s3);max-width:520px;margin:0 auto calc(var(--s5) + var(--s4))}
+  gap:var(--s4) var(--s3);max-width:520px;margin:var(--s5) auto calc(var(--s5) + var(--s4))}
 .ring-mark{grid-area:mk;display:flex;align-items:center;justify-content:center;margin-bottom:var(--s2)}
 .emblem-link{display:block;border-radius:4px;transition:opacity .12s ease-out}
 .emblem-link:hover{opacity:.82}
@@ -696,6 +704,21 @@ ol.ranked a::before{top:9px;bottom:9px}
   <g filter="url(#bpa)"><ellipse cx="1055" cy="150" rx="300" ry="54" fill="#96BEF2" opacity="0.08" transform="rotate(-58 1055 150)"/></g>
   <g filter="url(#bpb)"><ellipse cx="235" cy="645" rx="330" ry="56" fill="#F4B36A" opacity="0.07" transform="rotate(16 235 645)"/></g>
   <g filter="url(#bpa)"><ellipse cx="640" cy="415" rx="300" ry="46" fill="#8FB6EE" opacity="0.055" transform="rotate(-8 640 415)"/></g>
+</svg>
+<svg id="cwash" aria-hidden="true" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="cwf" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.010" numOctaves="4" seed="9" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="90" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+  <g filter="url(#cwf)">
+    <ellipse class="cwa" cx="250" cy="175" rx="520" ry="150" transform="rotate(-16 250 175)"/>
+    <ellipse class="cwb" cx="985" cy="360" rx="480" ry="140" transform="rotate(12 985 360)"/>
+    <ellipse class="cwa" cx="640" cy="720" rx="540" ry="150" transform="rotate(-6 640 720)"/>
+    <ellipse class="cwb" cx="180" cy="600" rx="360" ry="120" transform="rotate(18 180 600)"/>
+  </g>
 </svg>
 <a class="skip" href="#main">Skip to content</a>
 
@@ -1033,20 +1056,20 @@ function paintWashAll(){
    so the text never loses contrast. two accent variants per country, because a solid
    flag hue that clears AA on the light ground would fail it on the dark one. */
 var COUNTRY_THEME={
-  "united arab emirates":{ac:"#00702E",acD:"#55D890",a2:"#005A26",a2D:"#74E0A6",soft:"rgba(0,132,61,.10)",line:"rgba(0,132,61,.24)",mast:"#0A3D24",bga:"rgba(0,132,61,.12)",bgb:"rgba(200,16,46,.06)"},
-  "saudi arabia":{ac:"#006C35",acD:"#45C783",a2:"#02572B",a2D:"#6BD69C",soft:"rgba(0,108,53,.10)",line:"rgba(0,108,53,.24)",mast:"#053E20",bga:"rgba(0,108,53,.13)",bgb:"rgba(0,108,53,.05)"},
-  "qatar":{ac:"#8A1538",acD:"#E68AA2",a2:"#6F112D",a2D:"#EFA6B8",soft:"rgba(138,21,56,.10)",line:"rgba(138,21,56,.24)",mast:"#4E0C20",bga:"rgba(138,21,56,.12)",bgb:"rgba(138,21,56,.05)"},
-  "kuwait":{ac:"#007A3D",acD:"#52D68C",a2:"#026231",a2D:"#72E0A2",soft:"rgba(0,122,61,.10)",line:"rgba(0,122,61,.24)",mast:"#0A4227",bga:"rgba(0,122,61,.12)",bgb:"rgba(206,17,38,.06)"},
-  "bahrain":{ac:"#CE1126",acD:"#F58A97",a2:"#A50E1F",a2D:"#F8A6B0",soft:"rgba(206,17,38,.10)",line:"rgba(206,17,38,.24)",mast:"#5E0A14",bga:"rgba(206,17,38,.11)",bgb:"rgba(206,17,38,.05)"},
-  "oman":{ac:"#C8102E",acD:"#F58A97",a2:"#9E0C24",a2D:"#F8A6B0",soft:"rgba(200,16,46,.10)",line:"rgba(200,16,46,.24)",mast:"#5A0A16",bga:"rgba(200,16,46,.11)",bgb:"rgba(2,128,2,.06)"}
+  "united arab emirates":{ac:"#00702E",acD:"#55D890",a2:"#005A26",a2D:"#74E0A6",soft:"rgba(0,132,61,.10)",line:"rgba(0,132,61,.24)",mast:"#0A3D24",bga:"rgba(0,132,61,.12)",bgb:"rgba(200,16,46,.06)",cw1:"#009639",cw2:"#C8102E"},
+  "saudi arabia":{ac:"#006C35",acD:"#45C783",a2:"#02572B",a2D:"#6BD69C",soft:"rgba(0,108,53,.10)",line:"rgba(0,108,53,.24)",mast:"#053E20",bga:"rgba(0,108,53,.13)",bgb:"rgba(0,108,53,.05)",cw1:"#006C35",cw2:"#0B8A45"},
+  "qatar":{ac:"#8A1538",acD:"#E68AA2",a2:"#6F112D",a2D:"#EFA6B8",soft:"rgba(138,21,56,.10)",line:"rgba(138,21,56,.24)",mast:"#4E0C20",bga:"rgba(138,21,56,.12)",bgb:"rgba(138,21,56,.05)",cw1:"#8A1538",cw2:"#A83A58"},
+  "kuwait":{ac:"#007A3D",acD:"#52D68C",a2:"#026231",a2D:"#72E0A2",soft:"rgba(0,122,61,.10)",line:"rgba(0,122,61,.24)",mast:"#0A4227",bga:"rgba(0,122,61,.12)",bgb:"rgba(206,17,38,.06)",cw1:"#007A3D",cw2:"#CE1126"},
+  "bahrain":{ac:"#CE1126",acD:"#F58A97",a2:"#A50E1F",a2D:"#F8A6B0",soft:"rgba(206,17,38,.10)",line:"rgba(206,17,38,.24)",mast:"#5E0A14",bga:"rgba(206,17,38,.11)",bgb:"rgba(206,17,38,.05)",cw1:"#CE1126",cw2:"#E24152"},
+  "oman":{ac:"#C8102E",acD:"#F58A97",a2:"#9E0C24",a2D:"#F8A6B0",soft:"rgba(200,16,46,.10)",line:"rgba(200,16,46,.24)",mast:"#5A0A16",bga:"rgba(200,16,46,.11)",bgb:"rgba(2,128,2,.06)",cw1:"#C8102E",cw2:"#028002"}
 };
 var themedCountry=null;
 function paintPage(countryName){
   themedCountry=countryName||null;
   var b=document.body,
-      keys=["--accent","--accent-2","--accent-soft","--accent-line","--slate","--focus","--mast","--bg-a","--bg-b"];
+      keys=["--accent","--accent-2","--accent-soft","--accent-line","--slate","--focus","--mast","--bg-a","--bg-b","--cw1","--cw2"];
   var t=countryName && COUNTRY_THEME[norm(countryName)];
-  if(!t){ keys.forEach(function(k){ b.style.removeProperty(k); }); return; }
+  if(!t){ keys.forEach(function(k){ b.style.removeProperty(k); }); b.classList.remove("country-view"); return; }
   var dark=window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches;
   var ac=dark ? t.acD : t.ac;
   b.style.setProperty("--accent",ac);
@@ -1058,6 +1081,9 @@ function paintPage(countryName){
   b.style.setProperty("--mast",t.mast);
   b.style.setProperty("--bg-a",t.bga);
   b.style.setProperty("--bg-b",t.bgb);
+  b.style.setProperty("--cw1",t.cw1);
+  b.style.setProperty("--cw2",t.cw2);
+  b.classList.add("country-view");
 }
 
 /* only http and https survive, so a malformed cell cannot become a script link */
