@@ -39,10 +39,10 @@ ANTI_SLOP_BRIEF
   and the Saudi flag carries the shahada, which should not be approximated in
   hand-drawn geometry. So these are flag-DERIVED marks, not flag reproductions.
 
-  Borrowed from Google deliberately, on Gemini's advice: a left-aligned result column
-  with a measured line length, a pill search field with a soft shadow that lifts on
-  focus, quiet grey metadata above a prominent title, and numbered pagination.
-  Deliberately NOT borrowed: its palette, its typefaces, its card elevation.
+  Borrowed from reference indexes deliberately: a left-aligned result column with a
+  measured line length, quiet grey metadata above a prominent title, and numbered
+  pagination. Controls use the register's own precise hairline language rather than
+  borrowed search-product elevation.
 
   Every node is built with createElement and textContent. There is no innerHTML in
   this file, so no cell of the source data is ever parsed as markup.
@@ -59,8 +59,6 @@ ANTI_SLOP_BRIEF
   --focus:#183C54;
   --spectrum:linear-gradient(120deg,#E3008C,#7B61FF,#0078D4,#00BCF2,#13A10E,#FFB900);
   --bg-a:rgba(24,60,84,.05); --bg-b:rgba(24,60,84,.03);
-  --shadow:0 1px 3px rgba(20,24,36,.10);
-  --shadow-up:0 8px 24px rgba(20,24,36,.12);
   /* Source Serif 4 for the record voice, IBM Plex Mono for labels and chrome, both from
      Google Fonts. System sans is kept for dense values and the search field so nothing
      critical waits on a web font. */
@@ -77,8 +75,6 @@ ANTI_SLOP_BRIEF
     --paper:#0F1218; --paper-2:#161A20; --line:#282E38; --line-2:#38404C;
     --focus:#9CC0DE;
     --bg-a:rgba(156,192,222,.06); --bg-b:rgba(156,192,222,.035);
-    --shadow:0 1px 6px rgba(0,0,0,.55);
-    --shadow-up:0 8px 24px rgba(0,0,0,.5);
   }
 }
 *{box-sizing:border-box}
@@ -135,12 +131,11 @@ section.band + section.band{border-top:1px solid var(--line)}
    row with a small icon stuck on the front */
 .door{
   display:block;text-decoration:none;color:inherit;position:relative;overflow:hidden;
-  background:var(--paper);border:1px solid var(--line);border-radius:8px;
+  background:var(--paper);border:1px solid var(--line);border-radius:2px;
   padding:0 0 var(--s4);
-  transition:box-shadow .2s ease,border-color .2s ease,transform .2s ease;
+  transition:border-color .12s ease-out;
 }
-.door:hover,.door:focus-visible{box-shadow:var(--shadow-up);
-  border-color:var(--accent-line);transform:translateY(-2px)}
+.door:hover,.door:focus-visible{border-color:var(--accent-line)}
 /* object-fit does nothing to an inline SVG, so the flags floated in a white band with
    gaps either side. They are now set WHOLE on a tinted plate at a common height: three
    flags whose ratios run from 3:2 to 28:11 cannot fill one box without cropping, and
@@ -153,51 +148,34 @@ section.band + section.band{border-top:1px solid var(--line)}
 .door:hover .plate{background:var(--accent-soft)}
 .door .nm{display:block;font:600 20px/1.25 var(--display);color:var(--ink);
   letter-spacing:0;padding:var(--s4) var(--s4) 0;text-wrap:balance}
-/* Permanently visible, not hover-only. Hidden, it left the card as a name floating at
-   the top of a tall empty box; shown, it closes the card and tells a first-time visitor
-   what a click will do. Hover moves it rather than revealing it. */
-.door .go{display:inline-flex;width:max-content;align-items:center;gap:7px;
-  margin:14px var(--s4) 0;padding:8px 13px;
+/* Permanently visible and typographic. The whole card is the target, so this is a quiet
+   editorial cue rather than a second button nested inside it. */
+.door .go{display:block;width:max-content;
+  margin:14px var(--s4) 0;padding:0 0 3px;
   font:600 13px/1 var(--sans);letter-spacing:0;text-transform:none;
-  color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-line);
-  border-radius:999px;transition:gap .18s ease,background-color .18s ease}
-.door .go::after{content:"→";font-size:15px;line-height:1}
-.door:hover .go,.door:focus-visible .go{gap:11px;
-  background:color-mix(in srgb,var(--accent-soft) 72%,var(--accent) 8%)}
+  color:var(--accent);background:transparent;border:0;border-bottom:1px solid currentColor;
+  border-radius:0}
+.door .go::after{content:none}
 
 /* ---------- level 1: the kinds of funder, as tiles ---------- */
 ol.ranked{list-style:none;margin:0;padding:0;display:grid;gap:var(--s3);
   grid-template-columns:1fr}
 @media (min-width:560px){ ol.ranked{grid-template-columns:1fr 1fr} }
 @media (min-width:860px){ ol.ranked{grid-template-columns:1fr 1fr 1fr} }
-/* a faint corner light, and a rule along the foot that draws itself in on hover
-   rather than sitting there as a static border */
+/* Flat index tiles with one fixed leading hairline. The state change belongs to the
+   border, not to elevation or movement. */
 ol.ranked a{
   display:flex;align-items:center;min-height:64px;
-  border:1px solid var(--line);border-radius:8px;
-  background:
-    radial-gradient(150px 90px at 100% 0%,var(--accent-soft),transparent 72%),
-    linear-gradient(135deg,var(--paper) 0%,var(--paper-2) 100%);
+  border:1px solid var(--line);border-radius:2px;background:var(--paper);
   padding:16px var(--s4);text-decoration:none;color:inherit;
   position:relative;overflow:hidden;
-  transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease;
+  transition:border-color .12s ease-out;
 }
-/* a hairline of the accent down the leading edge, which grows on hover: the one
-   moving part on this page, so it reads as a response rather than decoration */
-ol.ranked a::before{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
-  background:linear-gradient(90deg,var(--accent) 0%,var(--accent-2) 54%,
-    rgba(31,78,61,0) 100%);
-  transform:scaleX(.34);transform-origin:left center;opacity:.7;
-  transition:transform .22s ease,opacity .22s ease}
-ol.ranked a:hover,ol.ranked a:focus-visible{border-color:var(--accent-line);
-  box-shadow:0 8px 22px rgba(25,26,23,.10);transform:translateY(-2px)}
-ol.ranked a:hover::before,ol.ranked a:focus-visible::before{transform:scaleX(1);opacity:1}
+ol.ranked a::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:1px;
+  background:var(--accent)}
+ol.ranked a:hover,ol.ranked a:focus-visible{border-color:var(--accent-line)}
 @media (prefers-color-scheme:dark){
-  ol.ranked a{border-color:rgba(143,209,180,.22);
-    background:
-      radial-gradient(150px 90px at 100% 0%,rgba(143,209,180,.13),transparent 72%),
-      linear-gradient(135deg,#1B1E1B 0%,#17201C 52%,#16241F 100%)}
-  ol.ranked a:hover{box-shadow:0 8px 22px rgba(0,0,0,.40)}
+  ol.ranked a{border-color:var(--line);background:var(--paper)}
 }
 ol.ranked .t{font:500 15.5px/1.34 var(--sans);letter-spacing:0}
 details.more{margin-top:var(--s4)}
@@ -277,8 +255,10 @@ details.more ol.ranked{margin-top:var(--s3)}
 
 /* ---------- level 2 ---------- */
 .l2head{padding:var(--s4) 0 0}
-.back{display:inline-block;font:600 13px/1 var(--sans);text-decoration:none;padding:8px 0}
-.back:hover{text-decoration:underline}
+.back{display:inline-flex;align-items:center;min-height:40px;font:600 13px/1 var(--sans);
+  color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;
+  text-underline-offset:3px;padding:0}
+.back:hover{color:var(--accent-2)}
 h2.sel{font:600 32px/1.08 var(--display);margin:var(--s2) 0 var(--s3);
   letter-spacing:0;position:relative;padding-bottom:var(--s3)}
 h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
@@ -289,18 +269,17 @@ h2.sel:focus,h2.sel:focus-visible{outline:none}
 
 .controls{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;
   padding:var(--s4) 0 var(--s3)}
-/* the pill search, borrowed from Google and tinted to the accent on focus */
+/* A flat search field, framed like an archival input rather than a floating search pill. */
 .search{flex:1 1 340px;max-width:520px;display:flex}
 @media (max-width:1100px){ .search{flex-basis:100%;max-width:none} }
 .search input{
   width:100%;height:48px;font:16px/1.2 var(--sans);color:var(--ink);
-  background:var(--paper);border:1px solid var(--line-2);border-radius:24px;
-  padding:0 var(--s4);box-shadow:var(--shadow);
-  transition:box-shadow .16s ease,border-color .16s ease;
+  background:var(--paper);border:1px solid var(--line-2);border-radius:2px;
+  padding:0 var(--s4);transition:border-color .12s ease-out;
 }
 .search input::placeholder{color:var(--ink-3)}
-.search input:hover{box-shadow:var(--shadow-up)}
-.search input:focus{outline:none;border-color:var(--accent);box-shadow:var(--shadow-up)}
+.search input:hover{border-color:var(--accent-line)}
+.search input:focus{outline:none;border-color:var(--accent)}
 .search input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 
 .pick{display:flex;align-items:center;gap:var(--s2)}
@@ -321,9 +300,9 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
   text-transform:none;color:var(--ink-3);padding:0 var(--s2) 0 0}
 .chip{position:relative;display:block}
 .chip input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
-.chip span{display:block;font:600 13px/1 var(--sans);color:var(--ink-2);
-  border:1px solid var(--line-2);border-radius:20px;padding:11px 14px;background:var(--paper);
-  transition:background .14s ease,border-color .14s ease,color .14s ease}
+.chip span{display:flex;align-items:center;min-height:40px;font:600 13px/1 var(--sans);
+  color:var(--ink-2);border:1px solid var(--line-2);border-radius:2px;
+  padding:0 14px;background:var(--paper);transition:border-color .12s ease-out}
 .chip input:hover + span{border-color:var(--accent-line)}
 .chip input:checked + span{background:var(--accent);border-color:var(--accent);color:#FFFFFF}
 @media (prefers-color-scheme:dark){ .chip input:checked + span{color:#0F1412} }
@@ -340,31 +319,21 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
   border-radius:50%;background:var(--accent)}
 .ainote.quiet{background:transparent;border-left-color:var(--line-2);color:var(--ink-3)}
 .ainote.quiet::before{background:var(--ink-3)}
-/* while it is thinking the dot breathes, which is the only motion on the page */
-.ainote.working::before{animation:pulse 1.1s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.7)}}
-
 /* ---------- the list: names that open ---------- */
 ul.recs{list-style:none;margin:0;padding:0}
 li.rec{border-bottom:1px solid var(--line)}
 .rowbtn{
   display:flex;align-items:center;justify-content:space-between;gap:var(--s3);
   width:100%;background:none;border:0;cursor:pointer;text-align:left;
-  padding:var(--s3) var(--s2);font:inherit;color:inherit;border-radius:8px;
-  transition:background .14s ease;
+  padding:var(--s3) var(--s2);font:inherit;color:inherit;border-radius:0;
+  transition:background-color .12s ease-out;
 }
-.rowbtn{position:relative}
-.rowbtn::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:2px;
-  background:transparent;border-radius:1px;transition:background .16s ease}
-.rowbtn:hover::before,.rowbtn[aria-expanded="true"]::before{background:var(--accent)}
-.rowbtn:hover{background:transparent}
-.rowbtn .nm{font:500 18px/1.36 var(--sans);color:var(--ink);letter-spacing:0;
-  transition:color .16s ease}
-.rowbtn:hover .nm,.rowbtn:focus-visible .nm{color:var(--accent)}
+.rowbtn:hover{background:var(--accent-soft)}
+.rowbtn .nm{font:500 18px/1.36 var(--sans);color:var(--ink);letter-spacing:0}
 .rowbtn[aria-expanded="true"] .nm{color:var(--accent)}
 .caret{flex:0 0 auto;width:22px;height:22px;position:relative}
 .caret::before,.caret::after{content:"";position:absolute;background:var(--ink-3);
-  border-radius:1px;transition:transform .18s ease,opacity .18s ease}
+  border-radius:0}
 .caret::before{left:4px;right:4px;top:10px;height:2px}
 .caret::after{top:4px;bottom:4px;left:10px;width:2px}
 .rowbtn[aria-expanded="true"] .caret::after{transform:scaleY(0);opacity:0}
@@ -382,21 +351,23 @@ dl.rec-dl dd{margin:0;font:400 15px/1.6 var(--sans);color:var(--ink);max-width:6
 
 .routes{display:flex;flex-direction:column;gap:var(--s1);align-items:flex-start}
 .routes .r{display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap}
-.routes a{font:500 15px/1.5 var(--sans);color:var(--accent);text-decoration:none;
-  padding:3px 0;overflow-wrap:anywhere;border-bottom:1px solid transparent}
-.routes a:hover,.routes a:focus-visible{border-bottom-color:currentColor}
-.routes .copy{font:700 10px/1 var(--sans);color:var(--ink-3);background:none;
-  border:1px solid var(--line-2);border-radius:14px;padding:7px 10px;cursor:pointer;
-  letter-spacing:.1em;text-transform:uppercase;min-height:26px}
-.routes .copy:hover{color:var(--accent);border-color:var(--accent-line)}
+.routes a{display:inline-block;min-height:40px;font:500 15px/1.5 var(--sans);color:var(--accent);
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
+  padding:8px 0;overflow-wrap:anywhere}
+.routes a:hover{color:var(--accent-2)}
+.routes .copy{font:700 10px/1 var(--sans);color:var(--ink-2);background:none;
+  border:1px solid var(--line-2);border-radius:2px;padding:0 12px;cursor:pointer;
+  letter-spacing:.1em;text-transform:uppercase;min-height:40px;
+  transition:border-color .12s ease-out}
+.routes .copy:hover{border-color:var(--accent)}
 .routes .none{font:400 15px/1.5 var(--sans);color:var(--ink-3)}
 
 /* ---------- pagination ---------- */
 nav.pager{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;
   gap:var(--s2);padding:var(--s5) 0 var(--s4)}
-nav.pager a,nav.pager span{font:500 14px/1 var(--sans);min-width:38px;min-height:38px;
+nav.pager > a,nav.pager > span{font:500 14px/1 var(--sans);min-width:40px;min-height:40px;
   display:inline-flex;align-items:center;justify-content:center;padding:0 12px;
-  border-radius:20px;text-decoration:none;color:var(--accent)}
+  border:1px solid transparent;border-radius:2px;text-decoration:none;color:var(--accent)}
 nav.pager a:hover{background:var(--accent-soft)}
 nav.pager .on{background:var(--accent);color:#FFFFFF;font-weight:700}
 @media (prefers-color-scheme:dark){ nav.pager .on{color:#0F1412} }
@@ -408,52 +379,55 @@ nav.pager .edge{font-weight:600}
 nav.pager .off{color:var(--ink-3);pointer-events:none;cursor:default}
 /* Nine controls do not fit 327px of usable width, so on a phone they are tightened
    and given a row gap: if the row does wrap it reads as two deliberate rows rather
-   than a spill. The targets stay at or above 24px. */
+   than a spill. The targets stay at or above 40px. */
 nav.pager .pg-sm{display:none}
 @media (max-width:520px){
   nav.pager{gap:5px;row-gap:10px;padding:var(--s4) 0}
-  nav.pager a,nav.pager span{min-width:34px;padding:0 7px;font-size:13px}
-  /* Measured: the row needed 348px against 312px. The two ellipses are decorative and
-     removing them saves exactly the 38px that was missing, so the pager holds one
-     line instead of orphaning Next on a second. */
+  nav.pager > a,nav.pager > span{min-width:40px;padding:0 4px;font-size:13px}
+  nav.pager .edge{font-size:11px}
+  /* The two ellipses are decorative, so removing them keeps the useful controls on one
+     line without shrinking the interactive targets. */
   nav.pager .gap{display:none}
   nav.pager .pg-lg{display:none}
   nav.pager .pg-sm{display:inline}
 }
 
 .empty{padding:var(--s5) 0;color:var(--ink-2);font-size:15px}
-.empty button{font:600 13px/1 var(--sans);color:var(--accent);background:none;
-  border:1px solid var(--accent-line);border-radius:20px;padding:11px 16px;
-  cursor:pointer;margin-top:var(--s3)}
+.empty button{min-height:40px;font:600 11px/1 var(--mono);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);background:none;
+  border:1px solid var(--accent-line);border-radius:2px;padding:0 16px;
+  cursor:pointer;margin-top:var(--s3);transition:border-color .12s ease-out}
+.empty button:hover{border-color:var(--accent)}
 
 /* one quiet line, set to the right, in the serif so it reads as a signature rather
    than as another piece of interface */
 footer.sig{border-top:1px solid var(--line);margin-top:var(--s5)}
 footer.sig .wrap{padding-top:var(--s3);padding-bottom:var(--s4)}
 footer.sig p{margin:0;text-align:right;font:400 12.5px/1.6 var(--sans);color:var(--ink-3)}
-footer.sig a{font:600 14px/1.6 var(--sans);color:var(--accent);
-  text-decoration:none;border-bottom:1px solid transparent;letter-spacing:.15px;
-  transition:border-color .16s ease}
-footer.sig a:hover,footer.sig a:focus-visible{border-bottom-color:currentColor}
+footer.sig a{display:inline-flex;align-items:center;min-height:40px;
+  font:600 14px/1.6 var(--sans);color:var(--accent);
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
+  letter-spacing:.15px}
+footer.sig a:hover{color:var(--accent-2)}
 
 #state{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
-#state button{font:600 13px/1 var(--sans);color:var(--accent);background:none;
-  border:1px solid var(--accent-line);border-radius:20px;padding:9px 14px;
-  cursor:pointer;margin-left:var(--s3)}
+#state button{min-height:40px;font:600 11px/1 var(--mono);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--accent);background:none;
+  border:1px solid var(--accent-line);border-radius:2px;padding:0 14px;
+  cursor:pointer;margin-left:var(--s3);transition:border-color .12s ease-out}
+#state button:hover{border-color:var(--accent)}
 noscript p{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2);margin:0}
 main{padding-bottom:var(--s5)}
 [hidden]{display:none !important}
 @media (prefers-reduced-motion:reduce){
   *{transition-duration:.01ms !important;animation-duration:.01ms !important}
-  .door:hover{transform:none}
 }
 </style>
 <style id="copilot-skin">
 /* Copilot house-style overlay, loaded after the base sheet so it wins ties. Palette and
    fonts already come from the retimed :root tokens; this adds the signature moves: an ink
-   masthead capped by the Fluent spectrum ribbon, section headers led by a serif numeral
-   over a mono label, IBM Plex Mono on the chrome, Source Serif on the names. No class
-   names change, so the script is untouched. */
+   masthead capped by the Fluent spectrum ribbon, mono section labels and chrome, and
+   Source Serif on the names. No class names change, so the script is untouched. */
 
 /* masthead: white on ink, the spectrum ribbon along its foot */
 header.top{background:var(--ink);border-bottom:0;position:relative}
@@ -468,12 +442,10 @@ header.top h1 a{color:inherit}
 header.top h1 a:hover{color:#FFFFFF}
 header.top h1 .abbr{color:#98A3B4;font-weight:400}
 
-/* section eyebrow: a serif numeral, a mono label, a hairline, a mono tail */
+/* section eyebrow: a mono label, a hairline, and a mono tail */
 .eyebrow{align-items:baseline;gap:16px;font:600 12px/1 var(--mono);letter-spacing:.2em;
   text-transform:uppercase;color:var(--ink-3)}
 .eyebrow::before{display:none}
-.eyebrow .rn{order:-1;flex:0 0 auto;font:400 32px/1 var(--display);color:var(--slate);
-  letter-spacing:0;text-transform:none}
 .eyebrow::after{align-self:center}
 .eyebrow .tail{font:400 12px/1 var(--mono);letter-spacing:.06em;text-transform:none;
   color:var(--ink-3)}
@@ -487,6 +459,8 @@ ol.ranked .t{font-family:var(--serif);font-size:16px;line-height:1.3}
 .pick label,fieldset.has legend{font-family:var(--mono);letter-spacing:.1em;
   text-transform:uppercase;font-size:11px}
 .chip span{font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+.pick select{border-radius:2px}
+.pick select:hover{border-color:var(--accent-line)}
 .tally{font-family:var(--mono);letter-spacing:.02em}
 .rowbtn .nm{font-family:var(--serif)}
 dl.rec-dl dt{font-family:var(--mono)}
@@ -494,13 +468,14 @@ nav.pager a,nav.pager span{font-family:var(--mono)}
 .routes .copy{font-family:var(--mono)}
 footer.sig a{font-family:var(--serif)}
 
-/* the ranked corner-glow: keep it slate in dark mode, where the base sheet hardcodes green */
+/* flags framed as artwork: a crisp 1px keyline instead of the soft drop shadow, on a
+   quiet plate, at the same 2px radius used across the controls. The flag geometry,
+   proportions and colours are the official standard and are left exactly as drawn. */
+.door .plate{background:var(--paper-2);height:150px;border-bottom:1px solid var(--line)}
+.door .mark{border-radius:2px;box-shadow:0 0 0 1px rgba(24,24,36,.16)}
+.door:hover .plate,.door:focus-visible .plate{background:var(--paper-2)}
 @media (prefers-color-scheme:dark){
-  ol.ranked a{
-    background:
-      radial-gradient(150px 90px at 100% 0%,rgba(156,192,222,.12),transparent 72%),
-      linear-gradient(135deg,#161A20 0%,#141A22 52%,#16222E 100%);
-    border-color:rgba(156,192,222,.20)}
+  .door .mark{box-shadow:0 0 0 1px rgba(255,255,255,.18)}
 }
 
 /* the mono eyebrow label plus its count is wider than a phone, and the base sheet sets
@@ -509,7 +484,6 @@ footer.sig a{font-family:var(--serif)}
 @media (max-width:560px){
   .eyebrow{flex-wrap:wrap;gap:10px 12px}
   .eyebrow::after{display:none}
-  .eyebrow .rn{font-size:26px}
   .eyebrow .tail{flex-basis:100%;order:3}
 }
 </style>
@@ -532,11 +506,11 @@ footer.sig a{font-family:var(--serif)}
 
   <div id="l1" hidden>
     <section class="band" aria-labelledby="h-country">
-      <p class="eyebrow" id="h-country"><span class="rn">I</span>Countries</p>
+      <p class="eyebrow" id="h-country">Countries</p>
       <div class="doors" id="doors"></div>
     </section>
     <section class="band" aria-labelledby="h-type">
-      <p class="eyebrow" id="h-type"><span class="rn">II</span>Organisation categories<span class="tail" id="typetail"></span></p>
+      <p class="eyebrow" id="h-type">Organisation categories<span class="tail" id="typetail"></span></p>
       <ol class="ranked" id="types"></ol>
       <details class="more" id="moretypes">
         <summary id="moresum"></summary>
