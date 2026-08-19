@@ -728,16 +728,15 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-card{background:#fff;border:1px solid var(--line);border-radius:3px;overflow:hidden}
 
 /* ---- type scale, referenced not guessed ---- */
-.i-t-eye{font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+.i-t-eye{font:700 11.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
   color:var(--accent-2);margin:0}
 .i-t-h{font:600 clamp(19px,2.1vw,24px)/1.2 var(--display);letter-spacing:-.015em;
   color:var(--ink);margin:0}
-.i-t-panel{font:600 16px/1.25 var(--display);letter-spacing:-.005em;color:var(--ink);margin:0}
-.i-t-body{font:400 14.5px/1.6 var(--sans);color:var(--ink-2);margin:0}
+.i-t-panel{font:600 17px/1.22 var(--display);letter-spacing:-.005em;color:var(--ink);margin:0}
+.i-t-body{font:400 15px/1.6 var(--sans);color:var(--ink-2);margin:0}
 /* prose is prose. Setting explanatory sentences in letterspaced monospace was the
    machine-made tell; mono is now reserved for figures and the provenance line. */
-.i-t-meta{font:400 12.5px/1.55 var(--sans);color:var(--ink-3);margin:0}
-.i-t-prov{font:400 11px/1.75 var(--mono);letter-spacing:.01em;color:var(--ink-3);margin:0}
+.i-t-meta{font:400 13px/1.55 var(--sans);color:var(--ink-2);margin:0}
 .i-t-fig{font:600 clamp(34px,4.6vw,54px)/.95 var(--display);letter-spacing:-.03em;
   color:var(--ink);font-variant-numeric:tabular-nums}
 .i-num{font-family:var(--mono);font-variant-numeric:tabular-nums}
@@ -745,15 +744,14 @@ ol.ranked a::before{top:9px;bottom:9px}
 /* ---- band A, the headline against a counterweight ---- */
 .i-lede{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
   border-bottom:1px solid var(--line)}
-.i-lede-l{padding:var(--s4);min-width:0}
+/* the live-source line used to sit at the foot of this column. With it gone the column is
+   shorter than its neighbour, so both are centred and the pair reads as one band. */
+.i-lede-l{padding:var(--s4);min-width:0;display:flex;flex-direction:column;
+  justify-content:center}
 .i-lede-r{padding:var(--s4);border-left:1px solid var(--line);background:var(--paper);
   min-width:0;display:flex;flex-direction:column;justify-content:center}
 .i-figrow{display:flex;align-items:baseline;gap:14px;margin-top:14px;flex-wrap:wrap}
 .i-figrow .i-t-meta{max-width:30ch}
-.i-live{margin-top:14px;padding-top:12px;border-top:1px solid var(--i-hair)}
-.i-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink-3);
-  margin-right:7px;vertical-align:1px}
-.i-dot.ok{background:#2F7D5B} .i-dot.chg{background:#A55A12} .i-dot.err{background:#A33}
 /* the concentration callout, the counterweight that resolves the composition */
 .i-conc b{font:600 clamp(26px,3.2vw,38px)/1 var(--display);letter-spacing:-.03em;color:var(--accent-2);
   font-variant-numeric:tabular-nums;display:block}
@@ -770,11 +768,11 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-ribbon i{display:block;height:100%;box-shadow:1px 0 0 #fff}
 .i-ribbon i:last-child{box-shadow:none}
 .i-key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px}
-.i-key span{display:inline-flex;align-items:center;gap:7px;font:400 12px/1.4 var(--sans);
+.i-key span{display:inline-flex;align-items:center;gap:7px;font:500 12.5px/1.4 var(--sans);
   color:var(--ink-2)}
 .i-key b{width:9px;height:9px;border-radius:2px;flex:0 0 9px}
 .i-key em{font-style:normal;font-family:var(--mono);font-variant-numeric:tabular-nums;
-  color:var(--ink-3);font-size:11px}
+  color:var(--ink-2);font-size:12px;font-weight:600}
 
 /* ---- band C, three panels across the landscape ---- */
 .i-three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
@@ -790,24 +788,24 @@ ol.ranked a::before{top:9px;bottom:9px}
   align-items:center;gap:6px;height:100%}
 .i-col i{display:block;width:100%;background:var(--i-s2);border-radius:2px 2px 0 0}
 .i-col.part i{background:repeating-linear-gradient(135deg,var(--i-s4) 0 4px,var(--i-s5) 4px 8px)}
-.i-colv{font:400 10px/1 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums;
+.i-colv{font:600 11.5px/1 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums;
   white-space:nowrap}
 .i-colx{display:flex;gap:7px;margin-top:7px}
-.i-colx span{flex:1 1 0;min-width:0;text-align:center;font:400 10px/1.3 var(--mono);
-  color:var(--ink-3)}
+.i-colx span{flex:1 1 0;min-width:0;text-align:center;font:400 11.5px/1.3 var(--mono);
+  color:var(--ink-2)}
 .i-colx span.part{color:var(--accent-2)}
 .i-pfacts{margin-top:20px;padding-top:16px;border-top:1px solid var(--i-hair);
   display:flex;flex-direction:column;gap:14px}
 .i-pf{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
 .i-pf b{font:600 20px/1 var(--display);letter-spacing:-.02em;color:var(--accent-2);
   font-variant-numeric:tabular-nums;white-space:nowrap}
-.i-pf span{font:400 12.5px/1.5 var(--sans);color:var(--ink-2)}
+.i-pf span{font:400 13px/1.5 var(--sans);color:var(--ink-2)}
 
 /* horizontal bars for the two other panels */
 .i-rows{display:flex;flex-direction:column;gap:9px}
 .i-r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:baseline}
-.i-rlab{font:400 13.5px/1.35 var(--sans);color:var(--ink);min-width:0;overflow-wrap:anywhere}
-.i-rv{font:400 11px/1.35 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums;
+.i-rlab{font:500 14px/1.35 var(--sans);color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.i-rv{font:600 12px/1.35 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums;
   white-space:nowrap}
 .i-rt{grid-column:1 / -1;height:6px;border-radius:2px;background:var(--i-hair);overflow:hidden}
 .i-rt i{display:block;height:100%;border-radius:2px}
@@ -826,7 +824,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-thead{padding:0 var(--s4);background:var(--paper);border-top:1px solid var(--i-hair);
   border-bottom:1px solid var(--i-hair)}
 .i-thead button{border:0;background:none;cursor:pointer;padding:10px 0;text-align:left;
-  font:600 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
+  font:600 11.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
 .i-thead .ar{text-align:right}
 .i-thead button:hover{color:var(--ink)}
 .i-thead button[data-on=true]{color:var(--accent-2)}
@@ -838,10 +836,10 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-row:hover{background:var(--accent-soft)}
 .i-row:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 .i-rw.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
-.i-nm{font:400 16.5px/1.3 var(--display);color:var(--ink);letter-spacing:-.005em;
+.i-nm{font:600 16.5px/1.3 var(--display);color:var(--ink);letter-spacing:-.005em;
   overflow-wrap:anywhere}
-.i-ty{font:400 12px/1.4 var(--sans);color:var(--ink-3);margin-top:3px}
-.i-from{font:400 12px/1.4 var(--sans);color:var(--ink-2)}
+.i-ty{font:500 12.5px/1.4 var(--sans);color:var(--ink-2);margin-top:3px}
+.i-from{font:500 13px/1.4 var(--sans);color:var(--ink-2)}
 .i-amt{font:600 17px/1.2 var(--mono);text-align:right;color:var(--ink);letter-spacing:-.02em;
   font-variant-numeric:tabular-nums}
 .i-more{display:block;width:100%;border:0;border-top:1px solid var(--i-hair);
@@ -862,29 +860,29 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-dh.plain{color:var(--ink-2)}
 .i-bar{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:10px;align-items:center;
   margin-bottom:6px}
-.i-bn{position:relative;padding:3px 4px 3px 0;min-width:0;font:400 13.5px/1.4 var(--sans)}
+.i-bn{position:relative;padding:3px 4px 3px 0;min-width:0;font:500 14px/1.4 var(--sans)}
 .i-bt{position:relative;z-index:1}
 .i-bg{position:absolute;left:0;top:0;bottom:0;border-radius:1px}
 .i-bar.sector .i-bg{background:var(--accent-soft)}
 .i-bar.country .i-bg{background:var(--i-country-soft)}
-.i-bv{font:400 11px/1.4 var(--mono);color:var(--ink-2);text-align:right;
+.i-bv{font:600 12px/1.4 var(--mono);color:var(--ink-2);text-align:right;
   font-variant-numeric:tabular-nums}
 .i-yrs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .i-yr{border:1px solid var(--i-hair);background:#fff;padding:7px 9px}
-.i-yr b{display:block;font:600 12.5px/1.3 var(--mono);font-variant-numeric:tabular-nums}
-.i-yr span{display:block;font:400 11px/1.3 var(--sans);color:var(--ink-3);margin-top:2px}
-.i-kv{font:400 12px/1.75 var(--sans);color:var(--ink-2);word-break:break-word}
+.i-yr b{display:block;font:600 13.5px/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.i-yr span{display:block;font:500 12px/1.3 var(--sans);color:var(--ink-2);margin-top:2px}
+.i-kv{font:400 13px/1.7 var(--sans);color:var(--ink-2);word-break:break-word}
 .i-kv b{color:var(--ink);font-family:var(--mono);font-weight:600;
   font-variant-numeric:tabular-nums}
 .i-kv a{color:var(--accent-2)}
-.i-flag{font:400 12px/1.6 var(--sans);color:var(--orange-strong);background:var(--orange-soft);
+.i-flag{font:400 13px/1.6 var(--sans);color:var(--orange-strong);background:var(--orange-soft);
   border-left:3px solid var(--orange-line);padding:9px 12px;margin-top:12px}
 
 /* folded depth */
 #intel details{border-top:1px solid var(--line)}
 #intel details>summary{cursor:pointer;padding:15px var(--s4);list-style:none;
   display:flex;justify-content:space-between;gap:14px;align-items:center;
-  font:600 14px/1.3 var(--display);color:var(--ink-2);letter-spacing:-.005em}
+  font:600 15px/1.25 var(--display);color:var(--ink);letter-spacing:-.005em}
 #intel details>summary::-webkit-details-marker{display:none}
 #intel details>summary::after{content:"+";font:400 16px/1 var(--mono);color:var(--ink-3)}
 #intel details[open]>summary::after{content:"\2212"}
@@ -894,21 +892,20 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-two{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 .i-scroll{max-height:340px;overflow-y:auto;padding-right:6px}
 .i-note{margin:12px 0 0;padding-top:11px;border-top:1px solid var(--i-hair);
-  font:400 12px/1.65 var(--sans);color:var(--ink-3)}
+  font:400 13px/1.6 var(--sans);color:var(--ink-2)}
 .i-note-top{margin-top:0;border-top:0;padding-top:0}
 .i-cand>div{display:grid;grid-template-columns:minmax(0,1fr) 104px 132px;gap:16px;
   padding:11px 0;border-bottom:1px solid var(--paper-2);align-items:baseline;
   font:400 14.5px/1.4 var(--sans)}
 .i-cand>div:last-child{border-bottom:0}
-.i-cand .cc{font:400 12px/1.4 var(--sans);color:var(--ink-3)}
-.i-cand .cv{font:400 11px/1.4 var(--mono);text-align:right;color:var(--ink-2);
+.i-cand .cc{font:500 12.5px/1.4 var(--sans);color:var(--ink-2)}
+.i-cand .cv{font:600 12px/1.4 var(--mono);text-align:right;color:var(--ink-2);
   font-variant-numeric:tabular-nums}
 .i-lim{margin:0;padding-left:20px;font:400 14.5px/1.65 var(--sans);color:var(--ink-2)}
 .i-lim li{margin-bottom:11px}
 .i-lim li:last-child{margin-bottom:0}
 .i-lim b{color:var(--ink);font-weight:600}
-.i-foot{padding:var(--s3) var(--s4);border-top:1px solid var(--line);background:var(--paper)}
-.i-empty{padding:var(--s4);font:400 14.5px/1.6 var(--sans);color:var(--ink-3)}
+.i-empty{padding:var(--s4);font:400 14.5px/1.6 var(--sans);color:var(--ink-2)}
 
 @media (max-width:1080px){
   .i-lede,.i-split{grid-template-columns:1fr}
@@ -925,12 +922,10 @@ ol.ranked a::before{top:9px;bottom:9px}
   .i-yrs{grid-template-columns:repeat(3,1fr)}
   .i-cand>div{grid-template-columns:minmax(0,1fr) 104px;gap:6px 12px}
   .i-cand .cc{display:none}
-  .i-lede-l,.i-lede-r,.i-band,.i-pane,.i-cty,.i-det,.i-dbody,.i-foot{
-    padding-left:var(--s3);padding-right:var(--s3)}
-  .i-lwhead,.i-thead,.i-more{padding-left:var(--s3);padding-right:var(--s3)}
+  .i-lede-l,.i-lede-r,.i-band,.i-pane,.i-cty,.i-det,.i-dbody,  .i-lwhead,.i-thead,.i-more{padding-left:var(--s3);padding-right:var(--s3)}
   #intel details>summary{padding-left:var(--s3);padding-right:var(--s3)}
   .i-cols{height:104px}
-  .i-colv{font-size:9px}
+  .i-colv{font-size:10.5px}
 }
 </style>
 </head>
@@ -2446,7 +2441,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   var panel=document.getElementById("intel");
   if(!panel) return;
 
-  var FTS="https://api.hpc.tools/v1/public/fts/flow";
   var SEC=["var(--i-s1)","var(--i-s2)","var(--i-s3)","var(--i-s4)","var(--i-s5)","var(--i-s6)"];
   var D=null, loading=false, built=false;
   var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=8;
@@ -2571,10 +2565,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       el("p",{cls:"i-t-meta",text:m.years+", across "+nm(m.flows_used)+
         " funding flows from "+m.distinct_source_orgs+" reporting organisations"})
     ]));
-    var live=el("p",{cls:"i-t-prov i-live",id:"i-live"});
-    live.appendChild(el("span",{cls:"i-dot"}));
-    live.appendChild(document.createTextNode("Checking the live source..."));
-    L.appendChild(live);
     lede.appendChild(L);
 
     var R=el("div",{cls:"i-lede-r i-conc"});
@@ -2714,9 +2704,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     cr.appendChild(paneHead("Countries reached",
       nm(m.countries_reached)+" in all. The ten largest are shown."));
     cr.appendChild(rowBars(D.dest_country.slice(0,10),"country",T));
-    cr.appendChild(el("p",{cls:"i-note",text:"Held out of this list: "+
-      (D.dest_other||[]).map(function(x){ return x[0]+" "+usd(x[1]); }).join(", ")+
-      ". Gulf funding given to global programmes with no single recipient country."}));
+    cr.appendChild(el("p",{cls:"i-note",text:"A further "+usd(gUsd())+
+      " went to global programmes such as WHO, GAVI and UNRWA. No single country receives it, "+
+      "so it is not in this list."}));
     split.appendChild(cr);
     card.appendChild(split);
 
@@ -2731,14 +2721,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       if(D.sector_unstated>0) secs.push(["No sector stated",D.sector_unstated]);
       secs.sort(function(x,y){ return y[1]-x[1]; });
       barList(secs,ah,"sector");
-      a.appendChild(el("p",{cls:"i-note",text:"All "+m.sectors_count+
-        " sectors the source records, plus the "+usd(D.sector_unstated)+
-        " of funding flows that carry no sector."}));
+      a.appendChild(el("p",{cls:"i-note",text:"Every sector, plus "+
+        usd(D.sector_unstated)+" reported without one."}));
       b.appendChild(el("h5",{cls:"i-dh country"},[el("i"),
         document.createTextNode("Countries that received GCC funding")]));
       var bh=el("div",{cls:"i-scroll"}); b.appendChild(bh);
       barList(D.dest_country,bh,"country");
-      b.appendChild(el("p",{cls:"i-note",text:"All "+nm(m.countries_reached)+" countries."}));
+      b.appendChild(el("p",{cls:"i-note",text:"Every country reached."}));
       two.appendChild(a); two.appendChild(b);
       box.appendChild(two);
     }));
@@ -2748,8 +2737,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(cands.length) card.appendChild(details(
       "Reported funders with no register row, "+cands.length+" to consider",function(box){
       box.appendChild(el("p",{cls:"i-note i-note-top",text:
-        "These organisations report humanitarian funding to the source but have no counterpart "+
-        "row in the register. They are candidates to check, not confirmed omissions."}));
+        "These report funding but are not in the register. Worth checking, not proven missing."}));
       var wrap=el("div",{cls:"i-cand"});
       cands.forEach(function(r){
         wrap.appendChild(el("div",null,[
@@ -2762,12 +2750,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     }));
 
     card.appendChild(details("Limitations, what this does not capture",function(box){
-      var g=(D.dest_other||[]).filter(function(x){ return x[0]==="Global"; })[0];
-      var gUsd=g?g[1]:0;
       var items=[
         ["Most Gulf giving is absent.","Zakat, sadaqah, waqf, private and family giving, and "+
           "domestic charity inside the six states are not reported to this system at all."],
-        ["Money given to global organisations is not attributed to a country.",usd(gUsd)+
+        ["Money given to global organisations is not attributed to a country.",usd(gUsd())+
           " went to UN agencies and global programmes such as WHO polio eradication, GAVI and "+
           "UNRWA core funding. These have no single recipient country, so they are held out of "+
           "the country list rather than assigned to one."],
@@ -2797,12 +2783,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       box.appendChild(ul);
     }));
 
-    card.appendChild(el("div",{cls:"i-foot"},[el("p",{cls:"i-t-prov",text:
-      "Source: UN OCHA Financial Tracking Service. Every funding flow checked to originate in "+
-      "a Gulf state, and "+m.non_gcc_source_flows+" did not. "+nm(m.distinct_ids)+
-      " distinct records fetched, "+nm(m.flows_used)+" used. Paid "+fullUsd(m.paid_usd)+
-      ", commitment "+fullUsd(m.commitment_usd)+". Built "+m.built+
-      ". The full register follows below."})]));
 
     panel.appendChild(card);
 
@@ -2827,7 +2807,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
     built=true;
     renderList();
-    liveCheck();
   }
 
   /* EVERY reporting organisation, states included, largest first. This is the correct
@@ -2844,6 +2823,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var gov=s.match(/^(.+?)\s*(?:\([^)]*\))?,\s*Government of$/);
     if(gov) return "the "+(GOV[gov[1]]||gov[1])+" government";
     return s;
+  }
+  function gUsd(){
+    var g=(D.dest_other||[]).filter(function(x){ return x[0]==="Global"; })[0];
+    return g?g[1]:0;
   }
   function listNames(rows){
     var n=rows.map(readable);
@@ -2957,44 +2940,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     return box;
   }
 
-  function liveCheck(){
-    var y=D.meta.live_year, node=panel.querySelector("#i-live");
-    if(!node) return;
-    var states=Object.keys(D.states||{}).map(function(k){ return {name:k,v:D.states[k]}; })
-      .filter(function(s){ return s.v && s.v.iso; });
-    if(!y||!states.length){ node.parentNode.removeChild(node); return; }
-    Promise.all(states.map(function(s){
-      return fetch(FTS+"?countryISO3="+encodeURIComponent(s.v.iso)+"&year="+y,
-        {cache:"no-store"}).then(function(r){
-        if(!r.ok) throw new Error("HTTP "+r.status);
-        return r.json();
-      }).then(function(j){
-        var o=(j.data&&j.data.outgoing)||{};
-        return {name:s.name,live:Number(o.fundingTotal)||0,
-                built:Number((s.v.years||{})[String(y)])||0};
-      });
-    })).then(function(got){
-      var lt=got.reduce(function(a,g){ return a+g.live; },0);
-      var bt=got.reduce(function(a,g){ return a+g.built; },0);
-      var diff=lt-bt, same=Math.abs(diff)<=1;
-      var moved=got.filter(function(g){ return Math.abs(g.live-g.built)>1; });
-      clear(node);
-      node.appendChild(el("span",{cls:"i-dot "+(same?"ok":"chg")}));
-      node.appendChild(document.createTextNode(same
-        ? "Checked against the live source just now. It still reports "+usd(lt)+" for "+y+
-          ", matching this build."
-        : "Checked against the live source just now. It reports "+usd(lt)+" for "+y+", "+
-          (diff>0?"up ":"down ")+usd(Math.abs(diff))+" on this build ("+
-          moved.map(function(g){ return g.name+" "+((g.live-g.built)>0?"+":"")+
-            usd(g.live-g.built); }).join(", ")+")."));
-    }).catch(function(){
-      clear(node);
-      node.appendChild(el("span",{cls:"i-dot err"}));
-      node.appendChild(document.createTextNode(
-        "The live source could not be reached, so these figures are the build of "+
-        D.meta.built+"."));
-    });
-  }
 
   /* the data contract, checked before anything is drawn */
   function usable(j){
