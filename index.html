@@ -928,6 +928,118 @@ ol.ranked a::before{top:9px;bottom:9px}
   .i-colv{font-size:10.5px}
 }
 </style>
+<style id="oecd-skin">
+/* The official aid lane. It borrows the panel's own tokens and adds one idea of its own:
+   a fixed colour per category so the same segment means the same thing in every row, which
+   is what makes six stacked bars comparable at a glance rather than six separate charts. */
+.oe-frame{padding:var(--s4) var(--s4) var(--s3)}
+.oe-lede{margin:0 0 var(--s3);font:600 17px/1.5 var(--serif);color:var(--ink);max-width:62ch}
+.oe-two{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);margin-bottom:var(--s3)}
+.oe-two.one{grid-template-columns:1fr}
+.oe-half{border-left:2px solid var(--i-hair);padding-left:var(--s3)}
+.oe-half-k{display:block;font:600 10.5px/1 var(--mono);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--i-slate);margin-bottom:6px}
+.oe-half-t{margin:0;font:400 13.5px/1.55 var(--sans);color:var(--ink-2)}
+.oe-warn{margin:0;padding-top:var(--s2);border-top:1px solid var(--i-hair);
+  font:400 12.5px/1.5 var(--sans);color:var(--ink-3);max-width:74ch}
+
+/* the six states */
+.oe-band{padding:var(--s4)}
+.oe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--i-hair);
+  border:1px solid var(--i-hair);margin-top:var(--s3)}
+.oe-card{background:var(--paper);padding:var(--s3)}
+.oe-nm{margin:0 0 6px;font:600 14px/1.25 var(--serif);color:var(--ink)}
+.oe-amt{margin:0 0 8px;display:flex;align-items:baseline;gap:7px}
+.oe-amt-n{font:600 26px/1 var(--serif);color:var(--i-s1);font-variant-numeric:tabular-nums}
+.oe-amt-y{font:400 11px/1 var(--mono);color:var(--ink-3)}
+.oe-ngo{margin:0 0 8px;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
+.oe-ngo b{font-weight:600;color:var(--i-c1)}
+.oe-mix{margin:0 0 5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.oe-mixk{font:400 12px/1.35 var(--sans);color:var(--ink-2)}
+.oe-mixv{font:400 11px/1 var(--mono);color:var(--ink-3);white-space:nowrap;
+  font-variant-numeric:tabular-nums}
+.oe-strip{display:flex;height:7px;border-radius:2px;overflow:hidden;background:var(--i-hair)}
+.oe-dest{margin:8px 0 0;font:400 12px/1.4 var(--sans);color:var(--ink-3)}
+.oe-none{margin:0 0 6px;font:600 14px/1.3 var(--sans);color:var(--ink-3)}
+.oe-nonesub{margin:0;font:400 12px/1.45 var(--sans);color:var(--ink-3)}
+
+/* one colour per category, shared by every bar on the page */
+.oe-seg{display:block;height:100%}
+.oe-seg.s1{background:var(--i-s1)} .oe-seg.s2{background:var(--i-s2)}
+.oe-seg.s3{background:var(--i-s3)} .oe-seg.s4{background:var(--i-s4)}
+.oe-seg.s5{background:var(--i-s5)} .oe-seg.s6{background:var(--i-s6)}
+.oe-seg.s7{background:var(--i-slate-soft)}
+/* the four delivery groups, well separated on purpose */
+.oe-seg.g1{background:var(--i-s1)} .oe-seg.g2{background:var(--i-s3)}
+.oe-seg.g3{background:var(--i-s5)} .oe-seg.g4{background:var(--i-slate-soft)}
+.oe-key li.g1::before{background:var(--i-s1)} .oe-key li.g2::before{background:var(--i-s3)}
+.oe-key li.g3::before{background:var(--i-s5)} .oe-key li.g4::before{background:var(--i-slate-soft)}
+.oe-chfoot{margin:var(--s2) 0 0;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
+/* one colour per DAC sector group, fixed, so the same band means the same thing on every
+   card. Nine steps that stay apart from one another rather than a single ramp. */
+.oe-seg.k1{background:var(--i-s2)} .oe-seg.k2{background:var(--i-c3)}
+.oe-seg.k3{background:var(--i-s4)} .oe-seg.k4{background:var(--i-c5)}
+.oe-seg.k5{background:var(--i-s1)} .oe-seg.k6{background:var(--i-slate)}
+.oe-seg.k7{background:var(--i-c1)} .oe-seg.k8{background:var(--i-s6)}
+.oe-seg.k9{background:var(--i-slate-soft)}
+.oe-key li.k1::before{background:var(--i-s2)} .oe-key li.k2::before{background:var(--i-c3)}
+.oe-key li.k3::before{background:var(--i-s4)} .oe-key li.k4::before{background:var(--i-c5)}
+.oe-key li.k5::before{background:var(--i-s1)} .oe-key li.k6::before{background:var(--i-slate)}
+.oe-key li.k7::before{background:var(--i-c1)} .oe-key li.k8::before{background:var(--i-s6)}
+.oe-key li.k9::before{background:var(--i-slate-soft)}
+.oe-chyr{font:400 10.5px/1 var(--mono);color:var(--ink-3);text-align:right}
+.oe-notes{padding-top:0}
+.oe-prov{margin:var(--s2) 0 0;padding-top:var(--s2);border-top:1px solid var(--i-hair);font:400 11px/1.6 var(--mono);color:var(--ink-3);word-break:break-word}
+.oe-chy{font-variant-numeric:tabular-nums;font-weight:600;color:var(--i-s1)}
+
+/* who delivered it */
+.oe-chans{margin-top:var(--s3);display:flex;flex-direction:column;gap:10px}
+.oe-chrow{display:grid;grid-template-columns:132px 1fr 46px 34px;gap:10px;align-items:center}
+.oe-chnm{font:400 13px/1.3 var(--sans);color:var(--ink-2)}
+.oe-chbar{display:flex;height:16px;border-radius:2px;overflow:hidden;background:var(--i-hair)}
+.oe-chy{font:400 11px/1 var(--mono);color:var(--ink-3);text-align:right}
+.oe-key{list-style:none;margin:var(--s3) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px 16px}
+.oe-key li{position:relative;padding-left:16px;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
+.oe-key li::before{content:"";position:absolute;left:0;top:5px;width:10px;height:10px;
+  border-radius:2px;background:var(--i-hair)}
+.oe-key li.s1::before{background:var(--i-s1)} .oe-key li.s2::before{background:var(--i-s2)}
+.oe-key li.s3::before{background:var(--i-s3)} .oe-key li.s4::before{background:var(--i-s4)}
+.oe-key li.s5::before{background:var(--i-s5)} .oe-key li.s6::before{background:var(--i-s6)}
+.oe-key li.s7::before{background:var(--i-slate-soft)}
+
+/* over time, one state at a time */
+.oe-times{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s3);margin-top:var(--s3)}
+.oe-tbox{min-width:0}
+.oe-tnm{display:block;font:600 12.5px/1.3 var(--sans);color:var(--ink-2);margin-bottom:6px}
+.oe-tcols{display:flex;align-items:flex-end;gap:2px;height:56px;
+  border-bottom:1px solid var(--i-hair);padding-bottom:1px}
+.oe-tcol{flex:1 1 0;min-width:0;height:100%;display:flex;align-items:flex-end}
+.oe-tcol i{display:block;width:100%;background:var(--i-s2);border-radius:1px 1px 0 0}
+.oe-tcol.gap{background:repeating-linear-gradient(180deg,var(--i-hair) 0 2px,transparent 2px 5px);
+  opacity:.5}
+.oe-tcol.none{background:none}
+.oe-tmeta{display:block;margin-top:6px;font:400 11px/1.45 var(--mono);color:var(--ink-3)}
+.oe-scale{margin:var(--s3) 0 0;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
+
+/* the turn between the two records */
+.oe-turn{padding:var(--s3) var(--s4);border-top:2px solid var(--i-s1);
+  border-bottom:1px solid var(--i-hair);background:var(--i-slate-soft)}
+.oe-turn-k{display:block;font:600 10.5px/1 var(--mono);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--i-s1);margin-bottom:5px}
+.oe-turn-t{margin:0;font:400 13.5px/1.55 var(--sans);color:var(--ink-2);max-width:70ch}
+
+@media (max-width:900px){
+  .oe-grid,.oe-times{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:600px){
+  .oe-band,.oe-frame{padding:var(--s3)}
+  .oe-two{grid-template-columns:1fr;gap:var(--s2)}
+  .oe-grid,.oe-times{grid-template-columns:1fr}
+  .oe-chrow{grid-template-columns:88px 1fr 42px 30px;gap:6px}
+  .oe-chnm{font-size:12px}
+  .oe-amt-n{font-size:23px}
+}
+</style>
 <style id="find-skin">
 /* the search excerpt.  Tokens only, so dark mode follows the house palette. */
 .rowsnip{margin-top:5px;font:400 13.5px/1.5 var(--sans);color:var(--ink-2);
@@ -3082,10 +3194,406 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   }
 
   /* ---------- the briefing ---------- */
+
+  /* ==================== THE OFFICIAL AID LANE =============================
+     What the Gulf states themselves report to the OECD about the aid they give.
+     This is a DIFFERENT RECORD from the humanitarian flows below it, not a bigger
+     version of the same one, and the two must never be added together:
+       OECD counts what a STATE reports as official development assistance, and
+       humanitarian aid is one sector INSIDE that.
+       FTS counts what any organisation voluntarily reports to OCHA as humanitarian
+       funding, states and private bodies alike, in FTS usage years.
+     The same activity can appear in both. No reconciliation between them exists, so
+     nothing here stacks them, totals them or puts them on one scale.
+
+     A NOTE ON THE HEADLINE FIGURE, because the first version of this got it wrong.
+     Since 2018 the OECD headline for official development assistance is the GRANT
+     EQUIVALENT, not net cash. On net cash Kuwait's 2023 aid reads $11m and the
+     obvious story is that it stopped. On the headline measure it is $82m, and $218m
+     in 2025: a steep decline, not a collapse. Every figure here says which measure
+     and which year it is, next to the number rather than in a footnote. */
+
+  var OE = null, oeTried = false;
+
+  function oeLoad(){
+    if(OE || oeTried) return Promise.resolve(OE);
+    oeTried = true;
+    return fetch("oecd.json", {cache:"no-cache"})
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){
+        if(j && j.meta && j.oda && j.channels) OE = j;
+        return OE;
+      })
+      .catch(function(){ return null; });
+  }
+
+  var OE_STATES = ["SAU","ARE","QAT","KWT","OMN","BHR"];
+  /* one colour per DAC sector group, the same on every card */
+  var SECTOR_CLS = {"100":"k1","200":"k2","300":"k3","400":"k4","500":"k5",
+                    "600":"k6","700":"k7","910":"k8","930":"k8","998":"k9"};
+  function oeYears(m){ return Object.keys(m||{}).map(Number).sort(function(a,b){return a-b;}); }
+  function oeLast(m){ var y=oeYears(m); return y.length ? String(y[y.length-1]) : null; }
+
+  /* $5.55bn, $911m, so a card can carry the number without a wrapped line */
+  function oeAmt(m){
+    var n=Number(m)||0;
+    if(n>=1000) return "$"+(n/1000).toFixed(n>=10000?0:2)+"bn";
+    return "$"+Math.round(n)+"m";
+  }
+
+  /* share of a donor's gross bilateral ODA that a given channel delivered */
+  function oeChanShare(d, year, code){
+    var c=(OE.channels[d]||{})[year];
+    if(!c) return null;
+    var t=c["_T"]||0;
+    if(!t) return null;
+    return (c[code]||0)/t;
+  }
+
+  /* the composition over the LAST THREE YEARS rather than one, because one year is
+     not a donor's character: Qatar reads 55 per cent humanitarian in 2023 and 73 per
+     cent social infrastructure in 2024, and a single-year label would have called it
+     a humanitarian funder on the strength of a year that had already ended */
+  function oeSectorMix(d){
+    var m=OE.sectors[d]||{}, ys=oeYears(m).slice(-3), sum={}, tot=0;
+    ys.forEach(function(y){
+      var s=m[String(y)]||{}, k;
+      for(k in s){ sum[k]=(sum[k]||0)+s[k]; tot+=s[k]; }
+    });
+    if(!tot) return null;
+    var out=Object.keys(sum).map(function(k){ return [k, sum[k]/tot]; })
+      .sort(function(a,b){ return b[1]-a[1]; });
+    return { years: ys, list: out, span: ys.length ? (ys[0]+" to "+ys[ys.length-1]) : "" };
+  }
+
+  function oeTopRecipient(d, year){
+    var r=(OE.recipients[d]||{})[year];
+    if(!r) return null;
+    var best=null, k;
+    for(k in r) if(!best || r[k]>r[best]) best=k;
+    if(!best) return null;
+    /* The denominator is that year's TOTAL, not the sum of the stored list. Only the top
+       twelve recipients are kept, so dividing by their own sum asks "share of the twelve"
+       and prints the answer as though it were "share of everything": it put Qatar's largest
+       destination at 60 per cent when the true figure against the total is 44. */
+    var tot=(OE.crs_total[d]||{})[year];
+    if(!tot) return null;
+    return { code: best, name: OE.recipient_names[best]||best, usd: r[best],
+             share: r[best]/tot };
+  }
+
+  /* ---------------------------------------------------------------- band: the states */
+  function oeStatesBand(){
+    var band=el("section",{cls:"i-band oe-band"});
+    band.appendChild(paneHead("What the six states report as official aid",
+      "OECD, grant equivalent, current US dollars. Each figure carries its own year "
+      + "because the states do not all report to the same one."));
+    var grid=el("div",{cls:"oe-grid"});
+    OE_STATES.forEach(function(d){
+      var card=el("article",{cls:"oe-card"});
+      var ge=OE.oda[d], ly=oeLast(ge);
+      card.appendChild(el("h5",{cls:"oe-nm",text:OE.names[d]||d}));
+      if(!ly){
+        /* Oman and Bahrain are SHOWN, not dropped. Leaving them out of a panel about
+           six states would read as though they give nothing, which is not what an
+           absence of OECD observations means. */
+        card.appendChild(el("p",{cls:"oe-none",text:"No OECD observations"}));
+        card.appendChild(el("p",{cls:"oe-nonesub",
+          text:"The OECD's headline aid table returns nothing for this state. That is what "
+             + "was asked and what came back, and it is a gap in this record rather than a "
+             + "statement about what the state gives."}));
+        grid.appendChild(card);
+        return;
+      }
+      card.appendChild(el("p",{cls:"oe-amt"},[
+        el("span",{cls:"oe-amt-n",text:oeAmt(ge[ly])}),
+        el("span",{cls:"oe-amt-y",text:ly})
+      ]));
+      /* the number a reader of a register of organisations actually needs */
+      var cy=oeLast(OE.channels[d]||{}), ngo=cy ? oeChanShare(d,cy,"20000") : null;
+      if(ngo!==null){
+        /* one decimal everywhere, so the same figure is not 16 per cent on the card and
+           16.5 in the chart below it */
+        card.appendChild(el("p",{cls:"oe-ngo"},[
+          el("b",{text:(ngo*100).toFixed(1)+"%"}),
+          el("span",{text:" went through an NGO or civil society body, "+cy})
+        ]));
+      }
+      var mix=oeSectorMix(d);
+      if(mix && mix.list.length){
+        var top=mix.list[0];
+        card.appendChild(el("p",{cls:"oe-mix"},[
+          el("span",{cls:"oe-mixk",text:OE.sector_names[top[0]]||top[0]}),
+          el("span",{cls:"oe-mixv",text:Math.round(top[1]*100)+"% of "+mix.span})
+        ]));
+        /* the colour is fixed to the SECTOR, never to its rank. Assigning by position meant
+           the darkest band was commodity aid on one card and humanitarian aid on the next,
+           so the four strips looked comparable and were not. */
+        var strip=el("div",{cls:"oe-strip"});
+        mix.list.forEach(function(p){
+          if(p[1]<0.005) return;
+          strip.appendChild(el("i",{cls:"oe-seg "+(SECTOR_CLS[p[0]]||"k9"),
+            style:"width:"+(p[1]*100).toFixed(2)+"%",
+            title:(OE.sector_names[p[0]]||p[0])+"  "+(p[1]*100).toFixed(1)+"%"}));
+        });
+        card.appendChild(strip);
+      }
+      var rc=cy ? oeTopRecipient(d,cy) : null;
+      if(rc) card.appendChild(el("p",{cls:"oe-dest",
+        text:"Largest destination "+rc.name+", "+Math.round(rc.share*100)+"% of "+cy}));
+      grid.appendChild(card);
+    });
+    band.appendChild(grid);
+    var seen={}, key=el("ul",{cls:"oe-key"});
+    OE_STATES.forEach(function(d){
+      var mix=oeSectorMix(d);
+      if(mix) mix.list.forEach(function(p){ if(p[1]>=0.005) seen[p[0]]=1; });
+    });
+    Object.keys(seen).sort().forEach(function(k){
+      key.appendChild(el("li",{cls:SECTOR_CLS[k]||"k9",text:OE.sector_names[k]||k}));
+    });
+    if(key.childNodes.length) band.appendChild(key);
+    return band;
+  }
+
+  /* ---------------------------------------------------------------- band: who delivers */
+  function oeChannelBand(){
+    var band=el("section",{cls:"i-band oe-band"});
+    band.appendChild(paneHead("Who the money was reported as going through",
+      "Share of each state's gross bilateral aid by the kind of body named as the FIRST "
+      + "implementing partner. That is the nearest thing this record holds to whether money "
+      + "moves through organisations at all, and a sector code is not: budget support, food "
+      + "aid and commodity aid share one code. It is not the ultimate deliverer, and a share "
+      + "here is a description of what has happened, not evidence that funding is open."));
+    var host=el("div",{cls:"oe-chans"});
+    /* NGOs FIRST, and darkest. Seven sequential steps of one hue blurred together and the two
+       lightest were indistinguishable. Four groups instead, ordered by what the reader of a
+       register of organisations came to find out rather than by size, so the segment that
+       answers their question starts at the same left edge in every row and the difference
+       between Qatar and the rest is visible without reading a number. */
+    var GROUPS=[
+      {k:"ngo", cls:"g1", codes:["20000"], name:"NGOs and civil society"},
+      {k:"mul", cls:"g2", codes:["40000"], name:"Multilateral organisations"},
+      {k:"pub", cls:"g3", codes:["10000"], name:"Public sector"},
+      {k:"oth", cls:"g4", codes:["30000","50000","60000","90000"],
+       name:"Private sector, universities, partnerships and other"}
+    ];
+    OE_STATES.forEach(function(d){
+      var cy=oeLast(OE.channels[d]||{});
+      if(!cy) return;
+      var c=OE.channels[d][cy], t=c["_T"]||0;
+      if(!t) return;
+      var row=el("div",{cls:"oe-chrow"});
+      row.appendChild(el("span",{cls:"oe-chnm",text:(OE.names[d]||d)}));
+      var bar=el("div",{cls:"oe-chbar"});
+      GROUPS.forEach(function(g){
+        var v=0;
+        g.codes.forEach(function(k){ v+=c[k]||0; });
+        if(v/t < 0.004) return;
+        bar.appendChild(el("i",{cls:"oe-seg "+g.cls, style:"width:"+((v/t)*100).toFixed(2)+"%",
+          title:g.name+"  "+(v/t*100).toFixed(1)+"%"}));
+      });
+      row.appendChild(bar);
+      var ngo=(c["20000"]||0)/t;
+      row.appendChild(el("span",{cls:"oe-chy",text:(ngo*100).toFixed(1)+"%"}));
+      row.appendChild(el("span",{cls:"oe-chyr",text:cy}));
+      host.appendChild(row);
+    });
+    band.appendChild(host);
+    band.appendChild(el("p",{cls:"oe-chfoot",
+      text:"The figure on the right is the share whose first implementing partner was an NGO "
+         + "or a civil society body. Past use is not an invitation, and none of this says "
+         + "whether a given organisation could obtain any of it."}));
+    var key=el("ul",{cls:"oe-key"});
+    GROUPS.forEach(function(g){ key.appendChild(el("li",{cls:g.cls,text:g.name})); });
+    band.appendChild(key);
+    return band;
+  }
+
+  /* ------------------------------------------------------- band: what this lane is not */
+  function oeNotesBand(){
+    var band=el("section",{cls:"i-band oe-band oe-notes"});
+    var q=(OE.meta.queries||{});
+    var items=[
+      ["Two of the six states are missing entirely.",
+       "Oman and Bahrain report no development assistance to the OECD. Nothing here says "
+       + "what they give, only that this record does not hold it."],
+      ["The headline is the grant equivalent, not cash out of the door.",
+       "Since 2018 that is the measure the OECD reports. On net cash Kuwait's 2023 figure "
+       + "reads $11m and the obvious conclusion is that its aid stopped. On the headline "
+       + "measure it is $82m, and $218m in 2025. Both numbers are real and they tell "
+       + "different stories, which is why this says which one it is showing."],
+      ["The breakdowns are a different measure, not a share of the headline.",
+       "Sector, destination and delivery are gross bilateral disbursements. The headline is "
+       + "the grant equivalent. Neither contains the other: core money given to multilateral "
+       + "organisations is inside the headline and outside the breakdowns, while gross "
+       + "disbursements count what went out without netting repayments. For the UAE and for "
+       + "Kuwait the breakdown total is LARGER than the headline. Do not read the shares as "
+       + "slices of the figure on the card."],
+      ["The latest year is not the same year for everyone.",
+       "Each figure carries its own. Saudi Arabia's headline stops at 2024 while the others "
+       + "reach 2025, so any regional total would measure who reported rather than who gave."],
+      ["This record holds state aid only.",
+       "Zakat, sadaqah, waqf and private and family giving are outside it, because it is a "
+       + "record of what governments report. They are NOT outside the humanitarian record "
+       + "below, where charities, foundations and societies make up most of the reporting "
+       + "bodies. How much of all Gulf giving either record captures is not known, and "
+       + "nothing here should be read as a share of a total nobody has measured."]
+    ];
+    var ul=el("ul",{cls:"i-lim"});
+    items.forEach(function(t){
+      var li=el("li");
+      li.appendChild(el("b",{text:t[0]+" "}));
+      li.appendChild(document.createTextNode(t[1]));
+      ul.appendChild(li);
+    });
+    var box=el("div");
+    box.appendChild(ul);
+    /* the exact query, so a reader or a later session can reproduce the figure rather than
+       trust it. "OECD data" is not a citation. */
+    var prov=[];
+    if(q.headline) prov.push("Headline: "+q.headline.dataflow+", measure "+q.headline.measure
+      +", flow "+q.headline.flow+", "+q.headline.label+".");
+    if(q.composition) prov.push("Breakdowns: "+q.composition.dataflow+", measure "
+      +q.composition.measure+", flow "+q.composition.flow+", "+q.composition.pinned
+      +", "+q.composition.label+".");
+    prov.push("Retrieved "+String(OE.meta.built||"").slice(0,10)+".");
+    box.appendChild(el("p",{cls:"oe-prov",text:prov.join("  ")}));
+    var d=details("What this record does not cover, and exactly where it came from",
+      function(inner){ inner.appendChild(box); });
+    band.appendChild(d);
+    return band;
+  }
+
+  /* ---------------------------------------------------------------- band: over time */
+  function oeTimeBand(){
+    var band=el("section",{cls:"i-band oe-band"});
+    band.appendChild(paneHead("Over time, one state at a time",
+      "Grant equivalent, current US dollars. Deliberately NOT summed into a regional line: "
+      + "the states report different years, so a combined series would rise and fall with "
+      + "who happened to report rather than with what was given."));
+    var all=[];
+    OE_STATES.forEach(function(d){ var y=oeYears(OE.oda[d]||{}); all=all.concat(y); });
+    if(!all.length) return band;
+    var lo=Math.min.apply(null,all), hi=Math.max.apply(null,all);
+    /* EACH STATE TO ITS OWN SCALE, with its peak named beneath it. One shared scale is the
+       purer comparison and it made this band useless: against Saudi Arabia's $7.24bn peak,
+       Kuwait's whole decade is a three per cent sliver and its trajectory, which is the point
+       of a band called one state at a time, cannot be seen at all. The absolute sizes are in
+       the cards above; what this shows is direction. */
+    var wrap=el("div",{cls:"oe-times"});
+    OE_STATES.forEach(function(d){
+      var m=OE.oda[d]||{};
+      if(!oeYears(m).length) return;
+      var box=el("div",{cls:"oe-tbox"});
+      var peak=0, pk=null, kk;
+      for(kk in m) if(m[kk]>peak){ peak=m[kk]; pk=kk; }
+      box.appendChild(el("span",{cls:"oe-tnm",text:OE.names[d]||d}));
+      /* A year BEFORE a state's series begins is not a gap in that state's reporting, and
+         hatching it like one implies a failure to report years that were never expected.
+         Qatar's record starts in 2019: that is where its series starts, not four holes. */
+      var ys=oeYears(m), first=ys[0], last=ys[ys.length-1], inner=[];
+      var cols=el("div",{cls:"oe-tcols"});
+      for(var y=lo;y<=hi;y++){
+        var v=m[String(y)], before=(y<first), after=(y>last), col;
+        if(before||after){
+          col=el("span",{cls:"oe-tcol none"});
+          col.setAttribute("title", (OE.names[d]||d)+" "+y+": outside its reported range");
+        }else if(v==null){
+          inner.push(y);
+          col=el("span",{cls:"oe-tcol gap"});
+          col.setAttribute("title", (OE.names[d]||d)+" "+y+": no observation");
+        }else{
+          col=el("span",{cls:"oe-tcol"});
+          col.setAttribute("title", (OE.names[d]||d)+" "+y+": "+oeAmt(v));
+          col.appendChild(el("i",{style:"height:"+Math.max(2,(v/peak)*100).toFixed(1)+"%"}));
+        }
+        cols.appendChild(col);
+      }
+      box.appendChild(cols);
+      var meta=oeAmt(m[String(last)])+" in "+last
+        + (pk===String(last) ? ", the highest in its record"
+                             : ", down from "+oeAmt(peak)+" in "+pk);
+      if(first>lo) meta+=", from "+first;
+      if(inner.length) meta+=", nothing for "+inner.join(" and ");
+      box.appendChild(el("span",{cls:"oe-tmeta",text:meta}));
+      wrap.appendChild(box);
+    });
+    band.appendChild(wrap);
+    band.appendChild(el("p",{cls:"oe-scale",
+      text:lo+" to "+hi+". Each state is drawn to ITS OWN peak, named beneath it, so the "
+         + "heights show direction and not size: compare a state with itself here and with "
+         + "the others in the figures above. A faint column means no observation for a year "
+         + "inside a state's own range; blank means the year sits outside it."}));
+    return band;
+  }
+
   function build(){
     clear(panel);
     var m=D.meta, T=m.total_usd;
     var card=el("div",{cls:"i-card"});
+
+    /* THE FRAME. Two records of Gulf giving sit on this page and they are not two halves
+       of one number. Saying so first, in the reader's own words, is the difference between
+       intelligence and a wall of figures that quietly invites the wrong sum. The warning
+       about opportunity is not decoration either: a register of organisations with billions
+       printed above it will be read as a list of available money unless it says otherwise. */
+    var frame=el("section",{cls:"i-band oe-frame"});
+    /* the whole frame follows what actually loaded. Promising two records and then showing
+       one is worse than showing one and saying so. */
+    frame.appendChild(el("p",{cls:"oe-lede",
+      text:OE
+        ? "Two separate records of Gulf giving, kept by two bodies, counting different "
+          + "things in different units. Neither is a list of money available to the "
+          + "organisations below."
+        : "A record of Gulf humanitarian giving, kept by UN OCHA. It is not a list of money "
+          + "available to the organisations below."}));
+    var two=el("div",{cls:"oe-two"});
+    if(OE) two.appendChild(el("div",{cls:"oe-half"},[
+      el("span",{cls:"oe-half-k",text:"Official aid"}),
+      el("p",{cls:"oe-half-t",
+        text:"What four of the six states report to the OECD as development assistance. "
+           + "The headline is a grant equivalent, a measure of effort rather than cash out "
+           + "of the door. Humanitarian work is one sector inside it."})
+    ]));
+    two.appendChild(el("div",{cls:"oe-half"},[
+      el("span",{cls:"oe-half-k",text:"Humanitarian flows"}),
+      el("p",{cls:"oe-half-t",
+        text:"What any funder chose to report to UN OCHA as humanitarian money, states and "
+           + "private bodies alike. Reporting is voluntary and it counts commitments as well "
+           + "as money paid, so it is neither a total nor a simple floor."})
+    ]));
+    if(!OE) two.className="oe-two one";
+    frame.appendChild(two);
+    if(OE) frame.appendChild(el("p",{cls:"oe-warn",
+      text:"The same activity can appear in both, and no reconciliation between them exists. "
+         + "Nothing here adds them together, and neither should a reader."}));
+    card.appendChild(frame);
+
+    /* the official aid lane, when its file loaded */
+    if(OE){
+      card.appendChild(oeStatesBand());
+      card.appendChild(oeChannelBand());
+      card.appendChild(oeTimeBand());
+      card.appendChild(oeNotesBand());
+    }
+
+    /* and now the other record, announced as one. If the official aid file did not load
+       there is nothing above to be second to, so the page says that instead of promising a
+       comparison it cannot show. */
+    card.appendChild(OE
+      ? el("section",{cls:"i-band oe-turn"},[
+          el("span",{cls:"oe-turn-k",text:"The second record"}),
+          el("p",{cls:"oe-turn-t",
+            text:"Everything from here is UN OCHA's humanitarian tracking, a different count "
+               + "on different years. It is neither a share nor a total of the figures above."})
+        ])
+      : el("section",{cls:"i-band oe-turn"},[
+          el("span",{cls:"oe-turn-k",text:"One record, not two"}),
+          el("p",{cls:"oe-turn-t",
+            text:"The official aid figures could not be loaded, so only UN OCHA's humanitarian "
+               + "tracking is shown below. Nothing else on this page depends on them."})
+        ]));
 
     /* BAND A: the headline, and the concentration finding as its counterweight */
     var lede=el("div",{cls:"i-lede"});
@@ -3307,10 +3815,11 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         ["Only "+m.distinct_source_orgs+" organisations report at all.","Of the "+
           nm(m.register_rows)+" funders in the register, "+m.matched_rows+" appear here. That "+
           "is a limit of what is reported, not a judgement about the others."],
-        ["Development finance and loans are outside it.","This covers humanitarian funding "+
-          "reported to one system. It overlaps official development assistance in places and "+
-          "is counted on different rules, so the two sets of figures should not be added "+
-          "together or compared directly."],
+        ["It overlaps the official aid figures above, and cannot be added to them.",
+          "This is humanitarian funding voluntarily reported to one system. Official "+
+          "development assistance is a different count on different rules, and humanitarian "+
+          "work sits inside it as one sector, so the same activity can appear in both. No "+
+          "reconciliation between the two exists."],
         ["Absence is not evidence.",thinReporters()+" That is a fact about reporting, not "+
           "about their giving."]
       ];
@@ -3566,10 +4075,16 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     loading=true;
     clear(panel);
     panel.appendChild(el("p",{cls:"i-empty",text:"Loading the funding intelligence..."}));
-    fetch("flows.json",{cache:"no-cache"}).then(function(r){
-      if(!r.ok) throw new Error("HTTP "+r.status);
-      return r.json();
-    }).then(function(j){
+    /* both files, and the official aid one is allowed to fail: the panel is still worth
+       showing without it, and half a record is better than an error page */
+    Promise.all([
+      fetch("flows.json",{cache:"no-cache"}).then(function(r){
+        if(!r.ok) throw new Error("HTTP "+r.status);
+        return r.json();
+      }),
+      oeLoad()
+    ]).then(function(a){
+      var j=a[0];
       if(!usable(j)) throw new Error("unexpected data shape");
       D=j; loading=false;
       if(isAllView()) build();

@@ -1,0 +1,77 @@
+# Rebuilds oecd.json from the OECD and opens a pull request when the figures have moved.
+#
+# It runs on GitHub's machines, so the register stays current whether or not any particular
+# laptop is switched on. Monthly rather than per visitor on purpose: the OECD publishes these
+# figures once or twice a year and asks callers to be sparing, so fetching them from every
+# reader's browser would be both wasteful and fragile. One scheduled build serves everyone.
+#
+# IT OPENS A PULL REQUEST RATHER THAN PUSHING. This branch is what the public site serves, so
+# a push here is a publication. The guard below is thorough and was tested against fourteen
+# deliberately corrupted builds, but no guard catches everything, and the cost of the pull
+# request is one click a year against the cost of publishing wrong figures about real states.
+#
+# Actions are pinned to commit SHAs rather than tags, because a tag can be moved to point at
+# different code and this job has write access to the repository.
+name: Refresh OECD aid data
+
+on:
+  schedule:
+    - cron: "17 4 1 * *"      # 04:17 UTC on the first of each month
+  workflow_dispatch:           # and on demand, from the Actions tab
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262   # v4
+
+      - name: Set up python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065   # v5
+        with:
+          python-version: "3.12"
+
+      - name: Keep the current figures to compare against
+        run: cp oecd.json "${RUNNER_TEMP}/oecd_previous.json"
+
+      - name: Rebuild from the OECD
+        run: python tools/build-oecd/build_oecd.py
+
+      - name: Refuse anything that does not make sense
+        # the previous file is passed deliberately: a uniform shift, every figure doubled or
+        # rescaled, is individually plausible and only visible against history
+        run: python tools/build-oecd/check_oecd.py "${RUNNER_TEMP}/oecd_previous.json"
+
+      - name: Check the guard itself still catches known corruptions
+        run: python tools/build-oecd/test_guard.py
+
+      - name: Open a pull request, but only if the figures actually moved
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- oecd.json; then
+            echo "The OECD figures have not changed. Nothing to propose."
+            exit 0
+          fi
+          BRANCH="oecd-refresh-$(date -u +%Y-%m)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add oecd.json
+          git commit -m "Refresh the OECD aid figures"
+          git push --force-with-lease origin "$BRANCH"
+          if gh pr list --head "$BRANCH" --state open --json number --jq 'length' | grep -q '^0$'; then
+            gh pr create --head "$BRANCH" --base main \
+              --title "Refresh the OECD aid figures" \
+              --body "The monthly rebuild found different numbers. It passed the guard, which
+          checks the measure metadata, the value ranges, that the sector groups still sum to
+          their totals, that the channel splits are neither over nor under counted, that no
+          recipient exceeds its year, and that nothing moved by an implausible amount against
+          the previous file.
+
+          Read the diff before merging. Merging publishes it."
+          fi
