@@ -701,198 +701,236 @@ ol.ranked a::before{top:9px;bottom:9px}
 }
 </style>
 <style id="intel-skin">
-/* INTEL BLOCK 3 of 4. Funding-intelligence panel, opened by the emblem.
-   Loaded after the house sheets, following the same overlay pattern, so removing this one
-   element and the two markup fences returns the page exactly to where it was.
-   It reuses the house tokens throughout. The ONE addition is a green family used only to
-   encode the country dimension, because sector and country must never be read as the same
-   thing. Blueberry always means sector here, green always means country. */
+/* INTEL BLOCK 3 of 4. Funding intelligence, on the whole-register view.
+   Loaded after the house sheets, the same overlay pattern they use, so removing this one
+   element and the markup fences returns the page to where it was.
+
+   TYPE. The first version set almost every label in letterspaced monospace capitals, which
+   is the machine-made look: uniform, shouty, and no hierarchy. This version gives the
+   serif the reading work at real sizes, keeps the system sans for prose, and spends mono
+   ONLY on figures, axis ticks and the one smallest provenance line, where a fixed width
+   actually earns its place. Hierarchy is a jump, not a step.
+
+   COLOUR. Blueberry always means SECTOR, green always means COUNTRY, slate means WHO
+   RECEIVES, and a warm tone is reserved for caveats. Nothing decorative is coloured. */
 :root{
   --i-s1:#2B3596; --i-s2:#3E4CC4; --i-s3:#6F79D8; --i-s4:#9AA2E6; --i-s5:#C3C8F1; --i-s6:#E0E3F7;
   --i-c1:#17554C; --i-c2:#24746A; --i-c3:#3F9385; --i-c4:#74B5A8; --i-c5:#A6D3C9; --i-c6:#D3E9E3;
   --i-country-soft:#E7F3F0; --i-country-ink:#1B5A50;
+  --i-slate:#42506E; --i-slate-soft:#E8ECF3;
+  --i-hair:#E3E8F2;
 }
-/* the emblem keeps the house link styling untouched. Nothing is added beside the mark:
-   the home page is exactly as the design lane left it. */
+/* the emblem keeps the house link styling untouched. Nothing is added beside the mark. */
 
-/* the panel owns its own alignment and box sizing, so nothing it contains inherits a
-   surrounding text-align or a foreign box model. */
-#intel{text-align:left;margin:var(--s4) 0 0;font-variant-numeric:tabular-nums}
+#intel{margin:var(--s4) 0 0}
 #intel *{box-sizing:border-box}
 #intel[hidden]{display:none !important}
-
-/* the briefing head */
-.i-eye{margin:0 0 8px;font:600 10px/1 var(--mono);letter-spacing:.2em;
-  text-transform:uppercase;color:var(--accent-2)}
-.i-facts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
-  background:var(--line);border-bottom:1px solid var(--line)}
-.i-fact{background:#fff;padding:var(--s3) var(--s4)}
-.i-fact b{display:block;font:600 16px/1.3 var(--display);color:var(--ink);
-  letter-spacing:-.01em;overflow-wrap:anywhere}
-.i-fact span{display:block;margin-top:4px;font:400 9.5px/1.5 var(--mono);letter-spacing:.07em;
-  text-transform:uppercase;color:var(--ink-3)}
-
-/* largest funders */
-.i-lw{border-bottom:1px solid var(--line)}
-.i-lwhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);
-  padding:var(--s4) var(--s4) 10px;flex-wrap:wrap}
-.i-lwnote{font:400 9.5px/1.5 var(--mono);letter-spacing:.05em;color:var(--ink-3)}
-.i-more{display:block;width:100%;border:0;border-top:1px solid var(--line);
-  background:var(--paper);cursor:pointer;padding:12px var(--s4);
-  font:600 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--accent-2);text-align:left}
-.i-more:hover{background:var(--accent-soft)}
-.i-more:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
-.i-note-top{margin-top:0;border-top:0;padding-top:0}
-
 .i-card{background:#fff;border:1px solid var(--line);border-radius:3px;overflow:hidden}
-.i-top{padding:var(--s4);border-bottom:1px solid var(--line);background:var(--paper)}
-/* the heading takes focus when the panel opens, so the ring must hug the words. As a
-   block element it drew a full-width box that read as a text input. */
-.i-h{margin:0;font:600 19px/1.25 var(--display);color:var(--ink);letter-spacing:0;
-  display:inline-block}
-.i-h:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
-.i-sub{margin:6px 0 0;font:400 14px/1.6 var(--sans);color:var(--ink-2);max-width:70ch}
-.i-fig{display:flex;align-items:baseline;gap:12px;margin:var(--s3) 0 0;flex-wrap:wrap}
-.i-fig b{font:600 clamp(28px,4vw,40px)/1 var(--display);color:var(--ink);letter-spacing:-.02em}
-.i-fig span{font:400 10.5px/1.6 var(--mono);letter-spacing:.1em;text-transform:uppercase;
-  color:var(--ink-3);max-width:30ch}
-.i-live{margin:var(--s3) 0 0;font:400 10.5px/1.7 var(--mono);color:var(--ink-3);
-  letter-spacing:.02em}
-.i-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink-3);
-  margin-right:6px;vertical-align:1px}
-.i-dot.ok{background:#2F7D5B} .i-dot.chg{background:#A55A12} .i-dot.err{background:#A33}
 
-/* the ribbon: what the money was spent on, by sector, summing to 100 */
-.i-ribwrap{padding:var(--s4);border-bottom:1px solid var(--line)}
-.i-riblab{margin:0 0 10px;font:600 10px/1 var(--mono);letter-spacing:.16em;
-  text-transform:uppercase;color:var(--ink-3)}
-.i-ribbon{display:flex;height:30px;border-radius:3px;overflow:hidden;background:var(--paper-2)}
+/* ---- type scale, referenced not guessed ---- */
+.i-t-eye{font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent-2);margin:0}
+.i-t-h{font:600 clamp(19px,2.1vw,24px)/1.2 var(--display);letter-spacing:-.015em;
+  color:var(--ink);margin:0}
+.i-t-panel{font:600 16px/1.25 var(--display);letter-spacing:-.005em;color:var(--ink);margin:0}
+.i-t-body{font:400 14.5px/1.6 var(--sans);color:var(--ink-2);margin:0}
+/* prose is prose. Setting explanatory sentences in letterspaced monospace was the
+   machine-made tell; mono is now reserved for figures and the provenance line. */
+.i-t-meta{font:400 12.5px/1.55 var(--sans);color:var(--ink-3);margin:0}
+.i-t-prov{font:400 11px/1.75 var(--mono);letter-spacing:.01em;color:var(--ink-3);margin:0}
+.i-t-fig{font:600 clamp(34px,4.6vw,54px)/.95 var(--display);letter-spacing:-.03em;
+  color:var(--ink);font-variant-numeric:tabular-nums}
+.i-num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---- band A, the headline against a counterweight ---- */
+.i-lede{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+  border-bottom:1px solid var(--line)}
+.i-lede-l{padding:var(--s4);min-width:0}
+.i-lede-r{padding:var(--s4);border-left:1px solid var(--line);background:var(--paper);
+  min-width:0;display:flex;flex-direction:column;justify-content:center}
+.i-figrow{display:flex;align-items:baseline;gap:14px;margin-top:14px;flex-wrap:wrap}
+.i-figrow .i-t-meta{max-width:30ch}
+.i-live{margin-top:14px;padding-top:12px;border-top:1px solid var(--i-hair)}
+.i-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--ink-3);
+  margin-right:7px;vertical-align:1px}
+.i-dot.ok{background:#2F7D5B} .i-dot.chg{background:#A55A12} .i-dot.err{background:#A33}
+/* the concentration callout, the counterweight that resolves the composition */
+.i-conc b{font:600 clamp(26px,3.2vw,38px)/1 var(--display);letter-spacing:-.03em;color:var(--accent-2);
+  font-variant-numeric:tabular-nums;display:block}
+.i-conc .i-t-body{margin-top:8px}
+.i-conc-bar{display:flex;height:7px;margin-top:14px;border-radius:2px;overflow:hidden;
+  background:var(--i-hair)}
+.i-conc-bar i{display:block;height:100%}
+
+/* ---- band B, the sector ribbon ---- */
+.i-band{padding:var(--s4);border-bottom:1px solid var(--line)}
+.i-bandhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);
+  margin-bottom:12px;flex-wrap:wrap}
+.i-ribbon{display:flex;height:32px;border-radius:3px;overflow:hidden;background:var(--paper-2)}
 .i-ribbon i{display:block;height:100%;box-shadow:1px 0 0 #fff}
 .i-ribbon i:last-child{box-shadow:none}
-.i-key{display:flex;flex-wrap:wrap;gap:7px 16px;margin:11px 0 0;
-  font:400 9.5px/1.5 var(--mono);letter-spacing:.03em;color:var(--ink-2)}
-.i-key span{display:inline-flex;align-items:center;gap:6px}
-.i-key b{width:8px;height:8px;border-radius:2px;flex:0 0 8px}
+.i-key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px}
+.i-key span{display:inline-flex;align-items:center;gap:7px;font:400 12px/1.4 var(--sans);
+  color:var(--ink-2)}
+.i-key b{width:9px;height:9px;border-radius:2px;flex:0 0 9px}
+.i-key em{font-style:normal;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  color:var(--ink-3);font-size:11px}
 
-/* controls */
-.i-tools{display:flex;gap:8px;padding:var(--s3) var(--s4);border-bottom:1px solid var(--line)}
-.i-tools input{flex:1 1 auto;min-width:0;height:40px;padding:0 12px;
-  font:13px/1.2 var(--mono);color:var(--ink);background:#fff;
-  border:1px solid var(--line-2);border-radius:2px}
-.i-tools input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
-.i-seg{display:flex;border:1px solid var(--line-2);border-radius:2px;overflow:hidden;flex:0 0 auto}
-.i-seg button{border:0;border-right:1px solid var(--line-2);background:#fff;cursor:pointer;
-  padding:0 14px;min-height:40px;font:600 9.5px/1 var(--mono);letter-spacing:.1em;
-  text-transform:uppercase;color:var(--ink-3)}
-.i-seg button:last-child{border-right:0}
-.i-seg button[aria-pressed=true]{background:var(--accent);color:#fff}
-.i-seg button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+/* ---- band C, three panels across the landscape ---- */
+.i-three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;
+  background:var(--line);border-bottom:1px solid var(--line)}
+.i-pane{background:#fff;padding:var(--s4);min-width:0}
+.i-pane header{margin-bottom:14px}
+.i-pane .i-t-meta{margin-top:5px}
 
-/* the funder ledger */
-.i-thead,.i-row{display:grid;grid-template-columns:minmax(0,1fr) 96px 118px;gap:var(--s4);
+/* the year trend, drawn as columns so a shape is read, not a list */
+.i-cols{display:flex;align-items:flex-end;gap:7px;height:132px;
+  border-bottom:1px solid var(--ink-3);padding-bottom:0}
+.i-col{flex:1 1 0;min-width:0;display:flex;flex-direction:column;justify-content:flex-end;
+  align-items:center;gap:6px;height:100%}
+.i-col i{display:block;width:100%;background:var(--i-s2);border-radius:2px 2px 0 0}
+.i-col.part i{background:repeating-linear-gradient(135deg,var(--i-s4) 0 4px,var(--i-s5) 4px 8px)}
+.i-colv{font:400 10px/1 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.i-colx{display:flex;gap:7px;margin-top:7px}
+.i-colx span{flex:1 1 0;min-width:0;text-align:center;font:400 10px/1.3 var(--mono);
+  color:var(--ink-3)}
+.i-colx span.part{color:var(--accent-2)}
+.i-pfacts{margin-top:20px;padding-top:16px;border-top:1px solid var(--i-hair);
+  display:flex;flex-direction:column;gap:14px}
+.i-pf{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:baseline}
+.i-pf b{font:600 20px/1 var(--display);letter-spacing:-.02em;color:var(--accent-2);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.i-pf span{font:400 12.5px/1.5 var(--sans);color:var(--ink-2)}
+
+/* horizontal bars for the two other panels */
+.i-rows{display:flex;flex-direction:column;gap:9px}
+.i-r{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:baseline}
+.i-rlab{font:400 13.5px/1.35 var(--sans);color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.i-rv{font:400 11px/1.35 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums;
+  white-space:nowrap}
+.i-rt{grid-column:1 / -1;height:6px;border-radius:2px;background:var(--i-hair);overflow:hidden}
+.i-rt i{display:block;height:100%;border-radius:2px}
+.i-rt.recip i{background:var(--i-slate)}
+.i-rt.crisis i{background:var(--i-c2)}
+.i-rt.country i{background:var(--i-c3)}
+
+/* ---- band D, funders beside the countries ---- */
+.i-split{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:1px;
+  background:var(--line);border-bottom:1px solid var(--line)}
+.i-split > div{background:#fff;min-width:0}
+.i-lwhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);
+  padding:var(--s4) var(--s4) 12px;flex-wrap:wrap}
+.i-thead,.i-row{display:grid;grid-template-columns:minmax(0,1fr) 104px 122px;gap:var(--s4);
   align-items:center}
-.i-thead{padding:0 var(--s4);background:var(--paper);border-bottom:1px solid var(--line)}
+.i-thead{padding:0 var(--s4);background:var(--paper);border-top:1px solid var(--i-hair);
+  border-bottom:1px solid var(--i-hair)}
 .i-thead button{border:0;background:none;cursor:pointer;padding:10px 0;text-align:left;
-  font:600 9.5px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+  font:600 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
 .i-thead .ar{text-align:right}
 .i-thead button:hover{color:var(--ink)}
 .i-thead button[data-on=true]{color:var(--accent-2)}
 .i-thead button:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
-.i-list{max-height:520px;overflow-y:auto}
 .i-rw{border-bottom:1px solid var(--paper-2)}
 .i-rw:last-child{border-bottom:0}
 .i-row{width:100%;border:0;background:none;text-align:left;font:inherit;color:inherit;
-  padding:13px var(--s4);cursor:pointer;transition:background .12s ease-out}
+  padding:14px var(--s4);cursor:pointer;transition:background .12s ease-out}
 .i-row:hover{background:var(--accent-soft)}
 .i-row:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 .i-rw.on{background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
-.i-nm{font:400 16px/1.3 var(--display);color:var(--ink);overflow-wrap:anywhere}
-.i-ty{font:400 9.5px/1.5 var(--mono);letter-spacing:.07em;text-transform:uppercase;
-  color:var(--ink-3);margin-top:3px}
-.i-from{font:600 10.5px/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;
-  color:var(--ink-2)}
-.i-amt{font:600 16px/1.2 var(--mono);text-align:right;color:var(--ink);letter-spacing:-.02em}
+.i-nm{font:400 16.5px/1.3 var(--display);color:var(--ink);letter-spacing:-.005em;
+  overflow-wrap:anywhere}
+.i-ty{font:400 12px/1.4 var(--sans);color:var(--ink-3);margin-top:3px}
+.i-from{font:400 12px/1.4 var(--sans);color:var(--ink-2)}
+.i-amt{font:600 17px/1.2 var(--mono);text-align:right;color:var(--ink);letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums}
+.i-more{display:block;width:100%;border:0;border-top:1px solid var(--i-hair);
+  background:var(--paper);cursor:pointer;padding:13px var(--s4);text-align:left;
+  font:600 12px/1 var(--sans);color:var(--accent-2)}
+.i-more:hover{background:var(--accent-soft)}
+.i-more:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.i-cty{padding:var(--s4)}
+.i-cty header{margin-bottom:14px}
 
-/* per-funder detail, sectors before countries */
-.i-det{padding:2px var(--s4) var(--s4);background:var(--paper);
-  border-top:1px solid var(--paper-2)}
+/* per-funder detail */
+.i-det{padding:4px var(--s4) var(--s4);background:var(--paper);border-top:1px solid var(--i-hair)}
 .i-dsec{margin-top:var(--s3)}
-.i-dh{margin:0 0 9px;font:600 9.5px/1 var(--mono);letter-spacing:.13em;text-transform:uppercase;
-  display:flex;align-items:center;gap:7px}
+.i-dh{margin:0 0 10px;font:600 12.5px/1.3 var(--sans);display:flex;align-items:center;gap:8px}
 .i-dh i{width:9px;height:9px;border-radius:2px;flex:0 0 9px}
 .i-dh.sector{color:var(--accent-2)} .i-dh.sector i{background:var(--i-s2)}
 .i-dh.country{color:var(--i-country-ink)} .i-dh.country i{background:var(--i-c2)}
-.i-dh.plain{color:var(--ink-3)}
-.i-bar{display:grid;grid-template-columns:minmax(0,1fr) 78px;gap:10px;align-items:center;
-  margin-bottom:5px}
+.i-dh.plain{color:var(--ink-2)}
+.i-bar{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:10px;align-items:center;
+  margin-bottom:6px}
 .i-bn{position:relative;padding:3px 4px 3px 0;min-width:0;font:400 13.5px/1.4 var(--sans)}
 .i-bt{position:relative;z-index:1}
 .i-bg{position:absolute;left:0;top:0;bottom:0;border-radius:1px}
 .i-bar.sector .i-bg{background:var(--accent-soft)}
 .i-bar.country .i-bg{background:var(--i-country-soft)}
-.i-bv{font:400 10.5px/1.4 var(--mono);color:var(--ink-2);text-align:right}
-.i-yrs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.i-yr{border:1px solid var(--line);background:#fff;padding:6px 8px}
-.i-yr b{display:block;font:600 12px/1.3 var(--mono)}
-.i-yr span{display:block;font:400 8.5px/1.4 var(--mono);letter-spacing:.08em;color:var(--ink-3)}
-.i-kv{font:400 10.5px/1.85 var(--mono);color:var(--ink-3);word-break:break-word}
-.i-kv b{color:var(--ink)}
+.i-bv{font:400 11px/1.4 var(--mono);color:var(--ink-2);text-align:right;
+  font-variant-numeric:tabular-nums}
+.i-yrs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.i-yr{border:1px solid var(--i-hair);background:#fff;padding:7px 9px}
+.i-yr b{display:block;font:600 12.5px/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.i-yr span{display:block;font:400 11px/1.3 var(--sans);color:var(--ink-3);margin-top:2px}
+.i-kv{font:400 12px/1.75 var(--sans);color:var(--ink-2);word-break:break-word}
+.i-kv b{color:var(--ink);font-family:var(--mono);font-weight:600;
+  font-variant-numeric:tabular-nums}
 .i-kv a{color:var(--accent-2)}
-.i-flag{font:400 10px/1.7 var(--mono);color:var(--orange-strong);
-  background:var(--orange-soft);border:1px solid var(--orange-line);padding:8px 10px;
-  margin-top:10px;border-radius:2px}
+.i-flag{font:400 12px/1.6 var(--sans);color:var(--orange-strong);background:var(--orange-soft);
+  border-left:3px solid var(--orange-line);padding:9px 12px;margin-top:12px}
 
-/* secondary sections, closed by default so the panel opens compact */
+/* folded depth */
 #intel details{border-top:1px solid var(--line)}
-#intel details>summary{cursor:pointer;padding:13px var(--s4);
-  font:600 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-2);list-style:none;display:flex;justify-content:space-between;gap:12px;
-  align-items:center}
+#intel details>summary{cursor:pointer;padding:15px var(--s4);list-style:none;
+  display:flex;justify-content:space-between;gap:14px;align-items:center;
+  font:600 14px/1.3 var(--display);color:var(--ink-2);letter-spacing:-.005em}
 #intel details>summary::-webkit-details-marker{display:none}
-#intel details>summary::after{content:"+";font:400 14px/1 var(--mono);color:var(--ink-3)}
+#intel details>summary::after{content:"+";font:400 16px/1 var(--mono);color:var(--ink-3)}
 #intel details[open]>summary::after{content:"\2212"}
 #intel details>summary:hover{background:var(--paper);color:var(--ink)}
 #intel details>summary:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 .i-dbody{padding:0 var(--s4) var(--s4)}
 .i-two{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
-.i-scroll{max-height:340px;overflow-y:auto;padding-right:4px}
-.i-note{margin:11px 0 0;padding-top:10px;border-top:1px solid var(--line);
-  font:400 10px/1.8 var(--mono);color:var(--ink-3)}
-.i-cand>div{display:grid;grid-template-columns:minmax(0,1fr) 92px 108px;gap:14px;
-  padding:9px 0;border-bottom:1px solid var(--paper-2);align-items:baseline;
-  font:400 14px/1.4 var(--sans)}
+.i-scroll{max-height:340px;overflow-y:auto;padding-right:6px}
+.i-note{margin:12px 0 0;padding-top:11px;border-top:1px solid var(--i-hair);
+  font:400 12px/1.65 var(--sans);color:var(--ink-3)}
+.i-note-top{margin-top:0;border-top:0;padding-top:0}
+.i-cand>div{display:grid;grid-template-columns:minmax(0,1fr) 104px 132px;gap:16px;
+  padding:11px 0;border-bottom:1px solid var(--paper-2);align-items:baseline;
+  font:400 14.5px/1.4 var(--sans)}
 .i-cand>div:last-child{border-bottom:0}
-.i-cand .cc{font:400 9.5px/1.4 var(--mono);letter-spacing:.07em;text-transform:uppercase;
-  color:var(--ink-3)}
-.i-cand .cv{font:400 10.5px/1.4 var(--mono);text-align:right;color:var(--ink-2)}
-.i-lim{margin:0;padding-left:18px;font:400 13.5px/1.65 var(--sans);color:var(--ink-2)}
-.i-lim li{margin-bottom:9px}
+.i-cand .cc{font:400 12px/1.4 var(--sans);color:var(--ink-3)}
+.i-cand .cv{font:400 11px/1.4 var(--mono);text-align:right;color:var(--ink-2);
+  font-variant-numeric:tabular-nums}
+.i-lim{margin:0;padding-left:20px;font:400 14.5px/1.65 var(--sans);color:var(--ink-2)}
+.i-lim li{margin-bottom:11px}
 .i-lim li:last-child{margin-bottom:0}
-.i-lim b{color:var(--ink)}
-.i-foot{padding:var(--s3) var(--s4);border-top:1px solid var(--line);background:var(--paper);
-  font:400 9.5px/1.8 var(--mono);color:var(--ink-3)}
-.i-empty{padding:var(--s4);font:400 13.5px/1.6 var(--sans);color:var(--ink-3)}
+.i-lim b{color:var(--ink);font-weight:600}
+.i-foot{padding:var(--s3) var(--s4);border-top:1px solid var(--line);background:var(--paper)}
+.i-empty{padding:var(--s4);font:400 14.5px/1.6 var(--sans);color:var(--ink-3)}
 
-@media (max-width:1020px){
-  .i-facts{grid-template-columns:repeat(2,1fr)}
+@media (max-width:1080px){
+  .i-lede,.i-split{grid-template-columns:1fr}
+  .i-lede-r{border-left:0;border-top:1px solid var(--line)}
+  .i-three{grid-template-columns:1fr}
 }
-@media (max-width:820px){
+@media (max-width:760px){
   .i-thead{display:none}
-  .i-facts{grid-template-columns:1fr}
-  .i-lwhead{padding:var(--s3) var(--s3) 8px}
-  .i-more{padding-left:var(--s3);padding-right:var(--s3)}
-  .i-thead,.i-row{grid-template-columns:minmax(0,1fr) 104px;gap:8px var(--s3)}
-  .i-row{padding:12px var(--s3);min-height:44px}
+  .i-thead,.i-row{grid-template-columns:minmax(0,1fr) 108px;gap:8px var(--s3)}
+  .i-row{padding:13px var(--s3);min-height:44px}
   .i-from{grid-column:1}
-  .i-amt{grid-row:1;grid-column:2;font-size:15px}
-  .i-two{grid-template-columns:1fr}
-  .i-tools{flex-wrap:wrap;padding:var(--s3)}
-  .i-tools input,.i-seg{flex:1 1 100%}
-  .i-seg button{flex:1 1 50%;min-height:44px}
-  .i-top,.i-ribwrap,.i-det,.i-dbody,.i-foot{padding-left:var(--s3);padding-right:var(--s3)}
+  .i-amt{grid-row:1;grid-column:2;font-size:16px}
+  .i-two,.i-yrs{grid-template-columns:1fr}
+  .i-yrs{grid-template-columns:repeat(3,1fr)}
+  .i-cand>div{grid-template-columns:minmax(0,1fr) 104px;gap:6px 12px}
+  .i-cand .cc{display:none}
+  .i-lede-l,.i-lede-r,.i-band,.i-pane,.i-cty,.i-det,.i-dbody,.i-foot{
+    padding-left:var(--s3);padding-right:var(--s3)}
+  .i-lwhead,.i-thead,.i-more{padding-left:var(--s3);padding-right:var(--s3)}
   #intel details>summary{padding-left:var(--s3);padding-right:var(--s3)}
-  .i-list{max-height:none}
+  .i-cols{height:104px}
+  .i-colv{font-size:9px}
 }
 </style>
 </head>
@@ -2383,26 +2421,26 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 })();
 </script>
 <script>
-/* INTEL BLOCK 4 of 4. Funding intelligence, at the top of the whole-register view.
+/* INTEL BLOCK 4 of 4. Funding intelligence, on the whole-register view.
    Self-contained IIFE. It touches no function, variable or element belonging to the
-   register, so it cannot change how the register behaves. Removing this script, the
-   intel-skin sheet and the one markup fence restores the page exactly.
+   register, so it cannot change how the register behaves.
 
-   WHERE IT APPEARS. Only on the whole-register view, #/a/all, reached from the GCC emblem
-   or from "See the full list". A country or category view gets nothing, because this data
-   describes the whole register and would misrepresent a slice of it. The route is read from
-   the hash, so route() itself is never touched.
+   WHERE. Only on #/a/all, reached from the GCC emblem or "See the full list". A country or
+   category view gets nothing, because these figures describe the whole set and would
+   misrepresent a slice. The route is read from the hash, so route() is never touched.
 
-   WHO IT IS FOR. Someone senior who has two minutes: the headline, what the money bought,
-   the few facts that matter, then the largest funders. Everything deeper is folded away, and
-   the register's own full list follows immediately underneath. The briefing must never bury
-   the list it introduces.
+   WHAT A READER GETS, in reading order: the total, then the fact that three funders account
+   for most of it, then what the money bought, then three panels across the page for when it
+   moved, who received it and which crises it answered, then the largest funders beside the
+   countries they reached. Depth is folded away and the register's own list follows below.
 
-   flows.json is fetched once, on the first visit to that view, so every other page is
-   unaffected. All DOM is built with createElement and textContent, so no value from the
-   data is ever parsed as HTML. Only http and https links are rendered.
+   HONESTY. Not every panel describes the whole total, so each one states the share it
+   speaks for, computed from the data rather than written in. An emergency tag sits on a
+   third of the value and a named recipient on most of it, and saying otherwise would
+   quietly overstate both.
 
-   COLOUR CONTRACT: blueberry means SECTOR, green means COUNTRY, never mixed. */
+   All DOM is built with createElement and textContent, so no value from the data is ever
+   parsed as HTML. Only explicit http and https links are rendered. */
 (function(){
   "use strict";
   var panel=document.getElementById("intel");
@@ -2429,9 +2467,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   function safeUrl(u){
     if(!u) return null;
     var s=String(u).trim();
-    /* an explicit scheme is required. new URL("www.example.org", here) silently resolves to
-       a path on THIS site, so a bare domain in a register row would render as a broken
-       internal link that looks like ours. */
     if(!/^https?:\/\//i.test(s)) return null;
     try{ var p=new URL(s);
       return (p.protocol==="http:"||p.protocol==="https:")?p.href:null; }
@@ -2450,31 +2485,61 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   var SHORT={"United Arab Emirates":"UAE"};
   function shortState(s){ return SHORT[s]||s||""; }
 
-  function barRow(label,value,max,kind){
-    return el("div",{cls:"i-bar "+kind},[
-      el("div",{cls:"i-bn"},[
-        el("span",{cls:"i-bg",style:"width:"+Math.max(1.2,(value/(max||1))*100).toFixed(2)+"%"}),
-        el("span",{cls:"i-bt",text:label})
-      ]),
-      el("span",{cls:"i-bv",text:usd(value)})
-    ]);
+  /* ---------- small builders ---------- */
+  function paneHead(title,meta){
+    var h=el("header");
+    h.appendChild(el("h4",{cls:"i-t-panel",text:title}));
+    if(meta) h.appendChild(el("p",{cls:"i-t-meta",text:meta}));
+    return h;
+  }
+  function rowBars(list,kind,total){
+    var wrap=el("div",{cls:"i-rows"});
+    if(!list||!list.length){
+      wrap.appendChild(el("p",{cls:"i-t-meta",text:"none reported"}));
+      return wrap;
+    }
+    var max=list[0][1];
+    list.forEach(function(p){
+      var r=el("div",{cls:"i-r"});
+      r.appendChild(el("span",{cls:"i-rlab",text:p[0]}));
+      r.appendChild(el("span",{cls:"i-rv",
+        text:usd(p[1])+(total?"  "+pc(p[1],total)+"%":"")}));
+      var t=el("div",{cls:"i-rt "+kind});
+      t.appendChild(el("i",{style:"width:"+Math.max(1.5,(p[1]/max)*100).toFixed(2)+"%"}));
+      r.appendChild(t);
+      wrap.appendChild(r);
+    });
+    return wrap;
   }
   function barList(list,host,kind){
     clear(host);
-    if(!list||!list.length){ host.appendChild(el("p",{cls:"i-ty",text:"none reported"})); return; }
+    if(!list||!list.length){ host.appendChild(el("p",{cls:"i-t-meta",text:"none reported"})); return; }
     var max=list[0][1];
-    list.forEach(function(p){ host.appendChild(barRow(p[0],p[1],max,kind)); });
+    list.forEach(function(p){
+      host.appendChild(el("div",{cls:"i-bar "+kind},[
+        el("div",{cls:"i-bn"},[
+          el("span",{cls:"i-bg",style:"width:"+Math.max(1.2,(p[1]/(max||1))*100).toFixed(2)+"%"}),
+          el("span",{cls:"i-bt",text:p[0]})
+        ]),
+        el("span",{cls:"i-bv",text:usd(p[1])})
+      ]));
+    });
   }
-  function head(title,kind){
+  function dsec(title,kind){
     var h=el("div",{cls:"i-dh "+kind});
     if(kind!=="plain") h.appendChild(el("i"));
     h.appendChild(document.createTextNode(title));
-    return h;
+    return el("div",{cls:"i-dsec"},[h]);
   }
-  function sec(title,kind){ return el("div",{cls:"i-dsec"},[head(title,kind)]); }
-
-  /* named from the data, not written in. The old sentence hard-coded Bahrain at one flow and
-     Oman at thirteen, which would quietly become false at the next rebuild. */
+  function details(label,fill){
+    var d=el("details");
+    d.appendChild(el("summary",{text:label}));
+    var box=el("div",{cls:"i-dbody"});
+    fill(box);
+    d.appendChild(box);
+    return d;
+  }
+  /* named from the data so it cannot drift out of step with a rebuild */
   function thinReporters(){
     var thin=Object.keys(D.states||{}).map(function(k){
       return {name:k,flows:Number((D.states[k]||{}).flows)||0}; })
@@ -2488,40 +2553,59 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(!bits.length) return "Some states report very little to this system.";
     return "Across six years the source holds "+bits.join(" and ")+".";
   }
-  function details(label,fill){
-    var d=el("details");
-    d.appendChild(el("summary",{text:label}));
-    var box=el("div",{cls:"i-dbody"});
-    fill(box);
-    d.appendChild(box);
-    return d;
-  }
 
   /* ---------- the briefing ---------- */
   function build(){
     clear(panel);
-    var m=D.meta;
+    var m=D.meta, T=m.total_usd;
     var card=el("div",{cls:"i-card"});
 
-    /* 1. the headline. One figure, then what it is. */
-    var top=el("div",{cls:"i-top"});
-    top.appendChild(el("p",{cls:"i-eye",text:"Funding intelligence"}));
-    top.appendChild(el("h3",{cls:"i-h",id:"intel-h",tabindex:"-1",
+    /* BAND A: the headline, and the concentration finding as its counterweight */
+    var lede=el("div",{cls:"i-lede"});
+    var L=el("div",{cls:"i-lede-l"});
+    L.appendChild(el("p",{cls:"i-t-eye",text:"Funding intelligence"}));
+    L.appendChild(el("h3",{cls:"i-t-h",id:"intel-h",tabindex:"-1",
       text:"Humanitarian money recorded leaving the six Gulf states"}));
-    top.appendChild(el("div",{cls:"i-fig"},[
-      el("b",{text:usd(m.total_usd)}),
-      el("span",{text:m.years+", across "+nm(m.flows_used)+" funding flows, from "+
-        m.distinct_source_orgs+" reporting organisations"})
+    L.appendChild(el("div",{cls:"i-figrow"},[
+      el("span",{cls:"i-t-fig",text:usd(T)}),
+      el("p",{cls:"i-t-meta",text:m.years+", across "+nm(m.flows_used)+
+        " funding flows from "+m.distinct_source_orgs+" reporting organisations"})
     ]));
-    var live=el("p",{cls:"i-live",id:"i-live"});
+    var live=el("p",{cls:"i-t-prov i-live",id:"i-live"});
     live.appendChild(el("span",{cls:"i-dot"}));
     live.appendChild(document.createTextNode("Checking the live source..."));
-    top.appendChild(live);
-    card.appendChild(top);
+    L.appendChild(live);
+    lede.appendChild(L);
 
-    /* 2. what the money bought */
-    var rw=el("div",{cls:"i-ribwrap"});
-    rw.appendChild(el("p",{cls:"i-riblab",text:"What it was spent on, by sector"}));
+    var R=el("div",{cls:"i-lede-r i-conc"});
+    /* concentration is measured across EVERY reporting organisation, states included.
+       An earlier version measured only the register-matched ones, which excluded the two
+       largest sources in the region and turned 89 per cent into a false 22. */
+    var top3=sortedAll().slice(0,3);
+    var top3usd=top3.reduce(function(a,r){ return a+r.usd; },0);
+    R.appendChild(el("b",{text:pc(top3usd,T)+"%"}));
+    R.appendChild(el("p",{cls:"i-t-body",
+      text:"of everything tracked comes from just three sources: "+
+        listNames(top3)+". Two of them are states rather than register organisations, and "+
+        "the concentration is the point: a decision at any one of them moves the regional "+
+        "total more than every other reported funder combined."}));
+    var cb=el("div",{cls:"i-conc-bar"});
+    top3.forEach(function(r,i){
+      cb.appendChild(el("i",{style:"width:"+((r.usd/T)*100).toFixed(2)+"%;background:"+SEC[i],
+        title:(r.reg||r.fts)+" "+usd(r.usd)}));
+    });
+    cb.appendChild(el("i",{style:"width:"+(((T-top3usd)/T)*100).toFixed(2)+
+      "%;background:var(--i-s6)",title:"everyone else "+usd(T-top3usd)}));
+    R.appendChild(cb);
+    lede.appendChild(R);
+    card.appendChild(lede);
+
+    /* BAND B: what it was spent on */
+    var band=el("div",{cls:"i-band"});
+    band.appendChild(el("div",{cls:"i-bandhead"},[
+      el("h4",{cls:"i-t-panel",text:"What it was spent on"}),
+      el("p",{cls:"i-t-meta",text:m.sectors_count+" sectors reported"})
+    ]));
     var all=D.sector_all.slice(), h6=all.slice(0,6);
     var tail=all.slice(6).reduce(function(a,d){ return a+d[1]; },0);
     var parts=h6.slice();
@@ -2537,33 +2621,82 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         title:p[0]+" "+usd(p[1])}));
       if(pc(p[1],sum)>=1) key.appendChild(el("span",null,[
         el("b",{style:"background:"+col}),
-        el("span",{text:p[0]+"  "+pc(p[1],sum)+"%"})
+        document.createTextNode(p[0]+" "),
+        el("em",{text:pc(p[1],sum)+"%"})
       ]));
     });
-    rw.appendChild(rib); rw.appendChild(key);
-    card.appendChild(rw);
+    band.appendChild(rib); band.appendChild(key);
+    card.appendChild(band);
 
-    /* 3. the four facts a senior reader actually needs */
-    var topC=D.dest_country[0], topS=D.sector_all[0];
-    var facts=[
-      [m.matched_rows+" of "+nm(m.register_rows),"register organisations traced to reported funding"],
-      [nm(m.countries_reached),"countries reached"],
-      [topC[0],"largest recipient, "+usd(topC[1])],
-      [topS[0],"largest sector, "+usd(topS[1])]
-    ];
-    var fg=el("div",{cls:"i-facts"});
-    facts.forEach(function(f){
-      fg.appendChild(el("div",{cls:"i-fact"},[
-        el("b",{text:f[0]}),el("span",{text:f[1]})]));
+    /* BAND C: when, to whom, and for which crisis */
+    var three=el("div",{cls:"i-three"});
+
+    /* when: a column chart, so the shape is read rather than six numbers */
+    var p1=el("div",{cls:"i-pane"});
+    var yrs=Object.keys(D.years||{}).sort();
+    var partial=yrs.length?yrs[yrs.length-1]:null;
+    p1.appendChild(paneHead("When it moved",
+      "By usage year. "+(partial?partial+" is still running, so it is shown open.":"")));
+    var vals=yrs.map(function(y){ return D.years[y]; });
+    var maxY=Math.max.apply(null,vals.concat([1]));
+    var cols=el("div",{cls:"i-cols"});
+    yrs.forEach(function(y){
+      var isPart=(y===partial);
+      cols.appendChild(el("div",{cls:"i-col"+(isPart?" part":"")},[
+        el("span",{cls:"i-colv",text:usd(D.years[y]).replace("$","")}),
+        el("i",{style:"height:"+Math.max(3,(D.years[y]/maxY)*100).toFixed(1)+"%",
+          title:y+" "+usd(D.years[y])})
+      ]));
     });
-    card.appendChild(fg);
+    p1.appendChild(cols);
+    var xs=el("div",{cls:"i-colx"});
+    yrs.forEach(function(y){
+      xs.appendChild(el("span",{cls:(y===partial?"part":""),text:y}));
+    });
+    p1.appendChild(xs);
+    /* the column shape raises an obvious question, so the panel answers it rather than
+       leaving the reader to squint at six bars */
+    var closed=yrs.filter(function(y){ return y!==partial; });
+    var peak=closed.reduce(function(a,y){ return D.years[y]>D.years[a]?y:a; },closed[0]);
+    var rest=closed.filter(function(y){ return y!==peak; });
+    var avg=rest.reduce(function(a,y){ return a+D.years[y]; },0)/(rest.length||1);
+    var pf=el("div",{cls:"i-pfacts"});
+    pf.appendChild(el("div",{cls:"i-pf"},[
+      el("b",{text:peak}),
+      el("span",{text:"peak year at "+usd(D.years[peak])+", "+
+        (D.years[peak]/avg).toFixed(1)+" times the average of the other closed years"})
+    ]));
+    pf.appendChild(el("div",{cls:"i-pf"},[
+      el("b",{text:pc(m.paid_usd,T)+"%"}),
+      el("span",{text:"recorded as paid rather than committed, "+usd(m.paid_usd)+
+        " of "+usd(T)})
+    ]));
+    p1.appendChild(pf);
+    three.appendChild(p1);
 
-    /* 4. the largest funders, compact. The full register list is right below, so this
-          shows the top few and gets out of the way. */
-    var lw=el("div",{cls:"i-lw"});
-    lw.appendChild(el("div",{cls:"i-lwhead"},[
-      head("Largest reported funders","plain"),
-      el("span",{cls:"i-lwnote",id:"i-lwnote"})
+    /* to whom */
+    var p2=el("div",{cls:"i-pane"});
+    p2.appendChild(paneHead("Who received it",
+      "Recipient organisation type, covering "+pc(m.recipient_usd,T)+
+      " per cent of the value. A flow naming several recipients counts under each."));
+    p2.appendChild(rowBars((D.desttype||[]).slice(0,6),"recip",m.recipient_usd));
+    three.appendChild(p2);
+
+    /* which crisis */
+    var p3=el("div",{cls:"i-pane"});
+    p3.appendChild(paneHead("Which crises",
+      "Only "+nm(m.emerg_flows)+" of "+nm(m.flows_used)+" funding flows carry a named "+
+      "emergency, so this describes "+pc(m.emerg_usd,T)+" per cent of the value, not all of it."));
+    p3.appendChild(rowBars((D.emerg||[]).slice(0,6),"crisis",m.emerg_usd));
+    three.appendChild(p3);
+    card.appendChild(three);
+
+    /* BAND D: the funders beside the countries */
+    var split=el("div",{cls:"i-split"});
+    var fl=el("div");
+    fl.appendChild(el("div",{cls:"i-lwhead"},[
+      el("h4",{cls:"i-t-panel",text:"Largest reported funders"}),
+      el("p",{cls:"i-t-meta",id:"i-lwnote"})
     ]));
     var th=el("div",{cls:"i-thead"});
     [["name","Funder",""],["state","From",""],["usd","Tracked","ar"]].forEach(function(c){
@@ -2572,18 +2705,27 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       if(c[0]===sortKey) b.setAttribute("data-on","true");
       th.appendChild(b);
     });
-    lw.appendChild(th);
-    lw.appendChild(el("div",{cls:"i-list",id:"i-list"}));
-    var more=el("button",{type:"button",cls:"i-more",id:"i-more"});
-    lw.appendChild(more);
-    card.appendChild(lw);
+    fl.appendChild(th);
+    fl.appendChild(el("div",{id:"i-list"}));
+    fl.appendChild(el("button",{type:"button",cls:"i-more",id:"i-more"}));
+    split.appendChild(fl);
 
-    /* 5. depth, folded away */
+    var cr=el("div",{cls:"i-cty"});
+    cr.appendChild(paneHead("Countries reached",
+      nm(m.countries_reached)+" in all. The ten largest are shown."));
+    cr.appendChild(rowBars(D.dest_country.slice(0,10),"country",T));
+    cr.appendChild(el("p",{cls:"i-note",text:"Held out of this list: "+
+      (D.dest_other||[]).map(function(x){ return x[0]+" "+usd(x[1]); }).join(", ")+
+      ". Gulf funding given to global programmes with no single recipient country."}));
+    split.appendChild(cr);
+    card.appendChild(split);
+
+    /* folded depth */
     card.appendChild(details("All "+m.sectors_count+" sectors and all "+
       nm(m.countries_reached)+" countries",function(box){
       var two=el("div",{cls:"i-two"});
       var a=el("div"),b=el("div");
-      a.appendChild(head("Sectors","sector"));
+      a.appendChild(el("h5",{cls:"i-dh sector"},[el("i"),document.createTextNode("Sectors")]));
       var ah=el("div",{cls:"i-scroll"}); a.appendChild(ah);
       var secs=D.sector_all.slice();
       if(D.sector_unstated>0) secs.push(["No sector stated",D.sector_unstated]);
@@ -2592,13 +2734,11 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       a.appendChild(el("p",{cls:"i-note",text:"All "+m.sectors_count+
         " sectors the source records, plus the "+usd(D.sector_unstated)+
         " of funding flows that carry no sector."}));
-      b.appendChild(head("Countries that received GCC funding","country"));
+      b.appendChild(el("h5",{cls:"i-dh country"},[el("i"),
+        document.createTextNode("Countries that received GCC funding")]));
       var bh=el("div",{cls:"i-scroll"}); b.appendChild(bh);
       barList(D.dest_country,bh,"country");
-      b.appendChild(el("p",{cls:"i-note",text:"All "+nm(m.countries_reached)+
-        " countries. Held out of this list: "+
-        D.dest_other.map(function(x){ return x[0]+" "+usd(x[1]); }).join(", ")+
-        ". That is Gulf funding given to global programmes with no single recipient country."}));
+      b.appendChild(el("p",{cls:"i-note",text:"All "+nm(m.countries_reached)+" countries."}));
       two.appendChild(a); two.appendChild(b);
       box.appendChild(two);
     }));
@@ -2632,11 +2772,14 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
           "UNRWA core funding. These have no single recipient country, so they are held out of "+
           "the country list rather than assigned to one."],
         ["An eighth of the money has no sector.",usd(D.sector_unstated)+", "+
-          pc(D.sector_unstated,D.meta.total_usd)+" per cent of the total, is reported without "+
-          "a sector, so the sector figures describe the rest."],
-        ["Only "+D.meta.distinct_source_orgs+" organisations report at all.","Of the "+
-          nm(D.meta.register_rows)+" funders in the register, "+D.meta.matched_rows+
-          " appear here. That is a limit of what is reported, not a judgement about the others."],
+          pc(D.sector_unstated,T)+" per cent of the total, is reported without a sector, so "+
+          "the sector figures describe the rest."],
+        ["The crisis panel covers a third of the value.","Only "+nm(m.emerg_flows)+" of "+
+          nm(m.flows_used)+" funding flows name an emergency, so which crises the money "+
+          "answered can be read for "+pc(m.emerg_usd,T)+" per cent of it and no more."],
+        ["Only "+m.distinct_source_orgs+" organisations report at all.","Of the "+
+          nm(m.register_rows)+" funders in the register, "+m.matched_rows+" appear here. That "+
+          "is a limit of what is reported, not a judgement about the others."],
         ["Development finance and loans are outside it.","This covers humanitarian funding "+
           "reported to one system. It overlaps official development assistance in places and "+
           "is counted on different rules, so the two sets of figures should not be added "+
@@ -2654,11 +2797,12 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       box.appendChild(ul);
     }));
 
-    card.appendChild(el("div",{cls:"i-foot",text:
+    card.appendChild(el("div",{cls:"i-foot"},[el("p",{cls:"i-t-prov",text:
       "Source: UN OCHA Financial Tracking Service. Every funding flow checked to originate in "+
       "a Gulf state, and "+m.non_gcc_source_flows+" did not. "+nm(m.distinct_ids)+
-      " distinct records fetched, "+nm(m.flows_used)+" used. Built "+m.built+
-      ". The full register follows below."}));
+      " distinct records fetched, "+nm(m.flows_used)+" used. Paid "+fullUsd(m.paid_usd)+
+      ", commitment "+fullUsd(m.commitment_usd)+". Built "+m.built+
+      ". The full register follows below."})]));
 
     panel.appendChild(card);
 
@@ -2677,13 +2821,35 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       sel=(sel===i)?null:i;
       renderList();
     });
-    more.addEventListener("click",function(){ showAll=!showAll; renderList(); });
+    panel.querySelector("#i-more").addEventListener("click",function(){
+      showAll=!showAll; renderList();
+    });
 
     built=true;
     renderList();
     liveCheck();
   }
 
+  /* EVERY reporting organisation, states included, largest first. This is the correct
+     denominator for concentration; filtering to register rows understates it badly. */
+  function sortedAll(){
+    return D.rows.slice().sort(function(a,b){ return b.usd-a.usd; });
+  }
+  /* the source writes state names as "Saudi Arabia (Kingdom of), Government of", which does
+     not read in a sentence, so they are said the way a person would say them */
+  function readable(r){
+    if(r.reg) return r.reg.replace(/\s*\([^)]*\)\s*$/,"");
+    var s=r.fts;
+    var GOV={"Saudi Arabia":"Saudi","United Arab Emirates":"UAE"};
+    var gov=s.match(/^(.+?)\s*(?:\([^)]*\))?,\s*Government of$/);
+    if(gov) return "the "+(GOV[gov[1]]||gov[1])+" government";
+    return s;
+  }
+  function listNames(rows){
+    var n=rows.map(readable);
+    if(n.length<2) return n.join("");
+    return n.slice(0,-1).join(", ")+" and "+n[n.length-1];
+  }
   function sortedRows(){
     var rows=D.rows.filter(function(r){ return !!r.reg; });
     rows.sort(function(x,y){
@@ -2709,14 +2875,12 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       var sub=[];
       if(r.reg_type) sub.push(r.reg_type);
       if(r.multilateral) sub.push("multilateral");
-      /* these rows expand a panel, so the correct state is aria-expanded with
-         aria-controls, not aria-pressed, which describes a toggle that stays pushed in */
       var did="i-det-"+i;
       var btn=el("button",{type:"button",cls:"i-row",
         "aria-expanded":String(sel===i),"aria-controls":did},[
         el("div",null,[
           el("div",{cls:"i-nm",text:r.reg||r.fts}),
-          el("div",{cls:"i-ty",text:sub.join("  /  ")})
+          el("div",{cls:"i-ty",text:sub.join(", ")})
         ]),
         el("div",{cls:"i-from",text:shortState(r.state),title:r.state||""}),
         el("div",{cls:"i-amt",text:usd(r.usd)})
@@ -2733,15 +2897,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       : "Show all "+all.length+" traced funders";
     var note=panel.querySelector("#i-lwnote");
     if(note) note.textContent=(showAll?all.length:Math.min(TOP,all.length))+" of "+all.length+
-      ", "+fullUsd(all.reduce(function(a,r){ return a+r.usd; },0))+" traced in total";
+      " shown, "+fullUsd(all.reduce(function(a,r){ return a+r.usd; },0))+" traced in total";
     var th=panel.querySelector(".i-thead");
     if(th) Array.prototype.forEach.call(th.querySelectorAll("button[data-sort]"),function(b){
       var on=b.getAttribute("data-sort")===sortKey;
       if(on) b.setAttribute("data-on","true"); else b.removeAttribute("data-on");
       var base=b.textContent.replace(/[▴▾]\s*$/,"").trim();
       b.textContent=on?(base+(sortDir<0?" ▾":" ▴")):base;
-      /* the arrow is decoration. aria-sort is what a screen reader announces, so the
-         current sort is stated rather than left to a glyph. */
       b.setAttribute("aria-sort",on?(sortDir<0?"descending":"ascending"):"none");
       b.setAttribute("aria-label",base+(on
         ? (", sorted "+(sortDir<0?"descending":"ascending")+", activate to reverse")
@@ -2751,15 +2913,15 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
   function detail(r,domId){
     var box=el("div",{cls:"i-det",id:domId,role:"region"});
-    var a=sec("Sectors funded","sector");
+    var a=dsec("Sectors funded","sector");
     var ah=el("div"); a.appendChild(ah); barList(r.sector,ah,"sector");
     box.appendChild(a);
-    var b=sec("Countries reached","country");
+    var b=dsec("Countries reached","country");
     var bh=el("div"); b.appendChild(bh); barList(r.dest,bh,"country");
     box.appendChild(b);
     var yrs=Object.keys(r.years||{});
     if(yrs.length){
-      var c=sec("By usage year","plain");
+      var c=dsec("By usage year","plain");
       var grid=el("div",{cls:"i-yrs"});
       yrs.forEach(function(y){
         grid.appendChild(el("div",{cls:"i-yr"},[
@@ -2767,7 +2929,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       });
       c.appendChild(grid); box.appendChild(c);
     }
-    var d=sec("Provenance","plain");
+    var d=dsec("Provenance","plain");
     var kv=el("div",{cls:"i-kv"});
     kv.appendChild(el("b",{text:fullUsd(r.usd)}));
     kv.appendChild(document.createTextNode(" total. Paid "+fullUsd(r.paid)+
@@ -2786,11 +2948,11 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     }
     d.appendChild(kv);
     if(r.split_flows) d.appendChild(el("div",{cls:"i-flag",text:r.split_flows+
-      " of this funder's funding flows name more than one destination. Those amounts are split "+
-      "evenly, so the country figures above are estimates."}));
+      " of this funder's funding flows name more than one destination. Those amounts are "+
+      "split evenly, so the country figures above are estimates."}));
     if(r.multilateral) d.appendChild(el("div",{cls:"i-flag",text:
-      "The source classifies this as a multilateral organisation, so its funds may pool capital "+
-      "from outside the Gulf. Do not read it as money from one state."}));
+      "The source classifies this as a multilateral organisation, so its funds may pool "+
+      "capital from outside the Gulf. Do not read it as money from one state."}));
     box.appendChild(d);
     return box;
   }
@@ -2800,8 +2962,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(!node) return;
     var states=Object.keys(D.states||{}).map(function(k){ return {name:k,v:D.states[k]}; })
       .filter(function(s){ return s.v && s.v.iso; });
-    /* without a year to query, or a state to query it for, there is nothing honest to say,
-       so the line is removed rather than reporting a total of zero for "undefined" */
     if(!y||!states.length){ node.parentNode.removeChild(node); return; }
     Promise.all(states.map(function(s){
       return fetch(FTS+"?countryISO3="+encodeURIComponent(s.v.iso)+"&year="+y,
@@ -2836,8 +2996,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     });
   }
 
-  /* The data contract, checked before anything is drawn. A stale or partial flows.json
-     must degrade to a plain sentence, never throw inside a live page. */
+  /* the data contract, checked before anything is drawn */
   function usable(j){
     if(!j||typeof j!=="object") return false;
     var m=j.meta;
@@ -2846,15 +3005,17 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(!Array.isArray(j.sector_all)||!j.sector_all.length) return false;
     if(!Array.isArray(j.dest_country)||!j.dest_country.length) return false;
     if(!Array.isArray(j.dest_other)) return false;
+    if(!Array.isArray(j.desttype)||!Array.isArray(j.emerg)) return false;
+    if(!j.years||typeof j.years!=="object") return false;
     if(typeof j.sector_unstated!=="number") return false;
     if(!j.states||typeof j.states!=="object") return false;
     var need=["total_usd","flows_used","matched_rows","register_rows","sectors_count",
-              "countries_reached","distinct_source_orgs","non_gcc_source_flows","built","years"];
+              "countries_reached","distinct_source_orgs","non_gcc_source_flows","built",
+              "years","emerg_usd","emerg_flows","recipient_usd","paid_usd","commitment_usd"];
     for(var i=0;i<need.length;i++) if(!(need[i] in m)) return false;
     return true;
   }
 
-  /* ---------- show only on the whole-register view ---------- */
   function isAllView(){
     var raw=location.hash.replace(/^#\/?/,"").split("?")[0];
     return raw==="a/all";
@@ -2869,9 +3030,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     loading=true;
     clear(panel);
     panel.appendChild(el("p",{cls:"i-empty",text:"Loading the funding intelligence..."}));
-    /* no-cache, matching how the register fetches its own data. Pages can otherwise serve a
-       fresh index.html beside a stale flows.json, which is exactly the split that would make
-       this view fail in public. */
     fetch("flows.json",{cache:"no-cache"}).then(function(r){
       if(!r.ok) throw new Error("HTTP "+r.status);
       return r.json();
@@ -2880,8 +3038,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       D=j; loading=false;
       if(isAllView()) build();
     }).catch(function(e){
-      /* D is left null so a stale or malformed file cannot be treated as loaded and then
-         throw on a later visit to this view */
       D=null; loading=false; built=false;
       clear(panel);
       panel.appendChild(el("p",{cls:"i-empty",
@@ -2891,7 +3047,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   }
 
   window.addEventListener("hashchange",sync);
-  /* the register hydrates its own view asynchronously, so this runs after load too */
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",sync);
   else sync();
 })();
