@@ -439,12 +439,20 @@ nav.pager .pg-sm{display:none}
    than as another piece of interface */
 footer.sig{border-top:1px solid var(--line);margin-top:var(--s5)}
 footer.sig .wrap{padding-top:var(--s3);padding-bottom:var(--s4)}
-footer.sig p{margin:0;text-align:right;font:400 12.5px/1.6 var(--sans);color:var(--ink-3)}
+footer.sig p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
+  font:400 12.5px/1.6 var(--sans);color:var(--ink-3)}
 footer.sig a{display:inline-flex;align-items:center;min-height:40px;
   font:600 14px/1.6 var(--sans);color:var(--accent);
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
   letter-spacing:.15px}
 footer.sig a:hover{color:var(--accent-2)}
+/* a small circular portrait beside the credit, a quiet signature that also links out */
+footer.sig a.sig-ava{flex:0 0 auto;min-height:0;border-radius:50%;line-height:0;
+  text-decoration:none;box-shadow:0 0 0 1px var(--line-2),0 2px 7px rgba(20,24,36,.14);
+  transition:box-shadow .16s ease,transform .16s ease}
+footer.sig a.sig-ava img{width:40px;height:40px;border-radius:50%;display:block;object-fit:cover}
+footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:translateY(-1px);
+  box-shadow:0 0 0 1px var(--accent),0 5px 12px rgba(62,76,196,.20)}
 
 #state{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
 #state button{min-height:40px;font:600 11px/1 var(--mono);letter-spacing:.1em;
@@ -525,7 +533,7 @@ footer.sig a{font-family:var(--serif)}
 /* on the home the centred mark is the identity, so the ink masthead and its ribbon step
    aside; on an inner page the masthead returns */
 body:has(#l1:not([hidden])) header.top{display:none}
-body:has(#l1:not([hidden])) footer.sig p{text-align:center}
+body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 
 .portal{margin:0 auto;padding:calc(var(--s5) + var(--s4)) 0 0;text-align:center}
 .portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
@@ -642,7 +650,7 @@ body:has(#l1:not([hidden])) footer.sig p{text-align:center}
 /* the categories: a titled block with the count set apart, then the quiet list */
 .cats-head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);
   flex-wrap:wrap;margin:0 0 var(--s4)}
-.cats-title{margin:0;font:600 19px/1.2 var(--display);color:var(--ink);letter-spacing:-.2px}
+.cats-title{margin:0;font:600 24px/1.18 var(--display);color:var(--ink);letter-spacing:-.4px}
 .cats-title::after{content:"";display:block;width:38px;height:2px;margin:10px 0 0;
   background:var(--orange-line);border-radius:1px}
 .cats-head{margin-bottom:var(--s3)}
@@ -769,8 +777,11 @@ ol.ranked a::before{top:9px;bottom:9px}
 </main>
 
 <footer class="sig"><div class="wrap">
-  <p>Compiled by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
-     target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></p>
+  <p><a class="sig-ava" href="https://www.linkedin.com/in/ali-al-mokdad/"
+     target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
+     src="ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
+     class="sig-cred">Compiled by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
+     target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
 </div></footer>
 
 <script>
