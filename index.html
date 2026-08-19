@@ -2492,7 +2492,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       wrap.appendChild(el("p",{cls:"i-t-meta",text:"none reported"}));
       return wrap;
     }
-    var max=list[0][1];
+    var max=list[0][1]||1;
     list.forEach(function(p){
       var r=el("div",{cls:"i-r"});
       r.appendChild(el("span",{cls:"i-rlab",text:p[0]}));
@@ -2575,10 +2575,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var top3usd=top3.reduce(function(a,r){ return a+r.usd; },0);
     R.appendChild(el("b",{text:pc(top3usd,T)+"%"}));
     R.appendChild(el("p",{cls:"i-t-body",
-      text:"of everything tracked comes from just three sources: "+
-        listNames(top3)+". Two of them are states rather than register organisations, and "+
-        "the concentration is the point: a decision at any one of them moves the regional "+
-        "total more than every other reported funder combined."}));
+      text:"of everything tracked comes from just three sources: "+listNames(top3)+
+        ". Two are states rather than register organisations, and the largest single one is "+
+        pc(top3[0].usd,T)+" per cent of the whole. Read every other figure here knowing that "+
+        "a handful of decisions set the regional total."}));
     var cb=el("div",{cls:"i-conc-bar"});
     top3.forEach(function(r,i){
       cb.appendChild(el("i",{style:"width:"+((r.usd/T)*100).toFixed(2)+"%;background:"+SEC[i],
@@ -2626,7 +2626,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var yrs=Object.keys(D.years||{}).sort();
     var partial=yrs.length?yrs[yrs.length-1]:null;
     p1.appendChild(paneHead("When it moved",
-      "By usage year. "+(partial?partial+" is still running, so it is shown open.":"")));
+      "By usage year. "+(partial?partial+" is only part of a year in this snapshot, so its "+
+      "column is drawn open.":"")));
     var vals=yrs.map(function(y){ return D.years[y]; });
     var maxY=Math.max.apply(null,vals.concat([1]));
     var cols=el("div",{cls:"i-cols"});
@@ -2647,15 +2648,21 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     /* the column shape raises an obvious question, so the panel answers it rather than
        leaving the reader to squint at six bars */
     var closed=yrs.filter(function(y){ return y!==partial; });
-    var peak=closed.reduce(function(a,y){ return D.years[y]>D.years[a]?y:a; },closed[0]);
-    var rest=closed.filter(function(y){ return y!==peak; });
-    var avg=rest.reduce(function(a,y){ return a+D.years[y]; },0)/(rest.length||1);
     var pf=el("div",{cls:"i-pfacts"});
-    pf.appendChild(el("div",{cls:"i-pf"},[
-      el("b",{text:peak}),
-      el("span",{text:"peak year at "+usd(D.years[peak])+", "+
-        (D.years[peak]/avg).toFixed(1)+" times the average of the other closed years"})
-    ]));
+    /* the peak statistic needs at least two complete years to compare against, otherwise it
+       rendered "undefined peak year at $0" */
+    if(closed.length>=2){
+      var peak=closed.reduce(function(a,y){ return D.years[y]>D.years[a]?y:a; },closed[0]);
+      var rest=closed.filter(function(y){ return y!==peak; });
+      var avg=rest.reduce(function(a,y){ return a+D.years[y]; },0)/rest.length;
+      pf.appendChild(el("div",{cls:"i-pf"},[
+        el("b",{text:peak}),
+        el("span",{text:avg>0
+          ? "peak year at "+usd(D.years[peak])+", "+(D.years[peak]/avg).toFixed(1)+
+            " times the average of the other complete years"
+          : "peak year at "+usd(D.years[peak])})
+      ]));
+    }
     pf.appendChild(el("div",{cls:"i-pf"},[
       el("b",{text:pc(m.paid_usd,T)+"%"}),
       el("span",{text:"recorded as paid rather than committed, "+usd(m.paid_usd)+
@@ -2668,7 +2675,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var p2=el("div",{cls:"i-pane"});
     p2.appendChild(paneHead("Who received it",
       "Recipient organisation type, covering "+pc(m.recipient_usd,T)+
-      " per cent of the value. A flow naming several recipients counts under each."));
+      " per cent of the value. A flow naming several recipients counts under each, so these "+
+      "shares are not additive."));
     p2.appendChild(rowBars((D.desttype||[]).slice(0,6),"recip",m.recipient_usd));
     three.appendChild(p2);
 
@@ -2852,6 +2860,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(!list) return;
     clear(list);
     var all=sortedRows();
+    if(!all.length){
+      list.appendChild(el("div",{cls:"i-empty",
+        text:"No register organisation appears in the reported funding."}));
+      var m0=panel.querySelector("#i-more"); if(m0) m0.hidden=true;
+      var n0=panel.querySelector("#i-lwnote"); if(n0) n0.textContent="";
+      return;
+    }
     var rows=showAll?all:all.slice(0,TOP);
     rows.forEach(function(r){
       var i=D.rows.indexOf(r);
@@ -2961,9 +2976,27 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     return true;
   }
 
+  /* The briefing describes the WHOLE register, so it only belongs on a view showing the
+     whole register. A country or a category is a slice, and so is a search: with a search
+     running, the list below might hold seven organisations while these figures still describe
+     all 1,862, and a reader would fairly read the total as belonging to their results.
+     Paging is not a filter, so ?p= keeps the briefing. The filter names are the register's
+     own: q for the search, in for the place, cat for the category, has for the contact
+     filters. Nothing here touches their router or their search code. */
+  var FILTERS=["q","in","cat","has"];
   function isAllView(){
-    var raw=location.hash.replace(/^#\/?/,"").split("?")[0];
-    return raw==="a/all";
+    var raw=location.hash.replace(/^#\/?/,"");
+    var parts=raw.split("?");
+    if(parts[0]!=="a/all") return false;
+    var qs=parts.slice(1).join("?");
+    if(!qs) return true;
+    var pairs=qs.split("&"), i, kv;
+    for(i=0;i<pairs.length;i++){
+      kv=pairs[i].split("=");
+      if(FILTERS.indexOf(decodeURIComponent(kv[0]))>-1 &&
+         (kv[1]||"").length) return false;
+    }
+    return true;
   }
 
   function sync(){
@@ -2991,9 +3024,24 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     });
   }
 
-  window.addEventListener("hashchange",sync);
-  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",sync);
-  else sync();
+  /* WHY A WATCHER AND NOT JUST hashchange. The register writes the URL for a search or a
+     filter with history.replaceState, which changes location.hash WITHOUT firing a
+     hashchange event. Listening for hashchange alone therefore misses exactly the case that
+     matters: the briefing stayed on screen above a list filtered to a handful of results.
+     Verified in their writeHash(). Rather than guess at which of their inputs to listen to,
+     or patch a global history method on a page another session owns, this compares the hash
+     string a few times a second and does nothing at all unless it changed. */
+  var lastHash=null;
+  function watch(){
+    if(location.hash===lastHash) return;
+    lastHash=location.hash;
+    sync();
+  }
+  window.addEventListener("hashchange",watch);
+  window.addEventListener("popstate",watch);
+  setInterval(watch,300);
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",watch);
+  else watch();
 })();
 </script>
 </body>
