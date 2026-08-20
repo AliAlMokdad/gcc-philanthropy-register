@@ -422,18 +422,56 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
   background:linear-gradient(90deg,var(--orange-line) 0 76px,var(--line-2) 76px)
     top left/100% 1px no-repeat}
 .listgate[hidden]{display:none !important}
-.lg-btn{display:inline-flex;align-items:center;gap:16px;cursor:pointer;
-  min-height:56px;padding:15px 22px;
-  font:600 15px/1 var(--sans);color:var(--orange-strong);
-  background:var(--orange-soft);border:1px solid var(--orange);border-radius:9px;
-  transition:box-shadow .12s ease-out,border-color .12s ease-out}
-.lg-btn .lg-n{font:400 21px/1 var(--serif);color:var(--orange-strong);
-  font-variant-numeric:proportional-nums lining-nums}
-.lg-btn::after{content:"↓";font-size:15px;opacity:.7}
-.lg-btn[aria-expanded="true"]::after{content:"↑"}
-.lg-btn:hover{border-color:var(--orange-strong);background:var(--orange-soft);
-  box-shadow:0 3px 12px rgba(226,133,58,.20)}
+/* LANDSCAPE. Full content width and 84px tall, on the same edges as the dashboard panes above, so
+   it sits in the layout instead of on top of it. */
+.lg-btn{position:relative;overflow:hidden;cursor:pointer;
+  display:flex;align-items:center;justify-content:space-between;gap:var(--s4);
+  width:100%;min-height:84px;padding:0 28px;text-align:left;
+  color:var(--orange-strong);
+  background:var(--orange-soft);border:1px solid var(--orange);border-radius:12px;
+  transition:box-shadow .16s ease-out,border-color .16s ease-out}
+.lg-lock{display:flex;flex-direction:column;gap:7px;min-width:0}
+.lg-k{font:600 10px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--orange-strong)}
+.lg-t{font:500 clamp(19px,2vw,24px)/1.15 var(--serif);letter-spacing:-.01em;
+  color:var(--orange-strong)}
+.lg-go{flex:none;font:400 19px/1 var(--sans);opacity:.75;
+  transition:transform .18s ease-out,opacity .16s ease-out}
+/* the state is the CHARACTER, not a rotation: a glyph swap cannot be overridden by a filling
+   animation the way a transform can. */
+.lg-go::before{content:"↓"}
+.lg-btn[aria-expanded="true"] .lg-go::before{content:"↑"}
+.lg-btn:hover{border-color:var(--orange-strong);box-shadow:0 4px 16px rgba(226,133,58,.20)}
+.lg-btn:hover .lg-go{opacity:1;transform:translateY(2px)}
+.lg-btn[aria-expanded="true"]:hover .lg-go{transform:translateY(-2px)}
 .lg-btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+
+/* THE MOTION, OUT FROM THE MIDDLE. An inset clip-path opening from the centre to both edges, so the
+   bar reads as drawn outward from the middle of the layout. A clip rather than a scaleX because
+   scaling squashes the type and stretches the border; this uncovers the real thing, undistorted. */
+@keyframes lg-open{
+  from{ clip-path:inset(0 50% 0 50% round 12px); opacity:0 }
+  to  { clip-path:inset(0 0 0 0 round 12px);     opacity:1 }
+}
+@keyframes lg-rise{ from{opacity:0;transform:translateY(5px)} to{opacity:1;transform:none} }
+/* opacity only. Giving the arrow a transform keyframe made the animation's fill state own the
+   property, and its "none" end frame beat the rotate that marks the open state. */
+@keyframes lg-fade{ from{opacity:0} to{opacity:.75} }
+.listgate:not([hidden]) .lg-btn{animation:lg-open .52s cubic-bezier(.22,.61,.36,1) both}
+.listgate:not([hidden]) .lg-lock{animation:lg-rise .40s .20s ease-out both}
+.listgate:not([hidden]) .lg-go{animation:lg-fade .40s .20s ease-out both}
+/* the same centre-out idea on hover, as a rule under the bar. On a pseudo-element, never the button
+   itself: a control that moves as the pointer arrives is a target that runs away. */
+.lg-btn::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--orange);transform:scaleX(0);transform-origin:50% 50%;
+  transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+.lg-btn:hover::after,.lg-btn:focus-visible::after{transform:scaleX(1)}
+@media (prefers-reduced-motion:reduce){
+  .listgate:not([hidden]) .lg-btn,
+  .listgate:not([hidden]) .lg-lock,
+  .listgate:not([hidden]) .lg-go{animation:none}
+  .lg-btn::after,.lg-go{transition:none}
+}
 #listwrap:focus{outline:none}
 #listwrap:focus-visible{outline:none}
 /* with the list closed the opener is the section above Methodology, so Methodology stops holding
@@ -442,7 +480,8 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
 #l2:has(#listwrap[hidden]) .i-meth{margin-top:var(--s4)}
 @media (max-width:600px){
   .listgate{padding:var(--s3) 0 var(--s4)}
-  .lg-btn{width:100%;justify-content:space-between;gap:var(--s3);padding:14px 18px}
+  .lg-btn{min-height:72px;padding:0 18px;gap:var(--s3);border-radius:10px}
+  .lg-k{font-size:9px;letter-spacing:.13em}
 }
 
 .tally{font:400 13px/1.5 var(--sans);color:var(--ink-3);margin:0;
@@ -1690,8 +1729,11 @@ ol.ranked a::before{top:9px;bottom:9px}
          view with no search and no filter running. A country or category route never sees it. -->
     <div class="listgate" id="listgate" hidden>
       <button type="button" class="lg-btn" id="lgbtn" aria-expanded="false" aria-controls="listwrap">
-        <span class="lg-t">All organisations</span>
-        <span class="lg-n" id="lgn"></span>
+        <span class="lg-lock">
+          <span class="lg-k">The full list</span>
+          <span class="lg-t">All GCC organisations</span>
+        </span>
+        <span class="lg-go" aria-hidden="true"></span>
       </button>
     </div>
     <!-- NOT hidden by default, on purpose: if the script fails, a reader still gets the register
@@ -2686,10 +2728,9 @@ function syncList(){
   var gated=listGated(), gate=el("listgate"), wrap=el("listwrap"), btn=el("lgbtn");
   gate.hidden=!gated;
   wrap.hidden=gated && !listOpen;
-  if(btn){
-    btn.setAttribute("aria-expanded", (!gated || listOpen) ? "true" : "false");
-    el("lgn").textContent = current ? num(current.rows.length) : "";
-  }
+  /* no count on the button: he asked for the number off it, and the tally directly under the open
+     list already says how many there are and which of them are on screen. */
+  if(btn) btn.setAttribute("aria-expanded", (!gated || listOpen) ? "true" : "false");
 }
 
 function render(){
@@ -4099,8 +4140,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        string of measure codes with nothing saying why a reader should care. The ids still live in
        tools/build-oecd/build_oecd.py, which is where a rebuild reads them. */
     /* provenance IS sources, and the reader is already inside the section that says so */
+    /* no open flag: this was the one foldout on the page that started expanded, which is why it
+       sat open while Limitations beside it sat shut. Both start minimised now. */
     var d=details("Official aid sources",
-      function(inner){ inner.appendChild(box); }, true);
+      function(inner){ inner.appendChild(box); });
     band.appendChild(d);
     return band;
   }
