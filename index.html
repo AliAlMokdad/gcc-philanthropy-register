@@ -3967,8 +3967,6 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var cr=el("div",{cls:"i-cty i-wide"});
     var CTY_FLOOR=500000;
     var ctyShown=D.dest_country.filter(function(r){ return r[1]>=CTY_FLOOR; });
-    var ctyRest=D.dest_country.filter(function(r){ return r[1]<CTY_FLOOR; });
-    var restUsd=ctyRest.reduce(function(a,r){ return a+r[1]; },0);
     /* how many countries hold the first half of the money. A cumulative count says something
        about concentration that a list of 117 rows does not. */
     var half=0, run=0, ctyAll=D.dest_country.reduce(function(a,r){ return a+r[1]; },0);
@@ -4019,6 +4017,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     cr.appendChild(cbox);
     var cempty=el("p",{cls:"i-cnone",hidden:true});
     cr.appendChild(cempty);
+    var cnote=el("p",{cls:"i-note"});
 
     function drawCty(){
       var q=cnorm(fil.value||"");
@@ -4047,6 +4046,20 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       cnt.textContent=list.length===ctyRanked.length
         ? nm(list.length)+" countries"
         : nm(list.length)+" of "+nm(ctyRanked.length)+" countries";
+
+      /* recomputed from the threshold in force, not from the one it opened on */
+      var below=ctyRanked.filter(function(r){ return r.v<floor; });
+      var belowUsd=below.reduce(function(a,r){ return a+r.v; },0);
+      var glob="What the country list does NOT hold is "+usd(gUsd())
+        + " to global programmes such as WHO, GAVI and UNRWA, which no single country receives.";
+      cnote.textContent = below.length
+        ? "The "+below.length+" countries under "+usd(floor)+" come to "+usd(belowUsd)
+          + " between them, "
+          + (belowUsd < ctyAll*0.02 ? "so the cut changes almost nothing. "
+                                    : "which is "+share(belowUsd,ctyAll)+" of the money that "
+                                      + "reached a named country. ")
+          + glob
+        : "Every country the data names is listed. " + glob;
       var none=list.length===0;
       cempty.hidden=!none;
       cbox.hidden=none;
@@ -4062,10 +4075,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     thr.addEventListener("change",drawCty);
     drawCty();
 
-    cr.appendChild(el("p",{cls:"i-note",text:"The "+ctyRest.length+
-      " countries below that line come to "+usd(restUsd)+" between them, so the cut changes "+
-      "almost nothing. What the country list does NOT hold is "+usd(gUsd())+
-      " to global programmes such as WHO, GAVI and UNRWA, which no single country receives."}));
+    cr.appendChild(cnote);
     VIEW.countries.appendChild(cr);
 
     /* folded depth */
