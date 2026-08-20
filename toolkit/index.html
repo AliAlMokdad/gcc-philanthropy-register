@@ -460,19 +460,26 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   (function(){
     var st=document.createElement("style");
     st.textContent=
-      /* .home-col centres a 76ch column, which suits prose and leaves a short list of titles
-         floating in the middle of a wide sheet. On this page the column is the list, so it
-         starts at the sheet's own left edge and takes a measure chosen for titles. */
+      /* .home-col centres a 76ch column, which suits prose but leaves a list of titles floating
+         in the middle of a wide sheet, so on this page the column starts at the sheet's own
+         left edge.
+
+         THE ROW SPANS THE SHEET AND THE TEXT IS MEASURED, which is this page's existing
+         convention, not a new one: ol.chapters sets no width at all and caps .ch-t at 62ch
+         instead. Capping the ROW was the wrong half to cap. It stopped every hairline at 62%
+         of the card and left the rest of the card empty, which reads as an unfinished layout
+         rather than as a decision, and it made this landing the only list on the site whose
+         rules stop short of the edge. */
       ".home-col:has(.home-toc){max-width:none;margin-inline:0}"+
-      ".home-toc{list-style:none;margin:var(--s4) 0 0;padding:0;counter-reset:toc;"+
-        "max-width:740px}"+
+      ".home-toc{list-style:none;margin:var(--s4) 0 0;padding:0;counter-reset:toc}"+
       ".home-toc li{counter-increment:toc;border-top:1px solid var(--line)}"+
       ".home-toc li:last-child{border-bottom:1px solid var(--line)}"+
       ".home-toc a{display:flex;align-items:baseline;gap:18px;padding:17px 4px;"+
         "text-decoration:none;color:var(--ink)}"+
       ".home-toc a::before{content:counter(toc,decimal-leading-zero);flex:none;"+
         "font:600 11px/1.4 var(--mono);letter-spacing:.1em;color:var(--ink-3)}"+
-      ".home-toc .toc-t{font:600 clamp(17px,1.7vw,21px)/1.3 var(--serif);letter-spacing:-.01em}"+
+      ".home-toc .toc-t{font:600 clamp(17px,1.7vw,21px)/1.3 var(--serif);letter-spacing:-.01em;"+
+        "max-width:62ch}"+
       ".home-toc a:hover{background:var(--accent-soft)}"+
       ".home-toc a:hover .toc-t{color:var(--accent-2)}"+
       ".home-toc a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}";
