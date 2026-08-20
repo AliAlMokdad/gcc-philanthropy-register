@@ -1,0 +1,176 @@
+# Keeps the news desk current without anyone touching it.
+#
+# It runs on GitHub's machines twelve times a day, fetches the monitored feeds, runs the whole
+# classification pipeline, and publishes news-feed.json to a branch the page reads at runtime.
+# No key is needed: every enabled source is a public feed.
+#
+# WHY IT PUBLISHES TO A BRANCH INSTEAD OF COMMITTING TO main.
+# GitHub documents that a commit made with the automatic GITHUB_TOKEN does not trigger a Pages
+# build, so committing the feed to main would update the file in the repository and leave the
+# published site serving the old one. Rather than take on a personal access token or migrate
+# this site's whole deployment, the feed is published to its own branch and the page fetches it
+# directly. Nothing about the site's existing deployment changes, and the page updates the
+# moment this job finishes.
+#
+# WHAT HAPPENS IF THIS JOB EVER FAILS.
+# The page falls back to the copy of news-feed.json committed alongside it, so a broken job
+# means the news is out of date, never that the page is broken. And build_news.py refuses to
+# publish an empty or collapsed feed at all: a total provider outage ends the run with no
+# write rather than replacing good data with nothing.
+#
+# THE ONE THING THAT IS NOT FULLY UNATTENDED, stated because it would otherwise be a surprise.
+# GitHub's own documentation: "In a public repository, scheduled workflows are automatically
+# disabled when no repository activity has occurred in 60 days." This repository is public. If
+# nobody pushes anything for sixty days, GitHub emails the owner and stops this schedule until
+# someone clicks to re-enable it, or runs it once from the Actions tab. The heartbeat step
+# below records each run so the history makes it obvious when that has happened.
+#
+# Actions are pinned to commit SHAs rather than tags, because a tag can be moved to point at
+# different code and this job has write access to the repository.
+name: Refresh the news feed
+
+on:
+  schedule:
+    # TWELVE TIMES A DAY, at 17 and 47 minutes past alternating hours. Deliberately never on
+    # the hour: GitHub documents that scheduled runs can be delayed or dropped at peak load and
+    # names the start of every hour as a peak, so two offsets give the day two independent
+    # chances to land even if a whole tranche is dropped.
+    - cron: "17 1-23/4 * * *"
+    - cron: "47 3-23/4 * * *"
+  # by hand, from the Actions tab
+  workflow_dispatch:
+  # AND FROM ANYWHERE, with no dependence on the scheduler at all. One authenticated POST to
+  # the repository's dispatches endpoint runs this job, so if the schedule is ever disabled the
+  # pipeline can still be driven by any external timer without touching this file:
+  #   curl -X POST https://api.github.com/repos/AliAlMokdad/gcc-philanthropy-register/dispatches
+  #        -H "Accept: application/vnd.github+json"
+  #        -H "Authorization: Bearer <a token with the repo scope>"
+  #        -d '{"event_type":"refresh-news"}'
+  repository_dispatch:
+    types: [refresh-news]
+
+permissions:
+  contents: write
+
+concurrency:
+  # two overlapping runs would race each other to the same branch
+  group: refresh-news
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262   # v4
+
+      - name: Set up python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065   # v5
+        with:
+          python-version: "3.12"
+
+      - name: Keep the published feed to compare against
+        run: |
+          if [ -f news-feed.json ]; then
+            cp news-feed.json "${RUNNER_TEMP}/previous.json"
+          fi
+
+      - name: Fetch the sources and rebuild the feed
+        # build_news.py exits non-zero and writes nothing if no provider returned a usable
+        # record, or if the item count collapsed against the feed already on disk. A failure
+        # here therefore means the previous feed stands, which is the intended behaviour.
+        env:
+          PYTHONIOENCODING: utf-8
+          PYTHONUTF8: "1"
+        run: python tools/news/build_news.py
+
+      - name: Refuse anything that does not look like a feed
+        run: |
+          python - <<'PY'
+          import io, json, sys, datetime as dt
+          d = json.load(io.open("news-feed.json", encoding="utf-8"))
+          items = d.get("items") or []
+          fail = []
+          if len(items) < 5:
+              fail.append("only %d items" % len(items))
+          if not d.get("feed_updated_at"):
+              fail.append("no feed_updated_at")
+          seen = set()
+          for i in items:
+              if not i.get("title") or not i.get("original_url"):
+                  fail.append("an item is missing a title or a link")
+                  break
+              if not str(i.get("original_url", "")).startswith(("http://", "https://")):
+                  fail.append("an item has a link that is not http")
+                  break
+              if i.get("id") in seen:
+                  fail.append("a duplicate item id: %s" % i.get("id"))
+                  break
+              seen.add(i.get("id"))
+              t = i.get("published_at") or ""
+              if t > (dt.datetime.now(dt.timezone.utc)
+                      + dt.timedelta(days=2)).strftime("%Y-%m-%dT%H:%M:%SZ"):
+                  fail.append("an item is dated in the future: %s" % t)
+                  break
+          pubs = len({i.get("publisher") for i in items if i.get("publisher")})
+          if pubs < 2:
+              fail.append("only %d distinct publisher" % pubs)
+          if fail:
+              print("REFUSING TO PUBLISH: " + "; ".join(fail))
+              sys.exit(1)
+          print("feed accepted: %d items, %d publishers, updated %s"
+                % (len(items), pubs, d["feed_updated_at"]))
+          PY
+
+      - name: Publish the feed to the data branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- news-feed.json 2>/dev/null; then
+            echo "The feed is unchanged since the last commit on this branch."
+          fi
+          mkdir -p "${RUNNER_TEMP}/pub"
+          cp news-feed.json "${RUNNER_TEMP}/pub/news-feed.json"
+          # a heartbeat, so the branch history says when this last ran even on a quiet news day
+          python - <<'PY'
+          import io, json, os, datetime as dt
+          d = json.load(io.open("news-feed.json", encoding="utf-8"))
+          io.open(os.path.join(os.environ["RUNNER_TEMP"], "pub", "status.json"),
+                  "w", encoding="utf-8").write(json.dumps({
+              "last_run_utc": dt.datetime.now(dt.timezone.utc)
+                                .strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "feed_updated_at": d.get("feed_updated_at"),
+              "items": len(d.get("items") or []),
+              "publishers": (d.get("coverage") or {}).get("publishers"),
+              "run": os.environ.get("GITHUB_RUN_ID"),
+          }, indent=1) + "\n")
+          PY
+          cd "${RUNNER_TEMP}/pub"
+          git init -q
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -q -b news-data
+          git add news-feed.json status.json
+          git commit -q -m "Refresh the news feed"
+          git push -q --force \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            news-data
+          echo "Published to the news-data branch."
+
+      - name: Say what was published
+        run: |
+          python - <<'PY'
+          import io, json
+          d = json.load(io.open("news-feed.json", encoding="utf-8"))
+          c = d.get("coverage") or {}
+          print("items:      %s" % len(d.get("items") or []))
+          print("publishers: %s" % c.get("publishers"))
+          print("via:        %s" % c.get("by_discovery"))
+          print("updated:    %s" % d.get("feed_updated_at"))
+          tops = [i for i in d["items"] if (i.get("editorial") or {}).get("is_top")]
+          tops.sort(key=lambda x: (x["editorial"].get("top_rank") or 99))
+          for t in tops:
+              print("top %s: %s" % (t["editorial"].get("top_rank"), t["title"][:88]))
+          PY

@@ -1,0 +1,24 @@
+{
+ "_comment": [
+  "The persistent editorial layer. Hand-edited, and never overwritten by the",
+  "build. Keys are the stable item id from news-candidates.json.",
+  "",
+  "Per item, any of:",
+  "  status      published | hidden | rejected   (hidden and rejected never ship)",
+  "  is_top      true pins the item to Top Developments regardless of score",
+  "  priority    integer, lower sorts first among pinned items",
+  "  title       a corrected headline, used instead of the provider's",
+  "  description a corrected or human-written factual line",
+  "  country     a corrected primary_gcc_country",
+  "  topic       a corrected primary_topic",
+  "  event_type  a corrected event type",
+  "  drop_orgs   list of register_ids whose match was wrong",
+  "  cluster_id  force this item into a cluster, to merge coverage by hand",
+  "  note        an editor's note, shown to nobody, kept for the record",
+  "",
+  "Blocked domains and blocked ids apply to every future run."
+ ],
+ "blocked_domains": [],
+ "blocked_ids": [],
+ "items": {}
+}
