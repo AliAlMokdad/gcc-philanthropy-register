@@ -611,10 +611,8 @@ main{padding-bottom:var(--s5)}
 /* PRINT. Views exist for a screen reader with a scrollbar, not for paper. On paper every view
    is expanded, in source order, with its source label, and the control itself is gone. */
 @media print{
-  /* the scroll-to buttons go: on paper there is nowhere to scroll to. .i-over goes with them
-     rather than only its button, because the sentence that used to sit beside it was removed and
-     an empty flex footer was being printed with its margin. */
-  .i-switch,.i-jump,.i-more,.i-nav,.i-vlab,.i-over,.i-dash-pick,.listgate{display:none !important}
+  /* the scroll-to buttons go: on paper there is nowhere to scroll to */
+  .i-switch,.i-jump,.i-more,.i-nav,.i-vlab,.i-dash-pick,.listgate{display:none !important}
   /* paper has no disclosure, so the rows print whether or not the reader had opened them */
   #listwrap{display:block !important}
 
@@ -1030,16 +1028,6 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-meth *{box-sizing:border-box}
 @media (max-width:600px){ .i-meth{margin-top:var(--s4)} }
 
-/* ---- the crossing point out of the intelligence and into the list ---- */
-.i-over{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s4);
-  flex-wrap:wrap;margin:var(--s3) 0 0}
-.i-over-go{flex:none;border:0;background:none;cursor:pointer;padding:0;
-  font:600 13.5px/1.3 var(--sans);color:var(--orange-strong);
-  border-bottom:2px solid var(--orange-line);padding-bottom:2px}
-.i-over-go::after{content:" ↓"}
-.i-over-go:hover{color:var(--ink);border-bottom-color:var(--ink)}
-.i-over-go:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:2px}
-@media (max-width:600px){ .i-over{gap:var(--s2)} }
 @media (max-width:820px){
   .i-sig-row{grid-template-columns:1fr 1fr;gap:var(--s4)}
   /* only when an odd card would otherwise sit alone in a two-column row */
@@ -1074,7 +1062,10 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
 /* ---- band A, the headline against a counterweight ---- */
-.i-lede{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
+/* align-items:start, so the heading pane is not stretched to the height of the concentration
+   block beside it. With its sentence removed it would otherwise be a heading floating in a tall
+   empty cell; it paints no background, so where it stops there is nothing to see. */
+.i-lede{display:grid;align-items:start;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
   border-bottom:1px solid var(--line)}
 /* TOP, NOT CENTRED. Measured: 93px of content in a 302px cell, a fill of 0.31, which put 104px of
    blank above the heading and 104px below it. Centring was inherited from a time when a source
@@ -1406,8 +1397,6 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-amt{margin:0 0 8px;display:flex;align-items:baseline;gap:7px}
 .oe-amt-n{font:400 clamp(26px,2.4vw,30px)/1 var(--serif);color:var(--i-c1);font-variant-numeric:tabular-nums}
 .oe-amt-y{font:400 11px/1 var(--mono);color:var(--ink-3)}
-.oe-ngo{margin:0 0 8px;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
-.oe-ngo b{font-weight:600;color:var(--i-c1)}
 .oe-mix{margin:0 0 5px;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
 .oe-mixk{font:400 12px/1.35 var(--sans);color:var(--ink-2)}
 .oe-mixv{font:400 11px/1 var(--mono);color:var(--ink-3);white-space:nowrap;
@@ -4011,16 +4000,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         el("span",{cls:"oe-amt-n",text:oeAmt(ge[ly])}),
         el("span",{cls:"oe-amt-y",text:ly})
       ]));
-      /* the number a reader of a register of organisations actually needs */
-      var cy=oeLast(OE.channels[d]||{}), ngo=cy ? oeChanShare(d,cy,"20000") : null;
-      if(ngo!==null){
-        /* one decimal everywhere, so the same figure is not 16 per cent on the card and
-           16.5 in the chart below it */
-        card.appendChild(el("p",{cls:"oe-ngo"},[
-          el("b",{text:(ngo*100).toFixed(1)+"%"}),
-          el("span",{text:" went through an NGO or civil society body, "+cy})
-        ]));
-      }
+      /* NO NGO LINE HERE. The band below this grid is a full channel breakdown and its right-hand
+         column already prints this exact figure for every state, so this said the same number a
+         second time and repeated an eight-word phrase four times across the grid to do it. The
+         breakdown is the better place for it: there the NGO share is shown against everything
+         else rather than on its own.
+         cy stays: it is the channel year, read below for the largest-destination line. */
+      var cy=oeLast(OE.channels[d]||{});
       var mix=oeSectorMix(d);
       if(mix && mix.list.length){
         var top=mix.list[0];
@@ -4466,9 +4452,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        every view and therefore always on screen. Repeating them here put $23.42bn twice within
        400 pixels, and the two copies disagreed on how many bodies reported. What this view adds
        is the concentration finding beside this heading, not the total again. */
-    L.appendChild(el("p",{cls:"i-t-body",
-      text:"Everything in this view is that record: what it paid for, when it was reported, and "
-         + "which kinds of organisation received it."}));
+    /* nothing under the heading. The sentence that was here listed the three bands below it,
+       which the reader can see, under a heading that had just named the record. */
     lede.appendChild(L);
 
     var R=el("div",{cls:"i-lede-r i-conc"});
@@ -4867,17 +4852,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
     panel.appendChild(card);
 
-    /* the crossing point. Everything above is a record of what was reported; everything below is
-       a directory of organisations. Nothing links a row in one to a row in the other, and a
-       reader arriving from a page of billions will assume otherwise unless it is said here. */
-    var over=el("footer",{cls:"i-over"});
-    /* the sentence went, the control stays: it is the only jump from the intelligence half of the
-       page into the register half */
-    var go=el("button",{type:"button",cls:"i-over-go",
-      text:"Search the "+nm(m.register_rows)+" organisations"});
-    go.addEventListener("click",function(){ goTo("controls"); });
-    over.appendChild(go);
-    panel.appendChild(over);
+    /* NO CROSSING FOOTER. It held one button that scrolled to the controls, which is exactly what
+       the switcher bar's own jump does, and that one sits at the top of the card where a reader
+       wanting to skip the intelligence meets it without scrolling. Two controls, one destination,
+       and this was the one whose sentence had already gone. */
 
     /* THE COMPOSITION DASHBOARD, above the register's own search and list. Placed outside #intel
        so it sits directly on top of the controls, and hidden by the same rule, because it
