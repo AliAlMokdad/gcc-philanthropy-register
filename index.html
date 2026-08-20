@@ -1080,7 +1080,11 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-bar{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s4);
   padding:0 var(--s4);border-bottom:1px solid var(--line);background:var(--paper)}
 .i-tabs{display:flex;align-items:flex-end;gap:2px;min-width:0;overflow-x:auto;
-  scrollbar-width:none}
+  scrollbar-width:none;
+  /* the scrollbar is hidden by choice, so the cut needs its own signal: this fades the last
+     few pixels only while there is something past them. */
+  mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent);
+  -webkit-mask-image:linear-gradient(to right,#000 calc(100% - 22px),transparent)}
 .i-tabs::-webkit-scrollbar{display:none}
 .i-tabsrc{flex:none;align-self:center;padding:0 10px 0 2px;
   font:600 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
@@ -1097,8 +1101,13 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-tab[aria-selected="true"]{color:var(--ink);font-weight:600;
   border-bottom-color:var(--i-s1)}
 .i-tab:focus-visible{outline:2px solid var(--focus);outline-offset:-2px;border-radius:2px}
-/* one control at a time: tabs on a wide screen, the select on a narrow one */
+/* one control at a time, and which one is decided by fitSwitcher() measuring the real strip,
+   not by a width I guessed. .compact means the tabs genuinely do not fit. */
 .i-vlab{display:none}
+.i-bar.compact .i-tabs{display:none}
+.i-bar.compact .i-vlab{display:flex;align-items:center;gap:8px;min-width:0}
+.i-bar.compact{padding-top:9px;padding-bottom:9px;align-items:center}
+.i-bar.compact .i-jump{padding:0}
 .i-vlab>span{font:600 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-3)}
 .i-vsel{font:400 13.5px/1.3 var(--sans);color:var(--ink);background:#fff;
@@ -1128,11 +1137,8 @@ ol.ranked a::before{top:9px;bottom:9px}
 /* one list, full width. 27 funders beside 117 countries left thousands of pixels of white. */
 .i-wide{background:#fff;min-width:0}
 @media (max-width:700px){
-  .i-bar{padding:9px var(--s3);align-items:center;gap:var(--s3)}
-  .i-tabs{display:none}
-  .i-vlab{display:flex;align-items:center;gap:8px;min-width:0}
+  .i-bar{padding-left:var(--s3);padding-right:var(--s3);gap:var(--s3)}
   .i-views{min-height:0}
-  .i-jump{padding:0}
 }
 .i-rows.dense .i-r{padding:3px 0}
 .i-rows.dense .i-rlab{font-size:12.5px}
@@ -4188,6 +4194,27 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         if(b && b.getBoundingClientRect().top<0) b.scrollIntoView({block:"start"});
       }
     }
+    /* TABS OR SELECT, decided by measurement. The strip is asked, at its real rendered width
+       with its real labels, whether it can show all of them. Nothing here depends on a number
+       I typed. */
+    var fitRaf=null, fitTimer=null;
+    function fitSwitcher(){
+      if(!bar.isConnected) return;
+      bar.classList.remove("compact");
+      /* +1 for sub-pixel rounding: a strip 0.4px over its box is not a hidden tab */
+      if(tabs.scrollWidth > tabs.clientWidth + 1) bar.classList.add("compact");
+    }
+    function fitSoon(){
+      if(fitRaf) cancelAnimationFrame(fitRaf);
+      fitRaf=requestAnimationFrame(function(){ fitRaf=null; fitSwitcher(); });
+    }
+    fitSwitcher();
+    /* fonts land after first paint and change every label's width, so measure again then */
+    if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitSoon);
+    window.addEventListener("resize",function(){
+      clearTimeout(fitTimer); fitTimer=setTimeout(fitSoon,120);
+    });
+
     showView(readView(),false);
 
     /* paper has no tabs and no accordions. CSS opens the views; only script can open a details. */
