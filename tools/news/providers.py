@@ -19,8 +19,9 @@ UA = ("gccphilanthropy-monitor/0.1 (+https://gccphilanthropy.org; "
 
 CONNECT_TIMEOUT = 20
 READ_TIMEOUT = 45
-MAX_TRIES = 3
-BACKOFF = 6          # seconds, doubled per retry
+MAX_TRIES = 4
+BACKOFF = 8          # seconds, doubled per retry. A bot-mitigation
+                     # challenge wants real patience, not a fast retry.
 SPACING = 1.2        # minimum gap between requests to the same host
 
 
@@ -53,9 +54,30 @@ def http_get(url, accept="*/*", tries=MAX_TRIES, spacing=None):
         else:
             _space(host)
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": UA, "Accept": accept})
+            req = urllib.request.Request(url, headers={
+                "User-Agent": UA, "Accept": accept,
+                "Accept-Language": "en-GB,en;q=0.9",
+                "Accept-Encoding": "identity",
+            })
             with urllib.request.urlopen(req, timeout=READ_TIMEOUT) as f:
-                return f.getcode(), f.read(), None
+                code, body = f.getcode(), f.read()
+                # A 202 WITH NOTHING IN IT IS A CHALLENGE, NOT AN ANSWER. Observed on a GitHub
+                # runner: ReliefWeb returned 202 and an empty body for every query while the
+                # same requests from a residential address returned 200 and twenty items. Treat
+                # it as "come back in a moment" and say what the far end sent, so this is
+                # diagnosable from a log rather than from guesswork.
+                if code != 200 or not body.strip():
+                    note = "HTTP %s, %d bytes, ct=%r server=%r cf=%r" % (
+                        code, len(body), f.headers.get("Content-Type"),
+                        f.headers.get("Server"), f.headers.get("CF-Mitigated")
+                        or f.headers.get("cf-ray") or "")
+                    if attempt < tries - 1:
+                        time.sleep(backoff)
+                        backoff *= 2
+                        last = (code, body, note + " (retrying)")
+                        continue
+                    return code, body, note
+                return code, body, None
         except urllib.error.HTTPError as e:
             body = b""
             try:
@@ -250,7 +272,7 @@ def fetch_rss(source, budget=None):
         code, body, err = http_get(url, accept="application/rss+xml,application/xml,text/xml,*/*")
         st = {"source_id": source["id"], "query": query, "ok": False,
               "http": code, "records": 0, "error": err, "quota_note": None}
-        if code != 200 or not body:
+        if code != 200 or not body or not body.strip():
             statuses.append(st)
             continue
         try:
