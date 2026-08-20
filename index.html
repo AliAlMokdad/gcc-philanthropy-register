@@ -656,7 +656,14 @@ footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);
   background:url(country/gcc-panorama.webp) center 44%/cover no-repeat;
   opacity:.10;
   -webkit-mask:linear-gradient(to bottom,transparent 0,#000 52%,#000 100%);
-  mask:linear-gradient(to bottom,transparent 0,#000 52%,#000 100%)}
+  mask:linear-gradient(to bottom,transparent 0,#000 52%,#000 100%);
+  /* TWO PAGES ONLY. Off by default, and turned on for the front page and for the funding
+     intelligence, which is the whole-register view. Keyed to the same flags the rest of this
+     sheet already uses: #l1 unhidden is the front page, and #intel unhidden is the
+     intelligence, which is hidden on a country page and on the news desk. */
+  display:none}
+body:has(#l1:not([hidden])) #gulf,
+body:has(#intel:not([hidden])) #gulf{display:block}
 @media (prefers-color-scheme:dark){ #gulf{opacity:.14} }
 @media (forced-colors:active){ #gulf{display:none} }
 @media print{ #gulf{display:none !important} }
