@@ -1737,7 +1737,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 /* THE SUBHEADLINE. A story headline sits a clear step under the section heading above it and
    a clear step over the row headlines below, and it carries its own mark: a short accent rule
    set in the margin, which is what makes it read as a subheadline rather than as large text. */
-.n-lead-h{margin:12px 0 0;font:600 clamp(21px,2.3vw,27px)/1.18 var(--serif);color:var(--ink);
+.n-lead-h{margin:6px 0 0;font:600 clamp(21px,2.3vw,27px)/1.18 var(--serif);color:var(--ink);
   letter-spacing:-.008em;text-wrap:pretty;position:relative}
 .n-lead-h::before{content:"";position:absolute;left:-18px;top:.42em;width:9px;height:2px;
   background:var(--accent)}
@@ -1750,7 +1750,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
    dropped here on purpose, because two paragraphs stacked in a 1fr column beside a lead is
    the layout that produced the height disparity in the first place. */
 .n-sub + .n-sub{margin-top:18px;padding-top:18px;border-top:1px solid var(--n-rule)}
-.n-sub-h{margin:8px 0 0;font:600 clamp(18px,1.7vw,22px)/1.26 var(--serif);color:var(--ink)}
+.n-sub-h{margin:2px 0 0;font:600 clamp(18px,1.7vw,22px)/1.26 var(--serif);color:var(--ink)}
 .n-sub-h a{color:inherit;text-decoration:none}
 .n-sub-h a:hover{color:var(--accent-2)}
 
@@ -1769,9 +1769,11 @@ body:has(#l1:not([hidden])) .pbar{display:none}
    and the whole thing including the mark is the target. */
 .n-geo{display:inline-flex;align-items:center;gap:7px;color:var(--n-geo);font-weight:600;
   text-decoration:none;border-bottom:1px solid transparent;
-  /* eight pixels of extra hit area, and no layout change: the padding grows the box and the
-     negative margin gives the space straight back. 17px was a mean target for a thumb. */
-  padding-block:4px;margin-block:-4px}
+  /* REAL room, not borrowed. An earlier version paired this padding with margin-block:-4px so
+     the layout would not move, which let the neighbouring elements overlap the link: axe
+     measured 25px of box with only 21.8px of it unobstructed and failed it, correctly. The
+     headline's top margin below absorbs most of the difference instead. */
+  padding-block:4px}
 .n-geo:hover{border-bottom-color:currentColor}
 .n-geo:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
 .n-geo .flag{flex:none;display:block;width:19px;height:12.5px;border-radius:1.5px;
@@ -1780,7 +1782,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   .n-geo .flag{box-shadow:inset 0 0 0 .5px rgba(255,255,255,.30)}
 }
 .n-topic{color:var(--n-meta);font-weight:400;letter-spacing:.09em;text-decoration:none;
-  border-bottom:1px solid transparent;padding-block:4px;margin-block:-4px}
+  border-bottom:1px solid transparent;padding-block:4px}
 .n-topic:hover{color:var(--ink-2);border-bottom-color:currentColor}
 .n-topic:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
 .n-labels .dot{color:var(--n-meta);opacity:.4;font-weight:400}
@@ -1789,7 +1791,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .n-list{list-style:none;margin:0;padding:0}
 .n-row{padding:20px 0;border-bottom:1px solid var(--n-rule)}
 .n-row:first-child{padding-top:4px}
-.n-row-h{margin:8px 0 0;font:600 clamp(16.5px,1.4vw,19px)/1.32 var(--serif);color:var(--ink);
+/* 2px rather than 8px: the kicker links above now carry real vertical padding, so most of the
+   gap they need is already there. */
+.n-row-h{margin:2px 0 0;font:600 clamp(16.5px,1.4vw,19px)/1.32 var(--serif);color:var(--ink);
   text-wrap:pretty}
 .n-row-h a{color:inherit;text-decoration:none}
 .n-row-h a:hover{color:var(--accent-2);text-decoration:underline;
@@ -1818,8 +1822,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 /* the same eight free pixels of hit area as the kickers, with no layout change. This is the
    link a reader is actually reaching for. */
 .n-orig{color:var(--accent);text-decoration:none;
-  border-bottom:1px solid var(--accent-line);padding-bottom:1px;
-  padding-block:4px 5px;margin-block:-4px -5px}
+  border-bottom:1px solid var(--accent-line);padding-block:4px 5px}
 .n-orig:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .n-orig::after{content:" \2197"}          /* the link leaves the site, and says so */
 
@@ -1827,7 +1830,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
    exact or a verified alias. */
 .n-org{margin:8px 0 0;font:400 13px/1.5 var(--sans);color:var(--n-meta)}
 .n-org a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-line);
-  padding-block:4px;margin-block:-4px}
+  padding-block:4px}
 .n-org a:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .n-org a::after{content:" \2192"}
 .n-dest{color:var(--n-geo)}
@@ -1852,6 +1855,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   font:400 14px/1.4 var(--sans);color:var(--ink);
   background:var(--paper);border:1px solid var(--line-2);border-radius:2px}
 .n-f input{background:var(--i-surface,var(--paper))}
+/* a disabled option is greyed by the platform, which is the right signal, but the count needs
+   to stay legible so a reader can see that it says zero rather than just looking unavailable */
+.n-f select option:disabled{color:var(--ink-3)}
 .n-f select:focus-visible,.n-f input:focus-visible{outline:2px solid var(--focus);
   outline-offset:1px;border-color:var(--focus)}
 .n-f.wide{grid-column:span 2}
@@ -6433,6 +6439,28 @@ function sourceMatches(it, f){
   }
   return it.source_type === f;
 }
+/* HOW MANY ITEMS A CHOICE WOULD RETURN, given everything else the reader has already set.
+   Used to label and disable the options, so a control never offers a dead end. It is the same
+   predicate as filtered(), with one field overridden, which is the only way to be sure the
+   number on the label matches what the click will actually do. */
+function countWith(field, value){
+  if(!FEED) return 0;
+  var probe = {country:F.country, topic:F.topic, period:F.period, source:F.source, q:F.q};
+  probe[field] = value;
+  var n = 0;
+  FEED.items.forEach(function(it){
+    if(probe.country && it.primary_gcc_country !== probe.country &&
+       (it.related_gcc_countries || []).indexOf(probe.country) < 0) return;
+    if(probe.topic && it.primary_topic !== probe.topic &&
+       (it.related_topics || []).indexOf(probe.topic) < 0) return;
+    if(!inPeriod(it, probe.period)) return;
+    if(!sourceMatches(it, probe.source)) return;
+    if(!matchesQuery(it, probe.q)) return;
+    n++;
+  });
+  return n;
+}
+
 function filtered(){
   if(!FEED) return [];
   return FEED.items.filter(function(it){
@@ -6448,7 +6476,10 @@ function filtered(){
 }
 
 /* ------------------------------------------------------------------ row parts */
-/* THE KICKER LINE. Country, topic, and the source type when it is not independent reporting.
+/* A kicker link can never be a dead end: it is drawn on an item that already has that country
+   and that topic, so the filter it carries returns at least that item by construction.
+
+   THE KICKER LINE. Country, topic, and the source type when it is not independent reporting.
    The first two are LINKS into that filter, which is how a section label works on every news
    front: a reader who notices KUWAIT on a row can follow it instead of going back up to a
    select. Real anchors rather than buttons, so they can be middle-clicked and shared. */
@@ -6650,12 +6681,22 @@ function streamSection(list){
 }
 
 /* ------------------------------------------------------------------ controls */
-function selectFor(id, label, options, value, onChange, wide){
+/* Each option carries the number of developments it would show, and an option that would show
+   none is disabled. Ali picked Research and then Trade press and got an empty page both times,
+   which reads as a broken product when it is in fact an honest gap in coverage. A control
+   should say so before it is clicked, not after. */
+function selectFor(id, label, options, value, onChange, wide, countField){
   var wrap = el("div", {cls:"n-f" + (wide ? " wide" : "")});
   wrap.appendChild(el("label", {"for":id, text:label}));
   var s = el("select", {id:id});
   options.forEach(function(o){
-    var op = el("option", {value:o[0], text:o[1]});
+    var n = countField ? countWith(countField, o[0]) : null;
+    var text = o[1];
+    if(n !== null && o[0] !== "") text = o[1] + "  " + nm(n);
+    var op = el("option", {value:o[0], text:text});
+    /* the currently selected option is never disabled, however empty, or the reader would be
+       trapped in a state they cannot see the name of */
+    if(n === 0 && o[0] !== "" && o[0] !== value) op.setAttribute("disabled", "disabled");
     if(o[0] === value) op.setAttribute("selected", "selected");
     s.appendChild(op);
   });
@@ -6667,14 +6708,18 @@ function controlsNode(idPrefix){
   var box = el("div", {cls:"n-ctrl"});
   box.appendChild(selectFor(idPrefix + "-country", "Country",
     [["", "All GCC states"]].concat(COUNTRIES.map(function(c){ return [c, c]; })),
-    F.country, function(v){ F.country = v; shown = PAGE_SIZE; writeUrl(); render(); }));
+    F.country, function(v){ F.country = v; shown = PAGE_SIZE; writeUrl(); render(); },
+    false, "country"));
   box.appendChild(selectFor(idPrefix + "-topic", "Topic",
     [["", "All topics"]].concat(TOPICS.map(function(t){ return [t, t]; })),
-    F.topic, function(v){ F.topic = v; shown = PAGE_SIZE; writeUrl(); render(); }));
+    F.topic, function(v){ F.topic = v; shown = PAGE_SIZE; writeUrl(); render(); },
+    false, "topic"));
   box.appendChild(selectFor(idPrefix + "-period", "Period", PERIODS,
-    F.period, function(v){ F.period = v; shown = PAGE_SIZE; writeUrl(); render(); }));
+    F.period, function(v){ F.period = v; shown = PAGE_SIZE; writeUrl(); render(); },
+    false, "period"));
   box.appendChild(selectFor(idPrefix + "-source", "Source", SOURCE_FILTER,
-    F.source, function(v){ F.source = v; shown = PAGE_SIZE; writeUrl(); render(); }));
+    F.source, function(v){ F.source = v; shown = PAGE_SIZE; writeUrl(); render(); },
+    false, "source"));
   return box;
 }
 function searchNode(id){
