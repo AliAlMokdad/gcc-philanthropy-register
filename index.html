@@ -947,6 +947,16 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-key{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:12px}
 .i-key span{display:inline-flex;align-items:center;gap:7px;font:500 12.5px/1.4 var(--sans);
   color:var(--ink-2)}
+/* THE BOUNDARY, NOT THE FILL. Five of the eight chips measured under 3:1 against the pane, down
+   to 1.27, and a 9px swatch with no border is an isolated graphic that is the only thing tying a
+   label to a segment. No pale hex can pass: 3:1 on white needs a luminance the sixth step of a
+   six-step ramp cannot reach. One inset hairline makes every chip identifiable at any fill
+   lightness, in both themes. */
+.i-key b,.oe-key li::before{box-shadow:inset 0 0 0 1px var(--i-slate)}
+/* the residual and the gap share a neutral fill, so their boundaries do the separating: the
+   aggregate gets a solid edge, the absence a dashed one, matching its hatch in the bar */
+.i-key b.rest{box-shadow:inset 0 0 0 1px var(--ink-3)}
+.i-key b.gap{box-shadow:none;border:1px dashed var(--ink-3);width:7px;height:7px}
 .i-key b{width:9px;height:9px;border-radius:2px;flex:0 0 9px}
 .i-key em{font-style:normal;font-family:var(--mono);font-variant-numeric:tabular-nums;
   color:var(--ink-2);font-size:12px;font-weight:600}
@@ -1236,7 +1246,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-card{background:var(--paper);padding:var(--s3)}
 .oe-nm{margin:0 0 6px;font:600 14px/1.25 var(--serif);color:var(--ink)}
 .oe-amt{margin:0 0 8px;display:flex;align-items:baseline;gap:7px}
-.oe-amt-n{font:600 26px/1 var(--serif);color:var(--i-s1);font-variant-numeric:tabular-nums}
+.oe-amt-n{font:600 26px/1 var(--serif);color:var(--i-c1);font-variant-numeric:tabular-nums}
 .oe-amt-y{font:400 11px/1 var(--mono);color:var(--ink-3)}
 .oe-ngo{margin:0 0 8px;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
 .oe-ngo b{font-weight:600;color:var(--i-c1)}
@@ -1251,16 +1261,16 @@ ol.ranked a::before{top:9px;bottom:9px}
 
 .oe-seg{display:block;height:100%}
 /* the four delivery groups, kept well apart from one another on purpose */
-.oe-seg.g1{background:var(--i-s1)} .oe-seg.g2{background:var(--i-s3)}
-.oe-seg.g3{background:var(--i-s5)} .oe-seg.g4{background:var(--i-slate-soft)}
-.oe-key li.g1::before{background:var(--i-s1)} .oe-key li.g2::before{background:var(--i-s3)}
-.oe-key li.g3::before{background:var(--i-s5)} .oe-key li.g4::before{background:var(--i-slate-soft)}
+.oe-seg.g1{background:var(--i-c1)} .oe-seg.g2{background:var(--i-c3)}
+.oe-seg.g3{background:var(--i-c5)} .oe-seg.g4{background:var(--i-slate-soft)}
+.oe-key li.g1::before{background:var(--i-c1)} .oe-key li.g2::before{background:var(--i-c3)}
+.oe-key li.g3::before{background:var(--i-c5)} .oe-key li.g4::before{background:var(--i-slate-soft)}
 .oe-chfoot{margin:var(--s2) 0 0;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
-.oe-seg.lead{background:var(--i-s1)}
+.oe-seg.lead{background:var(--i-c1)}
 .oe-chyr{font:400 10.5px/1 var(--mono);color:var(--ink-3);text-align:right}
 .oe-notes{padding-top:0}
 .oe-prov{margin:var(--s2) 0 0;padding-top:var(--s2);border-top:1px solid var(--i-hair);font:400 11px/1.6 var(--mono);color:var(--ink-3);word-break:break-word}
-.oe-chy{font-variant-numeric:tabular-nums;font-weight:600;color:var(--i-s1)}
+.oe-chy{font-variant-numeric:tabular-nums;font-weight:600;color:var(--i-c1)}
 
 /* who delivered it */
 .oe-chans{margin-top:var(--s3);display:flex;flex-direction:column;gap:10px}
@@ -1280,7 +1290,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-tcols{display:flex;align-items:flex-end;gap:2px;height:56px;
   border-bottom:1px solid var(--i-hair);padding-bottom:1px}
 .oe-tcol{flex:1 1 0;min-width:0;height:100%;display:flex;align-items:flex-end}
-.oe-tcol i{display:block;width:100%;background:var(--i-s2);border-radius:1px 1px 0 0}
+.oe-tcol i{display:block;width:100%;background:var(--i-c2);border-radius:1px 1px 0 0}
 .oe-tcol.gap{background:repeating-linear-gradient(180deg,var(--i-hair) 0 2px,transparent 2px 5px);
   opacity:.5}
 .oe-tcol.none{background:none}
@@ -1375,7 +1385,7 @@ ol.ranked a::before{top:9px;bottom:9px}
   font:400 10px/1 var(--mono);color:var(--ink-3)}
 .oe-tmeta{display:block;margin:8px 0 0;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
 .oe-tsub{margin:3px 0 0;font:400 11.5px/1.45 var(--sans);color:var(--ink-3)}
-.oe-tcol.top i{background:var(--i-s1)}
+.oe-tcol.top i{background:var(--i-c1)}
 .oe-scale{margin:var(--s3) 0 0;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
 
 
@@ -1761,17 +1771,19 @@ function setPlate(countryName){
   box.appendChild(countryMark(countryName,""));
   box.hidden=false;
 }
-/* the whole-register view wears the GCC emblem on the side, the same soft watermark
-   treatment the flags get on a single country */
+/* THE WHOLE-REGISTER VIEW WEARS NOTHING. It used to carry the GCC emblem as a soft watermark,
+   matching the flag a single country gets, and two design reviews independently called that the
+   weakest thing on the page: a ghosted sovereign mark in a hero is a template tell, and it was the
+   strongest shape above the fold, so the eye met borrowed decoration before it met the argument.
+   The second objection is not about taste. This register is independent, and wearing the GCC's own
+   emblem as furniture can read as an affiliation it does not have.
+   A country page keeps its flag, because a flag there identifies the country. This identified
+   nothing. */
 function setEmblem(){
   var box=el("flagplate");
   clear(box);
-  var img=document.createElement("img");
-  img.src="gcc-emblem.svg"; img.alt=""; img.className="emblem-plate";
-  img.width=192; img.height=170;
-  box.appendChild(img);
-  box.classList.add("is-emblem");
-  box.hidden=false;
+  box.classList.remove("is-emblem");
+  box.hidden=true;
 }
 /* a soft blueberry wash for the all-register head, in place of a country's flag colours */
 function paintWashAll(){
@@ -3435,6 +3447,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   var panel=document.getElementById("intel");
   if(!panel) return;
 
+  /* SIX NAMED SECTORS get the ramp. The clamp used to give step six to the sixth sector, the
+     residual AND the gap at once, which is how 34.8 per cent of the chart became one flat run with
+     three legend entries pointing at it. The ramp now describes only the six things it can rank. */
   var SEC=["var(--i-s1)","var(--i-s2)","var(--i-s3)","var(--i-s4)","var(--i-s5)","var(--i-s6)"];
   var D=null, loading=false, built=false;
   var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=12, curView="overview";
@@ -4206,11 +4221,21 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       parts.map(function(p){ return p[0]+" "+pc(p[1],sum)+" per cent"; }).join(", ")});
     var key=el("div",{cls:"i-key"});
     parts.forEach(function(p,i){
-      var col=(p[0]==="No sector stated")?"var(--i-s6)":SEC[Math.min(i,SEC.length-1)];
-      rib.appendChild(el("i",{style:"width:"+((p[1]/sum)*100).toFixed(2)+"%;background:"+col,
+      /* THREE KINDS OF THING, THREE TREATMENTS, because only one of them is a ranked sector.
+         A named sector takes its ramp step. "Other N sectors" is an aggregate of fifteen things,
+         so it is a flat neutral rather than the ramp's last step, which would have called it the
+         smallest sector. "No sector stated" is absence, 13 per cent of the record that never says
+         what it paid for, so it is hatched: visibly not a measurement at all. */
+      var gap=(p[0]==="No sector stated");
+      var rest=/^Other \d+ sectors$/.test(p[0]);
+      var col=(gap||rest) ? "var(--i-slate-soft)" : SEC[Math.min(i,SEC.length-1)];
+      var st="width:"+((p[1]/sum)*100).toFixed(2)+"%;background:"+col;
+      if(gap) st+=";background-image:repeating-linear-gradient(135deg,"
+             + "transparent 0 3px,var(--i-hair) 3px 6px)";
+      rib.appendChild(el("i",{cls:gap?"gap":(rest?"rest":null),style:st,
         title:p[0]+" "+usd(p[1])}));
       if(pc(p[1],sum)>=1) key.appendChild(el("span",null,[
-        el("b",{style:"background:"+col}),
+        el("b",{cls:gap?"gap":(rest?"rest":null),style:st.replace(/^width:[^;]*;/,"")}),
         document.createTextNode(p[0]+" "),
         el("em",{text:pc(p[1],sum)+"%"})
       ]));
