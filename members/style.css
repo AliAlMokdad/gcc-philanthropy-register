@@ -112,8 +112,23 @@ a{color:inherit;text-decoration:none}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background-position:center;background-repeat:no-repeat;background-size:cover;
   filter:blur(3px);opacity:.07}
-body[data-bg="members"]::before{background-image:url("../toolkit/skyline.webp");filter:none;
-  opacity:.085}
+/* THE PANORAMA ON THE SIX-STATE PAGE.
+   Full-bleed behind the boxes did not work: the six boxes sit exactly where the skyline sits,
+   so the towers showed only as chopped strips between the cards and read as noise. It earns
+   its place as a HORIZON instead, a band held to the foot of the viewport at its own
+   proportions, with the page given enough bottom room that the boxes never cover the
+   buildings. Faded in at the top so it rises out of the ground rather than starting on a line.
+   Fixed, so the horizon holds while the boxes scroll over it. */
+body[data-bg="members"]::before{
+  top:auto;bottom:0;height:min(48vh,440px);
+  background-image:url("img/gcc-panorama.webp");
+  background-position:bottom center;background-size:cover;
+  filter:none;opacity:.24;
+  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 58%,#000 100%);
+  mask:linear-gradient(to bottom,transparent 0,#000 58%,#000 100%)}
+/* room for the horizon, so the boxes stop above it */
+body[data-bg="members"] .page{padding-bottom:clamp(320px,46vh,480px)}
+@media (forced-colors:active){ body[data-bg="members"]::before{display:none} }
 body[data-bg="uae"]::before{background-image:url("img/Emblem_Emirates.png")}
 body[data-bg="bahrain"]::before{background-image:url("img/Emblem_Bahrain.png")}
 body[data-bg="ksa"]::before{background-image:url("../flag-saudi-arabia.webp");filter:none}
