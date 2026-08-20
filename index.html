@@ -1003,6 +1003,25 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-tcol.gap{background:repeating-linear-gradient(180deg,var(--i-hair) 0 2px,transparent 2px 5px);
   opacity:.5}
 .oe-tcol.none{background:none}
+/* the route through the briefing, and out of it */
+.i-nav{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);
+  padding:12px var(--s4);border-bottom:1px solid var(--i-hair);background:var(--paper)}
+.i-nav button{border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer}
+/* a jumped-to section should not draw a focus ring as though it were a control */
+.i-band:focus,.i-split:focus,.i-three:focus,#recs:focus{outline:none}
+.i-nav-out{font:600 13px/1.3 var(--sans);color:var(--i-s1);
+  border-bottom:2px solid var(--i-s1);padding-bottom:2px}
+.i-nav-out:hover{color:var(--ink)}
+.i-nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;padding:0}
+.i-nav li button{font:400 12.5px/1.4 var(--sans);color:var(--ink-3);
+  border-bottom:1px solid transparent}
+.i-nav li button:hover{color:var(--i-s1);border-bottom-color:var(--i-hair)}
+.i-nav button:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+@media (max-width:600px){ .i-nav{padding:10px var(--s3);gap:var(--s2)} }
+.i-rows.dense .i-r{padding:3px 0}
+.i-rows.dense .i-rlab{font-size:12.5px}
+.i-rows.dense .i-rv{font-size:11.5px}
+.i-rows.dense{max-height:none}
 .oe-taxis{display:flex;justify-content:space-between;margin-top:4px;
   font:400 10px/1 var(--mono);color:var(--ink-3)}
 .oe-tmeta{display:block;margin:8px 0 0;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
@@ -3127,20 +3146,27 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(meta) h.appendChild(el("p",{cls:"i-t-meta",text:meta}));
     return h;
   }
-  function rowBars(list,kind,total){
-    var wrap=el("div",{cls:"i-rows"});
+  function rowBars(list,kind,total,opt){
+    opt=opt||{};
+    var wrap=el("div",{cls:"i-rows"+(opt.dense?" dense":"")});
     if(!list||!list.length){
       wrap.appendChild(el("p",{cls:"i-t-meta",text:"none reported"}));
       return wrap;
     }
-    var max=list[0][1]||1;
+    /* THE DENOMINATOR MATTERS. This was scaled to the largest item, so the top bar was always
+       full width whatever it represented: the largest recipient country is 28.4 per cent of
+       the money and its bar filled the row. Given a total, the bar is a share of that total
+       and means what it looks like. Without one it falls back to the largest, and then the
+       figures beside it are the only scale. */
+    var base=(opt.ofTotal && total) ? total : (list[0][1]||1);
+    var floor=opt.dense ? 0 : 1.5;
     list.forEach(function(p){
       var r=el("div",{cls:"i-r"});
       r.appendChild(el("span",{cls:"i-rlab",text:p[0]}));
       r.appendChild(el("span",{cls:"i-rv",
-        text:usd(p[1])+(total?"  "+pc(p[1],total)+"%":"")}));
+        text:usd(p[1])+((total && !opt.noPct) ? "  "+pc(p[1],total)+"%" : "")}));
       var t=el("div",{cls:"i-rt "+kind});
-      t.appendChild(el("i",{style:"width:"+Math.max(1.5,(p[1]/max)*100).toFixed(2)+"%"}));
+      t.appendChild(el("i",{style:"width:"+Math.max(floor,(p[1]/base)*100).toFixed(3)+"%"}));
       r.appendChild(t);
       wrap.appendChild(r);
     });
@@ -3506,6 +3532,43 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var m=D.meta, T=m.total_usd;
     var card=el("div",{cls:"i-card"});
 
+    /* THE ROUTE. Plain links, because the reader's first need may be to leave: the register
+       is what this page is for and it sits below all of this. */
+    /* BUTTONS, NOT ANCHORS. An href of "#i-sec-funders" looks like the obvious way to do
+       this and it breaks the page: the register is driven by a hash router, so the link
+       replaces the route and throws the reader back to the front. These scroll without
+       touching the address. */
+    var nav=el("nav",{cls:"i-nav","aria-label":"Sections of this briefing"});
+    function goTo(id){
+      var t=document.getElementById(id);
+      if(!t) return;
+      /* instant, not smooth. These jumps are thousands of pixels: animating one is slow and
+         loses the reader's place, and two in quick succession fight each other, so the second
+         lands short of its target. */
+      t.scrollIntoView({block:"start", behavior:"auto"});
+      /* the section, not the button, is what the reader now wants to read */
+      t.setAttribute("tabindex","-1");
+      t.focus({preventScroll:true});
+    }
+    var out=el("button",{type:"button",cls:"i-nav-out",
+      text:"Straight to the "+nm(m.register_rows)+" organisations"});
+    out.addEventListener("click",function(){ goTo("recs"); });
+    nav.appendChild(out);
+    var jumps=el("ul");
+    [["i-sec-states","The six states"],
+     ["i-sec-through","Who it went through"],
+     ["i-sec-time","Over time"],
+     ["i-sec-flows","Humanitarian flows"],
+     ["i-sec-funders","Funders and countries"]].forEach(function(pair){
+      if(!OE && (pair[0]==="i-sec-states"||pair[0]==="i-sec-through"||pair[0]==="i-sec-time"))
+        return;
+      var b=el("button",{type:"button",text:pair[1]});
+      b.addEventListener("click",function(){ goTo(pair[0]); });
+      jumps.appendChild(el("li",null,[b]));
+    });
+    nav.appendChild(jumps);
+    card.appendChild(nav);
+
     /* THE FRAME. Two records of Gulf giving sit on this page and they are not two halves
        of one number. Saying so first, in the reader's own words, is the difference between
        intelligence and a wall of figures that quietly invites the wrong sum. The warning
@@ -3542,9 +3605,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
     /* the official aid lane, when its file loaded */
     if(OE){
-      card.appendChild(oeStatesBand());
-      card.appendChild(oeChannelBand());
-      card.appendChild(oeTimeBand());
+      var b1=oeStatesBand(); b1.id="i-sec-states"; card.appendChild(b1);
+      var b2=oeChannelBand(); b2.id="i-sec-through"; card.appendChild(b2);
+      var b3=oeTimeBand(); b3.id="i-sec-time"; card.appendChild(b3);
       card.appendChild(oeNotesBand());
     }
 
@@ -3629,7 +3692,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     card.appendChild(band);
 
     /* BAND C: when it moved, and who received it */
-    var three=el("div",{cls:"i-three two"});
+    var three=el("div",{cls:"i-three two",id:"i-sec-flows"});
 
     /* when: a column chart, so the shape is read rather than six numbers */
     var p1=el("div",{cls:"i-pane"});
@@ -3693,7 +3756,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     card.appendChild(three);
 
     /* BAND D: the funders beside the countries */
-    var split=el("div",{cls:"i-split"});
+    var split=el("div",{cls:"i-split",id:"i-sec-funders"});
     var fl=el("div");
     fl.appendChild(el("div",{cls:"i-lwhead"},[
       el("h4",{cls:"i-t-panel",text:"Largest reported funders"}),
@@ -3712,16 +3775,30 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     split.appendChild(fl);
 
     var cr=el("div",{cls:"i-cty"});
-    var CTY_SHOWN=20;
-    var ctyTop=D.dest_country.slice(0,CTY_SHOWN);
-    var ctyShare=ctyTop.reduce(function(a,r){ return a+r[1]; },0);
+    var CTY_FLOOR=500000;
+    var ctyShown=D.dest_country.filter(function(r){ return r[1]>=CTY_FLOOR; });
+    var ctyRest=D.dest_country.filter(function(r){ return r[1]<CTY_FLOOR; });
+    var restUsd=ctyRest.reduce(function(a,r){ return a+r[1]; },0);
+    /* how many countries hold the first half of the money. A cumulative count says something
+       about concentration that a list of 117 rows does not. */
+    var half=0, run=0, ctyAll=D.dest_country.reduce(function(a,r){ return a+r[1]; },0);
+    for(var ci=0; ci<D.dest_country.length; ci++){
+      run+=D.dest_country[ci][1];
+      if(run >= ctyAll/2){ half=ci+1; break; }
+    }
+    /* ONE denominator in one sentence. The cumulative count is of money that reached a
+       named country, the bars are of everything recorded, and mixing the two silently is the
+       error this project has already made twice. */
     cr.appendChild(paneHead("Countries reached",
-      nm(m.countries_reached)+" in all. The "+CTY_SHOWN+" largest are here and account for "
-      + pc(ctyShare,T)+" per cent of the "+usd(T)+" recorded."));
-    cr.appendChild(rowBars(ctyTop,"country",T));
-    cr.appendChild(el("p",{cls:"i-note",text:"A further "+usd(gUsd())+
-      " went to global programmes such as WHO, GAVI and UNRWA. No single country receives it, "+
-      "so it is not in this list."}));
+      nm(m.countries_reached)+" in all. "+(half===1 ? "One takes" : half+" take")+" more than "
+      + "half of the "+usd(ctyAll)+" that reached a named country. Every country above "
+      + usd(CTY_FLOOR)+" is listed, and each bar is its share of the "+usd(T)
+      + " recorded in total."));
+    cr.appendChild(rowBars(ctyShown,"country",T,{ofTotal:true,noPct:true,dense:true}));
+    cr.appendChild(el("p",{cls:"i-note",text:"The "+ctyRest.length+
+      " countries below that line come to "+usd(restUsd)+" between them, so the cut changes "+
+      "almost nothing. What the country list does NOT hold is "+usd(gUsd())+
+      " to global programmes such as WHO, GAVI and UNRWA, which no single country receives."}));
     split.appendChild(cr);
     card.appendChild(split);
 
@@ -3936,7 +4013,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         el("div",{cls:"i-from",text:shortState(r.state),title:r.state||""}),
         el("div",null,[
           el("div",{cls:"i-amt",text:usd(r.usd)}),
-          el("div",{cls:"i-fpc",text:share(r.usd,traced)+" of "+usd(traced)})
+          /* the base is named once in the heading above, so it is not repeated twelve times.
+             It was only needed per row while the country panel next door also said "traced";
+             that panel now names its own figures. */
+          el("div",{cls:"i-fpc",text:share(r.usd,traced)})
         ])
       ]);
       var wrap=el("div",{cls:"i-rw"+(sel===i?" on":"")});
