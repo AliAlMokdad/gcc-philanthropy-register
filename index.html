@@ -1669,6 +1669,55 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 #news[hidden]{display:none !important}
 #news *{box-sizing:border-box}
 
+/* THE PAGE BACKGROUND. Ali's Gulf skyline illustration, behind the whole news lane rather
+   than boxed into a band, anchored to the top at full width so the dome and clouds fall
+   behind the nameplate and the city behind the first developments. That is the picture's own
+   composition; cropping it to a strip would throw away the half that makes it read.
+
+   SIX PER CENT IS A MEASUREMENT. This image is much heavier than a silhouette: its darkest
+   pixel is effectively black and 14.1 per cent of it sits below L=0.20. Composited over the
+   paper token, the lightest text on the page (--ink-3, which sets the dateline and every
+   metadata line) lands at 4.98:1 at four per cent, 4.76:1 at six, 4.55:1 at eight and 4.35:1
+   at ten, where it fails AA outright. Eight is therefore the ceiling and clears by 0.05,
+   which is not a margin. Six is the last value with real room.
+
+   IT FADES TO NOTHING before the list runs deep, so the reading surface stops being a
+   picture halfway down the page. The fade is a MASK rather than a gradient overlay, because
+   an overlay has to know the page colour and would be wrong the moment the theme flipped,
+   while a mask removes the image itself and is colour-agnostic.
+
+   Fixed attachment is deliberately NOT used: on iOS it is unreliable and on a long page it
+   turns a backdrop into a parallax effect nobody asked for. */
+#news{position:relative}
+/* ANCHORED BOTTOM, NOT TOP, and that is the whole difference. Anchored to the top the
+   illustration's pale sky fell behind the nameplate, where there is nothing to see, and its
+   CITY landed 600px down behind the article paragraphs, where it read as a stain on the copy.
+   Anchoring the picture's own ground line to the foot of the band puts the skyline behind the
+   nameplate and the official strip, which is the whitespace it was always meant for, and
+   leaves every article on clean paper.
+
+   The band is deliberately taller than the masthead: the picture is 2:1, so a full width
+   band has to be about half the content width tall for the city to appear at its own scale
+   rather than as a squashed strip. Distorting it to fit a shorter box would make the towers
+   stubby, and the Burj is the one shape in it that has to stay slender.
+
+   FADED AT BOTH ENDS. The illustration carries its own pale sky, so at any opacity an
+   unfaded band is a visible rectangle with two hard edges. The top fade dissolves the sky
+   into the page and the bottom fade takes the ground line out before it can draw a line
+   across the page. */
+#news::before{content:"";position:absolute;left:0;right:0;top:0;
+  height:clamp(250px,23vw,340px);pointer-events:none;z-index:0;
+  background:url(gcc-skyline.webp) center bottom/100% auto no-repeat;
+  opacity:.08;
+  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 34%,#000 86%,transparent 100%);
+  mask:linear-gradient(to bottom,transparent 0,#000 34%,#000 86%,transparent 100%)}
+/* the backdrop is positioned, so every real section has to share that layer to stay above it */
+#news > *{position:relative;z-index:1}
+/* a decorative wash is noise in a forced-colours mode, and in dark it would be a bright
+   rectangle rather than a hint, so it is dimmed there and dropped here */
+@media (prefers-color-scheme: dark){ #news::before{opacity:.05} }
+@media (forced-colors: active){ #news::before{display:none} }
+
 /* ---- the masthead. No mono eyebrow above the title: with the current product already
        named in the bar above, an eyebrow reading NEWS AND DEVELOPMENTS over a title reading
        GCC Philanthropy News and Developments put the same word on screen four times inside
@@ -1678,31 +1727,10 @@ body:has(#l1:not([hidden])) .pbar{display:none}
        hairline of the accent above it and a firm rule under the whole block. ---- */
 .n-mast{margin:var(--s4) 0 0;padding-top:16px;padding-bottom:20px;
   border-top:3px solid var(--accent);border-bottom:1px solid var(--ink);
-  position:relative;overflow:hidden}
-/* THE SKYLINE. An original Gulf silhouette, drawn for this site: an Omani fort, Doha's
-   towers, the Kingdom Centre arch, Al Faisaliah, the Burj Khalifa, the Bahrain World Trade
-   Center sails and the Kuwait Towers. It is painted FROM A TOKEN through a mask rather than
-   loaded as a picture, which is what lets the dark theme invert it with no second asset.
-
-   SIX PER CENT, AND BEHIND THE NAMEPLATE ONLY. Every contrast figure on this page was
-   measured against a composited background, so a wash under the list would invalidate all of
-   them at once. Here there is whitespace to spare, and the cost was computed rather than
-   hoped for: the title holds 14.6:1, and the dateline, the most exposed text in the block,
-   goes from 5.50:1 to 4.91:1, still clear of AA. The fade is baked into the SVG so the
-   faintest part of the drawing falls exactly where that dateline sits.
-
-   contain, NOT cover. cover crops what does not fit, and the first render proved how badly:
-   the artwork was far taller in proportion than the band, so the top was cut and the Burj
-   Khalifa lost its needle. contain cannot crop. */
-.n-mast::before{content:"";position:absolute;left:0;right:0;bottom:0;height:100%;
-  pointer-events:none;background:var(--ink);
-  -webkit-mask:url(gcc-skyline.svg) bottom center/contain no-repeat;
-  mask:url(gcc-skyline.svg) bottom center/contain no-repeat;
-  opacity:.06}
-/* the pseudo-element is positioned, so it would otherwise paint over static siblings */
+  position:relative}
+/* the masthead sits over the page background image, so its own text must be in the same
+   painting layer as that image rather than beneath it */
 .n-mast > *{position:relative}
-/* in a forced-colours mode a decorative wash is noise at best, so it goes */
-@media (forced-colors: active){ .n-mast::before{display:none} }
 /* the dateline, set as a paper sets it: small, letterspaced, above the nameplate */
 .n-dateline{margin:0 0 10px;font:600 10.5px/1.3 var(--mono);letter-spacing:.15em;
   text-transform:uppercase;color:var(--ink-3)}
@@ -1719,21 +1747,60 @@ body:has(#l1:not([hidden])) .pbar{display:none}
    this page covers their country. */
 .n-mast-s b{font-weight:600;color:var(--ink-2)}
 
-/* THE PRIMARY SOURCE NOTE. A colophon rather than a card: full width, one hairline above
-   it, nothing competing with the developments it follows. DELIBERATELY NO EMBLEM: this
-   site's own mark set beside the Council's name would imply an affiliation that does not
-   exist, which is a worse fault than a plainer block. */
-.n-source{margin:var(--s5) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--line-2)}
-.n-src-eyebrow{margin:0 0 10px;font:600 10.5px/1.3 var(--mono);letter-spacing:.15em;
-  text-transform:uppercase;color:var(--ink-3)}
-.n-src-name{margin:0;font:600 clamp(19px,1.8vw,24px)/1.25 var(--serif);color:var(--ink);
-  letter-spacing:-.012em;text-wrap:balance}
-.n-src-body{margin:10px 0 0;max-width:74ch;font:400 15px/1.55 var(--serif);color:var(--ink-2)}
-/* the second paragraph explains an absence, so it sits a step back from the first */
-.n-src-why{color:var(--ink-3)}
-.n-src-links{margin:18px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:12px;
-  font:400 15px/1.5 var(--sans)}
-.n-src-links .dot{color:var(--ink-3);opacity:.5}
+/* THE OFFICIAL SOURCE STRIP. The Council's name and the two places to read it, directly
+   under the nameplate instead of a colophon at the foot of the page: it is the official body
+   for this subject, so it belongs where a reader is still looking.
+
+   TWO LINES MAXIMUM, enforced by the structure rather than hoped for. Three items in one
+   flex row, with the links pushed right by margin-left:auto, is one line while there is room
+   and two once the links wrap. With only three children it cannot reach a third.
+
+   The accent tint marks it as the one official pointer on a page whose colour meanings are
+   otherwise spoken for: green is geography, ochre is a caveat, and neither is free. The bar
+   on the left is the accent at full strength so the strip reads as deliberate rather than as
+   a highlighted paragraph. DELIBERATELY NO EMBLEM: this site's mark beside the Council's
+   name would imply an affiliation that does not exist. */
+.n-official{margin:18px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;
+  padding:12px 16px;border-left:3px solid var(--accent);background:var(--accent-soft);
+  border-radius:0 10px 10px 0}
+/* margin:0 on all three, and it is load bearing rather than tidy. The children are a p, an
+   h3 and a p, so their default block margins were inflating a single line of text into an
+   85px box and adding a phantom gap under the strip. */
+.n-off-tag{margin:0;flex:none;font:600 10px/1 var(--mono);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent-2)}
+.n-off-name{margin:0;font:600 clamp(15px,1.35vw,17.5px)/1.3 var(--serif);color:var(--ink);
+  letter-spacing:-.008em}
+/* auto margin on a flex child is what keeps this to one line when it fits and exactly two
+   when it does not */
+.n-off-links{margin:0 0 0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  font:400 14.5px/1.5 var(--sans)}
+.n-off-links .dot{color:var(--ink-3);opacity:.55}
+@media (max-width:640px){
+  /* TWO LINES, GUARANTEED, which needs structure rather than hope. Measured at 375px the
+     row came out at THREE: the tag took a line, the name took the next and the links the
+     third, because tag plus name plus a 16px gap is wider than the content column.
+
+     So the tag goes. It is decorative here: it sits beside a 3px accent bar that already
+     says the same thing, and it is not worth a third of the block's height. The name and
+     the links are then each given a full line, so the count is exactly two by construction
+     and cannot drift with the text. */
+  .n-off-tag{display:none}
+  .n-official{gap:4px 14px;padding:11px 14px}
+}
+@media (max-width:380px){
+  /* AT 320px THE NAME WAS BEING ELLIPSIS-CLIPPED: 249.8px of text in a 241px box, measured
+     with a Range because scrollWidth clamps to the box and reports a comfortable fit as an
+     exact one. Truncating the Council's name is a silent content change, so the width is
+     reclaimed from the padding and the tracking instead. */
+  .n-official{padding:10px 11px;gap:3px 12px}
+  /* THE NAME MUST NOT WRAP, or the two flex lines become three visual ones. At 14.5px
+     "Gulf Cooperation Council Secretariat General" measured 299px inside a 299px content
+     column, i.e. exactly on the boundary, and wrapped. Sizing it against the viewport rather
+     than pinning a value means it stays on one line at every width instead of at one width. */
+  .n-off-name{flex:1 1 100%;font-size:clamp(11px,3.35vw,14.5px);letter-spacing:-.016em;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .n-off-links{flex:1 1 100%;margin:0;font-size:14px;gap:10px}
+}
 
 /* the stale notice. Ochre, because on this site a warm tone means a caveat and nothing else,
    and it is the only thing on the page that ever uses it. */
@@ -1911,7 +1978,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 /* the result line. It carries the COUNT and the reset, and deliberately does not restate
    the filter names: the five controls sit directly above it already saying Qatar, Zakat and
    Waqf, Last 30 days, so repeating those strings underneath is bloat. */
-.n-res{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;
+/* the row now carries Clear filters alone, so it aligns to the end rather than pushing a
+   single child away from an absent sibling */
+.n-res{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:flex-end;
   gap:8px var(--s3);margin:0 0 var(--s4);padding-bottom:11px;
   border-bottom:1px solid var(--n-hair);
   font:400 13px/1.5 var(--sans);color:var(--ink-2)}
@@ -6879,6 +6948,11 @@ function render(keepFocus){
     }
   }
   host.appendChild(mast);
+  /* DIRECTLY UNDER THE NAMEPLATE, on request: the official body first, then the reporting.
+     Outside the masthead rather than inside it, because its tinted panel would otherwise sit
+     on the densest part of the skyline wash and cover the drawing where the drawing is
+     strongest. */
+  host.appendChild(officialStrip());
 
   var all = FEED.items;
   var top = topSection(all);
@@ -6911,15 +6985,15 @@ function render(keepFocus){
   sec.appendChild(fold);
 
   var list = filtered();
-  /* the count, visible. The ANNOUNCEMENT is made by #n-live, a node outside this subtree,
-     because a live region that is destroyed and recreated on every render announces
-     nothing at all. */
-  var res = el("p", {cls:"n-res"});
-  res.appendChild(el("span", null, [
-    el("b", {text:nm(list.length)}),
-    document.createTextNode(list.length === 1 ? " development" : " developments")
-  ]));
+  /* NO VISIBLE COUNT, on request. The row survives only to carry Clear filters, so it is
+     built at all only when there is something to clear.
+
+     THE SPOKEN COUNT STAYS, and the distinction matters: announce() writes into #n-live,
+     which is invisible, and it is the only signal a reader who cannot see the list reflow
+     gets when a filter changes. Removing the visible text is a design choice; removing that
+     would be taking an accessibility feature away for nothing. */
   if(anyFilter()){
+    var res = el("p", {cls:"n-res"});
     var rb = el("button", {type:"button", cls:"n-reset", text:"Clear filters"});
     rb.addEventListener("click", function(){
       F = {country:"", topic:"", period:DEFAULT_PERIOD, source:"", q:""};
@@ -6928,8 +7002,8 @@ function render(keepFocus){
       render();
     });
     res.appendChild(rb);
+    sec.appendChild(res);
   }
-  sec.appendChild(res);
   announce(nm(list.length) + (list.length === 1 ? " development" : " developments") +
            " match the current filters");
 
@@ -6991,8 +7065,6 @@ function render(keepFocus){
   sec.appendChild(grid);
   host.appendChild(sec);
 
-  host.appendChild(sourceNote());
-
   if(active){
     var back = document.getElementById(active);
     if(back){
@@ -7004,35 +7076,23 @@ function render(keepFocus){
   }
 }
 
-/* THE PRIMARY SOURCE. The GCC Secretariat General is the official body a reader will look
-   for on a page about Gulf philanthropy, so the page says where it is instead of leaving them
-   to guess.
+/* THE OFFICIAL SOURCE STRIP. The Council's name and the two places to read it. No
+   description and no explanation of why it is linked rather than indexed: the name and the
+   word Official carry it, and a reader who wants to know what the secretariat publishes can
+   follow the link and see.
 
-   IT IS LINKED, NOT INDEXED, and the note says so, because an unexplained absence looks like
-   an oversight. The reason is measured rather than asserted: of the ten items reachable on
-   its wire, scored against this page's own philanthropy vocabulary, none was philanthropy.
-   Half were protocol and audiences and a third were political statements. Folding a
-   diplomatic wire into a philanthropy monitor would bury the reporting this page exists for.
-
-   Both links were verified live. That matters more than usual here, because the site answers
-   HTTP 200 for pages that do not exist, so a status code on its own proves nothing. */
-function sourceNote(){
-  var s = el("section", {cls:"n-source", "aria-labelledby":"n-src-h"});
-  s.appendChild(el("p", {cls:"n-src-eyebrow", text:"Primary source"}));
-  s.appendChild(el("h3", {cls:"n-src-name", id:"n-src-h",
+   Both URLs point at the ENGLISH site and were verified live rather than recalled, which
+   matters more than usual here because gcc-sg.org answers HTTP 200 for pages that do not
+   exist, so a status code on its own proves nothing about a path. */
+function officialStrip(){
+  var s = el("section", {cls:"n-official", "aria-labelledby":"n-off-h"});
+  s.appendChild(el("p", {cls:"n-off-tag", text:"Official"}));
+  s.appendChild(el("h3", {cls:"n-off-name", id:"n-off-h",
     text:"Gulf Cooperation Council Secretariat General"}));
-  s.appendChild(el("p", {cls:"n-src-body", text:
-    "The intergovernmental secretariat of the six member states, based in Riyadh. Its " +
-    "media centre publishes the Council's official statements and communiqu\u00e9s in " +
-    "English, and it is where to check anything attributed to the GCC itself."}));
-  s.appendChild(el("p", {cls:"n-src-body n-src-why", text:
-    "Linked here rather than indexed above: what it publishes is diplomatic rather than " +
-    "philanthropic, so drawing it into this feed would bury the reporting the page " +
-    "monitors."}));
-  var links = el("p", {cls:"n-src-links"});
+  var links = el("p", {cls:"n-off-links"});
   links.appendChild(el("a", {cls:"n-orig",
     href:"https://www.gcc-sg.org/en/Pages/default.aspx",
-    target:"_blank", rel:"noopener noreferrer", text:"Secretariat General"}));
+    target:"_blank", rel:"noopener noreferrer", text:"Website"}));
   links.appendChild(el("span", {cls:"dot", "aria-hidden":"true", text:"\u00b7"}));
   links.appendChild(el("a", {cls:"n-orig",
     href:"https://www.gcc-sg.org/en/MediaCenter/News/Pages/default.aspx",
