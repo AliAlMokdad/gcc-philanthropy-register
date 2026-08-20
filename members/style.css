@@ -64,7 +64,10 @@ a{color:inherit;text-decoration:none}
 .council-member-details__icon img{width:28px;height:28px}
 .council-member-details__item__details{display:flex;flex-direction:column;gap:3px}
 .council-member-details__label{font-size:16px;color:var(--ink)}
-.council-member-details__value{font-size:16px;color:#3E8FBF;min-height:22px}
+.council-member-details__value{font-size:16px;color:#31789F;min-height:22px}
+/* #3E8FBF measured 3.57:1 on white and needs 4.5 at this size. It is now the only
+   detail on the page, since the empty Area item was removed, so the one fact left in
+   the block was the one failing. #31789F is 4.86:1 and reads as the same blue. */
 .council-member__cols{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);
   gap:0 40px;align-items:start;padding:40px 0 0}
 .council-member__map{width:100%}
@@ -143,3 +146,89 @@ body[data-bg="kuwait"]::before{background-image:url("img/Emblem_Kuwait.png")}
 html{background:var(--page)}
 body{background:transparent}
 @media print{ body::before{display:none !important} }
+
+
+/* =============================================================================
+   THE REGISTER'S MASTHEAD AND FOOTER, ported so the members section belongs to the
+   register instead of reading as a replica of gcc-sg.org.
+
+   SCOPED ON PURPOSE. This stylesheet is a deliberate copy of the Council's own design and
+   defines its own --ink (#161615), --line and --sans. The register's values for those names
+   are different, so reusing them here would either break this page or break that one. Every
+   value below is therefore either literal or carries a gccp- prefix, and nothing above this
+   line is touched.
+
+   Values are taken from index.html rather than eyeballed: mast #232C5C, h1 Source Serif 4 at
+   27px rising to 31px, #F4F3F0 with the abbreviation at #BCC7CD, kicker IBM Plex Mono 11px
+   #D3DCE1 with .14em tracking widening to .18em, and the Fluent spectrum ribbon at 40 per
+   cent along the foot of the band.
+   ============================================================================= */
+.gccp-top,.gccp-foot{
+  --gccp-mast:#232C5C;
+  --gccp-ink-3:#5B6488;
+  --gccp-accent:#3E4CC4;
+  --gccp-accent-2:#3341A6;
+  --gccp-line-2:#CBD8EC;
+  --gccp-serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --gccp-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;
+  --gccp-sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --gccp-spectrum:linear-gradient(120deg,#E3008C,#7B61FF,#0078D4,#00BCF2,#13A10E,#FFB900);
+}
+.gccp-wrap{max-width:1240px;margin:0 auto;padding:0 48px}
+@media (max-width:700px){ .gccp-wrap{padding:0 24px} }
+
+.gccp-top{background:var(--gccp-mast);position:relative}
+.gccp-top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:var(--gccp-spectrum);opacity:.4}
+.gccp-top .gccp-wrap{padding-top:26px;padding-bottom:26px}
+.gccp-h1{margin:0;font:600 27px/1.18 var(--gccp-serif);color:#F4F3F0;letter-spacing:.1px}
+@media (min-width:700px){ .gccp-h1{font-size:31px} }
+.gccp-h1 a{color:inherit;text-decoration:none;display:inline-block}
+.gccp-h1 a:hover{color:#FFFFFF}
+.gccp-h1 .gccp-abbr{color:#BCC7CD;font-weight:400}
+.gccp-top a:focus-visible{outline:2px solid #FFFFFF;outline-offset:2px}
+/* six names do not fit one line on a phone, so it wraps and is given a line height to wrap
+   into, with the tracking eased at small sizes */
+.gccp-kick{margin:10px 0 0;font:600 11px/1.6 var(--gccp-mono);letter-spacing:.14em;
+  text-transform:uppercase;color:#D3DCE1;text-wrap:balance}
+@media (min-width:760px){ .gccp-kick{letter-spacing:.18em} }
+
+/* THE FOOT. No panorama here: these pages already carry one, and the register's footer no
+   longer holds its own copy, so a second would put the same picture on the page twice. */
+.gccp-foot{position:relative;border-top:1px solid #DEE7F4;background:#F5F8FD}
+.gccp-foot .gccp-wrap{padding-top:24px;padding-bottom:24px}
+.gccp-foot p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
+  font:500 12.5px/1.6 var(--gccp-sans);color:var(--gccp-ink-3)}
+.gccp-foot a{display:inline-flex;align-items:center;min-height:40px;
+  font:600 14px/1.6 var(--gccp-serif);color:var(--gccp-accent);
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
+  letter-spacing:.15px}
+.gccp-foot a:hover{color:var(--gccp-accent-2)}
+.gccp-foot a.gccp-ava{flex:0 0 auto;min-height:0;border-radius:50%;line-height:0;
+  text-decoration:none;box-shadow:0 0 0 1px var(--gccp-line-2),0 2px 7px rgba(20,24,36,.14);
+  transition:box-shadow .18s ease,transform .18s ease}
+.gccp-foot a.gccp-ava img{width:40px;height:40px;border-radius:50%;display:block;
+  object-fit:cover}
+.gccp-foot a.gccp-ava:hover,.gccp-foot a.gccp-ava:focus-visible{transform:scale(1.14);
+  box-shadow:0 0 0 1px #E7B23A,0 0 16px 3px rgba(242,194,74,.55)}
+@media (prefers-reduced-motion:reduce){
+  .gccp-foot a.gccp-ava:hover,.gccp-foot a.gccp-ava:focus-visible{transform:none} }
+
+/* the body text, now English, so it is set in the page's own sans rather than the Arabic face
+   and given a readable measure instead of a full-width column */
+/* THE BODY TEXT IS ENGLISH NOW, so it cannot keep the Arabic typography. The rule above sets
+   font:400 17px/2.05 var(--ar) with text-align:right, which was right for Arabic and is wrong
+   for this: the face fell back to a serif once the Arabic webfont went, and the paragraphs
+   ragged on the wrong edge, which read as centred. Overridden here rather than edited in place,
+   so the original rule stays intact if Arabic is ever restored. */
+.council-member__text{font-family:var(--sans)}
+.council-member__text p{font:400 16px/1.7 var(--sans);text-align:left;max-width:68ch;
+  margin:0 0 20px}
+.council-member__text p:last-child{margin-bottom:0}
+/* the provenance line sits a step back from the text it describes */
+.council-member__source{font:400 12.5px/1.6 var(--sans) !important;color:var(--muted);
+  text-align:left;max-width:68ch;margin:22px 0 0;padding-top:14px;
+  border-top:1px solid var(--line)}
+.council-member__source{margin:18px 0 0;max-width:74ch;
+  font:400 12.5px/1.55 var(--sans);color:var(--muted)}
+.council-member__source a{text-decoration:underline;text-underline-offset:2px}
