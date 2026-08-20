@@ -3205,7 +3205,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
   var SEC=["var(--i-s1)","var(--i-s2)","var(--i-s3)","var(--i-s4)","var(--i-s5)","var(--i-s6)"];
   var D=null, loading=false, built=false;
-  var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=12, curView="funders";
+  var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=12, curView="overview";
 
   function el(tag,opts,kids){
     var n=document.createElement(tag),k;
@@ -3662,9 +3662,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       + "OECD. Humanitarian work is one sector inside this, so it overlaps the UN OCHA figures "
       + "and the two cannot be added.";
     var VIEW={}, VIEW_ORDER=[
+      {k:"overview",  src:"FTS",  group:"FTS",  label:"Overview",     note:FTS_NOTE},
       {k:"funders",   src:"FTS",  group:"FTS",  label:"Funders",      note:FTS_NOTE},
       {k:"countries", src:"FTS",  group:"FTS",  label:"Countries",    note:FTS_NOTE},
-      {k:"flows",     src:"FTS",  group:"FTS",  label:"Overview",     note:FTS_NOTE},
       {k:"aid",       src:"OECD", group:"OECD", label:"Official aid", note:OE_NOTE},
       {k:"method",    src:"BOTH", group:null,   label:"Method",
        note:"Where every figure on this page came from, what each record leaves out, and the "
@@ -3841,7 +3841,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       "%;background:var(--i-s6)",title:"everyone else "+usd(T-top3usd)}));
     R.appendChild(cb);
     lede.appendChild(R);
-    VIEW.flows.appendChild(lede);
+    VIEW.overview.appendChild(lede);
 
     /* BAND B: what it was spent on */
     var band=el("div",{cls:"i-band"});
@@ -3869,7 +3869,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       ]));
     });
     band.appendChild(rib); band.appendChild(key);
-    VIEW.flows.appendChild(band);
+    VIEW.overview.appendChild(band);
 
     /* BAND C: when it moved, and who received it */
     var three=el("div",{cls:"i-three two",id:"i-sec-flows"});
@@ -3933,7 +3933,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     p2.appendChild(rowBars((D.desttype||[]).slice(0,6),"recip",m.recipient_usd));
     three.appendChild(p2);
 
-    VIEW.flows.appendChild(three);
+    VIEW.overview.appendChild(three);
 
     /* THE SPLIT IS GONE. 27 funders beside 117 countries put a short list next to a long one
        and left thousands of pixels of white space beside a ribbon. Each gets a full-width view
@@ -4083,7 +4083,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
     var cands=D.rows.filter(function(r){
       return !r.reg && r.orgtype!=="Governments" && !r.why; });
-    if(cands.length) card.appendChild(details(
+    if(cands.length) VIEW.method.appendChild(details(
       "Reported funders with no register row, "+cands.length+" to consider",function(box){
       box.appendChild(el("p",{cls:"i-note i-note-top",text:
         "These report funding but are not in the register. Worth checking, not proven missing."}));
@@ -4098,7 +4098,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       box.appendChild(wrap);
     }));
 
-    card.appendChild(details("Limitations, what this does not capture",function(box){
+    VIEW.method.appendChild(details("Limitations, what this does not capture",function(box){
       var items=[
         ["Most Gulf giving is absent.","Zakat, sadaqah, waqf, private and family giving, and "+
           "domestic charity inside the six states are not reported to this system at all."],
@@ -4157,8 +4157,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     function readView(){
       try{
         var q=new URLSearchParams(location.search).get("view");
-        return (q && VIEW[q] && !(q==="aid" && !OE)) ? q : "funders";
-      }catch(e){ return "funders"; }
+        return (q && VIEW[q] && !(q==="aid" && !OE)) ? q : "overview";
+      }catch(e){ return "overview"; }
     }
     function writeView(k){
       try{
@@ -4168,7 +4168,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       }catch(e){}
     }
     function showView(k,fromClick){
-      if(!VIEW[k]) k="funders";
+      if(!VIEW[k]) k="overview";
       VIEW_ORDER.forEach(function(v){
         if(!VIEW[v.k]) return;
         var on=(v.k===k);
