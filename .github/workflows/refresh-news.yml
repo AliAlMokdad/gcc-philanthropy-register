@@ -1,8 +1,16 @@
 # Keeps the news desk current without anyone touching it.
 #
 # It runs on GitHub's machines twelve times a day, fetches the monitored feeds, runs the whole
-# classification pipeline, and publishes news-feed.json to a branch the page reads at runtime.
-# No key is needed: every enabled source is a public feed.
+# classification pipeline, MERGES the result into what it published last time, and writes
+# news-feed.json to a branch the page reads at runtime. No key is needed: every enabled source
+# is a public feed.
+#
+# IT ACCUMULATES, and that is the load-bearing part. Measured: ReliefWeb blocks datacentre
+# addresses, GDELT returns 429 from here and from a residential address alike, Bing News gives
+# one item behind a redirect wrapper, and the Gulf funders do not publish RSS at any path
+# tried. What is left is general newspaper feeds where philanthropy is a thin slice, yielding a
+# handful of admissions a run. A snapshot built from that would be useless; a union built from
+# it twelve times a day, over a 180 day horizon, is a monitor.
 #
 # WHY IT PUBLISHES TO A BRANCH INSTEAD OF COMMITTING TO main.
 # GitHub documents that a commit made with the automatic GITHUB_TOKEN does not trigger a Pages
@@ -91,7 +99,13 @@ jobs:
           PYTHONUTF8: "1"
         run: |
           set +e
-          python tools/news/build_news.py
+          # SEED FROM WHAT THIS JOB PUBLISHED LAST TIME. The feed accumulates, so a run that
+          # finds five new items publishes the union of those five and everything already
+          # known, rather than a feed of five. That is what lets this survive sources that
+          # answer thinly, and it is why a blocked source degrades coverage slowly instead of
+          # all at once. On the first run the branch does not exist and the build falls back to
+          # the copy in the checkout, which is the seed laid down by a local build.
+          python tools/news/build_news.py             --seed "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/news-data/news-feed.json"
           rc=$?
           set -e
           if [ $rc -eq 0 ]; then
