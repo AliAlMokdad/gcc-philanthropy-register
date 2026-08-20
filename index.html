@@ -625,9 +625,51 @@ nav.pager .pg-sm{display:none}
 
 /* one quiet line, set to the right, in the serif so it reads as a signature rather
    than as another piece of interface */
-footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);margin-top:var(--s5)}
+footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);
+  margin-top:var(--s5);
+  /* room for the panorama to rise. The credit line stays at the bottom where it belongs and
+     the picture fills the space above it, which is what "covers the foot and also goes up"
+     asks for without any overflow trickery. */
+  padding-top:clamp(118px,13vw,214px)}
 /* a light, transparent yellow brush washed across the whole footer, painterly, no edge */
-.foot-brush{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.foot-brush{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;
+  /* softened, because a cool blue picture over a warm yellow wash at full strength cancels
+     both into grey. At half it stays the site's warm signature underneath rather than a
+     competitor to the panorama. */
+  opacity:.5}
+
+/* THE PANORAMA AT THE FOOT OF EVERY PAGE.
+
+   TEN PER CENT IS A CEILING THAT WAS MEASURED. The footer carries the lightest text on the
+   site, --ink-3 at 12.5px, needing 4.5:1. Over this picture's darkest pixel it reads 4.97:1
+   at six per cent, 4.81 at eight, 4.67 at ten and 4.50 at twelve, which is the line itself.
+   Ten is the last value with room to spare.
+
+   ANCHORED BOTTOM and faded UPWARD, so the picture is densest across the footer and dissolves
+   as it climbs. A fade in the other direction would put the skyline's sky over the credit and
+   its buildings over the page, which is the wrong way round. */
+footer.sig::after{content:"";position:absolute;left:0;right:0;bottom:0;height:100%;
+  z-index:0;pointer-events:none;
+  /* FRAMED AT 48 PER CENT, NOT AT THE BOTTOM. The footer is far wider than it is tall, so
+     cover scales the picture by width and shows only a slice of its height. Anchored to the
+     bottom that slice was the water and the reflections, with the whole city cropped away
+     above it: the least interesting part of the picture, at the one place it is most visible.
+     A percentage offset lands the slice on the skyline itself and keeps doing so as the
+     viewport width changes the amount of overflow. */
+  background:url(country/gcc-panorama.webp) center 48%/cover no-repeat;
+  opacity:.10;
+  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%);
+  mask:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%)}
+/* IN DARK IT NEEDS MORE, NOT LESS, which is the opposite of the usual instinct and of what
+   the country paintings needed. Those are warm and mid-toned, so on a dark ground they had to
+   come down. This one is pale and cool, so against near-black it all but disappeared at 8.5
+   per cent. The headroom was computed rather than guessed, and the first pass at the
+   arithmetic was wrong: by hand it looked like 18 per cent would still pass, and the actual
+   figures for the dark credit colour are 6.07:1 at 8.5, 5.08 at 14, 4.71 at 16 and 4.38 at
+   18, which FAILS. Sixteen is the ceiling, so 14 is the last value with real margin. */
+@media (prefers-color-scheme:dark){ footer.sig::after{opacity:.14} }
+@media (forced-colors:active){ footer.sig::after{display:none} }
+@media print{ footer.sig::after{display:none !important} }
 footer.sig .wrap{position:relative;z-index:1;padding-top:var(--s4);padding-bottom:var(--s4)}
 footer.sig p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
   font:500 12.5px/1.6 var(--sans);color:var(--ink-3)}
@@ -2552,8 +2594,14 @@ function paintWash(countryName){
    class go, because the class is what the CSS keys the taller band and the softened gradient
    to, and leaving one without the other would give a category page a country's proportions. */
 function setHeadPhoto(countryName){
+  setHeadPhotoSrc(countryName && COUNTRY_BG[norm(countryName)]);
+}
+/* Split out so the whole-register view can pass its own picture rather than a country's. One
+   place still sets and clears the property AND the class together, which is the part that
+   matters: the class is what the taller band and the softened wash key to, so leaving one
+   without the other would give a page the wrong proportions. */
+function setHeadPhotoSrc(src){
   var head=el("l2head");
-  var src=countryName && COUNTRY_BG[norm(countryName)];
   if(!src){
     head.style.removeProperty("--l2-photo");
     head.classList.remove("has-photo");
@@ -2588,8 +2636,11 @@ function paintWashAll(){
   var head=el("l2head");
   head.style.setProperty("--wash-a","rgba(62,76,196,.14)");
   head.style.setProperty("--wash-b","rgba(62,76,196,.05)");
-  /* the whole-register view is not a place, so it wears no place */
-  setHeadPhoto(null);
+  /* THE WHOLE REGISTER WEARS THE WHOLE GULF. A country page wears its own painting; this view
+     covers all six states, so it takes the panorama in which all six stand together. That is
+     also why none of the six country paintings could be used here: each is one place, and
+     picking one would imply a country this view is not about. */
+  setHeadPhotoSrc("country/gcc-panorama.webp");
 }
 
 /* a country page wears its own flag: the masthead band, the corner blooms and the
