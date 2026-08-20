@@ -132,6 +132,13 @@ body:has(#l1:not([hidden])) #brushes{display:block}
 @media (prefers-color-scheme:dark){ #brushes{opacity:.6} }
 /* an individual country page wears its flag as a soft painterly wash across the whole
    page, in the flag's own colours, faint enough that the text stays the subject */
+/* the same painterly idea on the inner pages, fainter. NOT on a country page: that already wears
+   its flag as a full-page wash, and two layers of paint over each other is mud. */
+#l2brush{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;
+  display:none}
+body:has(#l2:not([hidden])):not(.country-view) #l2brush{display:block}
+@media (prefers-color-scheme:dark){ #l2brush{opacity:.55} }
+@media print{ #l2brush{display:none !important} }
 #cwash{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:none}
 body.country-view #cwash{display:block}
 #cwash .cwa{fill:var(--cw1)}
@@ -403,6 +410,41 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
 @media (prefers-color-scheme:dark){ .chip input:checked + span{color:#0F1412} }
 .chip input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
 
+/* ---- THE GATE, the way into the register's own rows.
+       ORANGE, and that is a system rather than a colour I liked here. Blue is the UN OCHA record,
+       teal is the OECD record, slate is reference material, and orange is the REGISTER itself. The
+       home page already used exactly this orange for "See the full list", so this extends a
+       convention rather than inventing one, and it keeps a register action from borrowing the
+       colour of a funding record it has nothing to do with.
+       The rule above it carries the same 76px tipped head as every other section boundary on the
+       page, in the register's colour. ---- */
+.listgate{padding:var(--s4) 0 var(--s4);
+  background:linear-gradient(90deg,var(--orange-line) 0 76px,var(--line-2) 76px)
+    top left/100% 1px no-repeat}
+.listgate[hidden]{display:none !important}
+.lg-btn{display:inline-flex;align-items:center;gap:16px;cursor:pointer;
+  min-height:56px;padding:15px 22px;
+  font:600 15px/1 var(--sans);color:var(--orange-strong);
+  background:var(--orange-soft);border:1px solid var(--orange);border-radius:9px;
+  transition:box-shadow .12s ease-out,border-color .12s ease-out}
+.lg-btn .lg-n{font:400 21px/1 var(--serif);color:var(--orange-strong);
+  font-variant-numeric:proportional-nums lining-nums}
+.lg-btn::after{content:"↓";font-size:15px;opacity:.7}
+.lg-btn[aria-expanded="true"]::after{content:"↑"}
+.lg-btn:hover{border-color:var(--orange-strong);background:var(--orange-soft);
+  box-shadow:0 3px 12px rgba(226,133,58,.20)}
+.lg-btn:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+#listwrap:focus{outline:none}
+#listwrap:focus-visible{outline:none}
+/* with the list closed the opener is the section above Methodology, so Methodology stops holding
+   the gap it keeps for a list. :has on the container rather than an adjacent-sibling selector, so
+   it survives anything inserted between them. */
+#l2:has(#listwrap[hidden]) .i-meth{margin-top:var(--s4)}
+@media (max-width:600px){
+  .listgate{padding:var(--s3) 0 var(--s4)}
+  .lg-btn{width:100%;justify-content:space-between;gap:var(--s3);padding:14px 18px}
+}
+
 .tally{font:400 13px/1.5 var(--sans);color:var(--ink-3);margin:0;
   padding:var(--s2) 0 var(--s3);border-bottom:1px solid var(--line);
   font-variant-numeric:tabular-nums}
@@ -533,7 +575,9 @@ main{padding-bottom:var(--s5)}
   /* the scroll-to buttons go: on paper there is nowhere to scroll to. .i-over goes with them
      rather than only its button, because the sentence that used to sit beside it was removed and
      an empty flex footer was being printed with its margin. */
-  .i-switch,.i-jump,.i-more,.i-nav,.i-vlab,.i-over,.i-dash-pick{display:none !important}
+  .i-switch,.i-jump,.i-more,.i-nav,.i-vlab,.i-over,.i-dash-pick,.listgate{display:none !important}
+  /* paper has no disclosure, so the rows print whether or not the reader had opened them */
+  #listwrap{display:block !important}
 
   /* THE DIVIDERS COME BACK AS BORDERS. The four section rules are background images now, and a
      printer drops background images, so on paper the page lost every boundary between its
@@ -835,8 +879,12 @@ ol.ranked a::before{top:9px;bottom:9px}
    noun it counts. Its rule is the register's own accent, not either record's ramp. */
 /* the register's composition, so the tip is the register's own accent and the rule stays 2px:
    this is the boundary between the record half of the page and the register half */
+/* ORANGE HEAD. This section counts the register, not either record, so its tipped rule now carries
+   the register's colour, the same as the opener further down. The blue-into-teal it used to have was
+   marking "the records end here", which the 2px weight already does on a page where every other
+   rule is 1px. */
 .i-dash{margin:var(--s4) 0 var(--s4);padding-top:var(--s4);border-top:0;
-  background:linear-gradient(90deg,var(--i-s2) 0,var(--i-c3) 76px,var(--accent) 76px)
+  background:linear-gradient(90deg,var(--orange-line) 0 76px,var(--accent) 76px)
     top left/100% 2px no-repeat}
 .i-dash[hidden]{display:none !important}
 .i-dash *{box-sizing:border-box}
@@ -947,8 +995,8 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-over{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s4);
   flex-wrap:wrap;margin:var(--s3) 0 0}
 .i-over-go{flex:none;border:0;background:none;cursor:pointer;padding:0;
-  font:600 13.5px/1.3 var(--sans);color:var(--i-s1);
-  border-bottom:2px solid var(--i-s1);padding-bottom:2px}
+  font:600 13.5px/1.3 var(--sans);color:var(--orange-strong);
+  border-bottom:2px solid var(--orange-line);padding-bottom:2px}
 .i-over-go::after{content:" ↓"}
 .i-over-go:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .i-over-go:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:2px}
@@ -1435,7 +1483,9 @@ ol.ranked a::before{top:9px;bottom:9px}
   font:400 12.5px/1.3 var(--sans);color:var(--ink-3);
   border-bottom:1px solid transparent;margin-bottom:-1px}
 .i-jump::after{content:" ↓"}
-.i-jump:hover{color:var(--i-s1);border-bottom-color:var(--i-hair)}
+/* a register control, so it hovers to the register's colour rather than the humanitarian
+   record's, which it has nothing to do with */
+.i-jump:hover{color:var(--orange-strong);border-bottom-color:var(--orange-line)}
 .i-jump:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
 /* a min-height so switching between a short view and a long one does not make the page jump
    under the reader's cursor as a scrollbar appears and vanishes */
@@ -1515,6 +1565,31 @@ ol.ranked a::before{top:9px;bottom:9px}
   <g filter="url(#bpb)"><ellipse cx="235" cy="645" rx="330" ry="56" fill="#F4B36A" opacity="0.07" transform="rotate(16 235 645)"/></g>
   <g filter="url(#bpa)"><ellipse cx="640" cy="415" rx="300" ry="46" fill="#8FB6EE" opacity="0.055" transform="rotate(-8 640 415)"/></g>
 </svg>
+<!-- A LIGHTER SECOND PAINTERLY LAYER, for the register page rather than the portal. Same idea as
+     #brushes above and deliberately fainter: six strokes at 0.035 to 0.065, orange-led with two
+     blues so it does not read as a warm tint over everything. Its filters are its own, because the
+     portal layer is display:none on this route and referencing a filter inside a non-rendered tree
+     is not a thing to depend on. Decorative, aria-hidden, never a target. -->
+<svg id="l2brush" aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <filter id="lba" x="-35%" y="-35%" width="170%" height="170%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="4" seed="21" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="84" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="13"/>
+    </filter>
+    <filter id="lbb" x="-35%" y="-35%" width="170%" height="170%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.016" numOctaves="4" seed="33" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="96" xChannelSelector="R" yChannelSelector="G"/>
+      <feGaussianBlur stdDeviation="15"/>
+    </filter>
+  </defs>
+  <g filter="url(#lba)"><ellipse cx="1010" cy="120" rx="340" ry="58" fill="#E2853A" opacity="0.065" transform="rotate(-19 1010 120)"/></g>
+  <g filter="url(#lbb)"><ellipse cx="180" cy="360" rx="300" ry="50" fill="#F2A24A" opacity="0.045" transform="rotate(27 180 360)"/></g>
+  <g filter="url(#lba)"><ellipse cx="690" cy="690" rx="380" ry="60" fill="#E8A55A" opacity="0.05" transform="rotate(-11 690 690)"/></g>
+  <g filter="url(#lbb)"><ellipse cx="1120" cy="470" rx="260" ry="46" fill="#8FB6EE" opacity="0.045" transform="rotate(52 1120 470)"/></g>
+  <g filter="url(#lba)"><ellipse cx="330" cy="80" rx="280" ry="44" fill="#96BEF2" opacity="0.035" transform="rotate(-42 330 80)"/></g>
+  <g filter="url(#lbb)"><ellipse cx="560" cy="250" rx="250" ry="40" fill="#F4B36A" opacity="0.04" transform="rotate(9 560 250)"/></g>
+</svg>
 <svg id="cwash" aria-hidden="true" viewBox="0 0 1200 900" preserveAspectRatio="xMidYMid slice">
   <defs>
     <filter id="cwf" x="-30%" y="-30%" width="160%" height="160%">
@@ -1590,7 +1665,7 @@ ol.ranked a::before{top:9px;bottom:9px}
          view, above the full list. It sits between the title band and the controls so the
          briefing is read first and the list follows underneath. -->
     <section id="intel" hidden aria-labelledby="selname"></section>
-    <div class="controls">
+    <div class="controls" id="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
         <input id="q" type="search" autocomplete="off" spellcheck="false" maxlength="300"
@@ -1611,13 +1686,25 @@ ol.ranked a::before{top:9px;bottom:9px}
         <label class="chip"><input type="checkbox" id="f-website"><span>Website</span></label>
       </fieldset>
     </div>
-    <p class="tally" id="tally" role="status" aria-live="polite"></p>
-    <p class="ainote" id="ainote" role="status" aria-live="polite" hidden></p>
-    <ul class="recs" id="recs"></ul>
-    <nav class="pager" id="pager" aria-label="Pages"></nav>
-    <div class="empty" id="empty" hidden>
-      <p id="emptymsg"></p>
-      <button type="button" id="clearall">Clear search and filters</button>
+    <!-- THE GATE. Hidden in the markup and shown by syncList() only on the whole-register
+         view with no search and no filter running. A country or category route never sees it. -->
+    <div class="listgate" id="listgate" hidden>
+      <button type="button" class="lg-btn" id="lgbtn" aria-expanded="false" aria-controls="listwrap">
+        <span class="lg-t">All organisations</span>
+        <span class="lg-n" id="lgn"></span>
+      </button>
+    </div>
+    <!-- NOT hidden by default, on purpose: if the script fails, a reader still gets the register
+         instead of a button that does nothing. syncList() hides it when the gate is in play. -->
+    <div id="listwrap" tabindex="-1">
+      <p class="tally" id="tally" role="status" aria-live="polite"></p>
+      <p class="ainote" id="ainote" role="status" aria-live="polite" hidden></p>
+      <ul class="recs" id="recs"></ul>
+      <nav class="pager" id="pager" aria-label="Pages"></nav>
+      <div class="empty" id="empty" hidden>
+        <p id="emptymsg"></p>
+        <button type="button" id="clearall">Clear search and filters</button>
+      </div>
     </div>
   </div>
 </main>
@@ -2580,6 +2667,31 @@ function buildPager(){
   step("Next","Next",page+1,page<total,"edge");
 }
 
+/* ---------- the list gate ----------
+   listOpen is UI state only and is deliberately not written to the URL: a link carrying a query
+   already opens the list, because a query forces it open, and persisting a bare "I pressed the
+   button" adds a parameter that means nothing to anyone receiving the link. */
+var listOpen=false;
+
+function controlsActive(){
+  var c=readControls();
+  return !!(c.q || c.pick || c.pick2 || c.email || c.phone || c.website);
+}
+/* the gate is in play only where the list is not itself the answer: the whole-register view with
+   nothing typed and nothing filtered */
+function listGated(){
+  return !!current && current.kind==="a" && !controlsActive();
+}
+function syncList(){
+  var gated=listGated(), gate=el("listgate"), wrap=el("listwrap"), btn=el("lgbtn");
+  gate.hidden=!gated;
+  wrap.hidden=gated && !listOpen;
+  if(btn){
+    btn.setAttribute("aria-expanded", (!gated || listOpen) ? "true" : "false");
+    el("lgn").textContent = current ? num(current.rows.length) : "";
+  }
+}
+
 function render(){
   if(!current) return;
   var total=pageCount();
@@ -2625,6 +2737,9 @@ function render(){
     el("empty").hidden=false;
   }
   buildPager();
+  /* last, so it sees the state render() just settled. Every path that changes what should be on
+     screen ends here, which is why the gate does not need a listener of its own on each control. */
+  syncList();
 }
 
 /* ---------- the second filter, which depends on the level-1 choice ---------- */
@@ -2775,6 +2890,8 @@ function route(){
   if(!sel){ showL1(true); return; }
 
   var sameSelection = current && current.kind===sel.kind && current.slug===sel.slug;
+  /* a different selection is a different page, so an opened list does not carry over */
+  if(!sameSelection) listOpen=false;
   current=sel;
   var p=parseQuery(qs);
 
@@ -3417,6 +3534,13 @@ function wire(){
   ["f-email","f-phone","f-website"].forEach(function(id){
     el(id).addEventListener("change",refreshSearch);
   });
+  el("lgbtn").addEventListener("click",function(){
+    listOpen=!listOpen;
+    syncList();
+    /* focus follows the disclosure, or a keyboard reader presses the button and stays put with no
+       idea that 94 pages just appeared below them */
+    if(listOpen) el("listwrap").focus({preventScroll:true});
+  });
   el("clearall").addEventListener("click",function(){
     abandonSearch();          /* was three of its four lines, and missed aiPending */
     el("q").value="";
@@ -3970,7 +4094,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       +q.composition.measure+", flow "+q.composition.flow+", "+q.composition.pinned
       +", "+q.composition.label+".");
     prov.push("Retrieved "+String(OE.meta.built||"").slice(0,10)+".");
-    box.appendChild(el("p",{cls:"oe-prov",text:prov.join("  ")}));
+    /* the dataflow query line is gone on request. It existed so the figures could be reproduced
+       rather than trusted, and the sentence that made that case was removed earlier, which left a
+       string of measure codes with nothing saying why a reader should care. The ids still live in
+       tools/build-oecd/build_oecd.py, which is where a rebuild reads them. */
     /* provenance IS sources, and the reader is already inside the section that says so */
     var d=details("Official aid sources",
       function(inner){ inner.appendChild(box); }, true);
@@ -4248,7 +4375,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
     var jump=el("button",{type:"button",cls:"i-jump",
       text:nm(m.register_rows)+" organisations"});
-    jump.addEventListener("click",function(){ goTo("recs"); });
+    /* the controls, not the rows: the rows are gated now, and this lands the reader on the search
+       with the opener directly beneath it */
+    jump.addEventListener("click",function(){ goTo("controls"); });
     bar.appendChild(jump);
     card.appendChild(bar);
 
@@ -4659,7 +4788,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        dump. insertBefore rather than a reshuffle of the build order, because the limitations text
        depends on figures computed further down. */
     /* trimmed with the one above it, so the pair does not read as one edited and one forgotten */
-    METH.insertBefore(details("What this does not capture",
+    METH.insertBefore(details("Limitations",
       function(box){
       var items=[
         ["Most Gulf giving is absent.","Zakat, sadaqah, waqf, private and family giving, and "+
@@ -4703,7 +4832,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        page into the register half */
     var go=el("button",{type:"button",cls:"i-over-go",
       text:"Search the "+nm(m.register_rows)+" organisations"});
-    go.addEventListener("click",function(){ goTo("recs"); });
+    go.addEventListener("click",function(){ goTo("controls"); });
     over.appendChild(go);
     panel.appendChild(over);
 
