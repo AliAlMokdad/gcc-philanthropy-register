@@ -77,15 +77,35 @@ jobs:
           fi
 
       - name: Fetch the sources and rebuild the feed
-        # build_news.py exits non-zero and writes nothing if no provider returned a usable
-        # record, or if the item count collapsed against the feed already on disk. A failure
-        # here therefore means the previous feed stands, which is the intended behaviour.
+        id: build
+        # THREE OUTCOMES, not two. 0 means a feed was built and should be published. 3 means the
+        # script DECLINED on purpose, because no provider answered or the item count collapsed,
+        # and the previous feed stands: that is the guard working, so it is reported as a notice
+        # and the remaining steps are skipped. Anything else is a real fault and fails the run.
+        #
+        # The distinction matters because ReliefWeb blocks datacentre addresses, so until its
+        # API appname is in place this job will decline every time, and a red cross twelve times
+        # a day for a known cause is a signal nobody reads.
         env:
           PYTHONIOENCODING: utf-8
           PYTHONUTF8: "1"
-        run: python tools/news/build_news.py
+        run: |
+          set +e
+          python tools/news/build_news.py
+          rc=$?
+          set -e
+          if [ $rc -eq 0 ]; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+          elif [ $rc -eq 3 ]; then
+            echo "published=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Nothing published::The build declined on purpose and the previous feed stands. See the log for which source returned nothing."
+          else
+            echo "::error title=The news build failed::Exit code $rc, which is a fault rather than a deliberate decline."
+            exit $rc
+          fi
 
       - name: Refuse anything that does not look like a feed
+        if: steps.build.outputs.published == 'true'
         run: |
           python - <<'PY'
           import io, json, sys, datetime as dt
@@ -124,6 +144,7 @@ jobs:
           PY
 
       - name: Publish the feed to the data branch
+        if: steps.build.outputs.published == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -160,6 +181,7 @@ jobs:
           echo "Published to the news-data branch."
 
       - name: Say what was published
+        if: steps.build.outputs.published == 'true'
         run: |
           python - <<'PY'
           import io, json

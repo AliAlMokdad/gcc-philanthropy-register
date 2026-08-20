@@ -317,8 +317,27 @@ def main(argv):
         refuse = "this build has no publishable items and the previous feed has %d." % prev_n
 
     if refuse:
-        print("\nREFUSED TO PUBLISH: " + refuse)
+        print("\nNOT PUBLISHED: " + refuse)
         print("news-candidates.json was still written, so the run can be inspected.")
+        # NAME THE LIKELY CAUSE rather than leaving it to be worked out from a log. A source
+        # that normally carries most of the feed and returned nothing is a blocked source, not
+        # a quiet news day, and saying which one turns a red cross into an instruction.
+        dead = [s for s in statuses if not s.get("records")]
+        by_src = {}
+        for s in dead:
+            by_src.setdefault(s["source_id"], []).append(s.get("http"))
+        for sid, codes in sorted(by_src.items()):
+            src = source_by_id(sid) or {}
+            print("   %s returned nothing on %d request(s), status %s"
+                  % (src.get("name", sid), len(codes),
+                     ", ".join(sorted({str(c) for c in codes}))))
+        if any(sid == "reliefweb_rss" for sid in by_src):
+            print("   ReliefWeb blocks datacentre addresses, so a scheduled run cannot read "
+                  "its RSS. The supported route is its v2 API, which needs an appname: request "
+                  "one at https://apidoc.reliefweb.int/parameters#appname and set it as the "
+                  "RELIEFWEB_APPNAME repository secret. The adapter is already written.")
+        # exit 3 is a DELIBERATE decline, and the workflow reports it as a notice rather than a
+        # failure. A red cross twelve times a day for a known cause is a signal nobody reads.
         return 3
 
     if dry:

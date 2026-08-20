@@ -1,16 +1,16 @@
 {
  "schema_version": 1,
- "generated_at": "2026-08-20T13:11:41Z",
- "feed_updated_at": "2026-08-20T13:11:41Z",
- "ingestion_run_id": "run-20260820T131114Z",
+ "generated_at": "2026-08-20T14:14:56Z",
+ "feed_updated_at": "2026-08-20T14:14:56Z",
+ "ingestion_run_id": "run-20260820T141430Z",
  "registry_version": "2026-08-20.1",
  "stale_after_hours": 12,
  "horizon_days": 180,
  "coverage": {
   "items": 43,
   "publishers": 14,
-  "sources_enabled": 5,
-  "sources_defined": 11,
+  "sources_enabled": 7,
+  "sources_defined": 13,
   "by_discovery": {
    "saudigazette": 2,
    "reliefweb_rss": 40,
@@ -173,6 +173,24 @@
    "quota_note": null
   },
   {
+   "source_id": "gulftimes_qa",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 50,
+   "error": null,
+   "quota_note": null
+  },
+  {
+   "source_id": "chronicle_phil",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 10,
+   "error": null,
+   "quota_note": "parsed after declaring the prefixes this feed uses without declaring: media"
+  },
+  {
    "source_id": "alliance_mag",
    "query": null,
    "ok": true,
@@ -194,7 +212,7 @@
    "source_type": "independent_media",
    "published_at": "2026-08-20T11:24:55Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:40Z",
+   "discovered_at": "2026-08-20T14:14:56Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -240,7 +258,7 @@
     "top_rank": 1
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "saudigazette",
     "provider_record_id": "https://saudigazette.com.sa/article/663901/saudi-arabia/royal-order-transforms-charity-platform-ehsan-into-independent-non-profit-foundation",
     "registry_version": "2026-08-20.1",
@@ -268,7 +286,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-08-20T09:15:35Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -307,7 +325,7 @@
     "top_rank": 2
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/sudan/beyond-emergency-care-why-sudans-humanitarian-response-must-also-protect-essential-health-services",
     "registry_version": "2026-08-20.1",
@@ -332,7 +350,7 @@
    "source_type": "independent_media",
    "published_at": "2026-08-19T14:27:36Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:40Z",
+   "discovered_at": "2026-08-20T14:14:56Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -360,7 +378,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "thenational_ae",
     "provider_record_id": "https://www.thenationalnews.com/news/uae/2026/08/19/uae-sends-school-supplies-for-more-than-25000-gaza-children-as-part-of-humanitarian-campaign/",
     "registry_version": "2026-08-20.1",
@@ -384,7 +402,7 @@
    "source_type": "independent_media",
    "published_at": "2026-08-19T13:13:20Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:41Z",
+   "discovered_at": "2026-08-20T14:14:56Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -418,7 +436,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "saudigazette",
     "provider_record_id": "https://saudigazette.com.sa/article/663874/saudi-arabia/saudi-humanitarian-giving-exceeds-145-billion-reaches-175-countries-through-8997-projects",
     "registry_version": "2026-08-20.1",
@@ -444,7 +462,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-08-12T12:53:30Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -483,7 +501,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/gambia/qatar-charity-implements-relief-project-support-1200-flood-affected-families-gambia",
     "registry_version": "2026-08-20.1",
@@ -508,7 +526,7 @@
    "source_type": "official_government",
    "published_at": "2026-08-07T01:28:47Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -561,7 +579,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Kuwait Fund",
     "provider_record_id": "https://reliefweb.int/report/afghanistan/signature-grant-agreement-amount-usd-2500000-contribute-supporting-afghanistan-humanitarian-fund-afghanistan-enar",
     "registry_version": "2026-08-20.1",
@@ -588,7 +606,7 @@
    "source_type": "official_government",
    "published_at": "2026-08-07T01:24:20Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -641,7 +659,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Kuwait Fund",
     "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/signature-grant-agreement-amount-usd2500000-contribute-supporting-syria-humanitarian-fund-syrian-arab-republic-enar",
     "registry_version": "2026-08-20.1",
@@ -668,7 +686,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-08-06T14:12:03Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -708,7 +726,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-supports-rehabilitation-gaza-children-prosthetic-limbs-jordan",
     "registry_version": "2026-08-20.1",
@@ -733,7 +751,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-07-21T12:03:24Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -793,7 +811,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/bangladesh/iom-and-ksrelief-sign-usd-25-million-agreement-improve-wash-coxs-bazar",
     "registry_version": "2026-08-20.1",
@@ -822,7 +840,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-07-15T01:20:50Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -883,7 +901,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/yemen/ksrelief-and-fcdo-provide-usd10-million-support-wfps-response-hunger-yemen",
     "registry_version": "2026-08-20.1",
@@ -911,7 +929,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-07-14T09:12:38Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -972,7 +990,7 @@
     "top_rank": 3
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/sudan/ksrelief-funding-us-5-million-enables-who-sustain-dialysis-services-more-5500-patients-across-sudan",
     "registry_version": "2026-08-20.1",
@@ -998,7 +1016,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-07-13T12:06:46Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1039,7 +1057,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/bangladesh/qatar-charity-supports-rohingya-refugees-cooking-gas-bangladesh-enar",
     "registry_version": "2026-08-20.1",
@@ -1064,7 +1082,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-07-13T10:44:41Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1119,7 +1137,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-equipping-three-hospitals-hama-coordination-ministry-health",
     "registry_version": "2026-08-20.1",
@@ -1148,7 +1166,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-07-13T10:42:37Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1203,7 +1221,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-establishing-pediatric-cardiac-surgery-department-ibn-roshed-hospital-coordination-ministry-health",
     "registry_version": "2026-08-20.1",
@@ -1232,7 +1250,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-07-02T23:20:27Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1277,7 +1295,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-shelter-nfis-kits-project-2025-2026",
     "registry_version": "2026-08-20.1",
@@ -1302,7 +1320,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-30T00:56:31Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1341,7 +1359,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/bangladesh/qatar-charity-and-international-rescue-committee-strengthen-humanitarian-partnership-bangladesh-enar",
     "registry_version": "2026-08-20.1",
@@ -1367,7 +1385,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-29T13:33:56Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1407,7 +1425,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/occupied-palestinian-territory/qrcs-jhco-distribute-vegetable-parcels-displaced-families-gaza-enar",
     "registry_version": "2026-08-20.1",
@@ -1434,7 +1452,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-26T23:33:05Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1469,7 +1487,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/venezuela-bolivarian-republic/qatari-air-bridge-launched-deliver-humanitarian-aid-venezuela-support-earthquake-affected-communities-qatar-fund-development-enar",
     "registry_version": "2026-08-20.1",
@@ -1497,7 +1515,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-25T09:58:58Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1542,7 +1560,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/world/qatar-charity-participates-panel-discussion-strengthening-refugee-resilience-enar",
     "registry_version": "2026-08-20.1",
@@ -1568,7 +1586,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-22T10:39:42Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1613,7 +1631,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/world/world-refugee-day-unhcr-and-qatar-charity-expand-strategic-partnership-support-refugees-enar",
     "registry_version": "2026-08-20.1",
@@ -1639,7 +1657,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-18T09:40:38Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1688,7 +1706,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/world/islamic-development-bank-and-qatar-charity-forge-strategic-partnership-scale-support-displaced-populations-through-gifr-enar",
     "registry_version": "2026-08-20.1",
@@ -1713,7 +1731,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-17T08:55:02Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1750,7 +1768,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/world/qatar-charity-expands-global-efforts-support-refugees-enar",
     "registry_version": "2026-08-20.1",
@@ -1775,7 +1793,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-16T09:19:01Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1815,7 +1833,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/yemen/qatar-charity-delivers-emergency-relief-yemeni-refugees-djibouti-enar",
     "registry_version": "2026-08-20.1",
@@ -1840,7 +1858,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-15T08:01:16Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1877,7 +1895,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/world/qatar-charity-launches-campaign-support-vulnerable-refugees-worldwide",
     "registry_version": "2026-08-20.1",
@@ -1902,7 +1920,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-15T06:38:35Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -1941,7 +1959,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-distributes-198000-ready-eat-meals-gaza-enar",
     "registry_version": "2026-08-20.1",
@@ -1966,7 +1984,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-08T10:50:05Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2005,7 +2023,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/bosnia-and-herzegovina/qatar-charity-signs-mou-bosnia-ministry-support-returnees-enar",
     "registry_version": "2026-08-20.1",
@@ -2030,7 +2048,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-06-04T00:00:00Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2085,7 +2103,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/who-and-ksrelief-help-deliver-nearly-half-million-health-consultations-syria",
     "registry_version": "2026-08-20.1",
@@ -2113,7 +2131,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-02T13:16:01Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2152,7 +2170,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/lebanon/lebanon-children-remain-risk-despite-ceasefire",
     "registry_version": "2026-08-20.1",
@@ -2177,7 +2195,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-06-02T13:05:51Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2217,7 +2235,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/somalia/qatar-charity-distributes-food-baskets-arab-communities-somalia-enar",
     "registry_version": "2026-08-20.1",
@@ -2242,7 +2260,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-06-02T09:03:17Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2301,7 +2319,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/yemen/unhcr-and-ksrelief-sign-agreement-strengthen-protection-services-displaced-families-and-refugees-yemen-enar",
     "registry_version": "2026-08-20.1",
@@ -2328,7 +2346,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-05-25T09:49:27Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2367,7 +2385,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/sudan/qatar-charity-project-boosts-support-vulnerable-groups-sudan-enar",
     "registry_version": "2026-08-20.1",
@@ -2392,7 +2410,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-05-25T00:00:00Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:54Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2431,7 +2449,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Charity",
     "provider_record_id": "https://reliefweb.int/report/chad/qatar-charity-sends-emergency-food-aid-chad-enar",
     "registry_version": "2026-08-20.1",
@@ -2456,7 +2474,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-05-13T00:25:10Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2501,7 +2519,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-food-security-support-project-dec-2024-april-2026",
     "registry_version": "2026-08-20.1",
@@ -2528,7 +2546,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-05-04T13:33:09Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:37Z",
+   "discovered_at": "2026-08-20T14:14:52Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2559,7 +2577,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "KSrelief",
     "provider_record_id": "https://reliefweb.int/report/saudi-arabia/saudi-arabia-fuels-polio-eradication-research-vital-funding-and-leadership",
     "registry_version": "2026-08-20.1",
@@ -2584,7 +2602,7 @@
    "source_type": "un_multilateral",
    "published_at": "2026-05-01T02:13:31Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2621,7 +2639,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/world/uncdf-undp-and-qatar-fund-development-call-global-partners-unlock-finance-conflict-affected-and-fragile-settings",
     "registry_version": "2026-08-20.1",
@@ -2647,7 +2665,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-04-28T12:55:20Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2703,7 +2721,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/lebanon/qffd-qrcs-enhance-resilience-affected-people-lebanon-enar",
     "registry_version": "2026-08-20.1",
@@ -2732,7 +2750,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-04-20T13:29:34Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2786,7 +2804,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/lebanon/funded-qatar-fund-development-qatar-charity-implements-urgent-relief-intervention-worth-us400000",
     "registry_version": "2026-08-20.1",
@@ -2813,7 +2831,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-04-14T08:05:49Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2860,7 +2878,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/sri-lanka/qffd-support-qatar-charity-hands-over-rescue-equipment-sri-lankas-dmc",
     "registry_version": "2026-08-20.1",
@@ -2886,7 +2904,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-03-23T09:37:30Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2923,7 +2941,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/egypt/qatar-development-fund-supports-more-10600-palestinian-familes-stranded-arab-republic-egypt-enar",
     "registry_version": "2026-08-20.1",
@@ -2948,7 +2966,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-03-18T11:45:40Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -2993,7 +3011,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/lebanon/lebanon-qatar-charity-launches-235m-emergency-response-displaced-populations",
     "registry_version": "2026-08-20.1",
@@ -3019,7 +3037,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-03-12T08:15:49Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -3056,7 +3074,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/lebanon/state-qatar-sends-urgent-relief-aid-sisterly-republic-lebanon-help-40500-displaced-families-enar",
     "registry_version": "2026-08-20.1",
@@ -3083,7 +3101,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-03-03T12:44:29Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -3120,7 +3138,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/bangladesh/qrcs-enhances-livelihoods-refugee-families-bangladesh-enar",
     "registry_version": "2026-08-20.1",
@@ -3147,7 +3165,7 @@
    "source_type": "official_organisation",
    "published_at": "2026-02-25T11:48:30Z",
    "published_precision": "datetime",
-   "discovered_at": "2026-08-20T13:11:38Z",
+   "discovered_at": "2026-08-20T14:14:53Z",
    "language": "en",
    "original_language": "en",
    "translation": null,
@@ -3192,7 +3210,7 @@
     "top_rank": null
    },
    "provenance": {
-    "ingestion_run_id": "run-20260820T131114Z",
+    "ingestion_run_id": "run-20260820T141430Z",
     "query_id": "Qatar Fund for Development",
     "provider_record_id": "https://reliefweb.int/report/guinea-bissau/qffd-qrcs-distribute-vital-aid-affected-families-guinea-bissau-enar",
     "registry_version": "2026-08-20.1",

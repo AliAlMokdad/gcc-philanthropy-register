@@ -320,7 +320,13 @@ SOURCES = [
      "publisher_from_author": True,
      "country": None, "lang": "en", "tier": 1,
      "note": "Publisher is the RSS <author>, the credited source organisation, NOT ReliefWeb. "
-             "Supports ?search=. Needs no appname, unlike the v2 JSON API.",
+             "Supports ?search=. Needs no appname, unlike the v2 JSON API. "
+             "MEASURED 2026-08-20 FROM A GITHUB RUNNER: HTTP 202, zero bytes, "
+             "server awselb/2.0, on every query through four retries with backoff, while the "
+             "identical requests return 200 and twenty items from a residential address. This "
+             "is a deliberate block of datacentre traffic, so a scheduled job cannot use it. "
+             "It stays enabled because it works when the build is run by hand, and because the "
+             "supported route for automation is the v2 API row below, which needs an appname.",
      # BALANCED ACROSS THE SIX STATES, two queries each, after a measurement showed the
      # feed was 64 per cent Qatar with Bahrain and Oman at zero. The cause was this list:
      # three of the nine queries named Qatari bodies and not one named anything in Bahrain or
@@ -356,6 +362,21 @@ SOURCES = [
      "url": "https://www.unocha.org/rss.xml",
      "type": "un_multilateral", "official": True, "enabled": True,
      "country": None, "lang": "en", "tier": 1, "note": "", "queries": []},
+
+    # VERIFIED FROM A GITHUB RUNNER: 200, 50 items. A Qatari daily a scheduled job can
+    # actually read, which matters because the source that carried most of Qatar's coverage
+    # cannot be read from there at all.
+    {"id": "gulftimes_qa", "name": "Gulf Times", "provider": "rss",
+     "url": "https://www.gulf-times.com/rssFeed/1",
+     "type": "independent_media", "official": False, "enabled": True,
+     "country": "Qatar", "lang": "en", "tier": 1, "note": "", "queries": []},
+
+    # VERIFIED FROM A GITHUB RUNNER: 200, 10 items. Sector trade press, global, so most items
+    # fail the Gulf gate; kept because when it covers the Gulf it covers it properly.
+    {"id": "chronicle_phil", "name": "The Chronicle of Philanthropy", "provider": "rss",
+     "url": "https://www.philanthropy.com/feed",
+     "type": "trade_publication", "official": False, "enabled": True,
+     "country": None, "lang": "en", "tier": 2, "note": "", "queries": []},
 
     {"id": "alliance_mag", "name": "Alliance magazine", "provider": "rss",
      "url": "https://www.alliancemagazine.org/feed/",

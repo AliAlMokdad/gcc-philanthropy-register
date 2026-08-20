@@ -246,6 +246,38 @@ def gdelt_stamp(s):
     return ("%s-%s-%sT%s:%s:%sZ" % m.groups(), "datetime")
 
 
+# Some feeds use a namespace prefix they never declare, which a conforming parser must reject.
+# Inspected on a real feed: it declares atom, content, dc, slash, sy and wfw, then uses `media:`
+# without declaring it, and the whole 12 KB document is otherwise fine.
+#
+# The repair ADDS the missing declarations rather than stripping prefixes. An earlier version
+# stripped every prefix, including the declared ones, which invalidated the root element. This
+# leaves every element name and every value exactly as the publisher sent them.
+USED_PREFIX = re.compile(rb"<([A-Za-z_][\w.-]*):")
+DECL_PREFIX = re.compile(rb"xmlns:([A-Za-z_][\w.-]*)\s*=")
+ROOT_OPEN = re.compile(rb"<([A-Za-z_][\w.-]*)((?:\s[^>]*)?)>")
+
+
+def declare_missing_prefixes(body):
+    used = set(USED_PREFIX.findall(body))
+    declared = set(DECL_PREFIX.findall(body))
+    missing = sorted(used - declared)
+    if not missing:
+        return body, []
+    # the root element is the first tag that is not a declaration or a processing instruction
+    m = None
+    for mm in ROOT_OPEN.finditer(body):
+        if not mm.group(1).startswith(b"?") and not mm.group(1).startswith(b"!"):
+            m = mm
+            break
+    if not m:
+        return body, []
+    add = b"".join(b' xmlns:%s="urn:x-undeclared:%s"' % (p, p) for p in missing)
+    insert_at = m.end() - 1
+    return body[:insert_at] + add + body[insert_at:], [p.decode("ascii", "replace")
+                                                       for p in missing]
+
+
 def _tag(e):
     return re.sub(r"\{.*\}", "", e.tag)
 
@@ -278,9 +310,18 @@ def fetch_rss(source, budget=None):
         try:
             root = ET.fromstring(body)
         except Exception as e:
-            st["error"] = "unparseable XML: %s" % e
-            statuses.append(st)
-            continue
+            # a repaired parse, for the ordinary case of a feed that uses a namespace prefix it
+            # never declared. Prefixes are stripped and the same elements read under plain
+            # names; nothing is added and nothing is guessed.
+            root = None
+            repaired, added = declare_missing_prefixes(body)
+            try:
+                root = ET.fromstring(repaired)
+            except Exception as e2:
+                st["error"] = "unparseable XML: %s (repair also failed: %s)" % (e, e2)
+                statuses.append(st)
+                continue
+            st["quota_note"] = "parsed after declaring the prefixes this feed uses without "                               "declaring: " + ", ".join(added)
 
         items = root.findall(".//item") or root.findall(
             ".//{http://www.w3.org/2005/Atom}entry")
