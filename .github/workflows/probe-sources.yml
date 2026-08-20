@@ -1,0 +1,131 @@
+# A one-off diagnostic. Run it by hand, read the log, then delete this file.
+#
+# THE QUESTION THIS TIME. The scheduled job declines to publish because ReliefWeb blocks
+# datacentre traffic, and the answer offered so far was "request an API appname", which is
+# something the owner has to do. That is the wrong shape of answer for a page that is supposed
+# to run without anyone touching it.
+#
+# So: which TARGETED, KEYLESS sources answer a GitHub runner? A general newspaper feed is 2 per
+# cent philanthropy, which is why the runner-only build admitted three items out of a hundred
+# and seventy. What is needed is sources that can be ASKED a question.
+#
+# GDELT is the important one and I never tested it from here: it needs no key, it takes a real
+# query, and it returned 429 only from a residential address, which is not evidence about this
+# environment. Bing News RSS is the other candidate that matters, because unlike Google News it
+# is reported to carry the publisher's own URL rather than a redirect wrapper, and that is the
+# single thing that disqualified Google News.
+name: Probe which sources answer a runner
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Set up python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065   # v5
+        with:
+          python-version: "3.12"
+
+      - name: Probe the keyless targeted sources
+        run: |
+          python - <<'PY'
+          import json, re, time, urllib.error, urllib.parse, urllib.request
+
+          UA = ("gccphilanthropy-monitor/0.1 (+https://gccphilanthropy.org; "
+                "philanthropy sector monitoring; contact via the site)")
+
+          def get(url, accept="*/*", timeout=30):
+              try:
+                  req = urllib.request.Request(url, headers={
+                      "User-Agent": UA, "Accept": accept,
+                      "Accept-Language": "en-GB,en;q=0.9",
+                      "Accept-Encoding": "identity"})
+                  with urllib.request.urlopen(req, timeout=timeout) as f:
+                      return f.getcode(), f.read(), dict(f.headers)
+              except urllib.error.HTTPError as e:
+                  try: body = e.read()[:400]
+                  except Exception: body = b""
+                  return e.code, body, dict(e.headers or {})
+              except Exception as e:
+                  return None, ("%s: %s" % (type(e).__name__, e)).encode(), {}
+
+          print("=" * 100)
+          print("1. GDELT DOC 2.0, keyless, targeted. The one that matters most.")
+          print("=" * 100)
+          q = ('(philanthropy OR foundation OR charity OR zakat OR waqf OR endowment) '
+               'AND ("Saudi Arabia" OR UAE OR Qatar OR Kuwait OR Bahrain OR Oman)')
+          for label, extra in [("timespan=7d, maxrecords=250", "&timespan=7d&maxrecords=250"),
+                               ("timespan=24h, maxrecords=75", "&timespan=24h&maxrecords=75")]:
+              url = ("https://api.gdeltproject.org/api/v2/doc/doc?query="
+                     + urllib.parse.quote(q) + "&mode=artlist&format=json&sort=datedesc" + extra)
+              code, body, _ = get(url, "application/json")
+              note = ""
+              n = 0
+              try:
+                  d = json.loads(body)
+                  arts = d.get("articles") or []
+                  n = len(arts)
+                  if arts:
+                      a = arts[0]
+                      note = "keys=%s | first=%s | url=%s" % (
+                          sorted(a.keys()), str(a.get("title"))[:52], str(a.get("url"))[:58])
+              except Exception:
+                  note = "not JSON: " + body[:110].decode("utf-8", "replace")
+              print("  %-28s HTTP %-5s articles=%-4s %s" % (label, code, n, note))
+              time.sleep(6)
+
+          print()
+          print("=" * 100)
+          print("2. Bing News RSS, keyless, targeted. Does its link carry the PUBLISHER's URL?")
+          print("=" * 100)
+          for label, term in [("saudi philanthropy", '"Saudi Arabia" philanthropy'),
+                              ("gulf zakat waqf", 'Gulf zakat OR waqf endowment'),
+                              ("qatar foundation grant", 'Qatar foundation grant')]:
+              url = ("https://www.bing.com/news/search?q=" + urllib.parse.quote(term)
+                     + "&format=RSS&count=50")
+              code, body, hdr = get(url, "application/rss+xml,application/xml,*/*")
+              items = len(re.findall(rb"<item[ >]", body))
+              links = re.findall(rb"<link>(.*?)</link>", body)[1:4]
+              print("  %-24s HTTP %-5s items=%-4s ct=%s" % (label, code, items,
+                    str(hdr.get("Content-Type"))[:30]))
+              for l in links:
+                  print("        link: %s" % l[:96].decode("utf-8", "replace"))
+              time.sleep(2)
+
+          print()
+          print("=" * 100)
+          print("3. Official Gulf philanthropy and government feeds, keyless")
+          print("=" * 100)
+          ORGS = [
+            ("ksrelief en",            "https://www.ksrelief.org/rss/news"),
+            ("qatar charity en",       "https://www.qcharity.org/en/qa/rss"),
+            ("qatar fund dev",         "https://qatarfund.org.qa/en/feed/"),
+            ("dubai cares",            "https://www.dubaicares.ae/feed/"),
+            ("mbrgi",                  "https://www.mbrgi.gov.ae/en/rss"),
+            ("emirates red crescent",  "https://www.emiratesrc.ae/rss"),
+            ("kuwait fund",            "https://www.kuwait-fund.org/rss"),
+            ("saudi gazette business", "https://saudigazette.com.sa/rssFeed/76"),
+            ("arab news rss index",    "https://www.arabnews.com/cat/1/rss.xml"),
+            ("wam en news",            "https://www.wam.ae/en/rss.xml"),
+            ("ocha oPt",               "https://www.unocha.org/occupied-palestinian-territory/rss.xml"),
+            ("ocha yemen",             "https://www.unocha.org/yemen/rss.xml"),
+            ("ocha sudan",             "https://www.unocha.org/sudan/rss.xml"),
+            ("devex newswire",         "https://www.devex.com/news.rss"),
+            ("alliance mag",           "https://www.alliancemagazine.org/feed/"),
+            ("philanthropy age",       "https://www.philanthropyage.org/feed"),
+            ("aid data / donor track", "https://reliefweb.int/updates/rss.xml"),
+          ]
+          for name, url in ORGS:
+              code, body, hdr = get(url, "application/rss+xml,application/xml,*/*")
+              items = len(re.findall(rb"<item[ >]", body)) or len(re.findall(rb"<entry[ >]", body))
+              print("  %-24s HTTP %-5s items=%-4s bytes=%-7s %s"
+                    % (name, code, items, len(body),
+                       str(hdr.get("Content-Type"))[:26] if items == 0 else ""))
+              time.sleep(0.8)
+          PY
