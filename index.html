@@ -8,7 +8,14 @@
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<!-- The serif asks for a RANGE, not two cuts. Measured across every subset Google serves: two
+     discrete weights plus italic is 18 files and 1,064,212 bytes because each weight ships as its
+     own static instance per subset, while the 200 to 900 range is 6 files and 440,880 bytes as one
+     variable font per subset. So the full axis costs less than the two weights did, and 108 of the
+     111 serif elements here were sharing one weight.
+     No italic: the only italic on the page was one parenthetical, and buying the italic subsets to
+     slant an abbreviation is the wrong trade. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,200..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <link rel="icon" type="image/svg+xml" href="gcc-emblem.svg">
 <!--
 ANTI_SLOP_BRIEF
@@ -577,7 +584,9 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
   text-transform:uppercase;color:var(--ink-3)}
 .portal-word{max-width:740px;margin:0 auto;font:500 clamp(24px,3.5vw,38px)/1.16 var(--display);
   color:var(--ink);letter-spacing:-.2px;font-optical-sizing:auto;text-wrap:balance}
-.portal-word .abbr{color:inherit;font-weight:400;font-style:italic}
+/* no font-style:italic: the italic subsets are no longer requested, so this would be a sheared
+   fake. Colour and weight already separate the abbreviation from the name around it. */
+.portal-word .abbr{color:inherit;font-weight:400}
 .portal-word::after{content:"";display:block;width:54px;height:3px;margin:14px auto 0;
   background:var(--spectrum);border-radius:2px}
 
@@ -756,8 +765,8 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-mast{margin:0 0 var(--s3)}
 .i-mast-t{margin:0;font:600 clamp(25px,3.1vw,34px)/1.12 var(--serif);color:var(--ink);
   letter-spacing:-.011em}
-.i-mast-s{margin:7px 0 0;max-width:62ch;
-  font:400 clamp(14px,1.25vw,15.5px)/1.55 var(--sans);color:var(--ink-2)}
+.i-mast-s{margin:12px 0 0;max-width:62ch;
+  font:400 clamp(16px,1.4vw,18px)/1.52 var(--serif);color:var(--ink-2)}
 @media (max-width:600px){ .i-mast{margin-bottom:var(--s2)} }
 
 /* ---- the signals. Editorial, not a dashboard. The detail that decides which of those two it
@@ -769,13 +778,17 @@ ol.ranked a::before{top:9px;bottom:9px}
   text-transform:uppercase;color:var(--ink-3)}
 .i-sig-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4) var(--s5,34px)}
 .i-sig-one{min-width:0}
-.i-sig-n{font:600 clamp(27px,3.4vw,39px)/1.02 var(--serif);color:var(--ink);
+.i-sig-n{font:400 clamp(32px,4.4vw,52px)/1.0 var(--serif);color:var(--ink);
   letter-spacing:-.018em;font-variant-numeric:tabular-nums}
-.i-sig-t{margin:9px 0 0;font:400 14px/1.55 var(--sans);color:var(--ink-2);max-width:34ch}
+.i-sig-t{margin:14px 0 0;font:400 15.5px/1.5 var(--serif);color:var(--ink-2);
+  max-width:none;text-wrap:pretty}
+/* Measured at 1,144px and about 166 characters per line, in monospace, with no cap. Provenance
+   still deserves the mono voice, but a sentence needs a measure: this is prose, so it reads as
+   prose and keeps a mono eyebrow's worth of character through its size and colour alone. */
 .i-sig-src{margin:15px 0 0;padding-top:11px;border-top:1px solid var(--i-hair);
-  font:400 11.5px/1.5 var(--mono);color:var(--ink-3)}
-.i-basis{margin:0 0 var(--s3);max-width:78ch;
-  font:400 13.5px/1.6 var(--sans);color:var(--ink-2)}
+  max-width:74ch;font:400 13px/1.55 var(--serif);color:var(--ink-3)}
+.i-basis{margin:0 0 var(--s3);max-width:62ch;
+  font:400 15px/1.62 var(--serif);color:var(--ink-2)}
 /* ======================= the register composition dashboard =======================
    Deliberately NOT styled like the funding bands. It counts organisations, and a reader who has
    just read "$23.42bn" must not take "689" for money, so the figures are smaller than the signals
@@ -786,15 +799,20 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-dash[hidden]{display:none !important}
 .i-dash *{box-sizing:border-box}
 .i-dash-h{margin:0;font:600 clamp(19px,2.1vw,23px)/1.2 var(--serif);color:var(--ink)}
-.i-dash-s{margin:8px 0 0;max-width:80ch;font:400 13.5px/1.6 var(--sans);color:var(--ink-2)}
+.i-dash-s{margin:12px 0 0;max-width:64ch;font:400 15px/1.62 var(--serif);color:var(--ink-2)}
 .i-dash-load,.i-dash-err{margin:14px 0 0;font:400 13.5px/1.6 var(--sans);color:var(--ink-3)}
 
 /* the count line. Mono, because these are counts. */
 .i-dash-fig{display:flex;flex-wrap:wrap;gap:var(--s4) 42px;margin:var(--s3) 0 0;
   padding-bottom:var(--s3);border-bottom:1px solid var(--i-hair)}
 .i-dash-fig > div{display:flex;align-items:baseline;gap:9px}
-.i-dash-fig .v{font:600 26px/1 var(--mono);color:var(--ink);font-variant-numeric:tabular-nums}
-.i-dash-fig .k{font:400 12.5px/1.4 var(--sans);color:var(--ink-3)}
+/* SERIF, PROPORTIONAL. In mono the comma takes a digit's full advance, measured at 15.61px
+   against 15.61px, so "1,862" rendered as "1 , 862" on the register's own headline count. Tabular
+   figures exist to align a column and this is not in one. The unit is still carried by the caption
+   noun beside it, which is what was doing that job anyway. */
+.i-dash-fig .v{font:400 clamp(26px,2.6vw,32px)/1 var(--serif);color:var(--ink);
+  font-variant-numeric:proportional-nums lining-nums}
+.i-dash-fig .k{font:400 13.5px/1.4 var(--serif);color:var(--ink-3)}
 
 /* the state selector */
 .i-dash-pick{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:var(--s3) 0 0}
@@ -861,8 +879,8 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-detl[hidden]{display:none !important}
 .i-detl *{box-sizing:border-box}
 .i-detl-h{margin:0;font:600 clamp(17px,1.8vw,20px)/1.25 var(--serif);color:var(--ink)}
-.i-detl-s{margin:7px 0 var(--s3);max-width:80ch;
-  font:400 13px/1.6 var(--sans);color:var(--ink-2)}
+.i-detl-s{margin:10px 0 var(--s3);max-width:64ch;
+  font:400 14.5px/1.6 var(--serif);color:var(--ink-2)}
 .i-detl details:first-of-type{border-top:1px solid var(--line)}
 .i-detl details:last-of-type{border-bottom:1px solid var(--line)}
 
@@ -872,8 +890,8 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-meth{margin:var(--s5,40px) 0 0;padding-top:var(--s4);border-top:2px solid var(--ink)}
 .i-meth[hidden]{display:none !important}
 .i-meth-h{margin:0;font:600 clamp(19px,2.1vw,23px)/1.2 var(--serif);color:var(--ink)}
-.i-meth-s{margin:8px 0 var(--s3);max-width:80ch;
-  font:400 13.5px/1.6 var(--sans);color:var(--ink-2)}
+.i-meth-s{margin:12px 0 var(--s3);max-width:64ch;
+  font:400 15px/1.62 var(--serif);color:var(--ink-2)}
 .i-meth .i-src{border:1px solid var(--line);border-bottom:0}
 .i-meth details:first-of-type{border-top:1px solid var(--line)}
 .i-meth details:last-of-type{border-bottom:1px solid var(--line)}
@@ -883,7 +901,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 /* ---- the crossing point out of the intelligence and into the list ---- */
 .i-over{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s4);
   flex-wrap:wrap;margin:var(--s3) 0 0}
-.i-over-t{margin:0;max-width:74ch;font:400 13px/1.6 var(--sans);color:var(--ink-3)}
+.i-over-t{margin:0;max-width:62ch;font:400 14.5px/1.6 var(--serif);color:var(--ink-3)}
 .i-over-go{flex:none;border:0;background:none;cursor:pointer;padding:0;
   font:600 13.5px/1.3 var(--sans);color:var(--i-s1);
   border-bottom:2px solid var(--i-s1);padding-bottom:2px}
@@ -905,15 +923,19 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-card{background:var(--i-surface);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 
 /* ---- type scale, referenced not guessed ---- */
-.i-t-eye{font:700 11.5px/1 var(--sans);letter-spacing:.08em;text-transform:uppercase;
+/* ONE eyebrow voice. Every other label on the page is mono; this one was sans, so two eyebrows sat
+   on the same screen in different faces. Mono is the house voice for apparatus, so it wins. */
+.i-t-eye{font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
   color:var(--accent-2);margin:0}
 .i-t-h{font:600 clamp(19px,2.1vw,24px)/1.2 var(--display);letter-spacing:-.015em;
   color:var(--ink);margin:0}
 .i-t-panel{font:600 17px/1.22 var(--display);letter-spacing:-.005em;color:var(--ink);margin:0}
-.i-t-body{font:400 15px/1.6 var(--sans);color:var(--ink-2);margin:0}
+/* the prose inside the card follows the prose above it. A serif standfirst over sans body copy
+   put a face change in the middle of one argument. */
+.i-t-body{font:400 16.5px/1.62 var(--serif);color:var(--ink-2);margin:0;max-width:62ch}
 /* prose is prose. Setting explanatory sentences in letterspaced monospace was the
    machine-made tell; mono is now reserved for figures and the provenance line. */
-.i-t-meta{font:400 13px/1.55 var(--sans);color:var(--ink-2);margin:0}
+.i-t-meta{font:400 14px/1.58 var(--serif);color:var(--ink-2);margin:0;max-width:70ch}
 .i-t-fig{font:600 clamp(34px,4.6vw,54px)/.95 var(--display);letter-spacing:-.03em;
   color:var(--ink);font-variant-numeric:tabular-nums}
 .i-num{font-family:var(--mono);font-variant-numeric:tabular-nums}
@@ -1194,7 +1216,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-scroll{max-height:340px;overflow-y:auto;padding-right:6px}
 .i-scroll:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
 .i-note{margin:12px 0 0;padding-top:11px;border-top:1px solid var(--i-hair);
-  font:400 13px/1.6 var(--sans);color:var(--ink-2)}
+  max-width:70ch;font:400 14px/1.6 var(--serif);color:var(--ink-2)}
 .i-note-top{margin-top:0;border-top:0;padding-top:0}
 .i-cand>div{display:grid;grid-template-columns:minmax(0,1fr) 104px 132px;gap:16px;
   padding:11px 0;border-bottom:1px solid var(--paper-2);align-items:baseline;
@@ -1246,7 +1268,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-card{background:var(--paper);padding:var(--s3)}
 .oe-nm{margin:0 0 6px;font:600 14px/1.25 var(--serif);color:var(--ink)}
 .oe-amt{margin:0 0 8px;display:flex;align-items:baseline;gap:7px}
-.oe-amt-n{font:600 26px/1 var(--serif);color:var(--i-c1);font-variant-numeric:tabular-nums}
+.oe-amt-n{font:400 clamp(26px,2.4vw,30px)/1 var(--serif);color:var(--i-c1);font-variant-numeric:tabular-nums}
 .oe-amt-y{font:400 11px/1 var(--mono);color:var(--ink-3)}
 .oe-ngo{margin:0 0 8px;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
 .oe-ngo b{font-weight:600;color:var(--i-c1)}
