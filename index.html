@@ -1677,7 +1677,32 @@ body:has(#l1:not([hidden])) .pbar{display:none}
        read as a publication's nameplate: the display serif at a real size, tight tracking, a
        hairline of the accent above it and a firm rule under the whole block. ---- */
 .n-mast{margin:var(--s4) 0 0;padding-top:16px;padding-bottom:20px;
-  border-top:3px solid var(--accent);border-bottom:1px solid var(--ink)}
+  border-top:3px solid var(--accent);border-bottom:1px solid var(--ink);
+  position:relative;overflow:hidden}
+/* THE SKYLINE. An original Gulf silhouette, drawn for this site: an Omani fort, Doha's
+   towers, the Kingdom Centre arch, Al Faisaliah, the Burj Khalifa, the Bahrain World Trade
+   Center sails and the Kuwait Towers. It is painted FROM A TOKEN through a mask rather than
+   loaded as a picture, which is what lets the dark theme invert it with no second asset.
+
+   SIX PER CENT, AND BEHIND THE NAMEPLATE ONLY. Every contrast figure on this page was
+   measured against a composited background, so a wash under the list would invalidate all of
+   them at once. Here there is whitespace to spare, and the cost was computed rather than
+   hoped for: the title holds 14.6:1, and the dateline, the most exposed text in the block,
+   goes from 5.50:1 to 4.91:1, still clear of AA. The fade is baked into the SVG so the
+   faintest part of the drawing falls exactly where that dateline sits.
+
+   contain, NOT cover. cover crops what does not fit, and the first render proved how badly:
+   the artwork was far taller in proportion than the band, so the top was cut and the Burj
+   Khalifa lost its needle. contain cannot crop. */
+.n-mast::before{content:"";position:absolute;left:0;right:0;bottom:0;height:100%;
+  pointer-events:none;background:var(--ink);
+  -webkit-mask:url(gcc-skyline.svg) bottom center/contain no-repeat;
+  mask:url(gcc-skyline.svg) bottom center/contain no-repeat;
+  opacity:.06}
+/* the pseudo-element is positioned, so it would otherwise paint over static siblings */
+.n-mast > *{position:relative}
+/* in a forced-colours mode a decorative wash is noise at best, so it goes */
+@media (forced-colors: active){ .n-mast::before{display:none} }
 /* the dateline, set as a paper sets it: small, letterspaced, above the nameplate */
 .n-dateline{margin:0 0 10px;font:600 10.5px/1.3 var(--mono);letter-spacing:.15em;
   text-transform:uppercase;color:var(--ink-3)}
@@ -1693,6 +1718,22 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 /* the six states, named. A reader should not have to know what the GCC is to know whether
    this page covers their country. */
 .n-mast-s b{font-weight:600;color:var(--ink-2)}
+
+/* THE PRIMARY SOURCE NOTE. A colophon rather than a card: full width, one hairline above
+   it, nothing competing with the developments it follows. DELIBERATELY NO EMBLEM: this
+   site's own mark set beside the Council's name would imply an affiliation that does not
+   exist, which is a worse fault than a plainer block. */
+.n-source{margin:var(--s5) 0 0;padding:var(--s4) 0 0;border-top:1px solid var(--line-2)}
+.n-src-eyebrow{margin:0 0 10px;font:600 10.5px/1.3 var(--mono);letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-3)}
+.n-src-name{margin:0;font:600 clamp(19px,1.8vw,24px)/1.25 var(--serif);color:var(--ink);
+  letter-spacing:-.012em;text-wrap:balance}
+.n-src-body{margin:10px 0 0;max-width:74ch;font:400 15px/1.55 var(--serif);color:var(--ink-2)}
+/* the second paragraph explains an absence, so it sits a step back from the first */
+.n-src-why{color:var(--ink-3)}
+.n-src-links{margin:18px 0 0;display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+  font:400 15px/1.5 var(--sans)}
+.n-src-links .dot{color:var(--ink-3);opacity:.5}
 
 /* the stale notice. Ochre, because on this site a warm tone means a caveat and nothing else,
    and it is the only thing on the page that ever uses it. */
@@ -2250,24 +2291,22 @@ function countryMark(name,cls){
     s.appendChild(svgEl("rect",{x:15,y:20,width:45,height:10,fill:"#000000"}));
     s.appendChild(svgEl("rect",{x:0,y:0,width:15,height:30,fill:"#C8102E"}));
   }else if(n==="saudi arabia"){
-    s.appendChild(svgEl("rect",{x:0,y:0,width:60,height:40,fill:"#006C35"}));
-    /* textLength is not decoration here: it is the only way to guarantee the whole
-       shahada fits the field on a machine whose Arabic font has different metrics
-       from ours. Measured without it, the string ran 78 units wide inside a 60 unit
-       viewBox and was clipped at BOTH ends, which is not something to ship. */
-    var t=svgEl("text",{x:30,y:18.5,"text-anchor":"middle",fill:"#FFFFFF",
-      "font-family":AR_FACE,"font-size":"8","font-weight":"400",
-      "textLength":"46","lengthAdjust":"spacingAndGlyphs",
-      "xml:lang":"ar","direction":"rtl"});
-    t.textContent="لا إله إلا الله "
-                + "محمد رسول الله";
-    s.appendChild(t);
-    /* sword: tapered blade pointing to the hoist, then guard, grip and pommel */
-    s.appendChild(svgEl("path",{d:"M8,28 L13,26.4 L45,26.7 L45,29.3 L13,29.6 Z",
-      fill:"#FFFFFF"}));
-    s.appendChild(svgEl("rect",{x:45,y:24.4,width:1.5,height:7.2,fill:"#FFFFFF"}));
-    s.appendChild(svgEl("rect",{x:46.5,y:27.1,width:3.6,height:1.8,fill:"#FFFFFF"}));
-    s.appendChild(svgEl("circle",{cx:50.9,cy:28,r:1.2,fill:"#FFFFFF"}));
+    /* THE ONE FLAG THAT IS NOT DRAWN HERE, and it is deliberate.
+       The shahada is thuluth calligraphy. Set as live Arabic text it became whatever naskh
+       face the reader's machine happened to have, squeezed from 78 units into 46 by
+       lengthAdjust so it would not clip, and the sword had to be approximated in four
+       primitives. Compared against the flag itself the result was wrong: the letterforms
+       are not the flag's, and the sword read as an arrow.
+       So this one uses real artwork, drawn INSIDE the same svg and the same viewBox, so
+       every selector, mask, wash and sizing rule still applies and the other five stay
+       vector. The image is 1.4988 against the box's 1.5000, so preserveAspectRatio="none"
+       fills the field with a 0.08% stretch rather than leaving a hairline of background.
+       Do not restore the drawn version: it was checked against the flag and it failed. */
+    var im=svgEl("image",{x:0,y:0,width:60,height:40,
+      preserveAspectRatio:"none",href:"flag-saudi-arabia.webp"});
+    /* some engines still only honour the xlink form, so both are set */
+    im.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","flag-saudi-arabia.webp");
+    s.appendChild(im);
   }else if(n==="qatar"){
     s.appendChild(svgEl("rect",{x:0,y:0,width:56,height:22,fill:"#8A1538"}));
     /* nine points, the number that gives the flag its meaning */
@@ -6191,9 +6230,19 @@ function serratedBand(n, base, tip){
 }
 
 var FLAG_BUILD = {
-  /* green field. The shahada and the sword are deliberately not drawn. */
+  /* The real flag, the file Ali supplied, not a green field. These marks render about 19 by 13
+     CSS pixels, so the calligraphy is not legible here; a plain green rectangle was not either,
+     and green alone does not say Saudi Arabia to a reader. On a 2x or 3x screen the sword and
+     the mass of the shahada do read. The svg, its viewBox and its class are unchanged, so every
+     CSS rule still applies. */
   "Saudi Arabia": function(g){
-    g.appendChild(svgRect(0, 0, VBW, VBH, "#006C35"));
+    var im = document.createElementNS(SVGNS, "image");
+    im.setAttribute("x", 0); im.setAttribute("y", 0);
+    im.setAttribute("width", VBW); im.setAttribute("height", VBH);
+    im.setAttribute("preserveAspectRatio", "none");
+    im.setAttribute("href", "flag-saudi-arabia.webp");
+    im.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "flag-saudi-arabia.webp");
+    g.appendChild(im);
   },
   /* red vertical band at the hoist, then green over white over black */
   "United Arab Emirates": function(g){
@@ -6942,6 +6991,8 @@ function render(keepFocus){
   sec.appendChild(grid);
   host.appendChild(sec);
 
+  host.appendChild(sourceNote());
+
   if(active){
     var back = document.getElementById(active);
     if(back){
@@ -6951,6 +7002,43 @@ function render(keepFocus){
       }
     }
   }
+}
+
+/* THE PRIMARY SOURCE. The GCC Secretariat General is the official body a reader will look
+   for on a page about Gulf philanthropy, so the page says where it is instead of leaving them
+   to guess.
+
+   IT IS LINKED, NOT INDEXED, and the note says so, because an unexplained absence looks like
+   an oversight. The reason is measured rather than asserted: of the ten items reachable on
+   its wire, scored against this page's own philanthropy vocabulary, none was philanthropy.
+   Half were protocol and audiences and a third were political statements. Folding a
+   diplomatic wire into a philanthropy monitor would bury the reporting this page exists for.
+
+   Both links were verified live. That matters more than usual here, because the site answers
+   HTTP 200 for pages that do not exist, so a status code on its own proves nothing. */
+function sourceNote(){
+  var s = el("section", {cls:"n-source", "aria-labelledby":"n-src-h"});
+  s.appendChild(el("p", {cls:"n-src-eyebrow", text:"Primary source"}));
+  s.appendChild(el("h3", {cls:"n-src-name", id:"n-src-h",
+    text:"Gulf Cooperation Council Secretariat General"}));
+  s.appendChild(el("p", {cls:"n-src-body", text:
+    "The intergovernmental secretariat of the six member states, based in Riyadh. Its " +
+    "media centre publishes the Council's official statements and communiqu\u00e9s in " +
+    "English, and it is where to check anything attributed to the GCC itself."}));
+  s.appendChild(el("p", {cls:"n-src-body n-src-why", text:
+    "Linked here rather than indexed above: what it publishes is diplomatic rather than " +
+    "philanthropic, so drawing it into this feed would bury the reporting the page " +
+    "monitors."}));
+  var links = el("p", {cls:"n-src-links"});
+  links.appendChild(el("a", {cls:"n-orig",
+    href:"https://www.gcc-sg.org/en/Pages/default.aspx",
+    target:"_blank", rel:"noopener noreferrer", text:"Secretariat General"}));
+  links.appendChild(el("span", {cls:"dot", "aria-hidden":"true", text:"\u00b7"}));
+  links.appendChild(el("a", {cls:"n-orig",
+    href:"https://www.gcc-sg.org/en/MediaCenter/News/Pages/default.aspx",
+    target:"_blank", rel:"noopener noreferrer", text:"Media centre"}));
+  s.appendChild(links);
+  return s;
 }
 
 /* ------------------------------------------------------------------ load */

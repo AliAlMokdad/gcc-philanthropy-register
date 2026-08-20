@@ -130,3 +130,38 @@ without looking at it at card size and at 120px first.
 
 Every one of these was judged by RENDERING it and looking, not by reading the path data.
 The asterisk and the lump both passed every automated check that was run against them.
+
+---
+
+# 20 August 2026: Saudi Arabia is no longer drawn. It uses supplied artwork.
+
+Ali compared the drawn Saudi flag against the flag itself and it was wrong. Two things were
+visible in the render, and both are inherent to drawing it rather than mistakes in the geometry:
+
+- The shahada is thuluth calligraphy. Set as live SVG text it became whatever naskh face the
+  reader's machine happened to have, then squeezed from 78 units into 46 by
+  `lengthAdjust="spacingAndGlyphs"` so it would not clip. The letterforms were not the flag's.
+- The sword had to be approximated from four primitives, and it read as an arrow rather than the
+  slim sabre on the flag.
+
+So Saudi Arabia now uses the artwork Ali supplied, committed as `flag-saudi-arabia.webp`
+(1280 by 854, ratio 1.4988). It is drawn as an `<image>` INSIDE the same `<svg>` and the same
+viewBox in both flag systems, so every selector, mask, wash and sizing rule still applies and the
+other five flags stay vector:
+
+- `countryMark()` for the country-page plate and the level-1 cards.
+- `FLAG_BUILD["Saudi Arabia"]` for the 19 by 13 news marks, which were previously a plain green
+  rectangle with the shahada and sword deliberately omitted.
+
+`preserveAspectRatio="none"` fills the field with a 0.08 per cent stretch, which is invisible,
+rather than leaving a hairline of background along one edge.
+
+At the news-mark size the calligraphy is not legible. That is accepted: a plain green rectangle
+was not legible as Saudi Arabia either, and green alone is not distinctive, so the real flag is
+the better mark even when small. On a 2x or 3x screen the sword and the mass of the shahada read.
+
+**Do not restore the drawn version.** It was checked against the flag and it failed. If the
+artwork ever needs replacing, replace the file and keep the `<image>` approach.
+
+`AR_FACE` is now unused. It is left in place rather than removed, in case the Arabic face stack is
+wanted for something else.
