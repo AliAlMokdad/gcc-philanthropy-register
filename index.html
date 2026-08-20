@@ -264,6 +264,56 @@ details.more ol.ranked{margin-top:var(--s3)}
     radial-gradient(120% 150% at 88% 0%,var(--wash-a) 0,transparent 62%),
     linear-gradient(180deg,var(--wash-b) 0,transparent 78%)}
 
+/* THE COUNTRY'S OWN PAINTING, behind the title band.
+
+   IT SITS UNDER THE FLAG GRADIENT, NOT OVER IT, and the gradient is softened to .55 where a
+   painting exists. This page already carries a full-page painterly flag wash, a flag-colour
+   gradient here and a flag watermark, and the code's own note on #l2brush is that "two layers
+   of paint over each other is mud". Under-and-softened turns two washes into one picture with
+   a colour cast. Painting order at equal z-index follows DOM order, so a ::before lands below
+   the .l2wash child without either taking a z-index.
+
+   POSITIONED AT 62 PER CENT, not centred. The band is far wider than it is tall, so cover
+   crops the picture top and bottom; centring it would keep empty sky and cut the palms. 62
+   per cent holds the skyline and the foreground, which is the half that says which country
+   this is.
+
+   The bottom fade stops the crop from drawing a hard horizontal edge across the band. */
+.l2head::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:var(--l2-photo,none);
+  background-size:cover;background-position:center 62%;background-repeat:no-repeat;
+  opacity:0}
+.l2head.has-photo::before{opacity:.13;
+  -webkit-mask:linear-gradient(to bottom,#000 0,#000 74%,transparent 100%);
+  mask:linear-gradient(to bottom,#000 0,#000 74%,transparent 100%)}
+.l2head.has-photo .l2wash{opacity:.55}
+/* AND THE FLAG WATERMARK COMES OFF, which is a judgement call and worth the reasoning.
+
+   Its radial mask fades the flag's own alpha, so on a flat wash it dissolved on every side.
+   A flag is a SOLID RECTANGLE though, so the mask only softens its corners and the middle
+   stays a block: laid over a photograph it renders as a hard-edged pale box with visible top,
+   left and bottom edges, which reads as a rendering fault rather than as a flag. The UAE's
+   four plain bands showed it worst.
+
+   It is also now redundant. The note above this file's setEmblem() kept the flag on a country
+   page for one stated reason, that "a flag there identifies the country", and removed the GCC
+   emblem elsewhere because "a ghosted sovereign mark in a hero is a template tell". The
+   painting identifies the country far better than a ghost of its flag, so the reason to keep
+   it has gone and the objection to it has not. One line to restore if Ali wants it back. */
+.l2head.has-photo .flagplate{display:none}
+/* the painting is lighter than this ground, so in dark mode it reads at a lower opacity */
+@media (prefers-color-scheme:dark){ .l2head.has-photo::before{opacity:.10} }
+/* a decorative wash is noise in a forced-colours mode */
+@media (forced-colors:active){ .l2head.has-photo::before{display:none} }
+@media print{ .l2head.has-photo::before{display:none !important} }
+
+/* A GENEROUS BAND, because a painting needs room to be one. The existing band is 269px, which
+   is a header rather than a backdrop. Height comes from the inner's padding rather than a
+   min-height so the heading stays optically centred and the flag plate, which centres itself
+   on the band, follows without being told. */
+.l2head.has-photo > .inner{
+  padding-block:clamp(52px,6.6vw,104px) clamp(60px,7.2vw,116px)}
+
 /* The flag itself: whole, large and quiet.
    Sized by HEIGHT, not width, and this is the fix for a real clip. The band is a fixed
    269px at desktop; with the box pinned to a width instead, each flag's height came out
@@ -2462,6 +2512,21 @@ var FLAG_WASH={
   "oman":["rgba(2,128,2,.24)","rgba(219,23,27,.10)"]
 };
 var ACCENT_WASH=["rgba(31,78,61,.16)","rgba(31,78,61,.06)"];
+/* Ali's paintings, one per state, as the background of that country's page. Keyed on the
+   same normalised name as every other per-country table here so a country cannot be themed
+   one way and backed another.
+
+   The files are 1600x900 WebP at 40 to 75KB, down from 1.6 to 1.9MB of PNG. Only the open
+   country's picture is ever fetched, so the page cost is one file, and at this opacity no
+   detail finer than a silhouette is resolvable anyway. */
+var COUNTRY_BG={
+  "united arab emirates":"country/united-arab-emirates.webp",
+  "saudi arabia":"country/saudi-arabia.webp",
+  "qatar":"country/qatar.webp",
+  "kuwait":"country/kuwait.webp",
+  "bahrain":"country/bahrain.webp",
+  "oman":"country/oman.webp"
+};
 
 /* Paint a decorative backdrop behind a block. Level one carries the three flags,
    shown whole. A country page carries COLOUR ONLY, because its flag is presented
@@ -2475,6 +2540,23 @@ function paintWash(countryName){
   var head=el("l2head");
   head.style.setProperty("--wash-a",w[0]);
   head.style.setProperty("--wash-b",w[1]);
+  setHeadPhoto(countryName);
+}
+/* The band's photograph. Cleared as carefully as it is set: the register is a single page and
+   the band is reused by the whole-register view and every category view, so a photograph left
+   behind would appear under a heading it has nothing to do with. Both the property and the
+   class go, because the class is what the CSS keys the taller band and the softened gradient
+   to, and leaving one without the other would give a category page a country's proportions. */
+function setHeadPhoto(countryName){
+  var head=el("l2head");
+  var src=countryName && COUNTRY_BG[norm(countryName)];
+  if(!src){
+    head.style.removeProperty("--l2-photo");
+    head.classList.remove("has-photo");
+    return;
+  }
+  head.style.setProperty("--l2-photo","url("+src+")");
+  head.classList.add("has-photo");
 }
 function setPlate(countryName){
   var box=el("flagplate");
@@ -2502,6 +2584,8 @@ function paintWashAll(){
   var head=el("l2head");
   head.style.setProperty("--wash-a","rgba(62,76,196,.14)");
   head.style.setProperty("--wash-b","rgba(62,76,196,.05)");
+  /* the whole-register view is not a place, so it wears no place */
+  setHeadPhoto(null);
 }
 
 /* a country page wears its own flag: the masthead band, the corner blooms and the
