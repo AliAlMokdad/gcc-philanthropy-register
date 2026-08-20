@@ -478,6 +478,22 @@ main{padding-bottom:var(--s5)}
 @media (prefers-reduced-motion:reduce){
   *{transition-duration:.01ms !important;animation-duration:.01ms !important}
 }
+
+/* PRINT. Views exist for a screen reader with a scrollbar, not for paper. On paper every view
+   is expanded, in source order, with its source label, and the control itself is gone. */
+@media print{
+  .i-bar,.i-jump,.i-more,.i-nav,.i-vlab{display:none !important}
+  .i-view[hidden]{display:block !important}
+  .i-views{min-height:0}
+  .i-view{break-before:page}
+  .i-view:first-child{break-before:auto}
+  /* the summaries go: beforeprint has already opened every details, so a summary would only
+     repeat the heading that is now above its own content */
+  #intel details>summary{display:none}
+  .i-rows,.i-cbox{max-height:none !important;overflow:visible !important}
+  .i-ctab th{position:static}
+  .i-ctl{display:none}
+}
 </style>
 <style id="copilot-skin">
 /* Copilot house-style overlay, loaded after the base sheet so it wins ties. Palette and
@@ -818,10 +834,64 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-rt.recip i{background:var(--i-slate)}
 .i-rt.country i{background:var(--i-c3)}
 
-/* ---- band D, funders beside the countries ---- */
-.i-split{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:1px;
-  background:var(--line);border-bottom:1px solid var(--line)}
-.i-split > div{background:#fff;min-width:0}
+/* ---- the countries table: a rank to hold your place, a mono column to compare down,
+       a filter, and a threshold. 117 rows is only a wall if you cannot work it. ---- */
+.i-ctl{display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;
+  padding:0 var(--s4) 14px}
+.i-clab{display:flex;align-items:center;gap:8px}
+.i-clab>span{font:600 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3)}
+.i-cfil,.i-cthr{font:400 13px/1.3 var(--sans);color:var(--ink);background:#fff;
+  border:1px solid var(--line);border-radius:2px;padding:7px 9px;min-height:34px}
+.i-cfil{width:190px}
+.i-cfil:focus-visible,.i-cthr:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.i-ccount{margin-left:auto;font:400 12px/1.4 var(--sans);color:var(--ink-3)}
+/* the table's own viewport. 117 rows is a normal amount of data and a normal amount of data
+   belongs in a grid, not in five thousand pixels of page. */
+.i-cbox{max-height:min(62vh,560px);overflow-y:auto;overscroll-behavior:contain;
+  border-top:1px solid var(--i-hair);border-bottom:1px solid var(--line)}
+.i-cbox:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.i-ctab{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.i-ctab th{position:sticky;top:0;z-index:1;
+  text-align:left;padding:7px var(--s4);background:var(--paper);
+  box-shadow:inset 0 -1px 0 var(--i-hair);
+  font:600 9.5px/1.4 var(--mono);letter-spacing:.09em;text-transform:uppercase;
+  color:var(--ink-3);white-space:nowrap}
+.i-ctab td{padding:4px var(--s4);border-bottom:1px solid #f1efeb;vertical-align:middle}
+.i-ctab tr:last-child td{border-bottom:0}
+.i-ctab .cn{width:46px;text-align:right;padding-right:14px;
+  font:400 11px/1.4 var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.i-ctab th.cn{text-align:right;padding-right:14px}
+.i-ctab .cc{font:400 13.5px/1.45 var(--sans);color:var(--ink);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.i-ctab .cv{width:118px;text-align:right;
+  font:400 12.5px/1.4 var(--mono);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.i-ctab th.cv{text-align:right}
+.i-ctab .cs{width:32%}
+.i-csin{display:flex;align-items:center;gap:10px}
+.i-cbar{flex:1;height:6px;min-width:0;background:var(--i-slate-soft);border-radius:1px;
+  overflow:hidden}
+.i-cbar i{display:block;height:100%;background:var(--i-s1);min-width:1px}
+.i-cpc{flex:none;width:62px;text-align:right;
+  font:400 11px/1.4 var(--mono);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.i-ctab tr:hover td{background:var(--paper)}
+.i-cnone{padding:var(--s4);margin:0;font:400 13.5px/1.6 var(--sans);color:var(--ink-2)}
+@media (max-width:760px){
+  .i-ctl{padding:0 var(--s3) 12px;gap:var(--s3)}
+  .i-cfil{width:100%;min-width:140px}
+  .i-clab:first-child{flex:1 1 100%}
+  .i-ccount{margin-left:0}
+  .i-ctab th,.i-ctab td{padding-left:var(--s3);padding-right:var(--s3)}
+  .i-ctab .cs,.i-ctab th.cs{display:none}
+  .i-ctab .cc{white-space:normal;overflow:visible;text-overflow:clip}
+  .i-ctab td{vertical-align:top}
+  .i-ctab .cn,.i-ctab .cv{padding-top:6px}
+  .i-ctab .cn{width:34px;padding-right:8px}
+  .i-ctab .cv{width:104px}
+  .i-cbox{max-height:min(66vh,480px)}
+}
+
+/* ---- the funders list ---- */
 .i-lwhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--s3);
   padding:var(--s4) var(--s4) 12px;flex-wrap:wrap}
 .i-thead,.i-row{display:grid;grid-template-columns:minmax(0,1fr) 104px 122px;gap:var(--s4);
@@ -913,7 +983,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 .i-empty{padding:var(--s4);font:400 14.5px/1.6 var(--sans);color:var(--ink-2)}
 
 @media (max-width:1080px){
-  .i-lede,.i-split{grid-template-columns:1fr}
+  .i-lede{grid-template-columns:1fr}
   .i-lede-r{border-left:0;border-top:1px solid var(--line)}
   .i-three{grid-template-columns:1fr}
 }
@@ -1003,21 +1073,67 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-tcol.gap{background:repeating-linear-gradient(180deg,var(--i-hair) 0 2px,transparent 2px 5px);
   opacity:.5}
 .oe-tcol.none{background:none}
-/* the route through the briefing, and out of it */
-.i-nav{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3);
-  padding:12px var(--s4);border-bottom:1px solid var(--i-hair);background:var(--paper)}
-.i-nav button{border:0;background:none;padding:0;font:inherit;color:inherit;cursor:pointer}
+/* ---- the switcher: five views, one at a time ----
+   Grouped and labelled BY SOURCE, because the two records on this page cannot be added and five
+   equal-looking segments would quietly claim they can. The source label is part of the control,
+   not a caption under it. */
+.i-bar{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s4);
+  padding:0 var(--s4);border-bottom:1px solid var(--line);background:var(--paper)}
+.i-tabs{display:flex;align-items:flex-end;gap:2px;min-width:0;overflow-x:auto;
+  scrollbar-width:none}
+.i-tabs::-webkit-scrollbar{display:none}
+.i-tabsrc{flex:none;align-self:center;padding:0 10px 0 2px;
+  font:600 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3);white-space:nowrap}
+.i-tabsrc:not(:first-child){margin-left:12px;border-left:1px solid var(--i-hair);
+  padding-left:14px}
+.i-tabsep{flex:none;align-self:center;width:1px;height:14px;margin:0 12px;
+  background:var(--i-hair)}
+.i-tab{flex:none;border:0;background:none;cursor:pointer;white-space:nowrap;
+  padding:13px 14px 11px;margin-bottom:-1px;
+  font:400 13.5px/1.3 var(--sans);color:var(--ink-3);
+  border-bottom:2px solid transparent}
+.i-tab:hover{color:var(--ink-2)}
+.i-tab[aria-selected="true"]{color:var(--ink);font-weight:600;
+  border-bottom-color:var(--i-s1)}
+.i-tab:focus-visible{outline:2px solid var(--focus);outline-offset:-2px;border-radius:2px}
+/* one control at a time: tabs on a wide screen, the select on a narrow one */
+.i-vlab{display:none}
+.i-vlab>span{font:600 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-3)}
+.i-vsel{font:400 13.5px/1.3 var(--sans);color:var(--ink);background:#fff;
+  border:1px solid var(--line);border-radius:2px;padding:7px 8px;min-height:38px;
+  max-width:100%}
+.i-vsel:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.i-jump{flex:none;border:0;background:none;cursor:pointer;padding:12px 0;
+  font:400 12.5px/1.3 var(--sans);color:var(--ink-3);
+  border-bottom:1px solid transparent;margin-bottom:-1px}
+.i-jump::after{content:" ↓"}
+.i-jump:hover{color:var(--i-s1);border-bottom-color:var(--i-hair)}
+.i-jump:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+/* a min-height so switching between a short view and a long one does not make the page jump
+   under the reader's cursor as a scrollbar appears and vanishes */
+.i-views{min-height:540px}
+.i-view[hidden]{display:none}
+.i-view:focus{outline:none}
+/* the source, repeated INSIDE the view. A banner at the top of the panel is read once and then
+   scrolled past; the reader who lands on a view from a shared link never saw it at all. */
+.i-src{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
+  padding:9px var(--s4);border-bottom:1px solid var(--i-hair);background:var(--paper)}
+.i-src b{font:600 9.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+  color:var(--i-s1)}
+.i-src span{font:400 12px/1.5 var(--sans);color:var(--ink-3)}
 /* a jumped-to section should not draw a focus ring as though it were a control */
-.i-band:focus,.i-split:focus,.i-three:focus,#recs:focus{outline:none}
-.i-nav-out{font:600 13px/1.3 var(--sans);color:var(--i-s1);
-  border-bottom:2px solid var(--i-s1);padding-bottom:2px}
-.i-nav-out:hover{color:var(--ink)}
-.i-nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:4px 18px;margin:0;padding:0}
-.i-nav li button{font:400 12.5px/1.4 var(--sans);color:var(--ink-3);
-  border-bottom:1px solid transparent}
-.i-nav li button:hover{color:var(--i-s1);border-bottom-color:var(--i-hair)}
-.i-nav button:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
-@media (max-width:600px){ .i-nav{padding:10px var(--s3);gap:var(--s2)} }
+.i-band:focus,.i-three:focus,#recs:focus{outline:none}
+/* one list, full width. 27 funders beside 117 countries left thousands of pixels of white. */
+.i-wide{background:#fff;min-width:0}
+@media (max-width:700px){
+  .i-bar{padding:9px var(--s3);align-items:center;gap:var(--s3)}
+  .i-tabs{display:none}
+  .i-vlab{display:flex;align-items:center;gap:8px;min-width:0}
+  .i-views{min-height:0}
+  .i-jump{padding:0}
+}
 .i-rows.dense .i-r{padding:3px 0}
 .i-rows.dense .i-rlab{font-size:12.5px}
 .i-rows.dense .i-rv{font-size:11.5px}
@@ -1029,12 +1145,6 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-tcol.top i{background:var(--i-s1)}
 .oe-scale{margin:var(--s3) 0 0;font:400 11.5px/1.5 var(--sans);color:var(--ink-3)}
 
-/* the turn between the two records */
-.oe-turn{padding:var(--s3) var(--s4);border-top:2px solid var(--i-s1);
-  border-bottom:1px solid var(--i-hair);background:var(--i-slate-soft)}
-.oe-turn-k{display:block;font:600 10.5px/1 var(--mono);letter-spacing:.09em;
-  text-transform:uppercase;color:var(--i-s1);margin-bottom:5px}
-.oe-turn-t{margin:0;font:400 13.5px/1.55 var(--sans);color:var(--ink-2);max-width:70ch}
 
 @media (max-width:900px){
   .oe-grid,.oe-times{grid-template-columns:repeat(2,1fr)}
@@ -3095,7 +3205,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
   var SEC=["var(--i-s1)","var(--i-s2)","var(--i-s3)","var(--i-s4)","var(--i-s5)","var(--i-s6)"];
   var D=null, loading=false, built=false;
-  var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=12;
+  var sortKey="usd", sortDir=-1, sel=null, showAll=false, TOP=12, curView="funders";
 
   function el(tag,opts,kids){
     var n=document.createElement(tag),k;
@@ -3128,6 +3238,16 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   function fullUsd(n){ return "$"+Math.round(Number(n)||0).toLocaleString("en-GB"); }
   function nm(n){ return (Number(n)||0).toLocaleString("en-GB"); }
   function pc(a,b){ return Math.round((a/(b||1))*100); }
+  /* "2 take more than half" reads like a spreadsheet. Small counts are words. */
+  var WORD={1:"One",2:"Two",3:"Three",4:"Four",5:"Five",6:"Six",7:"Seven",8:"Eight",
+            9:"Nine",10:"Ten",11:"Eleven",12:"Twelve"};
+  /* fold case and punctuation for the country filter. Local by design: norm() belongs to the
+     register's IIFE and this block does not reach into it. Country names are ASCII, but
+     \p{L} keeps this honest if that ever changes. */
+  function cnorm(x){
+    return String(x==null?"":x).toLowerCase()
+      .replace(/[^\p{L}\p{N}]+/gu," ").trim();
+  }
   /* a share, said in a way that does not round two thirds of a list down to nothing */
   function share(a,b){
     var v=(a/(b||1))*100;
@@ -3192,8 +3312,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     h.appendChild(document.createTextNode(title));
     return el("div",{cls:"i-dsec"},[h]);
   }
-  function details(label,fill){
+  function details(label,fill,open){
     var d=el("details");
+    if(open) d.setAttribute("open","");
     d.appendChild(el("summary",{text:label}));
     var box=el("div",{cls:"i-dbody"});
     fill(box);
@@ -3427,8 +3548,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        + "there is no regional total anywhere on this page."],
       ["This record holds state aid only.",
        "Zakat, sadaqah, waqf and private and family giving are outside it. They are not "
-       + "outside the humanitarian record below, where charities and foundations are most "
-       + "of the reporting bodies. How much of all Gulf giving either one captures is "
+       + "outside the UN OCHA record on the Funders view, where charities and foundations are "
+       + "most of the reporting bodies. How much of all Gulf giving either one captures is "
        + "unknown."]
     ];
     var ul=el("ul",{cls:"i-lim"});
@@ -3451,7 +3572,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     prov.push("Retrieved "+String(OE.meta.built||"").slice(0,10)+".");
     box.appendChild(el("p",{cls:"oe-prov",text:prov.join("  ")}));
     var d=details("What this record does not cover, and exactly where it came from",
-      function(inner){ inner.appendChild(box); });
+      function(inner){ inner.appendChild(box); }, true);
     band.appendChild(d);
     return band;
   }
@@ -3532,42 +3653,41 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var m=D.meta, T=m.total_usd;
     var card=el("div",{cls:"i-card"});
 
-    /* THE ROUTE. Plain links, because the reader's first need may be to leave: the register
-       is what this page is for and it sits below all of this. */
-    /* BUTTONS, NOT ANCHORS. An href of "#i-sec-funders" looks like the obvious way to do
-       this and it breaks the page: the register is driven by a hash router, so the link
-       replaces the route and throws the reader back to the front. These scroll without
-       touching the address. */
-    var nav=el("nav",{cls:"i-nav","aria-label":"Sections of this briefing"});
+    /* One container per view, filled by the band builders below, shown one at a time.
+       FUNDERS FIRST. A reader of a register of organisations arrives wanting funders, not a
+       briefing on official aid: that was the reviewers' answer and it is obviously right. */
+    var FTS_NOTE="Humanitarian contributions reported to the UN's Financial Tracking Service. "
+      + "Reporting is voluntary, so this is what was declared, not everything that was given.";
+    var OE_NOTE="Official development assistance as the states themselves reported it to the "
+      + "OECD. Humanitarian work is one sector inside this, so it overlaps the UN OCHA figures "
+      + "and the two cannot be added.";
+    var VIEW={}, VIEW_ORDER=[
+      {k:"funders",   src:"FTS",  group:"FTS",  label:"Funders",      note:FTS_NOTE},
+      {k:"countries", src:"FTS",  group:"FTS",  label:"Countries",    note:FTS_NOTE},
+      {k:"flows",     src:"FTS",  group:"FTS",  label:"Overview",     note:FTS_NOTE},
+      {k:"aid",       src:"OECD", group:"OECD", label:"Official aid", note:OE_NOTE},
+      {k:"method",    src:"BOTH", group:null,   label:"Method",
+       note:"Where every figure on this page came from, what each record leaves out, and the "
+          + "exact queries, so a reader can reproduce a number rather than trust it."}
+    ];
+    VIEW_ORDER.forEach(function(v){
+      var sec=el("section",{cls:"i-view",id:"i-view-"+v.k,role:"tabpanel",
+        "aria-labelledby":"i-tab-"+v.k,tabindex:"-1"});
+      if(v.note) sec.appendChild(el("div",{cls:"i-src"},[
+        el("b",{text:v.src==="FTS" ? "UN OCHA FTS"
+                : v.src==="OECD" ? "OECD DAC" : "Both records"}),
+        el("span",{text:v.note})
+      ]));
+      VIEW[v.k]=sec;
+    });
+
     function goTo(id){
       var t=document.getElementById(id);
       if(!t) return;
-      /* instant, not smooth. These jumps are thousands of pixels: animating one is slow and
-         loses the reader's place, and two in quick succession fight each other, so the second
-         lands short of its target. */
       t.scrollIntoView({block:"start", behavior:"auto"});
-      /* the section, not the button, is what the reader now wants to read */
       t.setAttribute("tabindex","-1");
       t.focus({preventScroll:true});
     }
-    var out=el("button",{type:"button",cls:"i-nav-out",
-      text:"Straight to the "+nm(m.register_rows)+" organisations"});
-    out.addEventListener("click",function(){ goTo("recs"); });
-    nav.appendChild(out);
-    var jumps=el("ul");
-    [["i-sec-states","The six states"],
-     ["i-sec-through","Who it went through"],
-     ["i-sec-time","Over time"],
-     ["i-sec-flows","Humanitarian flows"],
-     ["i-sec-funders","Funders and countries"]].forEach(function(pair){
-      if(!OE && (pair[0]==="i-sec-states"||pair[0]==="i-sec-through"||pair[0]==="i-sec-time"))
-        return;
-      var b=el("button",{type:"button",text:pair[1]});
-      b.addEventListener("click",function(){ goTo(pair[0]); });
-      jumps.appendChild(el("li",null,[b]));
-    });
-    nav.appendChild(jumps);
-    card.appendChild(nav);
 
     /* THE FRAME. Two records of Gulf giving sit on this page and they are not two halves
        of one number. Saying so first, in the reader's own words, is the difference between
@@ -3603,29 +3723,89 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
          + "can appear in both. They cannot be added."}));
     card.appendChild(frame);
 
+    /* THE SWITCHER. Grouped by source and labelled with it, because five equal segments would
+       present two incompatible records as peers, which is the one thing this page must not do.
+       Buttons with tab semantics, arrow keys, and the source repeated inside every view. */
+    var bar=el("div",{cls:"i-bar"});
+    var tabs=el("div",{cls:"i-tabs",role:"tablist","aria-label":"Which record to read"});
+    var lastSrc=null;
+    VIEW_ORDER.forEach(function(v){
+      if(v.k==="aid" && !OE) return;
+      if(v.group && v.group!==lastSrc){
+        tabs.appendChild(el("span",{cls:"i-tabsrc","aria-hidden":"true",
+          text:v.group==="FTS" ? "UN OCHA" : v.group}));
+        lastSrc=v.group;
+      }else if(!v.group && lastSrc!==null){
+        tabs.appendChild(el("span",{cls:"i-tabsep","aria-hidden":"true"}));
+        lastSrc=null;
+      }
+      var b=el("button",{type:"button",cls:"i-tab",id:"i-tab-"+v.k,role:"tab",
+        "aria-controls":"i-view-"+v.k,text:v.label});
+      b.setAttribute("data-view",v.k);
+      b.addEventListener("click",function(){ showView(v.k,true); });
+      tabs.appendChild(b);
+    });
+    bar.appendChild(tabs);
+
+    /* the same five views as a native select, for narrow screens. optgroup carries the source,
+       which is the part that must not be lost when space runs out. */
+    var vsel=el("select",{cls:"i-vsel",id:"i-vsel","aria-label":"Which record to read"});
+    var groups={};
+    VIEW_ORDER.forEach(function(v){
+      if(v.k==="aid" && !OE) return;
+      var host2=vsel;
+      if(v.group){
+        var gl=v.group==="FTS" ? "UN OCHA FTS" : "OECD DAC";
+        if(!groups[gl]){
+          groups[gl]=el("optgroup",{label:gl});
+          vsel.appendChild(groups[gl]);
+        }
+        host2=groups[gl];
+      }
+      host2.appendChild(el("option",{value:v.k,text:v.label}));
+    });
+    vsel.addEventListener("change",function(){ showView(vsel.value,true); });
+    bar.appendChild(el("label",{cls:"i-vlab"},[
+      el("span",{text:"View"}), vsel
+    ]));
+
+    var jump=el("button",{type:"button",cls:"i-jump",
+      text:nm(m.register_rows)+" organisations"});
+    jump.addEventListener("click",function(){ goTo("recs"); });
+    bar.appendChild(jump);
+    card.appendChild(bar);
+
+    /* mounted here, before any of the band builders run and before anything queries into a view
+       by id. The sections are filled afterwards, in place. */
+    var host=el("div",{cls:"i-views"});
+    VIEW_ORDER.forEach(function(v){
+      if(v.k==="aid" && !OE) return;
+      host.appendChild(VIEW[v.k]);
+    });
+    card.appendChild(host);
+
+    /* arrow keys move between views, which is what a tablist owes a keyboard */
+    tabs.addEventListener("keydown",function(e){
+      var keys={ArrowLeft:-1,ArrowRight:1,Home:0,End:0};
+      if(!(e.key in keys)) return;
+      var list=Array.prototype.slice.call(tabs.querySelectorAll(".i-tab"));
+      var i=list.indexOf(document.activeElement);
+      if(i<0) return;
+      e.preventDefault();
+      var n=e.key==="Home" ? 0 : e.key==="End" ? list.length-1
+            : (i+keys[e.key]+list.length)%list.length;
+      list[n].focus();
+      showView(list[n].getAttribute("data-view"),true);
+    });
+
     /* the official aid lane, when its file loaded */
     if(OE){
-      var b1=oeStatesBand(); b1.id="i-sec-states"; card.appendChild(b1);
-      var b2=oeChannelBand(); b2.id="i-sec-through"; card.appendChild(b2);
-      var b3=oeTimeBand(); b3.id="i-sec-time"; card.appendChild(b3);
-      card.appendChild(oeNotesBand());
+      VIEW.aid.appendChild(oeStatesBand());
+      VIEW.aid.appendChild(oeChannelBand());
+      VIEW.aid.appendChild(oeTimeBand());
+      VIEW.method.appendChild(oeNotesBand());
     }
 
-    /* and now the other record, announced as one. If the official aid file did not load
-       there is nothing above to be second to, so the page says that instead of promising a
-       comparison it cannot show. */
-    card.appendChild(OE
-      ? el("section",{cls:"i-band oe-turn"},[
-          el("span",{cls:"oe-turn-k",text:"The second record"}),
-          el("p",{cls:"oe-turn-t",
-            text:"Everything below is UN OCHA's humanitarian tracking, on its own years."})
-        ])
-      : el("section",{cls:"i-band oe-turn"},[
-          el("span",{cls:"oe-turn-k",text:"One record, not two"}),
-          el("p",{cls:"oe-turn-t",
-            text:"The official aid figures could not be loaded, so only UN OCHA's "
-               + "humanitarian tracking is shown below."})
-        ]));
 
     /* BAND A: the headline, and the concentration finding as its counterweight */
     var lede=el("div",{cls:"i-lede"});
@@ -3661,7 +3841,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       "%;background:var(--i-s6)",title:"everyone else "+usd(T-top3usd)}));
     R.appendChild(cb);
     lede.appendChild(R);
-    card.appendChild(lede);
+    VIEW.flows.appendChild(lede);
 
     /* BAND B: what it was spent on */
     var band=el("div",{cls:"i-band"});
@@ -3689,7 +3869,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       ]));
     });
     band.appendChild(rib); band.appendChild(key);
-    card.appendChild(band);
+    VIEW.flows.appendChild(band);
 
     /* BAND C: when it moved, and who received it */
     var three=el("div",{cls:"i-three two",id:"i-sec-flows"});
@@ -3753,11 +3933,12 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     p2.appendChild(rowBars((D.desttype||[]).slice(0,6),"recip",m.recipient_usd));
     three.appendChild(p2);
 
-    card.appendChild(three);
+    VIEW.flows.appendChild(three);
 
-    /* BAND D: the funders beside the countries */
-    var split=el("div",{cls:"i-split",id:"i-sec-funders"});
-    var fl=el("div");
+    /* THE SPLIT IS GONE. 27 funders beside 117 countries put a short list next to a long one
+       and left thousands of pixels of white space beside a ribbon. Each gets a full-width view
+       of its own instead. */
+    var fl=el("div",{cls:"i-wide"});
     fl.appendChild(el("div",{cls:"i-lwhead"},[
       el("h4",{cls:"i-t-panel",text:"Largest reported funders"}),
       el("p",{cls:"i-t-meta",id:"i-lwnote"})
@@ -3772,9 +3953,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     fl.appendChild(th);
     fl.appendChild(el("div",{id:"i-list"}));
     fl.appendChild(el("button",{type:"button",cls:"i-more",id:"i-more"}));
-    split.appendChild(fl);
+    VIEW.funders.appendChild(fl);
 
-    var cr=el("div",{cls:"i-cty"});
+    var cr=el("div",{cls:"i-cty i-wide"});
     var CTY_FLOOR=500000;
     var ctyShown=D.dest_country.filter(function(r){ return r[1]>=CTY_FLOOR; });
     var ctyRest=D.dest_country.filter(function(r){ return r[1]<CTY_FLOOR; });
@@ -3790,20 +3971,96 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        named country, the bars are of everything recorded, and mixing the two silently is the
        error this project has already made twice. */
     cr.appendChild(paneHead("Countries reached",
-      nm(m.countries_reached)+" in all. "+(half===1 ? "One takes" : half+" take")+" more than "
+      nm(m.countries_reached)+" in all. "+(half===1 ? "One country takes"
+        : (WORD[half]||half)+" countries take")+" more than "
       + "half of the "+usd(ctyAll)+" that reached a named country. Every country above "
       + usd(CTY_FLOOR)+" is listed, and each bar is its share of the "+usd(T)
       + " recorded in total."));
-    cr.appendChild(rowBars(ctyShown,"country",T,{ofTotal:true,noPct:true,dense:true}));
+    /* rank is fixed to the whole list, so it still means something after a filter */
+    var ctyRanked=D.dest_country.map(function(r,i){ return {n:r[0], v:r[1], rank:i+1}; });
+    var ctyMax=(D.dest_country[0]||[0,1])[1]||1;
+
+    var ctl=el("div",{cls:"i-ctl"});
+    var fil=el("input",{type:"search",cls:"i-cfil",id:"i-cfil",
+      placeholder:"Filter by country",autocomplete:"off","aria-label":"Filter countries by name"});
+    var thr=el("select",{cls:"i-cthr",id:"i-cthr","aria-label":"Smallest amount to show"});
+    [[CTY_FLOOR,"Above "+usd(CTY_FLOOR)],[0,"Every country"],[1e6,"Above "+usd(1e6)],
+     [1e7,"Above "+usd(1e7)],[1e8,"Above "+usd(1e8)]].forEach(function(o){
+      var op=el("option",{value:String(o[0]),text:o[1]});
+      thr.appendChild(op);
+    });
+    ctl.appendChild(el("label",{cls:"i-clab"},[el("span",{text:"Find"}),fil]));
+    ctl.appendChild(el("label",{cls:"i-clab"},[el("span",{text:"Show"}),thr]));
+    var cnt=el("span",{cls:"i-ccount",role:"status","aria-live":"polite"});
+    ctl.appendChild(cnt);
+    cr.appendChild(ctl);
+
+    var ctab=el("table",{cls:"i-ctab"});
+    ctab.appendChild(el("thead",null,[el("tr",null,[
+      el("th",{scope:"col",cls:"cn",text:"#"}),
+      el("th",{scope:"col",text:"Country"}),
+      el("th",{scope:"col",cls:"cv",text:"Recorded"}),
+      el("th",{scope:"col",cls:"cs",text:"Share of "+usd(T)})
+    ])]));
+    var ctb=el("tbody");
+    ctab.appendChild(ctb);
+    var cbox=el("div",{cls:"i-cbox",tabindex:"0",role:"region",
+      "aria-label":"Countries, scrollable"});
+    cbox.appendChild(ctab);
+    cr.appendChild(cbox);
+    var cempty=el("p",{cls:"i-cnone",hidden:true});
+    cr.appendChild(cempty);
+
+    function drawCty(){
+      var q=cnorm(fil.value||"");
+      var floor=Number(thr.value)||0;
+      var list=ctyRanked.filter(function(r){
+        return r.v>=floor && (!q || cnorm(r.n).indexOf(q)>-1);
+      });
+      ctb.textContent="";
+      list.forEach(function(r){
+        var tr=el("tr");
+        tr.appendChild(el("td",{cls:"cn",text:String(r.rank)}));
+        tr.appendChild(el("td",{cls:"cc",text:r.n}));
+        tr.appendChild(el("td",{cls:"cv",text:usd(r.v)}));
+        var bt=el("td",{cls:"cs"});
+        var csin=el("div",{cls:"i-csin"});
+        var track=el("div",{cls:"i-cbar"});
+        /* share of the total recorded, the same denominator the header names. The top country
+           is 28 per cent of it, so the track has real range without being rescaled to itself. */
+        track.appendChild(el("i",{style:"width:"+((r.v/T)*100).toFixed(3)+"%"}));
+        csin.appendChild(track);
+        csin.appendChild(el("span",{cls:"i-cpc",text:share(r.v,T)}));
+        bt.appendChild(csin);
+        tr.appendChild(bt);
+        ctb.appendChild(tr);
+      });
+      cnt.textContent=list.length===ctyRanked.length
+        ? nm(list.length)+" countries"
+        : nm(list.length)+" of "+nm(ctyRanked.length)+" countries";
+      var none=list.length===0;
+      cempty.hidden=!none;
+      cbox.hidden=none;
+      cbox.scrollTop=0;
+      if(none) cempty.textContent=q
+        ? "No country matching “"+fil.value.trim()+"” at this threshold."
+        : "No country above that amount.";
+    }
+    var cdeb=null;
+    fil.addEventListener("input",function(){
+      clearTimeout(cdeb); cdeb=setTimeout(drawCty,120);
+    });
+    thr.addEventListener("change",drawCty);
+    drawCty();
+
     cr.appendChild(el("p",{cls:"i-note",text:"The "+ctyRest.length+
       " countries below that line come to "+usd(restUsd)+" between them, so the cut changes "+
       "almost nothing. What the country list does NOT hold is "+usd(gUsd())+
       " to global programmes such as WHO, GAVI and UNRWA, which no single country receives."}));
-    split.appendChild(cr);
-    card.appendChild(split);
+    VIEW.countries.appendChild(cr);
 
     /* folded depth */
-    card.appendChild(details("All "+m.sectors_count+" sectors and all "+
+    VIEW.method.appendChild(details("All "+m.sectors_count+" sectors and all "+
       nm(m.countries_reached)+" countries",function(box){
       var two=el("div",{cls:"i-two"});
       var a=el("div"),b=el("div");
@@ -3855,7 +4112,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         ["Only "+m.distinct_source_orgs+" organisations report at all.","Of the "+
           nm(m.register_rows)+" funders in the register, "+m.matched_rows+" appear here. That "+
           "is a limit of what is reported, not a judgement about the others."],
-        ["It overlaps the official aid figures above.",
+        ["It overlaps the official aid figures on the Official aid view.",
           "Humanitarian work sits inside official development assistance as one sector, so "+
           "the same activity can appear in both records. No reconciliation between them "+
           "exists, and they cannot be added."],
@@ -3893,6 +4150,64 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     panel.querySelector("#i-more").addEventListener("click",function(){
       showAll=!showAll; renderList();
     });
+
+    /* ?view=countries in the QUERY, never the hash. The register is hash-routed and an anchor
+       href broke it once already, but refusing all URL state would mean a view cannot be
+       shared or survive a reload, which is not software. */
+    function readView(){
+      try{
+        var q=new URLSearchParams(location.search).get("view");
+        return (q && VIEW[q] && !(q==="aid" && !OE)) ? q : "funders";
+      }catch(e){ return "funders"; }
+    }
+    function writeView(k){
+      try{
+        var u=new URL(location.href);
+        u.searchParams.set("view",k);
+        history.replaceState(null,"",u.toString());
+      }catch(e){}
+    }
+    function showView(k,fromClick){
+      if(!VIEW[k]) k="funders";
+      VIEW_ORDER.forEach(function(v){
+        if(!VIEW[v.k]) return;
+        var on=(v.k===k);
+        VIEW[v.k].hidden=!on;
+        var t=panel.querySelector("#i-tab-"+v.k);
+        if(t){
+          t.setAttribute("aria-selected",String(on));
+          t.setAttribute("tabindex",on?"0":"-1");
+        }
+      });
+      curView=k;
+      if(vsel.value!==k) vsel.value=k;
+      if(fromClick) writeView(k);
+      if(fromClick){
+        /* keep the switcher in sight rather than jumping to the top of a new view */
+        var b=panel.querySelector(".i-bar");
+        if(b && b.getBoundingClientRect().top<0) b.scrollIntoView({block:"start"});
+      }
+    }
+    showView(readView(),false);
+
+    /* paper has no tabs and no accordions. CSS opens the views; only script can open a details. */
+    if(!window._iPrintWired){
+      window._iPrintWired=true;
+      var wasOpen=null;
+      window.addEventListener("beforeprint",function(){
+        var ds=panel.querySelectorAll("details");
+        wasOpen=Array.prototype.map.call(ds,function(d){ return d.open; });
+        Array.prototype.forEach.call(ds,function(d){ d.open=true; });
+      });
+      window.addEventListener("afterprint",function(){
+        if(!wasOpen) return;
+        var ds=panel.querySelectorAll("details");
+        Array.prototype.forEach.call(ds,function(d,i){
+          if(i<wasOpen.length) d.open=wasOpen[i];
+        });
+        wasOpen=null;
+      });
+    }
 
     built=true;
     renderList();
@@ -4043,7 +4358,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       if(on) b.setAttribute("data-on","true"); else b.removeAttribute("data-on");
       var base=b.textContent.replace(/[▴▾]\s*$/,"").trim();
       b.textContent=on?(base+(sortDir<0?" ▾":" ▴")):base;
-      b.setAttribute("aria-sort",on?(sortDir<0?"descending":"ascending"):"none");
+      /* no aria-sort here: it is only valid on a columnheader, and this is a div grid. The
+         label below carries the same state in a form that is actually announced. */
+      b.removeAttribute("aria-sort");
       b.setAttribute("aria-label",base+(on
         ? (", sorted "+(sortDir<0?"descending":"ascending")+", activate to reverse")
         : ", activate to sort by this column"));
