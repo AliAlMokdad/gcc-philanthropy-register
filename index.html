@@ -3689,11 +3689,15 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       {k:"funders",   src:"FTS",  group:"FTS",  label:"Funders",      note:FTS_NOTE},
       {k:"countries", src:"FTS",  group:"FTS",  label:"Countries",    note:FTS_NOTE},
       {k:"aid",       src:"OECD", group:"OECD", label:"Official aid", note:OE_NOTE},
-      {k:"method",    src:"BOTH", group:null,   label:"Method",
-       note:"What each record leaves out, and where its figures came from. The OECD figures "
-          + "carry their exact queries, so they can be reproduced rather than trusted. The UN "
-          + "OCHA figures are a snapshot of its Financial Tracking Service, which has no "
-          + "equivalent query string to quote."}
+      {k:"method",    src:OE ? "BOTH" : "FTS", group:null, label:"Method",
+       note:OE
+         ? "What each record leaves out, and where its figures came from. The OECD figures "
+           + "carry their exact queries, so they can be reproduced rather than trusted. The UN "
+           + "OCHA figures are a snapshot of its Financial Tracking Service, which has no "
+           + "equivalent query string to quote."
+         : "What this record leaves out. The figures are a snapshot of UN OCHA's Financial "
+           + "Tracking Service, which has no query string to quote. The official aid record "
+           + "could not be loaded, so nothing about it is described here."}
     ];
     VIEW_ORDER.forEach(function(v){
       var sec=el("section",{cls:"i-view",id:"i-view-"+v.k,role:"tabpanel",
@@ -4015,8 +4019,11 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     var fil=el("input",{type:"search",cls:"i-cfil",id:"i-cfil",
       placeholder:"Filter by country",autocomplete:"off","aria-label":"Filter countries by name"});
     var thr=el("select",{cls:"i-cthr",id:"i-cthr","aria-label":"Smallest amount to show"});
-    [[CTY_FLOOR,"Above "+usd(CTY_FLOOR)],[0,"Every country"],[1e6,"Above "+usd(1e6)],
-     [1e7,"Above "+usd(1e7)],[1e8,"Above "+usd(1e8)]].forEach(function(o){
+    /* "and above", not "above": the filter is >=, and Sao Tome and Principe sits exactly on
+       $500,000, so "Above $500k" was listing a country it excluded. */
+    [[CTY_FLOOR,usd(CTY_FLOOR)+" and above"],[0,"Every country"],
+     [1e6,usd(1e6)+" and above"],[1e7,usd(1e7)+" and above"],
+     [1e8,usd(1e8)+" and above"]].forEach(function(o){
       var op=el("option",{value:String(o[0]),text:o[1]});
       thr.appendChild(op);
     });
@@ -4162,7 +4169,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         ["Only "+m.distinct_source_orgs+" organisations report at all.","Of the "+
           nm(m.register_rows)+" funders in the register, "+m.matched_rows+" appear here. That "+
           "is a limit of what is reported, not a judgement about the others."],
-        ["It can overlap the official aid figures on the Official aid view.",
+        [OE ? "It can overlap the official aid figures on the Official aid view."
+            : "It can overlap official aid, which is not shown here.",
           "Humanitarian work sits inside official development assistance as one sector, so "+
           "the same activity can appear in both records. No reconciliation between them "+
           "exists, and they cannot be added."],
@@ -4204,10 +4212,21 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     /* ?view=countries in the QUERY, never the hash. The register is hash-routed and an anchor
        href broke it once already, but refusing all URL state would mean a view cannot be
        shared or survive a reload, which is not software. */
+    /* the keys that really exist and are really on screen. Asking VIEW[q] instead let
+       ?view=constructor through the guard, because every plain object inherits one, and then
+       showView hid all five views and selected no tab. */
+    function mountedViews(){
+      var out=[];
+      VIEW_ORDER.forEach(function(v){
+        if(v.k==="aid" && !OE) return;
+        out.push(v.k);
+      });
+      return out;
+    }
     function readView(){
       try{
         var q=new URLSearchParams(location.search).get("view");
-        return (q && VIEW[q] && !(q==="aid" && !OE)) ? q : "overview";
+        return (q && mountedViews().indexOf(q)>-1) ? q : "overview";
       }catch(e){ return "overview"; }
     }
     function writeView(k){
@@ -4218,7 +4237,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       }catch(e){}
     }
     function showView(k,fromClick){
-      if(!VIEW[k]) k="overview";
+      /* the same test as readView, for the same reason: a key that only exists on the prototype
+         would otherwise pass and leave every view hidden */
+      if(mountedViews().indexOf(k)<0) k="overview";
       VIEW_ORDER.forEach(function(v){
         if(!VIEW[v.k]) return;
         var on=(v.k===k);
