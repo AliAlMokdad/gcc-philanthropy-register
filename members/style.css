@@ -225,10 +225,22 @@ body{background:transparent}
 .council-member__text p{font:400 16px/1.7 var(--sans);text-align:left;max-width:68ch;
   margin:0 0 20px}
 .council-member__text p:last-child{margin-bottom:0}
-/* the provenance line sits a step back from the text it describes */
-.council-member__source{font:400 12.5px/1.6 var(--sans) !important;color:var(--muted);
-  text-align:left;max-width:68ch;margin:22px 0 0;padding-top:14px;
-  border-top:1px solid var(--line)}
+/* THE WAY BACK. Six pages with no route to the list they came from is a dead end: a reader
+   arriving from a link or a search has no browser history to fall back on. This follows the
+   register's own convention, a quiet link above the heading, in this section's palette.
+
+   THE COLOUR IS MEASURED. The obvious choice was the gold and it fails: --gold is 2.68:1 on
+   white and --gold-dark is 3.66:1, where 11px uppercase needs 4.5. So the label takes --ink at
+   18.11:1 and the gold-dark is spent on the arrow, where 3.66:1 clears the 3:1 that a
+   meaningful non-text graphic needs. */
+.council-member__back{display:inline-flex;align-items:center;gap:9px;min-height:40px;
+  margin:0 0 4px;font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;
+  align-self:flex-start}
+.council-member__back-i{font-size:15px;line-height:1;color:var(--gold-dark)}
+.council-member__back:hover{border-bottom-color:var(--gold-dark)}
+.council-member__back:focus-visible{outline:2px solid var(--gold-dark);outline-offset:3px;
+  border-radius:2px}
 .council-member__source{margin:18px 0 0;max-width:74ch;
   font:400 12.5px/1.55 var(--sans);color:var(--muted)}
 .council-member__source a{text-decoration:underline;text-underline-offset:2px}

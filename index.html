@@ -462,10 +462,14 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
 
 /* ---- THE GATE, the way into the register's own rows.
        ORANGE, and that is a system rather than a colour I liked here. Blue is the UN OCHA record,
-       teal is the OECD record, slate is reference material, and orange is the REGISTER itself. The
-       home page already used exactly this orange for "See the full list", so this extends a
-       convention rather than inventing one, and it keeps a register action from borrowing the
-       colour of a funding record it has nothing to do with.
+       teal is the OECD record, slate is reference material, and orange is the REGISTER itself, so
+       this extends a convention rather than inventing one, and it keeps a register action from
+       borrowing the colour of a funding record it has nothing to do with.
+       This used to cite the home page's "See the full list" bar as the precedent. That bar is
+       gone: the way into the whole register is now a door beside GCC Members, in the shared
+       accent the other doors use. The convention still holds, it just no longer has that one
+       example to point at, and a rationale citing something that no longer exists is worse
+       than one stated plainly.
        The rule above it carries the same 76px tipped head as every other section boundary on the
        page, in the register's colour. ---- */
 .listgate{padding:var(--s4) 0 var(--s4);
@@ -634,29 +638,44 @@ footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);
      competitor to the panorama. */
   opacity:.5}
 
-/* THE PANORAMA BEHIND THE LIST AND THE FOOT AT ONCE.
+/* A COLOUR BLEND AT THE FOOT OF THE PAGE.
 
-   It used to live inside the footer, which then had to be padded 118 to 214px at the top to
-   give it room, and that padding was the entire reason the footer read as too long. Lifted out
-   to a fixed page layer it does the same job better: one picture sits behind the organisation
-   list and carries on through the footer as a single image, and the footer is back to the
-   height of its own credit line.
+   This was the panorama, and before that the panorama padded out inside the footer. The picture
+   is gone from here for a reason: on the whole-register view it is ALREADY the cover at the top
+   of the page, so repeating it at the foot showed the same image twice in one scroll. It keeps
+   the job it does best and the foot gets something that closes the page without competing with
+   it. The footer itself stays the height of its own credit line.
 
-   TEN PER CENT AND FOURTEEN IN DARK ARE KEPT EXACTLY AS THEY WERE MEASURED. The footer credit
-   is --ink-3 at 12.5px, the lightest text on the site, and it still sits over this picture, so
-   it is still the worst case and those ceilings still hold. Everything else over the picture is
-   darker or larger, so it has more room, not less.
+   THE ALPHAS ARE MEASURED, AND THE FIRST SET WAS WRONG. Rendered in isolation, over paper and
+   with nothing else on the page, the blend's densest pixel is what governs, because the band is
+   a fixed layer BEHIND all content: measuring it inside the live page catches list borders and
+   dark UI and reports --ink as "the background", which is what it did on the first attempt.
+   Isolated, the first set measured 4.04:1 against the 4.5 that --ink-3 at 12.5px needs. A fail,
+   and worse than the 4.66:1 the photograph it replaced had given. These alphas measure 4.57:1,
+   which clears the requirement for ANY --ink-3 text over the band and not merely for the credit,
+   since the last rows of the organisation list sit over it too on the whole-register view.
+   Arithmetic was not used to pick them: composing four layers by hand gives the full-stack case
+   where all three blooms peak in one pixel, which cannot happen with their centres at 10, 50 and
+   90 per cent across, so it over-corrects and washes the colour out for nothing.
 
-   A BAND AT THE FOOT, not the whole window. Full height would lay the skyline across the middle
-   of the screen behind the reading column. Held to the bottom, framed at 44 per cent so cover
-   lands the slice on the city rather than on the water, and faded upward so it rises out of the
-   paper with no line where it starts. Fixed, so it holds while the page scrolls. */
-#gulf{position:fixed;left:0;right:0;bottom:0;height:min(54vh,470px);
+   A BAND AT THE FOOT, not the whole window. Full height would lay the wash across the middle of
+   the screen behind the reading column. Held to the bottom and faded upward so it rises out of
+   the paper with no line where it starts. Fixed, so it holds while the page scrolls. */
+#gulf{position:fixed;left:0;right:0;bottom:0;height:min(42vh,360px);
   z-index:-1;pointer-events:none;
-  background:url(country/gcc-panorama.webp) center 44%/cover no-repeat;
-  opacity:.10;
-  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 52%,#000 100%);
-  mask:linear-gradient(to bottom,transparent 0,#000 52%,#000 100%);
+  /* THREE BLOOMS IN THE SITE'S OWN COLOURS, blending where they meet: blueberry --accent on
+     the left, the cyan from the Fluent spectrum ribbon that already caps the masthead in the
+     centre, and the warm ochre --orange-line on the right. Radial blooms rising from below the
+     fold are the same language the body background and the country washes use, so this reads as
+     this site rather than as a gradient dropped on it. Centres sit at or past 100 per cent so
+     only the top of each bloom enters the frame, which is what keeps it soft. */
+  background:
+    radial-gradient(74% 128% at 10% 104%, rgba(62,76,196,.085), transparent 64%),
+    radial-gradient(62% 118% at 50% 112%, rgba(0,188,242,.068), transparent 62%),
+    radial-gradient(70% 128% at 90% 104%, rgba(226,133,58,.062), transparent 64%),
+    linear-gradient(to top, rgba(62,76,196,.028), transparent 74%);
+  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%);
+  mask:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%);
   /* TWO PAGES ONLY. Off by default, and turned on for the front page and for the funding
      intelligence, which is the whole-register view. Keyed to the same flags the rest of this
      sheet already uses: #l1 unhidden is the front page, and #intel unhidden is the
@@ -664,12 +683,25 @@ footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);
   display:none}
 body:has(#l1:not([hidden])) #gulf,
 body:has(#intel:not([hidden])) #gulf{display:block}
-@media (prefers-color-scheme:dark){ #gulf{opacity:.14} }
+/* DARK MODE RAISES THE ALPHAS, not an opacity. The blooms now carry their own alpha rather
+   than sitting under one opacity value, so there is no single number to turn up: opacity above
+   1 is invalid and clamps, which would have done nothing. On a near-black ground these hues
+   need more presence to register at all, which is the same finding the panorama produced when
+   it needed 14 per cent in dark against 10 in light. */
+@media (prefers-color-scheme:dark){
+  #gulf{background:
+    radial-gradient(74% 128% at 10% 104%, rgba(122,134,246,.24), transparent 64%),
+    radial-gradient(62% 118% at 50% 112%, rgba(64,206,246,.19), transparent 62%),
+    radial-gradient(70% 128% at 90% 104%, rgba(232,165,90,.17), transparent 64%),
+    linear-gradient(to top, rgba(122,134,246,.08), transparent 74%)}
+}
 @media (forced-colors:active){ #gulf{display:none} }
 @media print{ #gulf{display:none !important} }
 footer.sig .wrap{position:relative;z-index:1;padding-top:var(--s4);padding-bottom:var(--s4)}
+/* the credit steps from --ink-3 to --ink-2. It is the most exposed text over the blend, and one
+   step darker takes it from 4.57:1 to 7.9:1 while staying as quiet as a credit line should be. */
 footer.sig p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
-  font:500 12.5px/1.6 var(--sans);color:var(--ink-3)}
+  font:500 12.5px/1.6 var(--sans);color:var(--ink-2)}
 footer.sig a{display:inline-flex;align-items:center;min-height:40px;
   font:600 14px/1.6 var(--sans);color:var(--accent);
   text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
@@ -900,7 +932,6 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
   details.more{margin-top:14px}
   details.more summary{padding:8px 0}
   details.more ol.ranked{margin-top:12px}
-  .portal-all{margin-top:24px}
   body:has(#l1:not([hidden])) main{padding-bottom:24px}
   body:has(#l1:not([hidden])) footer.sig{margin-top:0}
 }
@@ -913,16 +944,6 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
   .portal-go{flex-basis:100%;width:100%}
 }
 
-/* the link to the whole list, a wide bar under the categories */
-.portal-all{margin:var(--s5) 0 0}
-.portal-all a{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;
-  padding:0 18px;font:700 14px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--orange-strong);text-decoration:none;border:1px solid var(--line-2);border-radius:7px;
-  background:linear-gradient(180deg,var(--paper),var(--paper-2));
-  box-shadow:0 1px 2px rgba(20,24,36,.05);
-  transition:border-color .14s ease-out,background-color .14s ease-out,box-shadow .14s ease-out,transform .14s ease-out}
-.portal-all a:hover,.portal-all a:focus-visible{border-color:var(--orange-strong);background:var(--orange-soft);
-  color:var(--orange-strong);transform:translateY(-1px);box-shadow:0 4px 12px rgba(226,133,58,.16)}
 
 /* a record in the all-register results carries its country and category as a quiet line */
 .rowbtn .rowmain{display:flex;flex-direction:column;gap:3px;min-width:0;align-items:flex-start}
@@ -1736,9 +1757,13 @@ body:has(#l1:not([hidden])) .pbar{display:none}
    Not a third search control and not a marketing card. A single bounded destination with the
    accent as its top rule, the serif for the label and a plain line underneath saying what is
    behind it, so the click is informed. */
-.portal-news{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
-  max-width:852px;margin:22px auto 0;padding:0}
-@media (max-width:800px){ .portal-news{grid-template-columns:1fr 1fr;max-width:560px} }
+/* FOUR ACROSS, so the maximum widens to hold the cell width where three columns had it.
+   Three in 852px gave 284px a cell; four in the same width would give 213px, and the longest
+   label cannot hold that at its clamp. The two-column fallback also moves up, from 800px to
+   1000px, because four cells stop fitting their labels well before a tablet. */
+.portal-news{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  max-width:1128px;margin:22px auto 0;padding:0}
+@media (max-width:1000px){ .portal-news{grid-template-columns:1fr 1fr;max-width:620px} }
 @media (max-width:520px){ .portal-news{grid-template-columns:1fr} }
 .portal-news a{display:block;padding:16px 20px;text-decoration:none;
   border:1px solid var(--line-2);border-top:2px solid var(--accent);border-radius:2px;
@@ -2259,6 +2284,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
         <a href="members/" id="membersdoor">
           <span class="pn-label">GCC Members</span>
         </a>
+        <a href="#/a/all" id="fulllist">
+          <span class="pn-label">GCC Philanthropy Register</span>
+        </a>
         <a href="#/news" id="newsdoor">
           <span class="pn-label">News &amp; Developments</span>
         </a>
@@ -2275,7 +2303,6 @@ body:has(#l1:not([hidden])) .pbar{display:none}
           <summary id="moresum"></summary>
           <ol class="ranked" id="types-rest"></ol>
         </details>
-        <p class="portal-all"><a href="#/a/all" id="fulllist">See the full list</a></p>
       </div>
     </section>
   </div>
