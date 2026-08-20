@@ -1766,8 +1766,38 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 @media (max-width:560px){
   .pbar nav{flex-wrap:wrap;gap:var(--s2) var(--s3)}
   .pbar .wrap{padding-top:9px;padding-bottom:2px}
-  .pbar-nav{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .pbar-nav a{padding:0 10px;letter-spacing:.12em}
+  /* FOUR LABELS, ONE PHONE ROW. This row was built for three products and now carries four, and
+     at 375 the last word was cut by a few pixels: enough to look like a mistake, not enough to
+     suggest the row scrolls. Four small concessions buy it back, none visible on its own.
+
+     It breaks out of the wrap's 24px inset and keeps only the left one, so it starts in line with
+     the brand above it and runs to the edge of the screen. It gives up the 2px inter-item gap,
+     since each label already carries its own padding. That padding drops from 8px to 6px a side,
+     and the tracking from .12em to .1em. Together that is about twenty pixels.
+
+     THE MEASUREMENT LIED AND THE PICTURE DID NOT. Measured inside a frame with a classic
+     scrollbar the row reported an exact fit, because the scrollbar had quietly taken 15px off the
+     layout width. A phone uses an overlay scrollbar and gets the full width, so the real row was
+     wider than the one being measured. Every width below was checked by rendering the bar and
+     looking at the pixels: 320, 360, 375, 412.
+
+     overflow-x stays as the safety net for a narrower phone or a large text size. Where it does
+     engage, the row now runs off the edge rather than stopping short of it, which reads as
+     something you can push rather than something broken. */
+  .pbar-nav{width:auto;margin-inline:calc(var(--s4) * -1);padding-left:var(--s4);
+    padding-right:12px;gap:0;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .pbar-nav::-webkit-scrollbar{display:none}
+  .pbar-nav a{padding:0 6px;letter-spacing:.1em}
+}
+/* THE NARROWEST PHONES WRAP RATHER THAN SCROLL. Below about 344px four labels cannot share a line
+   at a legible size, and the row above would clip the last one mid-word. A word cut in half reads
+   as a defect whether or not the row can be pushed, so at this width the row wraps to two lines
+   instead: everything is visible, nothing has to be discovered, and the type stays at the size it
+   is everywhere else rather than shrinking to buy a single line nobody asked for. */
+@media (max-width:344px){
+  .pbar-nav{flex-wrap:wrap;overflow-x:visible;margin-inline:0;padding-left:0;padding-right:0;
+    row-gap:2px}
 }
 
 /* ================================ the portal door ================================
@@ -4259,7 +4289,7 @@ function initBerry(){
 var _actx=null;
 /* SOUND IS OFF FOR ANYONE WHO ASKED FOR LESS. Both chimes are decorative: they confirm a click
    that the screen already confirms. There is no prefers-reduced-sound media query, and
-   prefers-reduced-motion is the established stand-in for "I do not want incidental effects" —
+   prefers-reduced-motion is the established stand-in for "I do not want incidental effects":
    this page already honours it in six places for motion, so honouring it here is consistent
    rather than novel. Read live on every call rather than cached at load, because the setting can
    change while the page is open. */
