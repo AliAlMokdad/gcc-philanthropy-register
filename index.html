@@ -626,11 +626,7 @@ nav.pager .pg-sm{display:none}
 /* one quiet line, set to the right, in the serif so it reads as a signature rather
    than as another piece of interface */
 footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);
-  margin-top:var(--s5);
-  /* room for the panorama to rise. The credit line stays at the bottom where it belongs and
-     the picture fills the space above it, which is what "covers the foot and also goes up"
-     asks for without any overflow trickery. */
-  padding-top:clamp(118px,13vw,214px)}
+  margin-top:var(--s5)}
 /* a light, transparent yellow brush washed across the whole footer, painterly, no edge */
 .foot-brush{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;
   /* softened, because a cool blue picture over a warm yellow wash at full strength cancels
@@ -638,38 +634,32 @@ footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);
      competitor to the panorama. */
   opacity:.5}
 
-/* THE PANORAMA AT THE FOOT OF EVERY PAGE.
+/* THE PANORAMA BEHIND THE LIST AND THE FOOT AT ONCE.
 
-   TEN PER CENT IS A CEILING THAT WAS MEASURED. The footer carries the lightest text on the
-   site, --ink-3 at 12.5px, needing 4.5:1. Over this picture's darkest pixel it reads 4.97:1
-   at six per cent, 4.81 at eight, 4.67 at ten and 4.50 at twelve, which is the line itself.
-   Ten is the last value with room to spare.
+   It used to live inside the footer, which then had to be padded 118 to 214px at the top to
+   give it room, and that padding was the entire reason the footer read as too long. Lifted out
+   to a fixed page layer it does the same job better: one picture sits behind the organisation
+   list and carries on through the footer as a single image, and the footer is back to the
+   height of its own credit line.
 
-   ANCHORED BOTTOM and faded UPWARD, so the picture is densest across the footer and dissolves
-   as it climbs. A fade in the other direction would put the skyline's sky over the credit and
-   its buildings over the page, which is the wrong way round. */
-footer.sig::after{content:"";position:absolute;left:0;right:0;bottom:0;height:100%;
-  z-index:0;pointer-events:none;
-  /* FRAMED AT 48 PER CENT, NOT AT THE BOTTOM. The footer is far wider than it is tall, so
-     cover scales the picture by width and shows only a slice of its height. Anchored to the
-     bottom that slice was the water and the reflections, with the whole city cropped away
-     above it: the least interesting part of the picture, at the one place it is most visible.
-     A percentage offset lands the slice on the skyline itself and keeps doing so as the
-     viewport width changes the amount of overflow. */
-  background:url(country/gcc-panorama.webp) center 48%/cover no-repeat;
+   TEN PER CENT AND FOURTEEN IN DARK ARE KEPT EXACTLY AS THEY WERE MEASURED. The footer credit
+   is --ink-3 at 12.5px, the lightest text on the site, and it still sits over this picture, so
+   it is still the worst case and those ceilings still hold. Everything else over the picture is
+   darker or larger, so it has more room, not less.
+
+   A BAND AT THE FOOT, not the whole window. Full height would lay the skyline across the middle
+   of the screen behind the reading column. Held to the bottom, framed at 44 per cent so cover
+   lands the slice on the city rather than on the water, and faded upward so it rises out of the
+   paper with no line where it starts. Fixed, so it holds while the page scrolls. */
+#gulf{position:fixed;left:0;right:0;bottom:0;height:min(54vh,470px);
+  z-index:-1;pointer-events:none;
+  background:url(country/gcc-panorama.webp) center 44%/cover no-repeat;
   opacity:.10;
-  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%);
-  mask:linear-gradient(to bottom,transparent 0,#000 46%,#000 100%)}
-/* IN DARK IT NEEDS MORE, NOT LESS, which is the opposite of the usual instinct and of what
-   the country paintings needed. Those are warm and mid-toned, so on a dark ground they had to
-   come down. This one is pale and cool, so against near-black it all but disappeared at 8.5
-   per cent. The headroom was computed rather than guessed, and the first pass at the
-   arithmetic was wrong: by hand it looked like 18 per cent would still pass, and the actual
-   figures for the dark credit colour are 6.07:1 at 8.5, 5.08 at 14, 4.71 at 16 and 4.38 at
-   18, which FAILS. Sixteen is the ceiling, so 14 is the last value with real margin. */
-@media (prefers-color-scheme:dark){ footer.sig::after{opacity:.14} }
-@media (forced-colors:active){ footer.sig::after{display:none} }
-@media print{ footer.sig::after{display:none !important} }
+  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 52%,#000 100%);
+  mask:linear-gradient(to bottom,transparent 0,#000 52%,#000 100%)}
+@media (prefers-color-scheme:dark){ #gulf{opacity:.14} }
+@media (forced-colors:active){ #gulf{display:none} }
+@media print{ #gulf{display:none !important} }
 footer.sig .wrap{position:relative;z-index:1;padding-top:var(--s4);padding-bottom:var(--s4)}
 footer.sig p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
   font:500 12.5px/1.6 var(--sans);color:var(--ink-3)}
@@ -2170,6 +2160,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
      blues so it does not read as a warm tint over everything. Its filters are its own, because the
      portal layer is display:none on this route and referencing a filter inside a non-rendered tree
      is not a thing to depend on. Decorative, aria-hidden, never a target. -->
+<div id="gulf" aria-hidden="true"></div>
 <svg id="l2brush" aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
   <defs>
     <filter id="lba" x="-35%" y="-35%" width="170%" height="170%">
