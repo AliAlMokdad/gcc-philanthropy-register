@@ -1697,8 +1697,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
    Not a third search control and not a marketing card. A single bounded destination with the
    accent as its top rule, the serif for the label and a plain line underneath saying what is
    behind it, so the click is informed. */
-.portal-news{display:grid;grid-template-columns:1fr 1fr;gap:12px;
-  max-width:560px;margin:22px auto 0;padding:0}
+.portal-news{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  max-width:852px;margin:22px auto 0;padding:0}
+@media (max-width:800px){ .portal-news{grid-template-columns:1fr 1fr;max-width:560px} }
 @media (max-width:520px){ .portal-news{grid-template-columns:1fr} }
 .portal-news a{display:block;padding:16px 20px;text-decoration:none;
   border:1px solid var(--line-2);border-top:2px solid var(--accent);border-radius:2px;
@@ -2215,6 +2216,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
       <!-- NEWS BLOCK 5 of 5: the way in from the front door. Under the search, above the
            categories, because that is the order a reader uses this page in. -->
       <p class="portal-news">
+        <a href="members/" id="membersdoor">
+          <span class="pn-label">GCC Members</span>
+        </a>
         <a href="#/news" id="newsdoor">
           <span class="pn-label">News &amp; Developments</span>
         </a>

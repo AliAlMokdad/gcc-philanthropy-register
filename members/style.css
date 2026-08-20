@@ -1,0 +1,125 @@
+/* =============================================================================
+   Local copy of gcc-sg.org/en/AboutUs/MemberStates.
+   Every value here was measured off the live pages, not chosen:
+     container 1296 wide, cards 416 x 392 in three columns with a 24px gutter
+     h1 24px / 500, card name 20px / 400, card description 16px / 400
+     ink #161615, secondary #757575, gold #C39827, page #FEFBF0, nav #FFFEF9,
+     map active #D1A770, map idle #FBF4E4
+   The site sets SuisseIntl-Regular, which is a licensed face and not
+   distributable, so Inter stands in for it: same grotesque proportions, free.
+   ============================================================================= */
+:root{
+  --ink:#161615;
+  --muted:#757575;
+  --gold:#C39827;
+  --gold-dark:#A97F1C;
+  --page:#FEFBF0;
+  --nav:#FFFEF9;
+  --strip:#FFF8E3;
+  --footer:#E0D2AC;
+  --card:#FFFFFF;
+  --line:#EFE6D0;
+  --map-on:#D1A770;
+  --map-off:#FBF4E4;
+  --sans:"Inter","SuisseIntl-Regular",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --ar:"Noto Naskh Arabic","Traditional Arabic",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--page);color:var(--ink);font:400 16px/1.5 var(--sans);
+  -webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{width:100%;max-width:1344px;margin:0 auto;padding:0 24px}
+
+/* ---------------------------------------------------------------- landing grid */
+.page{padding:40px 0 60px}
+.member-states-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.member-states-card{background:var(--card);border-radius:6px;min-height:392px;
+  padding:56px 34px 40px;display:flex;flex-direction:column;align-items:center;
+  text-align:center;box-shadow:0 1px 3px rgba(120,100,50,.06);
+  transition:box-shadow .18s ease-out}
+.member-states-card:hover{box-shadow:0 6px 20px rgba(120,100,50,.13)}
+.member-states-card__flag img{width:87px;height:52px;object-fit:contain}
+.member-states-card__name{margin:32px 0 0;font-size:20px;font-weight:400;color:var(--ink)}
+.member-states-card__description{margin:22px 0 0;font-size:16px;line-height:1.8;
+  color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+  overflow:hidden}
+.member-states-card__go{margin:auto 0 0;width:36px;height:36px;border:1px solid var(--gold);
+  border-radius:50%;display:flex;align-items:center;justify-content:center}
+.member-states-card__go img{width:15px;height:15px;transform:rotate(180deg)}
+
+/* ---------------------------------------------------------------- profile */
+.council-member{background:var(--card);border-radius:6px;padding:44px 46px 54px;
+  box-shadow:0 1px 3px rgba(120,100,50,.06)}
+.council-member__head{display:flex;align-items:center;gap:26px;
+  padding:0 0 34px;border-bottom:1px solid var(--line)}
+.council-member__flag{width:87px;height:52px;object-fit:contain}
+.council-member__name{font-size:20px;font-weight:400}
+.council-member-details{display:flex;align-items:flex-start;gap:60px;padding:30px 0 0}
+.council-member-details__item{display:flex;align-items:center;gap:14px}
+.council-member-details__icon{width:52px;height:52px;border:1px solid #6FB3D6;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none}
+.council-member-details__icon--area{border-color:#7FBF7F}
+.council-member-details__icon img{width:28px;height:28px}
+.council-member-details__item__details{display:flex;flex-direction:column;gap:3px}
+.council-member-details__label{font-size:16px;color:var(--ink)}
+.council-member-details__value{font-size:16px;color:#3E8FBF;min-height:22px}
+.council-member__cols{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);
+  gap:0 40px;align-items:start;padding:40px 0 0}
+.council-member__map{width:100%}
+.council-member__text p{margin:0 0 26px;font:400 17px/2.05 var(--ar);color:var(--muted);
+  text-align:right}
+.council-member__text p:last-child{margin-bottom:0}
+
+/* the map: the site ships one svg on every page and colours the active state in css */
+.council-member-map{width:100%;height:auto;display:block}
+.council-member-map path[data-country]{fill:var(--map-off)}
+.council-member-map path[data-name]{fill:var(--muted)}
+.council-member-map path[data-marker]{fill:var(--map-on)}
+.council-member[data-active="uae"]     .council-member-map path[data-country="uae"],
+.council-member[data-active="bahrain"] .council-member-map path[data-country="bahrain"],
+.council-member[data-active="ksa"]     .council-member-map path[data-country="ksa"],
+.council-member[data-active="oman"]    .council-member-map path[data-country="oman"],
+.council-member[data-active="qatar"]   .council-member-map path[data-country="qatar"],
+.council-member[data-active="kuwait"]  .council-member-map path[data-country="kuwait"]{
+  fill:var(--map-on)}
+/* only these two whiten their own label on the live site: the two shapes big enough to hold it */
+.council-member[data-active="ksa"]  .council-member-map path[data-name="ksa"],
+.council-member[data-active="oman"] .council-member-map path[data-name="oman"]{fill:#fff}
+/* the active city marker is white, and Bahrain's own is transparent on their page */
+.council-member[data-active="uae"]     .council-member-map path[data-marker="uae"],
+.council-member[data-active="ksa"]     .council-member-map path[data-marker="ksa"],
+.council-member[data-active="oman"]    .council-member-map path[data-marker="oman"],
+.council-member[data-active="qatar"]   .council-member-map path[data-marker="qatar"],
+.council-member[data-active="kuwait"]  .council-member-map path[data-marker="kuwait"]{fill:#fff}
+.council-member[data-active="bahrain"] .council-member-map path[data-marker="bahrain"]{
+  fill:transparent}
+
+/* ---------------------------------------------------------------- narrow */
+@media (max-width:1000px){
+  .member-states-grid{grid-template-columns:repeat(2,1fr)}
+  .council-member__cols{grid-template-columns:1fr;gap:32px}}
+@media (max-width:640px){
+  .member-states-grid{grid-template-columns:1fr}
+  .council-member{padding:28px 20px 34px}
+  .council-member-details{gap:28px;flex-wrap:wrap}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none !important;animation:none !important}}
+
+
+/* ---------------------------------------------------------------- background */
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-position:center;background-repeat:no-repeat;background-size:cover;
+  filter:blur(3px);opacity:.07}
+body[data-bg="members"]::before{background-image:url("../toolkit/skyline.webp");filter:none;
+  opacity:.085}
+body[data-bg="uae"]::before{background-image:url("img/Emblem_Emirates.png")}
+body[data-bg="bahrain"]::before{background-image:url("img/Emblem_Bahrain.png")}
+body[data-bg="ksa"]::before{background-image:url("../flag-saudi-arabia.webp");filter:none}
+body[data-bg="oman"]::before{background-image:url("img/Emblem_Oman.png")}
+body[data-bg="qatar"]::before{background-image:url("img/Emblem_Qatar.png")}
+body[data-bg="kuwait"]::before{background-image:url("img/Emblem_Kuwait.png")}
+html{background:var(--page)}
+body{background:transparent}
+@media print{ body::before{display:none !important} }
