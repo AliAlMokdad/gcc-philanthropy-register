@@ -333,24 +333,28 @@ h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px
    reported to UN OCHA and official development assistance reported to the OECD, which may never be
    added together. Stating that in colour under the title is the one thing on this page that is
    allowed to be bold, and it is the page's actual subject rather than an ornament. ---- */
-h2.sel.is-lockup{display:block;font-weight:340;letter-spacing:-.02em;
+/* 560, not 340. The light end of the axis read as delicate at this size; this is the weight of a
+   masthead, and Source Serif holds it at 60px without the clog that 600 brings. */
+h2.sel.is-lockup{display:block;font-weight:560;letter-spacing:-.026em;
   margin-top:var(--s3);padding-bottom:var(--s4);text-wrap:balance}
 /* the band already gives the heading 24px and a rule, so 56px more under it was a gap rather
    than air */
 .l2head:has(h2.sel.is-lockup) > .inner{padding-bottom:var(--s4)}
-h2.sel.is-lockup::after{width:132px;height:3px;border-radius:2px;
+h2.sel.is-lockup::after{width:152px;height:5px;border-radius:2px;
   background:linear-gradient(90deg,var(--i-s2) 0,var(--i-s3) 42%,var(--i-c3) 78%,var(--i-c2) 100%)}
-.sel-pre{display:flex;align-items:center;gap:11px;
-  font:600 10px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
-  color:var(--ink-3);margin:0 0 14px}
-/* the hairline that turns the prefix into an issuing line rather than a small heading */
-.sel-pre::before{content:"";flex:none;width:26px;height:1px;background:var(--i-s3)}
+.sel-pre{display:flex;align-items:center;gap:12px;
+  font:700 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-2);margin:0 0 15px}
+/* a 3px BAR, not a hairline. At 1px it was a thread beside the title and pulled the whole lockup
+   toward looking unfinished. */
+.sel-pre::before{content:"";flex:none;width:30px;height:3px;border-radius:1px;
+  background:var(--i-s2)}
 .sel-main{display:block;font-size:clamp(31px,5.4vw,60px);line-height:1.02}
 @media (max-width:700px){
   h2.sel.is-lockup{padding-bottom:var(--s3)}
-  .sel-pre{font-size:9px;letter-spacing:.13em;margin-bottom:11px;gap:8px}
-  .sel-pre::before{width:18px}
-  h2.sel.is-lockup::after{width:96px;height:2px}
+  .sel-pre{font-size:10.5px;letter-spacing:.13em;margin-bottom:12px;gap:9px}
+  .sel-pre::before{width:22px;height:3px}
+  h2.sel.is-lockup::after{width:112px;height:4px}
 }
 h2.sel:focus,h2.sel:focus-visible{outline:none}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
@@ -1377,8 +1381,20 @@ ol.ranked a::before{top:9px;bottom:9px}
        to be a divider. ---- */
 .i-grp{flex:none;min-width:0}
 .i-grp + .i-grp{margin-left:30px}
-.i-grp-h{display:block;padding:0 14px 6px;
-  font:600 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-2)}
+/* THE RECORD NAME, as a link to where the figures can be found. Bigger and heavier because these
+   two names are what the whole page is organised by, and a 10px inert caption said the opposite.
+   The square is the same shape as the legend chips on the charts, in the same record colour, so the
+   name and its data carry one mark. It is deliberately NOT their real logo: see the note in the
+   builder. */
+.i-grp-h{display:inline-flex;align-items:center;gap:8px;padding:0 14px 8px;
+  font:700 13px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);
+  text-decoration:none}
+.i-grp-h::before{content:"";flex:none;width:9px;height:9px;border-radius:1px;
+  background:currentColor;box-shadow:inset 0 0 0 1px var(--i-slate)}
+.i-grp-h::after{content:"\2197";font-size:11px;opacity:.55;letter-spacing:0}
+.i-grp-h:hover{color:var(--ink)}
+.i-grp-h:hover::after{opacity:1}
+.i-grp-h:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:3px}
 .i-grp-t{display:flex;align-items:flex-end;gap:2px;border-top:2px solid var(--i-hair)}
 .i-grp.g-fts .i-grp-t{border-top-color:var(--i-s3)}
 .i-grp.g-oecd .i-grp-t{border-top-color:var(--i-c3)}
@@ -1441,7 +1457,8 @@ ol.ranked a::before{top:9px;bottom:9px}
   .i-switch{padding-left:var(--s3);padding-right:var(--s3);gap:var(--s3)}
   .i-views{min-height:0}
   .i-grp + .i-grp{margin-left:18px}
-  .i-grp-h{padding:0 10px 5px;font-size:9.5px;letter-spacing:.1em}
+  .i-grp-h{padding:0 10px 6px;font-size:11px;letter-spacing:.08em;gap:6px}
+  .i-grp-h::before{width:8px;height:8px}
   .i-tab{padding:9px 10px 10px;font-size:13px}
 }
 .i-rows.dense .i-r{padding:3px 0}
@@ -3954,7 +3971,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       +", "+q.composition.label+".");
     prov.push("Retrieved "+String(OE.meta.built||"").slice(0,10)+".");
     box.appendChild(el("p",{cls:"oe-prov",text:prov.join("  ")}));
-    var d=details("Sources and provenance for the official aid record",
+    /* provenance IS sources, and the reader is already inside the section that says so */
+    var d=details("Official aid sources",
       function(inner){ inner.appendChild(box); }, true);
     band.appendChild(d);
     return band;
@@ -4050,7 +4068,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     DETL.appendChild(el("h3",{cls:"i-detl-h",id:"i-detl-h",text:"The full lists"}));
 
     var METH=el("section",{cls:"i-meth",id:"i-method","aria-labelledby":"i-meth-h"});
-    METH.appendChild(el("h3",{cls:"i-meth-h",id:"i-meth-h",text:"Methodology and limitations"}));
+    /* "Methodology", not "Methodology and limitations": a section holding nothing but method and
+       limits does not need to list them in its own name. */
+    METH.appendChild(el("h3",{cls:"i-meth-h",id:"i-meth-h",text:"Methodology"}));
 
     /* NO PANEL HEADING. It used to say "GCC Philanthropy Intelligence" directly under a route
        heading that said "Funders, foundations and charities", which was two titles for one page.
@@ -4120,9 +4140,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     VIEW_ORDER.forEach(function(v){
       var sec=el("section",{cls:"i-view",id:"i-view-"+v.k,role:"tabpanel",
         "aria-labelledby":"i-tab-"+v.k,tabindex:"-1"});
+      /* NO BOLD PREFIX. The linked record name sits directly above this row at 13px, and the
+         note's own first sentence names its source, so the prefix was the same name a third time
+         in forty vertical pixels. */
       if(v.note) sec.appendChild(el("div",{cls:"i-src"},[
-        el("b",{text:v.src==="FTS" ? "UN OCHA FTS"
-                : v.src==="OECD" ? "OECD DAC" : "Both records"}),
         el("span",{text:v.note})
       ]));
       VIEW[v.k]=sec;
@@ -4142,23 +4163,57 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        between hairlines read as punctuation instead of as a name. Buttons keep tab semantics and
        arrow keys across the whole strip regardless of which block they sit in. */
     var bar=el("div",{cls:"i-switch"});
-    var tabs=el("div",{cls:"i-tabs",role:"tablist","aria-label":"Which record to read"});
+    /* a PLAIN container. The tablist role sits on each group's row of buttons instead, because a
+       tablist may own nothing but tabs and the record name above each group is a link. */
+    var tabs=el("div",{cls:"i-tabs"});
     var groups={};
     VIEW_ORDER.forEach(function(v){
       if(v.k==="aid" && !OE) return;
       var gk=v.group||"OTHER";
       if(!groups[gk]){
         var blk=el("div",{cls:"i-grp g-"+gk.toLowerCase()});
-        blk.appendChild(el("span",{cls:"i-grp-h","aria-hidden":"true",
-          text:gk==="FTS" ? "UN OCHA" : gk==="OECD" ? "OECD" : ""}));
-        blk.appendChild(el("div",{cls:"i-grp-t"}));
+        /* THE RECORD NAME IS A LINK NOW, to where these figures can actually be found. Both
+           checked live rather than assumed: fts.unocha.org answers as "Home | Financial Tracking
+           Service", and data-explorer.oecd.org answers as "OECD Data Explorer", which is the human
+           face of the sdmx.oecd.org endpoint tools/build-oecd/build_oecd.py calls.
+
+           NO LOGOS, and it is not an oversight. Their marks are the UN emblem and the OECD
+           wordmark, and putting either on an independent register implies an endorsement that does
+           not exist. That is the same objection that took the GCC emblem off this page's hero. The
+           coloured square is ours, and it is the shape the charts already use for these records.
+
+           aria-hidden is GONE: it is focusable now, and a focusable element inside an aria-hidden
+           one is a genuine fault rather than a lint complaint. The two letters cannot carry the
+           institution, so the accessible name does. */
+        var GRP={
+          FTS:{t:"UN OCHA", href:"https://fts.unocha.org/",
+               full:"UN OCHA Financial Tracking Service, the source of the humanitarian figures"},
+          OECD:{t:"OECD", href:"https://data-explorer.oecd.org/",
+                full:"OECD Data Explorer, the source of the official aid figures"}
+        };
+        var gi=GRP[gk];
+        if(gi){
+          var gl=el("a",{cls:"i-grp-h",id:"i-grp-h-"+gk.toLowerCase(),href:gi.href,
+            target:"_blank",rel:"noopener noreferrer",text:gi.t});
+          gl.setAttribute("aria-label", gi.full + ", opens in a new tab");
+          gl.setAttribute("title", gi.full);
+          blk.appendChild(gl);
+        }
+        /* THIS is the tablist, one per record, named by the record's own link. Keeps the link out
+           of it, so aria-required-children holds, and tells a screen reader which record a tab
+           belongs to from the structure rather than from a suffix on every tab name. */
+        var trow=el("div",{cls:"i-grp-t",role:"tablist"});
+        if(gi) trow.setAttribute("aria-labelledby","i-grp-h-"+gk.toLowerCase());
+        else trow.setAttribute("aria-label","Which record to read");
+        blk.appendChild(trow);
         groups[gk]=blk;
         tabs.appendChild(blk);
       }
       var b=el("button",{type:"button",cls:"i-tab",id:"i-tab-"+v.k,role:"tab",
         "aria-controls":"i-view-"+v.k,text:v.label});
-      /* the group label beside it is aria-hidden, being decoration, so the record has to live in
-         the tab's own name or a screen reader hears five peers and no boundary at all */
+      /* the record also stays on each tab's own name. The group is announced by its tablist now,
+         so this is belt and braces rather than the only carrier, and it keeps the record with the
+         tab for anything that announces a tab without its container. */
       b.setAttribute("aria-label", v.label + (
         v.group==="FTS" ? ", UN OCHA humanitarian record"
         : v.group==="OECD" ? ", OECD official aid record"
@@ -4603,7 +4658,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        is the thing a reader opens this tab to find, and it was at the bottom under a reference
        dump. insertBefore rather than a reshuffle of the build order, because the limitations text
        depends on figures computed further down. */
-    METH.insertBefore(details("Coverage and limitations, what this does not capture",
+    /* trimmed with the one above it, so the pair does not read as one edited and one forgotten */
+    METH.insertBefore(details("What this does not capture",
       function(box){
       var items=[
         ["Most Gulf giving is absent.","Zakat, sadaqah, waqf, private and family giving, and "+
