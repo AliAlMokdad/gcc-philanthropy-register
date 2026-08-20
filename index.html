@@ -494,7 +494,7 @@ main{padding-bottom:var(--s5)}
      that opened content has: hiding it printed "All 21 sectors and all 151 countries" and
      "Limitations, what this does not capture" as unlabelled lists. The marker goes, because a
      disclosure triangle means nothing on paper. */
-  #intel details>summary,#i-method details>summary{list-style:none}
+  #intel details>summary,#i-method details>summary,#i-detail details>summary{list-style:none}
   #intel details>summary::-webkit-details-marker,
   #i-method details>summary::-webkit-details-marker{display:none}
   .i-rows,.i-cbox{max-height:none !important;overflow:visible !important}
@@ -853,6 +853,19 @@ ol.ranked a::before{top:9px;bottom:9px}
   .i-dbar .t{display:none}
 }
 
+/* ---- the full lists, above the register composition. Same bounded treatment as Methodology,
+       because they are the same kind of thing: long reference material a reader opens on
+       purpose. Its rule is quieter than the dashboard's below it, so the dashboard still reads
+       as the start of the register half of the page. ---- */
+.i-detl{margin:var(--s4) 0 0;padding-top:var(--s3);border-top:1px solid var(--line-2)}
+.i-detl[hidden]{display:none !important}
+.i-detl *{box-sizing:border-box}
+.i-detl-h{margin:0;font:600 clamp(17px,1.8vw,20px)/1.25 var(--serif);color:var(--ink)}
+.i-detl-s{margin:7px 0 var(--s3);max-width:80ch;
+  font:400 13px/1.6 var(--sans);color:var(--ink-2)}
+.i-detl details:first-of-type{border-top:1px solid var(--line)}
+.i-detl details:last-of-type{border-bottom:1px solid var(--line)}
+
 /* ---- Methodology, at the foot of the page. Bounded like the card so it reads as a document
        section rather than loose text after a list, and set quieter than the intelligence above
        because a reader arrives here on purpose. ---- */
@@ -1151,17 +1164,21 @@ ol.ranked a::before{top:9px;bottom:9px}
   border-left:3px solid var(--orange-line);padding:9px 12px;margin-top:12px}
 
 /* folded depth */
-#intel details,#i-method details{border-top:1px solid var(--line)}
-#intel details>summary,#i-method details>summary{cursor:pointer;padding:15px var(--s4);list-style:none;
+#intel details,#i-method details,#i-detail details{border-top:1px solid var(--line)}
+#intel details>summary,#i-method details>summary,#i-detail details>summary{cursor:pointer;padding:15px var(--s4);list-style:none;
   display:flex;justify-content:space-between;gap:14px;align-items:center;
   font:600 15px/1.25 var(--display);color:var(--ink);letter-spacing:-.005em}
 #intel details>summary::-webkit-details-marker,
 #i-method details>summary::-webkit-details-marker{display:none}
-#intel details>summary::after,#i-method details>summary::after{content:"+";font:400 16px/1 var(--mono);color:var(--ink-3)}
-#intel details[open]>summary::after,#i-method details[open]>summary::after{content:"\2212"}
-#intel details>summary:hover,#i-method details>summary:hover{background:var(--paper);color:var(--ink)}
+#intel details>summary::after,#i-method details>summary::after,
+#i-detail details>summary::after{content:"+";font:400 16px/1 var(--mono);color:var(--ink-3)}
+#intel details[open]>summary::after,#i-method details[open]>summary::after,
+#i-detail details[open]>summary::after{content:"\2212"}
+#intel details>summary:hover,#i-method details>summary:hover,
+#i-detail details>summary:hover{background:var(--paper);color:var(--ink)}
 #intel details>summary:focus-visible,
-#i-method details>summary:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+#i-method details>summary:focus-visible,
+#i-detail details>summary:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 .i-dbody{padding:0 var(--s4) var(--s4)}
 .i-two{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4)}
 .i-scroll{max-height:340px;overflow-y:auto;padding-right:6px}
@@ -3919,6 +3936,16 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        at the very end of the page rather than beside the views: a reader looking for what a figure
        does not cover will go looking, and a reader who is not looking should not have provenance
        competing with the evidence for the same row of controls. */
+    /* THE FULL LISTS, above the register composition rather than at the foot. Complete
+       breakdowns of the humanitarian record, and the register's own open questions. Both are long
+       and both are reference, so they stay folded, but they sit with the material they belong to
+       instead of under a heading about method. */
+    var DETL=el("section",{cls:"i-detl",id:"i-detail","aria-labelledby":"i-detl-h"});
+    DETL.appendChild(el("h3",{cls:"i-detl-h",id:"i-detl-h",text:"The full lists"}));
+    DETL.appendChild(el("p",{cls:"i-detl-s",
+      text:"Every sector and every destination in the humanitarian record, in full, and the "
+         + "bodies that report funding without appearing in the register."}));
+
     var METH=el("section",{cls:"i-meth",id:"i-method","aria-labelledby":"i-meth-h"});
     METH.appendChild(el("h3",{cls:"i-meth-h",id:"i-meth-h",text:"Methodology and limitations"}));
     METH.appendChild(el("p",{cls:"i-meth-s",
@@ -4437,8 +4464,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     cr.appendChild(cnote);
     VIEW.countries.appendChild(cr);
 
-    /* folded depth */
-    METH.appendChild(details("All "+m.sectors_count+" sectors and all "+
+    /* the complete breakdowns. Reference, so folded, but with the evidence rather than the
+       method. */
+    DETL.appendChild(details("All "+m.sectors_count+" sectors and all "+
       nm(m.countries_reached)+" countries",function(box){
       var two=el("div",{cls:"i-two"});
       var a=el("div"),b=el("div");
@@ -4464,8 +4492,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
     var cands=D.rows.filter(function(r){
       return !r.reg && r.orgtype!=="Governments" && !r.why; });
-    /* maintenance material, so it says so and it sits last */
-    if(cands.length) METH.appendChild(details(
+    /* the register's own open questions, so they sit directly above the register composition
+       rather than under a heading about method */
+    if(cands.length) DETL.appendChild(details(
       "Research notes: reported funders with no register row, "+cands.length+" to consider",
       function(box){
       box.appendChild(el("p",{cls:"i-note i-note-top",text:
@@ -4544,6 +4573,11 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       if(!host) return;
       var old=document.getElementById("i-regdash");
       if(old && old.parentNode) old.parentNode.removeChild(old);
+      /* the full lists go immediately above the composition dashboard */
+      var oldD=document.getElementById("i-detail");
+      if(oldD && oldD.parentNode) oldD.parentNode.removeChild(oldD);
+      var ctrls0=host.querySelector(".controls");
+      if(ctrls0) host.insertBefore(DETL,ctrls0); else host.appendChild(DETL);
       var sec=el("section",{cls:"i-dash",id:"i-regdash","aria-labelledby":"i-dash-h"});
       sec.appendChild(el("h3",{cls:"i-dash-h",id:"i-dash-h",
         text:"What is in the register"}));
@@ -4666,13 +4700,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       window._iPrintWired=true;
       var wasOpen=null;
       window.addEventListener("beforeprint",function(){
-        var ds=document.querySelectorAll("#intel details, #i-method details");
+        var ds=document.querySelectorAll("#intel details, #i-detail details, #i-method details");
         wasOpen=Array.prototype.map.call(ds,function(d){ return d.open; });
         Array.prototype.forEach.call(ds,function(d){ d.open=true; });
       });
       window.addEventListener("afterprint",function(){
         if(!wasOpen) return;
-        var ds=document.querySelectorAll("#intel details, #i-method details");
+        var ds=document.querySelectorAll("#intel details, #i-detail details, #i-method details");
         Array.prototype.forEach.call(ds,function(d,i){
           if(i<wasOpen.length) d.open=wasOpen[i];
         });
@@ -5192,8 +5226,11 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   function methSection(){ return document.getElementById("i-method"); }
   function syncMeth(hide){
     var n=methSection(); if(n) n.hidden=hide;
-    /* the composition dashboard describes the whole register too, so it follows the same rule */
-    var d=document.getElementById("i-regdash"); if(d) d.hidden=hide;
+    /* the composition dashboard and the full lists describe the whole register and the whole
+       record, so they follow the same rule */
+    ["i-regdash","i-detail"].forEach(function(id){
+      var n=document.getElementById(id); if(n) n.hidden=hide;
+    });
   }
 
   function sync(){
@@ -5222,7 +5259,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       D=null; loading=false; built=false;
       /* the dashboard and Methodology belong to a build that no longer stands, so they go rather
          than sitting in the document with content nothing supports */
-      ["i-regdash","i-method"].forEach(function(id){
+      ["i-regdash","i-detail","i-method"].forEach(function(id){
         var n=document.getElementById(id);
         if(n && n.parentNode) n.parentNode.removeChild(n);
       });
