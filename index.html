@@ -3673,6 +3673,14 @@ function route(){
   var kind=(parts[0]||"").toLowerCase(), s;
   try{ s=slug(decodeURIComponent(parts[1]||"")); }
   catch(e){ s=slug(parts[1]||""); }
+  /* THE BODY STATE IS DECIDED HERE, BEFORE ANY EARLY RETURN. It used to be set further down,
+     after the home, news and invalid-route branches had already returned, so the class survived
+     leaving the list: #/a/list then News then home still carried list-only. It did no visible
+     harm, because the two things it hides are hidden on those routes anyway and the next register
+     route corrects it, but a body class that outlives its route is a latent trap for whatever is
+     added next. Every path through this function now leaves it correct. */
+  if(kind==="a" && s==="list") document.body.classList.add("list-only");
+  else document.body.classList.remove("list-only");
   /* NEWS BLOCK 4 of 4, part one: the news route.
      EXACTLY one segment reading "news". A prefix test would validate #/news/anything by
      accident, and the guard below would then send it home with the hash stripped.
@@ -3723,17 +3731,10 @@ function route(){
   el("l2").hidden=false;
   var nb2=document.getElementById("news");
   if(nb2) nb2.hidden=true;
-  /* THE LIST ROUTE STATES ITSELF ON THE BODY, and the stylesheet does the rest. #intel is built
-     and owned by another script block in this file, and the standing rule here is that the three
-     lanes never call into one another, so this sets a class and lets CSS hide the briefing and
-     the gate. The list is opened directly, because a route whose whole purpose is the list
-     should not arrive behind a button asking to see it. */
-  if(sel.kind==="a" && sel.slug==="list"){
-    document.body.classList.add("list-only");
-    listOpen = true;
-  }else{
-    document.body.classList.remove("list-only");
-  }
+  /* The class itself is set at the top of this function, before any early return. What belongs
+     here is the one thing that is about this selection rather than about the URL: a route whose
+     whole purpose is the list should not arrive behind a button offering to reveal it. */
+  if(sel.kind==="a" && sel.slug==="list") listOpen = true;
   if(sel.kind==="c"){
     paintWash(sel.name); paintPage(sel.name); setPlate(sel.name);
   }else if(sel.kind==="a"){
@@ -4059,6 +4060,13 @@ function runMeaningSearch(){
   var c = readControls(), q = el("q").value.trim().slice(0, Q_MAX);
   var sel = current, mySeq = ++aiSeq;
   if(q.length < AI_MIN_CHARS){ setAiNote(""); return; }
+  /* NOTHING TO SEARCH FOR MEANS NOTHING TO CLAIM. plan() returns null when a query leaves no
+     usable word behind, which covers someone mid-word and also a query that is only punctuation.
+     Showing the whole selection in that state is deliberate and stays: a single typed letter
+     should not answer "nothing matches". What was wrong was the sentence underneath it, which
+     told the reader these 1,862 rows "are word matches" for a query like "!!!" that matched
+     nothing and could not match anything. The rows are unchanged; the false claim is gone. */
+  if(!plan(q)){ setAiNote(""); return; }
   var key = norm(q);
 
   aiPending = true;
@@ -6493,9 +6501,15 @@ function rslug(s){
 }
 /* An organisation has no route of its own in the register: records are rows in a list, not
    pages. The register does answer a search, so the honest destination for "related
-   organisation" is that organisation searched for in the full list. */
+   organisation" is that organisation searched for in the full list.
+
+   THAT LIST NOW HAS ITS OWN ROUTE AND THIS FOLLOWS IT. These seventeen links pointed at
+   #/a/all, which since the split is the Donor Intelligence briefing: following one landed on
+   the organisation list, but the page named itself Donor Intelligence and marked that as the
+   current product, so the reader ended up somewhere that did not match what they clicked.
+   #/a/list is the register, which is what "in the register" means. */
 function orgHref(name){
-  return "#/a/all?q=" + encodeURIComponent(txt(name));
+  return "#/a/list?q=" + encodeURIComponent(txt(name));
 }
 
 /* ------------------------------------------------------------------ dates
@@ -6824,7 +6838,17 @@ function matchesQuery(it, q){
             ].join(" · ");
   var words = norm(q).split(" ").filter(Boolean);
   var h = norm(hay);
-  return words.every(function(w){ return h.indexOf(w) > -1; });
+  /* A QUERY THAT SURVIVES NORMALISATION AS NOTHING MATCHES NOTHING. "!!!" normalises to an empty
+     word list, and every() over an empty list is true, so a reader who typed punctuation was
+     shown all forty-three developments as though they were results. They typed something, so the
+     honest answer is that nothing matches it, not silently everything. */
+  if(!words.length) return false;
+  /* ANCHORED TO A WORD START, not anywhere in the string. indexOf matched inside any word, so
+     "men" returned every development that mentioned government, development or management. A
+     leading space on both sides pins the match to a word boundary on the left while still
+     allowing a partial word on the right, so "gov" still finds government, which is what someone
+     typing a prefix expects. The same change was made in the toolkit for the same reason. */
+  return words.every(function(w){ return (" " + h).indexOf(" " + w) >= 0; });
 }
 function inPeriod(it, days){
   if(days === "all") return true;
@@ -7232,9 +7256,14 @@ function render(keepFocus){
      strongest. */
   host.appendChild(officialStrip());
 
-  var all = FEED.items;
-  var top = topSection(all);
-  if(top) host.appendChild(top);
+  /* TOP DEVELOPMENTS IS AN OVERVIEW OF EVERYTHING, SO IT STANDS DOWN WHEN SOMETHING IS FILTERED.
+     It was always built from the unfiltered feed, which meant a search for a term that matched
+     nothing still showed four stories under a heading, above an empty state, with every country
+     count reading zero. Whatever the reader has narrowed to, this block was not part of it. */
+  if(!anyFilter()){
+    var top = topSection(FEED.items);
+    if(top) host.appendChild(top);
+  }
 
   /* latest developments */
   var sec = el("section", {cls:"n-sec", "aria-labelledby":"n-latest-h"});
