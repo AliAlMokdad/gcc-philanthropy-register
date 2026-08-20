@@ -244,3 +244,15 @@ body{background:transparent}
 .council-member__source{margin:18px 0 0;max-width:74ch;
   font:400 12.5px/1.55 var(--sans);color:var(--muted)}
 .council-member__source a{text-decoration:underline;text-underline-offset:2px}
+
+
+/* The country name is now the page's h1 rather than a span, so it needs its heading margins
+   removed to sit exactly where the span did. Nothing about its appearance changes. */
+h1.council-member__name{margin:0}
+
+/* Visually hidden, still read aloud. The landing page has no visible title and adding one would
+   change a layout already signed off, so the heading exists for anyone navigating by heading and
+   not on screen. clip-path with a 1px box is the form that survives being inside a flex or grid
+   parent, which display:none and width:0 do not. */
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip-path:inset(50%);white-space:nowrap;border:0}

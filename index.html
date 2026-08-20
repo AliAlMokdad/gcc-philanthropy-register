@@ -413,7 +413,13 @@ h2.sel.is-lockup::after{width:152px;height:5px;border-radius:2px;
   .sel-pre::before{width:22px;height:3px}
   h2.sel.is-lockup::after{width:112px;height:4px}
 }
-h2.sel:focus,h2.sel:focus-visible{outline:none}
+/* SUPPRESSED FOR :focus, RESTORED FOR :focus-visible. This heading is focused by script on every
+   register navigation, and with the indicator removed outright a keyboard reader lost all trace
+   of where they were. :focus is what a script-driven move after a mouse click matches, so the
+   ring stays off there; :focus-visible is what the browser matches when the user is actually on
+   the keyboard, which is precisely when it is needed. */
+h2.sel:focus{outline:none}
+h2.sel:focus-visible{outline:2px solid var(--focus);outline-offset:5px;border-radius:3px}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
 /* the whole-register route sets no subtitle, so the paragraph renders empty */
 .sel-sub:empty{display:none}
@@ -526,8 +532,10 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
   .listgate:not([hidden]) .lg-go{animation:none}
   .lg-btn::after,.lg-go{transition:none}
 }
+/* same trade as h2.sel: the list container takes focus when the full list is opened, so the ring
+   is kept for the keyboard and dropped for the mouse */
 #listwrap:focus{outline:none}
-#listwrap:focus-visible{outline:none}
+#listwrap:focus-visible{outline:2px solid var(--focus);outline-offset:4px;border-radius:3px}
 /* with the list closed the opener is the section above Methodology, so Methodology stops holding
    the gap it keeps for a list. :has on the container rather than an adjacent-sibling selector, so
    it survives anything inserted between them. */
@@ -1150,6 +1158,10 @@ ol.ranked a::before{top:9px;bottom:9px}
 }
 #intel *{box-sizing:border-box}
 #intel[hidden]{display:none !important}
+/* the Register route is the list, so the briefing and the button that offers to reveal the list
+   both stand down. Hidden in CSS rather than by touching another lane's DOM. */
+body.list-only #intel{display:none !important}
+body.list-only #listgate{display:none !important}
 .i-card{background:var(--i-surface);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 
 /* ---- type scale, referenced not guessed ---- */
@@ -1572,7 +1584,12 @@ ol.ranked a::before{top:9px;bottom:9px}
    The square is the same shape as the legend chips on the charts, in the same record colour, so the
    name and its data carry one mark. It is deliberately NOT their real logo: see the note in the
    builder. */
-.i-grp-h{display:inline-flex;align-items:center;gap:8px;padding:0 14px 8px;
+/* min-height 24px because this is a LINK and it measured 21: 13px of line plus 8px of padding,
+   three short of the smallest target WCAG 2.2 accepts. The height is added rather than the
+   padding so the label stays centred in its own box and nothing needs a negative margin to sit
+   back where it was; a negative margin is what made a neighbouring target partially obscured
+   the last time this was fixed by hand elsewhere on this page. */
+.i-grp-h{display:inline-flex;align-items:center;gap:8px;padding:0 14px 8px;min-height:24px;
   font:700 13px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);
   text-decoration:none}
 .i-grp-h::before{content:"";flex:none;width:9px;height:9px;border-radius:1px;
@@ -1761,17 +1778,22 @@ body:has(#l1:not([hidden])) .pbar{display:none}
    Three in 852px gave 284px a cell; four in the same width would give 213px, and the longest
    label cannot hold that at its clamp. The two-column fallback also moves up, from 800px to
    1000px, because four cells stop fitting their labels well before a tablet. */
-.portal-news{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
-  max-width:1128px;margin:22px auto 0;padding:0}
-@media (max-width:1000px){ .portal-news{grid-template-columns:1fr 1fr;max-width:620px} }
+/* FIVE DOORS. auto-fit rather than a fixed column count, because five is the first number here
+   that does not divide tidily into any one row on every width: it flows to five, then three,
+   then two, then one, and the minimum is the width the longest label needs rather than a
+   breakpoint guessed at. */
+.portal-news{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:12px;
+  max-width:1180px;margin:22px auto 0;padding:0}
 @media (max-width:520px){ .portal-news{grid-template-columns:1fr} }
 .portal-news a{display:block;padding:16px 20px;text-decoration:none;
   border:1px solid var(--line-2);border-top:2px solid var(--accent);border-radius:2px;
   background:var(--paper);text-align:left;transition:border-color .12s,background .12s}
 .portal-news a:hover{border-color:var(--accent);background:var(--accent-soft)}
 .portal-news a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.pn-label{display:block;font:600 clamp(17px,1.9vw,20px)/1.24 var(--serif);color:var(--ink);
-  letter-spacing:-.008em}
+/* the ceiling drops from 20px to 18px now there are five doors in a row rather than four: at 20
+   the two longest labels wrapped and stranded their arrow alone on a second line. */
+.pn-label{display:block;font:600 clamp(16px,1.55vw,18px)/1.28 var(--serif);color:var(--ink);
+  letter-spacing:-.008em;text-wrap:balance}
 .pn-label::after{content:" \2192";color:var(--accent)}
 .portal-news a:hover .pn-label{color:var(--accent-2)}
 @media (max-width:600px){
@@ -2228,7 +2250,26 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <ellipse class="cwb" cx="180" cy="600" rx="360" ry="120" transform="rotate(18 180 600)"/>
   </g>
 </svg>
-<a class="skip" href="#main">Skip to content</a>
+<!-- A SKIP LINK MOVES FOCUS, IT DOES NOT NAVIGATE. href stays #main so the element keeps its
+     meaning and still works on a cold load, but the click is intercepted below: this file's
+     router reads "main" as an unknown route, and following the href therefore showed the home
+     portal and stripped the hash, so from News or Intelligence this link LEFT the page it was
+     supposed to skip into. -->
+<a class="skip" href="#main" id="skiplink">Skip to content</a>
+<script>
+(function(){
+  var a=document.getElementById("skiplink");
+  if(!a) return;
+  a.addEventListener("click",function(e){
+    var m=document.getElementById("main");
+    if(!m) return;                       /* no target: let the href do whatever it can */
+    e.preventDefault();                  /* the hash is never touched, so the router never runs */
+    if(!m.hasAttribute("tabindex")) m.setAttribute("tabindex","-1");
+    m.focus({preventScroll:true});
+    m.scrollIntoView({block:"start"});
+  });
+})();
+</script>
 
 <!-- NEWS BLOCK 2 of 4: the product bar. ABOVE the big masthead, not inside it, because the
      masthead is hidden on the portal, where the centred emblem is the identity, and a
@@ -2240,9 +2281,10 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <nav aria-label="GCC Philanthropy products">
       <a class="pbar-brand" href="#">GCC Philanthropy</a>
       <ul class="pbar-nav">
-        <li><a href="#" data-nav="register">Register</a></li>
-        <li><a href="#/a/all" data-nav="intel">Intelligence</a></li>
+        <li><a href="#/a/all" data-nav="intel">Donor Intelligence</a></li>
+        <li><a href="#/a/list" data-nav="register">Register</a></li>
         <li><a href="#/news" data-nav="news">News</a></li>
+        <li><a href="toolkit/">Toolkit</a></li>
       </ul>
     </nav>
   </div>
@@ -2284,8 +2326,11 @@ body:has(#l1:not([hidden])) .pbar{display:none}
         <a href="members/" id="membersdoor">
           <span class="pn-label">GCC Members</span>
         </a>
-        <a href="#/a/all" id="fulllist">
-          <span class="pn-label">GCC Philanthropy Register</span>
+        <a href="#/a/all" id="intellink">
+          <span class="pn-label">Donor Intelligence</span>
+        </a>
+        <a href="#/a/list" id="fulllist">
+          <span class="pn-label">Register</span>
         </a>
         <a href="#/news" id="newsdoor">
           <span class="pn-label">News &amp; Developments</span>
@@ -3524,6 +3569,15 @@ function select(kind,s){
     /* the whole-register view is the intelligence page, so it wears that title. parts splits it
        into the institutional prefix, which the site masthead already says, and the words that are
        this page's own. */
+    /* TWO WAYS IN, ONE DATA PATH. "list" is the register itself and carries the register's
+       title; anything else on this kind is the intelligence briefing. The rows are identical
+       either way, so both flow through computeFiltered, fillPick and the pager unchanged. */
+    if(s === "list"){
+      return {kind:"a",slug:"list",
+        name:"Gulf Cooperation Council (GCC) Philanthropy Register",
+        parts:["Gulf Cooperation Council (GCC)","Philanthropy Register"],
+        sub:"",rows:ROWS.slice()};
+    }
     return {kind:"a",slug:"all",
       name:"Gulf Cooperation Council (GCC) Philanthropy Donor Intelligence",
       parts:["Gulf Cooperation Council (GCC)","Philanthropy Donor Intelligence"],
@@ -3639,6 +3693,17 @@ function route(){
   el("l2").hidden=false;
   var nb2=document.getElementById("news");
   if(nb2) nb2.hidden=true;
+  /* THE LIST ROUTE STATES ITSELF ON THE BODY, and the stylesheet does the rest. #intel is built
+     and owned by another script block in this file, and the standing rule here is that the three
+     lanes never call into one another, so this sets a class and lets CSS hide the briefing and
+     the gate. The list is opened directly, because a route whose whole purpose is the list
+     should not arrive behind a button asking to see it. */
+  if(sel.kind==="a" && sel.slug==="list"){
+    document.body.classList.add("list-only");
+    listOpen = true;
+  }else{
+    document.body.classList.remove("list-only");
+  }
   if(sel.kind==="c"){
     paintWash(sel.name); paintPage(sel.name); setPlate(sel.name);
   }else if(sel.kind==="a"){
@@ -4192,7 +4257,20 @@ function initBerry(){
    synthesised with Web Audio so there is no asset to ship and it works offline. the
    context is created lazily on the first click, which is the gesture browsers require. */
 var _actx=null;
+/* SOUND IS OFF FOR ANYONE WHO ASKED FOR LESS. Both chimes are decorative: they confirm a click
+   that the screen already confirms. There is no prefers-reduced-sound media query, and
+   prefers-reduced-motion is the established stand-in for "I do not want incidental effects" —
+   this page already honours it in six places for motion, so honouring it here is consistent
+   rather than novel. Read live on every call rather than cached at load, because the setting can
+   change while the page is open. */
+function quietWanted(){
+  try{
+    return !!(window.matchMedia &&
+              window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }catch(e){ return false; }
+}
 function chime(){
+  if(quietWanted()) return;
   try{
     var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return;
     _actx=_actx||new AC();
@@ -4213,6 +4291,7 @@ function chime(){
 
 /* a warmer three note flourish for the signature: C5, E5, G5, soft and elegant */
 function sigChime(){
+  if(quietWanted()) return;
   try{
     var AC=window.AudioContext||window.webkitAudioContext; if(!AC) return;
     _actx=_actx||new AC();
@@ -4239,7 +4318,12 @@ function wire(){
     e.preventDefault();
     chime();
     var q=el("hq").value.trim();
-    location.hash = "#/a/all" + (q ? "?q="+encodeURIComponent(q) : "");
+    /* A SEARCH LANDS ON THE REGISTER, not on the briefing. Now that #/a/all is Donor
+       Intelligence and #/a/list is the Register, a query about organisations belongs on the
+       route that IS the list of organisations: the answer is the matching rows, and the
+       briefing above them is a different question. The rows are identical either way, so this
+       changes what the reader sees first and nothing about what is searched. */
+    location.hash = "#/a/list" + (q ? "?q="+encodeURIComponent(q) : "");
   });
   initBerry();
   /* the desktop placeholder is a touch long for a narrow phone, so shorten it there */
@@ -7312,8 +7396,13 @@ function markNav(){
   var raw = location.hash.replace(/^#\/?/, "");
   var i = raw.indexOf("?");
   var path = (i > -1 ? raw.slice(0, i) : raw).replace(/\/+$/, "").toLowerCase();
-  var current = "register";
+  /* NOTHING is current by default. The old default marked Register as the current product on
+     every route including the home portal, which was wrong the moment Register stopped meaning
+     "home". A country or a category view IS the register, so those mark it too. */
+  var current = "";
   if(path === "news") current = "news";
+  else if(path === "a/list") current = "register";
+  else if(path.indexOf("c/") === 0 || path.indexOf("t/") === 0) current = "register";
   /* #/a/all leads with the intelligence briefing, so that is the product a reader on that
      route is looking at. The register list continues underneath it, and the register's own
      nav item is one click away, which is the honest compromise: the same URL genuinely is

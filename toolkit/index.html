@@ -161,7 +161,13 @@ h2.doc-t::after{content:"";display:block;width:132px;height:4px;border-radius:2p
 h2.doc-t{margin:var(--s5) 0 0;font:600 clamp(24px,2.4vw,33px)/1.1 var(--display);
   letter-spacing:-.008em;
   text-transform:uppercase;color:var(--accent)}
+/* SUPPRESSED FOR :focus, RESTORED FOR :focus-visible. The article renderer moves focus to this
+   heading with .focus(), and with the indicator removed outright a keyboard reader lost all
+   trace of where they were. :focus still fires on a script-driven move after a mouse click, so
+   the ring stays off there; :focus-visible is what the browser matches when the user is actually
+   navigating by keyboard, which is exactly when the ring is needed. */
 h2.doc-t:focus{outline:none}
+h2.doc-t:focus-visible{outline:2px solid var(--focus);outline-offset:4px;border-radius:2px}
 @media (max-width:600px){ h2.doc-t{font-size:22px} }
 .doc-lead{margin:var(--s3) 0 0;max-width:88ch;font:400 16px/1.55 var(--sans);color:var(--ink)}
 .doc-kw{margin:var(--s3) 0 0;display:flex;flex-wrap:wrap;gap:4px 12px;
@@ -422,21 +428,56 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   }
   function mins(n){ return n.minutes+(n.minutes===1?" minute read":" minutes read"); }
 
+  /* A TABLE OF CONTENTS, on request. The four front-matter paragraphs are gone from this page:
+     a reader arriving here now sees titles and clicks one to reach that section's list, which is
+     what Ali asked for. Nothing but titles, so no abstracts and no read times either; those
+     already live one level down where the articles are.
+
+     The paragraphs are removed from the RENDER and NOT from notes.json. DATA.guide still holds
+     his own standard, purpose, nature and accuracy text, so nothing he wrote has been destroyed
+     and any of it goes back by restoring one line. Deleting an author's source text in order to
+     hide it from a page is the wrong trade. */
   function showHome(){
     markNav(null);
     crumbs([]);
     document.title="Toolkit | GCC Philanthropy";
     var host=sheet(true);
     var left=el("div",{cls:"home-col"});
-    /* Ali's own front matter, transcribed: the guide's title line, its standard, its Purpose and
-       Scope paragraph and its Accuracy boundary. No summary of mine. */
     left.appendChild(el("h2",{cls:"home-h",text:"GCC Philanthropy"}));
-    var g=DATA.guide||{};
-    [["home-sub",g.standard],["home-p",g.purpose],["home-p",g.nature],["home-p",g.accuracy]]
-      .forEach(function(pr){ if(pr[1]) left.appendChild(el("p",{cls:pr[0],text:pr[1]})); });
+    var ol=el("ol",{cls:"home-toc"});
+    SECTIONS.forEach(function(sec){
+      var a=el("a",{href:"#/"+sec.id});
+      a.appendChild(el("span",{cls:"toc-t",text:sec.name}));
+      ol.appendChild(el("li",null,[a]));
+    });
+    left.appendChild(ol);
     host.appendChild(left);
     window.scrollTo(0,0);
   }
+
+  /* styled here rather than in the sheet above, so the whole change to this page lives in one
+     place and can be reverted in one edit */
+  (function(){
+    var st=document.createElement("style");
+    st.textContent=
+      /* .home-col centres a 76ch column, which suits prose and leaves a short list of titles
+         floating in the middle of a wide sheet. On this page the column is the list, so it
+         starts at the sheet's own left edge and takes a measure chosen for titles. */
+      ".home-col:has(.home-toc){max-width:none;margin-inline:0}"+
+      ".home-toc{list-style:none;margin:var(--s4) 0 0;padding:0;counter-reset:toc;"+
+        "max-width:740px}"+
+      ".home-toc li{counter-increment:toc;border-top:1px solid var(--line)}"+
+      ".home-toc li:last-child{border-bottom:1px solid var(--line)}"+
+      ".home-toc a{display:flex;align-items:baseline;gap:18px;padding:17px 4px;"+
+        "text-decoration:none;color:var(--ink)}"+
+      ".home-toc a::before{content:counter(toc,decimal-leading-zero);flex:none;"+
+        "font:600 11px/1.4 var(--mono);letter-spacing:.1em;color:var(--ink-3)}"+
+      ".home-toc .toc-t{font:600 clamp(17px,1.7vw,21px)/1.3 var(--serif);letter-spacing:-.01em}"+
+      ".home-toc a:hover{background:var(--accent-soft)}"+
+      ".home-toc a:hover .toc-t{color:var(--accent-2)}"+
+      ".home-toc a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}";
+    document.head.appendChild(st);
+  })();
 
   function showSection(sec){
     markNav(sec.id);
@@ -590,7 +631,12 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     SECTIONS.forEach(function(s){
       s.notes.forEach(function(n){
         if(seen[n.id]) return;
-        if(!words.every(function(w){ return n._hay.indexOf(w)>=0; })) return;
+        /* ANCHORED TO A WORD START, not anywhere in the string. indexOf matched a query inside
+           any word, so "men" returned all 35 articles through government, engagement and
+           management, and "art" and "ship" returned 32 each with no genuine hit. A leading space
+           on both sides of the test pins the match to a word boundary on the left while still
+           allowing a partial word on the right, so "gov" finds government and "men" does not. */
+        if(!words.every(function(w){ return (" "+n._hay).indexOf(" "+w)>=0; })) return;
         var strong=0;
         words.forEach(function(w){ if(n._strong.indexOf(w)>=0) strong++; });
         seen[n.id]=1; hits.push({s:s,n:n,strong:strong});
