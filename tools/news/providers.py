@@ -300,13 +300,29 @@ def fetch_rss(source, budget=None):
     else:
         urls.append((None, source["url"]))
 
+    # THE CIRCUIT BREAKER. Two identical failures from one source mean it is blocked, not flaky,
+    # and there is nothing to be gained from asking it another twelve times with backoff.
+    tripped, streak, last_sig = False, 0, None
     for query, url in urls:
+        if tripped:
+            statuses.append({"source_id": source["id"], "query": query, "ok": False,
+                             "http": None, "records": 0,
+                             "error": "skipped: this source is not answering this run",
+                             "quota_note": None})
+            continue
         code, body, err = http_get(url, accept="application/rss+xml,application/xml,text/xml,*/*")
         st = {"source_id": source["id"], "query": query, "ok": False,
               "http": code, "records": 0, "error": err, "quota_note": None}
         if code != 200 or not body or not body.strip():
+            sig = (code, len(body or b""))
+            streak = streak + 1 if sig == last_sig else 1
+            last_sig = sig
+            if streak >= 2 and len(urls) > 2:
+                tripped = True
+                st["error"] = (err or "") +                     " | breaker tripped: two identical failures, so the remaining %d queries "                     "for this source are skipped" % (len(urls) - urls.index((query, url)) - 1)
             statuses.append(st)
             continue
+        streak, last_sig = 0, None
         try:
             root = ET.fromstring(body)
         except Exception as e:
