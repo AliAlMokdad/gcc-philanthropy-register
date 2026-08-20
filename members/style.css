@@ -113,22 +113,27 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   background-position:center;background-repeat:no-repeat;background-size:cover;
   filter:blur(3px);opacity:.07}
 /* THE PANORAMA ON THE SIX-STATE PAGE.
-   Full-bleed behind the boxes did not work: the six boxes sit exactly where the skyline sits,
-   so the towers showed only as chopped strips between the cards and read as noise. It earns
-   its place as a HORIZON instead, a band held to the foot of the viewport at its own
-   proportions, with the page given enough bottom room that the boxes never cover the
-   buildings. Faded in at the top so it rises out of the ground rather than starting on a line.
-   Fixed, so the horizon holds while the boxes scroll over it. */
-body[data-bg="members"]::before{
-  top:auto;bottom:0;height:min(48vh,440px);
-  background-image:url("img/gcc-panorama.webp");
-  background-position:bottom center;background-size:cover;
-  filter:none;opacity:.24;
-  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 58%,#000 100%);
-  mask:linear-gradient(to bottom,transparent 0,#000 58%,#000 100%)}
-/* room for the horizon, so the boxes stop above it */
-body[data-bg="members"] .page{padding-bottom:clamp(320px,46vh,480px)}
-@media (forced-colors:active){ body[data-bg="members"]::before{display:none} }
+   It fills the space that is already there rather than space made for it. The page is a flex
+   column, the boxes take the height they need, and the picture is the last flex item with
+   flex-grow, so it takes exactly what is left between the boxes and the foot of the window and
+   no empty ground survives. A min-height keeps it from collapsing to nothing when the boxes
+   fill the window, and it grows on a tall screen.
+   Full-bleed behind the boxes was tried first and was wrong: the six boxes sit where the
+   skyline sits, so the towers showed as chopped strips in the gaps between cards. Faded in at
+   the top so it rises out of the ground with no line where it starts. */
+body[data-bg="members"]{min-height:100vh;display:flex;flex-direction:column}
+body[data-bg="members"] .page{flex:0 0 auto;padding-bottom:32px}
+body[data-bg="members"]::before{display:none}
+/* the floor is 120px, not more: at a 1000px window the boxes plus this land exactly on the
+   viewport, so the picture never pushes the page taller than it already is */
+body[data-bg="members"]::after{content:"";flex:1 1 auto;min-height:120px;
+  pointer-events:none;
+  background:url("img/gcc-panorama.webp") bottom center/cover no-repeat;
+  opacity:.24;
+  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 55%,#000 100%);
+  mask:linear-gradient(to bottom,transparent 0,#000 55%,#000 100%)}
+@media (forced-colors:active){ body[data-bg="members"]::after{display:none} }
+@media print{ body[data-bg="members"]::after{display:none !important} }
 body[data-bg="uae"]::before{background-image:url("img/Emblem_Emirates.png")}
 body[data-bg="bahrain"]::before{background-image:url("img/Emblem_Bahrain.png")}
 body[data-bg="ksa"]::before{background-image:url("../flag-saudi-arabia.webp");filter:none}
