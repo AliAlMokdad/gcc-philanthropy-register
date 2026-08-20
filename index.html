@@ -291,7 +291,14 @@ details.more ol.ranked{margin-top:var(--s3)}
   -webkit-mask-image:radial-gradient(64% 64% at 50% 50%,#000 0%,rgba(0,0,0,.72) 52%,rgba(0,0,0,0) 86%);
           mask-image:radial-gradient(64% 64% at 50% 50%,#000 0%,rgba(0,0,0,.72) 52%,rgba(0,0,0,0) 86%)}
 @media (prefers-color-scheme:dark){ .flagplate.is-emblem{opacity:.28} }
-@media (min-width:900px){ .l2head > .inner{padding-right:min(40vw,470px)} }
+@media (min-width:900px){
+  .l2head > .inner{padding-right:min(40vw,470px)}
+  /* NOTHING TO CLEAR, NOTHING RESERVED. The padding above exists to hold the heading off the
+     country flag watermark. The whole-register view and the category views carry no plate, so on
+     those it was 470px of empty band, about a third of the width, which is what reads as a hole
+     beside the title. Keyed to the plate's own hidden attribute so it cannot fall out of step. */
+  .l2head:has(> .flagplate[hidden]) > .inner{padding-right:var(--s5)}
+}
 @media (max-width:899px){
   .flagplate{height:min(34vw,132px);opacity:.10;right:-6%}
 }
@@ -317,8 +324,38 @@ h2.sel{font:600 32px/1.08 var(--display);margin:var(--s2) 0 var(--s3);
 h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
   background:var(--accent);border-radius:1px}
 @media (min-width:700px){ h2.sel{font-size:46px;line-height:1.04;letter-spacing:0} }
+
+/* ---- THE TITLE LOCKUP, on the whole-register view only.
+   Two tiers because the words "Gulf Cooperation Council (GCC) Philanthropy" already sit in the
+   site masthead one line above: repeated at the same size it reads as a stutter, so the shared
+   prefix becomes the label a document carries and the distinctive half takes the size.
+   The rule beneath runs BLUE INTO TEAL. Those are the page's two records, humanitarian funding
+   reported to UN OCHA and official development assistance reported to the OECD, which may never be
+   added together. Stating that in colour under the title is the one thing on this page that is
+   allowed to be bold, and it is the page's actual subject rather than an ornament. ---- */
+h2.sel.is-lockup{display:block;font-weight:340;letter-spacing:-.02em;
+  margin-top:var(--s3);padding-bottom:var(--s4);text-wrap:balance}
+/* the band already gives the heading 24px and a rule, so 56px more under it was a gap rather
+   than air */
+.l2head:has(h2.sel.is-lockup) > .inner{padding-bottom:var(--s4)}
+h2.sel.is-lockup::after{width:132px;height:3px;border-radius:2px;
+  background:linear-gradient(90deg,var(--i-s2) 0,var(--i-s3) 42%,var(--i-c3) 78%,var(--i-c2) 100%)}
+.sel-pre{display:flex;align-items:center;gap:11px;
+  font:600 10px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
+  color:var(--ink-3);margin:0 0 14px}
+/* the hairline that turns the prefix into an issuing line rather than a small heading */
+.sel-pre::before{content:"";flex:none;width:26px;height:1px;background:var(--i-s3)}
+.sel-main{display:block;font-size:clamp(31px,5.4vw,60px);line-height:1.02}
+@media (max-width:700px){
+  h2.sel.is-lockup{padding-bottom:var(--s3)}
+  .sel-pre{font-size:9px;letter-spacing:.13em;margin-bottom:11px;gap:8px}
+  .sel-pre::before{width:18px}
+  h2.sel.is-lockup::after{width:96px;height:2px}
+}
 h2.sel:focus,h2.sel:focus-visible{outline:none}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
+/* the whole-register route sets no subtitle, so the paragraph renders empty */
+.sel-sub:empty{display:none}
 
 .controls{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center;
   padding:var(--s4) 0 var(--s3)}
@@ -489,10 +526,18 @@ main{padding-bottom:var(--s5)}
 /* PRINT. Views exist for a screen reader with a scrollbar, not for paper. On paper every view
    is expanded, in source order, with its source label, and the control itself is gone. */
 @media print{
-  /* the scroll-to buttons go: on paper there is nowhere to scroll to. The transition SENTENCE
-     stays, because "the order is not a ranking" is a statement about the list a reader is
-     holding, not a control. */
-  .i-switch,.i-jump,.i-more,.i-nav,.i-vlab,.i-over-go,.i-dash-pick{display:none !important}
+  /* the scroll-to buttons go: on paper there is nowhere to scroll to. .i-over goes with them
+     rather than only its button, because the sentence that used to sit beside it was removed and
+     an empty flex footer was being printed with its margin. */
+  .i-switch,.i-jump,.i-more,.i-nav,.i-vlab,.i-over,.i-dash-pick{display:none !important}
+
+  /* THE DIVIDERS COME BACK AS BORDERS. The four section rules are background images now, and a
+     printer drops background images, so on paper the page lost every boundary between its
+     sections. Same weights, same order, drawn in a way print keeps. */
+  .i-sig{background:none !important;border-top:1px solid var(--ink) !important}
+  .i-detl{background:none !important;border-top:1px solid var(--ink-3) !important}
+  .i-dash{background:none !important;border-top:2px solid var(--ink) !important}
+  .i-meth{background:none !important;border-top:2px solid var(--ink-3) !important}
   .i-view[hidden]{display:block !important}
   .i-views{min-height:0}
   .i-view{break-before:page}
@@ -759,34 +804,24 @@ ol.ranked a::before{top:9px;bottom:9px}
 /* the emblem keeps the house link styling untouched. Nothing is added beside the mark. */
 
 #intel{margin:var(--s4) 0 0}
-/* ---- the masthead. Outside the card on purpose: the title, the signals and the data basis are
-       the publication, and the card below them is the instrument. One giant bounded widget read
-       as a dashboard; this reads as a document with a tool in it. ---- */
-.i-mast{margin:0 0 var(--s3)}
-.i-mast-t{margin:0;font:600 clamp(25px,3.1vw,34px)/1.12 var(--serif);color:var(--ink);
-  letter-spacing:-.011em}
-.i-mast-s{margin:12px 0 0;max-width:62ch;
-  font:400 clamp(16px,1.4vw,18px)/1.52 var(--serif);color:var(--ink-2)}
-@media (max-width:600px){ .i-mast{margin-bottom:var(--s2)} }
-
 /* ---- the signals. Editorial, not a dashboard. The detail that decides which of those two it
        reads as is the SENTENCE: a figure with a caption is a KPI tile, a figure with a written
        clause is a paragraph that happens to begin with a number. So the sentence is a real
        sentence, and there is no box, no icon, no rule around any of it. ---- */
-.i-sig{margin:0 0 var(--s3);border-top:1px solid var(--ink);padding-top:14px}
+/* the funding record, so its rule is tipped in the humanitarian blue */
+.i-sig{margin:0 0 var(--s3);padding-top:16px;border-top:0;
+  /* --i-s3, not --i-s2: measured against the ink line, s2 came out at 2.49:1 and could not be
+     seen at 1px, s3 is 4.0:1 and reads as blue beside near-black. */
+  background:linear-gradient(90deg,var(--i-s3) 0 76px,var(--ink) 76px) top left/100% 1px no-repeat}
 .i-sig-h{margin:0 0 16px;font:600 9.5px/1 var(--mono);letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink-3)}
-.i-sig-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--s4) var(--s5,34px)}
+.i-sig-row{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));
+  gap:var(--s4) var(--s5,34px)}
 .i-sig-one{min-width:0}
 .i-sig-n{font:400 clamp(32px,4.4vw,52px)/1.0 var(--serif);color:var(--ink);
   letter-spacing:-.018em;font-variant-numeric:tabular-nums}
 .i-sig-t{margin:14px 0 0;font:400 15.5px/1.5 var(--serif);color:var(--ink-2);
   max-width:none;text-wrap:pretty}
-/* Measured at 1,144px and about 166 characters per line, in monospace, with no cap. Provenance
-   still deserves the mono voice, but a sentence needs a measure: this is prose, so it reads as
-   prose and keeps a mono eyebrow's worth of character through its size and colour alone. */
-.i-sig-src{margin:15px 0 0;padding-top:11px;border-top:1px solid var(--i-hair);
-  max-width:74ch;font:400 13px/1.55 var(--serif);color:var(--ink-3)}
 .i-basis{margin:0 0 var(--s3);max-width:62ch;
   font:400 15px/1.62 var(--serif);color:var(--ink-2)}
 /* ======================= the register composition dashboard =======================
@@ -794,11 +829,15 @@ ol.ranked a::before{top:9px;bottom:9px}
    just read "$23.42bn" must not take "689" for money, so the figures are smaller than the signals
    band, set in mono rather than the display serif, and every one of them is captioned with the
    noun it counts. Its rule is the register's own accent, not either record's ramp. */
-.i-dash{margin:var(--s4) 0 var(--s4);padding-top:var(--s4);
-  border-top:2px solid var(--accent)}
+/* the register's composition, so the tip is the register's own accent and the rule stays 2px:
+   this is the boundary between the record half of the page and the register half */
+.i-dash{margin:var(--s4) 0 var(--s4);padding-top:var(--s4);border-top:0;
+  background:linear-gradient(90deg,var(--i-s2) 0,var(--i-c3) 76px,var(--accent) 76px)
+    top left/100% 2px no-repeat}
 .i-dash[hidden]{display:none !important}
 .i-dash *{box-sizing:border-box}
-.i-dash-h{margin:0;font:600 clamp(19px,2.1vw,23px)/1.2 var(--serif);color:var(--ink)}
+.i-dash-h{margin:0;font:500 clamp(20px,2.2vw,25px)/1.18 var(--serif);color:var(--ink);
+  letter-spacing:-.012em}
 .i-dash-s{margin:12px 0 0;max-width:64ch;font:400 15px/1.62 var(--serif);color:var(--ink-2)}
 .i-dash-load,.i-dash-err{margin:14px 0 0;font:400 13.5px/1.6 var(--sans);color:var(--ink-3)}
 
@@ -856,8 +895,6 @@ ol.ranked a::before{top:9px;bottom:9px}
   border-bottom:1px solid var(--accent-line,var(--line-2));padding-bottom:1px}
 .i-dash-jump a:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .i-dash-jump a::after{content:" →"}
-.i-dash-src{margin:var(--s3) 0 0;padding-top:11px;border-top:1px solid var(--i-hair);
-  font:400 11.5px/1.5 var(--mono);color:var(--ink-3)}
 
 @media (max-width:900px){
   .i-dash-grid{grid-template-columns:1fr}
@@ -875,23 +912,27 @@ ol.ranked a::before{top:9px;bottom:9px}
        because they are the same kind of thing: long reference material a reader opens on
        purpose. Its rule is quieter than the dashboard's below it, so the dashboard still reads
        as the start of the register half of the page. ---- */
-.i-detl{margin:var(--s4) 0 0;padding-top:var(--s3);border-top:1px solid var(--line-2)}
+/* reference material, so the tip is slate rather than either record's ramp */
+.i-detl{margin:var(--s4) 0 0;padding-top:var(--s3);border-top:0;
+  background:linear-gradient(90deg,var(--i-slate) 0 76px,var(--line-2) 76px)
+    top left/100% 1px no-repeat}
 .i-detl[hidden]{display:none !important}
 .i-detl *{box-sizing:border-box}
-.i-detl-h{margin:0;font:600 clamp(17px,1.8vw,20px)/1.25 var(--serif);color:var(--ink)}
-.i-detl-s{margin:10px 0 var(--s3);max-width:64ch;
-  font:400 14.5px/1.6 var(--serif);color:var(--ink-2)}
+.i-detl-h{margin:0 0 var(--s3);font:500 clamp(18px,1.9vw,22px)/1.2 var(--serif);
+  color:var(--ink);letter-spacing:-.01em}
 .i-detl details:first-of-type{border-top:1px solid var(--line)}
 .i-detl details:last-of-type{border-bottom:1px solid var(--line)}
 
 /* ---- Methodology, at the foot of the page. Bounded like the card so it reads as a document
        section rather than loose text after a list, and set quieter than the intelligence above
        because a reader arrives here on purpose. ---- */
-.i-meth{margin:var(--s5,40px) 0 0;padding-top:var(--s4);border-top:2px solid var(--ink)}
+/* the last boundary on the page, so it keeps the heaviest rule, tipped in slate with the rest */
+.i-meth{margin:var(--s5,40px) 0 0;padding-top:var(--s4);border-top:0;
+  background:linear-gradient(90deg,var(--i-slate) 0 76px,var(--line-2) 76px)
+    top left/100% 2px no-repeat}
 .i-meth[hidden]{display:none !important}
-.i-meth-h{margin:0;font:600 clamp(19px,2.1vw,23px)/1.2 var(--serif);color:var(--ink)}
-.i-meth-s{margin:12px 0 var(--s3);max-width:64ch;
-  font:400 15px/1.62 var(--serif);color:var(--ink-2)}
+.i-meth-h{margin:0 0 var(--s3);font:500 clamp(20px,2.2vw,25px)/1.18 var(--serif);
+  color:var(--ink);letter-spacing:-.012em}
 .i-meth .i-src{border:1px solid var(--line);border-bottom:0}
 .i-meth details:first-of-type{border-top:1px solid var(--line)}
 .i-meth details:last-of-type{border-bottom:1px solid var(--line)}
@@ -901,7 +942,6 @@ ol.ranked a::before{top:9px;bottom:9px}
 /* ---- the crossing point out of the intelligence and into the list ---- */
 .i-over{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s4);
   flex-wrap:wrap;margin:var(--s3) 0 0}
-.i-over-t{margin:0;max-width:62ch;font:400 14.5px/1.6 var(--serif);color:var(--ink-3)}
 .i-over-go{flex:none;border:0;background:none;cursor:pointer;padding:0;
   font:600 13.5px/1.3 var(--sans);color:var(--i-s1);
   border-bottom:2px solid var(--i-s1);padding-bottom:2px}
@@ -911,7 +951,8 @@ ol.ranked a::before{top:9px;bottom:9px}
 @media (max-width:600px){ .i-over{gap:var(--s2)} }
 @media (max-width:820px){
   .i-sig-row{grid-template-columns:1fr 1fr;gap:var(--s4)}
-  .i-sig-one:last-child{grid-column:1 / -1}
+  /* only when an odd card would otherwise sit alone in a two-column row */
+  .i-sig-row:not([style*="--n:2"]) .i-sig-one:last-child{grid-column:1 / -1}
 }
 @media (max-width:520px){
   .i-sig-row{grid-template-columns:1fr}
@@ -929,7 +970,8 @@ ol.ranked a::before{top:9px;bottom:9px}
   color:var(--accent-2);margin:0}
 .i-t-h{font:600 clamp(19px,2.1vw,24px)/1.2 var(--display);letter-spacing:-.015em;
   color:var(--ink);margin:0}
-.i-t-panel{font:600 17px/1.22 var(--display);letter-spacing:-.005em;color:var(--ink);margin:0}
+.i-t-panel{font:500 17.5px/1.22 var(--display);letter-spacing:-.008em;color:var(--ink);
+  margin:0}
 /* the prose inside the card follows the prose above it. A serif standfirst over sans body copy
    put a face change in the middle of one argument. */
 .i-t-body{font:400 16.5px/1.62 var(--serif);color:var(--ink-2);margin:0;max-width:62ch}
@@ -943,10 +985,13 @@ ol.ranked a::before{top:9px;bottom:9px}
 /* ---- band A, the headline against a counterweight ---- */
 .i-lede{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);
   border-bottom:1px solid var(--line)}
-/* the live-source line used to sit at the foot of this column. With it gone the column is
-   shorter than its neighbour, so both are centred and the pair reads as one band. */
+/* TOP, NOT CENTRED. Measured: 93px of content in a 302px cell, a fill of 0.31, which put 104px of
+   blank above the heading and 104px below it. Centring was inherited from a time when a source
+   line sat at this column's foot and the two columns were near enough the same height for it to
+   read as a band. They are not: the column beside this one runs 254px. Top-aligned, the section
+   heading and the figure next to it share a first baseline. */
 .i-lede-l{padding:var(--s4);min-width:0;display:flex;flex-direction:column;
-  justify-content:center}
+  justify-content:flex-start}
 .i-lede-r{padding:var(--s4);border-left:1px solid var(--line);background:var(--paper);
   min-width:0;display:flex;flex-direction:column;justify-content:center}
 .i-figrow{display:flex;align-items:baseline;gap:14px;margin-top:14px;flex-wrap:wrap}
@@ -1527,7 +1572,7 @@ ol.ranked a::before{top:9px;bottom:9px}
     <!-- INTEL BLOCK 2 of 4: the funding intelligence, shown only on the whole-register
          view, above the full list. It sits between the title band and the controls so the
          briefing is read first and the list follows underneath. -->
-    <section id="intel" hidden aria-labelledby="intel-title"></section>
+    <section id="intel" hidden aria-labelledby="selname"></section>
     <div class="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
@@ -2640,7 +2685,12 @@ function select(kind,s){
      every row, so it flows through computeFiltered, fillPick and the pager unchanged,
      rather than scattering special-case checks through the country/type branches. */
   if(kind==="a"){
-    return {kind:"a",slug:"all",name:"Funders, foundations and charities",
+    /* the whole-register view is the intelligence page, so it wears that title. parts splits it
+       into the institutional prefix, which the site masthead already says, and the words that are
+       this page's own. */
+    return {kind:"a",slug:"all",
+      name:"Gulf Cooperation Council (GCC) Philanthropy Donor Intelligence",
+      parts:["Gulf Cooperation Council (GCC)","Philanthropy Donor Intelligence"],
       sub:"",rows:ROWS.slice()};
   }
   var item=SLUGS[kind][s];
@@ -2736,9 +2786,28 @@ function route(){
   }else{
     paintWash(null); paintPage(null); setPlate(null);
   }
-  el("selname").textContent=sel.name;
+  /* a route may supply parts, in which case the heading is a two-tier lockup rather than one
+     line: a mono label for the institutional prefix, then the title proper. Country and category
+     routes have no parts and set text exactly as before. */
+  var nameEl=el("selname");
+  nameEl.textContent="";
+  if(sel.parts && sel.parts.length===2){
+    var pre=document.createElement("span"); pre.className="sel-pre";
+    pre.textContent=sel.parts[0];
+    var main=document.createElement("span"); main.className="sel-main";
+    main.textContent=sel.parts[1];
+    nameEl.appendChild(pre); nameEl.appendChild(main);
+    nameEl.classList.add("is-lockup");
+  }else{
+    nameEl.textContent=sel.name;
+    nameEl.classList.remove("is-lockup");
+  }
   el("selsub").textContent=sel.sub;
-  document.title=sel.name+" | Gulf Cooperation Council (GCC) Philanthropy Register";
+  /* no suffix when the name already carries it, or the tab would read the register's full name
+     twice in one string */
+  document.title = /Gulf Cooperation Council/.test(sel.name)
+    ? sel.name
+    : sel.name+" | Gulf Cooperation Council (GCC) Philanthropy Register";
   filtered=computeFiltered(sel,readControls());
   render();
   /* render() may have clamped the page, and a stale "in" may have been dropped, so
@@ -3979,33 +4048,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        instead of under a heading about method. */
     var DETL=el("section",{cls:"i-detl",id:"i-detail","aria-labelledby":"i-detl-h"});
     DETL.appendChild(el("h3",{cls:"i-detl-h",id:"i-detl-h",text:"The full lists"}));
-    DETL.appendChild(el("p",{cls:"i-detl-s",
-      text:"Every sector and every destination in the humanitarian record, in full, and the "
-         + "bodies that report funding without appearing in the register."}));
 
     var METH=el("section",{cls:"i-meth",id:"i-method","aria-labelledby":"i-meth-h"});
     METH.appendChild(el("h3",{cls:"i-meth-h",id:"i-meth-h",text:"Methodology and limitations"}));
-    METH.appendChild(el("p",{cls:"i-meth-s",
-      text:OE
-        ? "What each record leaves out, and where its figures came from. The OECD figures carry "
-          + "their exact queries, so they can be reproduced rather than trusted. The UN OCHA "
-          + "figures are a snapshot of its Financial Tracking Service, which has no equivalent "
-          + "query string to quote."
-        : "What this record leaves out. The figures are a snapshot of UN OCHA's Financial "
-          + "Tracking Service, which has no query string to quote. The official aid record could "
-          + "not be loaded, so nothing about it is described here."}));
 
-    var mast=el("header",{cls:"i-mast"});
-    mast.appendChild(el("h3",{cls:"i-mast-t",id:"intel-title",
-      text:"GCC Philanthropy Intelligence"}));
-    mast.appendChild(el("p",{cls:"i-mast-s",
-      text:OE
-        ? "Two separate records of giving from the six Gulf Cooperation Council states: "
-          + "humanitarian funding reported to UN OCHA, and official development assistance "
-          + "reported to the OECD. They are read side by side, never added."
-        : "Humanitarian funding from the six Gulf Cooperation Council states, as reported to "
-          + "UN OCHA."}));
-    panel.appendChild(mast);
+    /* NO PANEL HEADING. It used to say "GCC Philanthropy Intelligence" directly under a route
+       heading that said "Funders, foundations and charities", which was two titles for one page.
+       The route heading now carries the title, and this section is named by it. */
 
     /* THE SIGNALS. Three figures a reader can have in twenty seconds, all from ONE record, so the
        band cannot be misread as a combined total. Large serif figure, one sentence, one source
@@ -4025,37 +4074,30 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       {fig:Math.round(top3Share)+"%",
        say:"of it came from just three sources. Two of the three are governments rather than "
            +"register organisations, so a handful of decisions sets the total."},
-      {fig:nm(m.register_matched)+" of "+nm(m.register_rows),
-       say:"organisations in this register appear anywhere in that reporting. The rest are not "
-           +"absent from Gulf giving, only from this record of it."}
     ];
+    /* two signals, not three. The register-matched count was removed on request; the same fact is
+       still stated inside "Only N bodies report at all" in the notes below, so the distinction
+       between all reporting bodies and register rows is not lost with the card. */
     SIGNALS.forEach(function(x){
       sigRow.appendChild(el("div",{cls:"i-sig-one"},[
         el("div",{cls:"i-sig-n",text:x.fig}),
         el("p",{cls:"i-sig-t",text:x.say})
       ]));
     });
+    /* the grid takes its column count from the data rather than a hard-coded 3, so removing or
+       adding a signal cannot leave an empty column behind */
+    sigRow.style.setProperty("--n",String(SIGNALS.length));
     sig.appendChild(sigRow);
-    /* ONE source line for the band, because the band is one record. The partial year is named
-       here: "2021 to 2026" on its own would imply six complete years. */
-    sig.appendChild(el("p",{cls:"i-sig-src",
-      text:"UN OCHA Financial Tracking Service, "+m.years+", and this register. "
-         + (m.live_year ? m.live_year+" is a partial year. " : "")
-         + "Reporting to the service is voluntary."}));
     panel.appendChild(sig);
 
-    /* the data basis, in one sentence, before the reader meets a single tab. The OECD record is
-       named here rather than in the band, so it is introduced without being lined up alongside a
-       figure it cannot be added to. */
-    panel.appendChild(el("p",{cls:"i-basis",
-      text:OE
-        ? "A second record sits beside this one: official development assistance reported by four "
-          + "of the six states to the OECD. Humanitarian work is one sector inside official aid, "
-          + "so the same activity can appear in both, and the two are never added. Both are on "
-          + "the tabs below, each on its own."
-        : "The official aid record could not be loaded, so only the humanitarian reporting is "
-          + "shown below. That is a fault on this page, not a gap in what the Gulf states "
-          + "report."}));
+    /* NOTHING IN NORMAL OPERATION. The paragraph that introduced the official aid record was
+       removed on request. What survives is the FAILURE case only: with no notice, a page missing
+       its official aid section reads as "the Gulf states report no official aid", and they report
+       billions of it. In normal operation the tabs introduce the second record themselves. */
+    if(!OE) panel.appendChild(el("p",{cls:"i-basis",
+      text:"The official aid record could not be loaded, so only the humanitarian reporting is "
+         + "shown below. That is a fault on this page, not a gap in what the Gulf states "
+         + "report."}));
 
     var card=el("div",{cls:"i-card"});
 
@@ -4208,14 +4250,14 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        largest sources in the region and turned 89 per cent into a false 22. */
     var top3=sortedAll().slice(0,3);
     var top3usd=top3.reduce(function(a,r){ return a+r.usd; },0);
-    /* the share itself is the second signal above the card, so this names the three and adds
-       the figure the band does not carry: how much the single largest source is on its own. */
+    /* ONLY WHAT THE BAND CANNOT SAY. The second signal above the card already carries the share
+       held by the top three and the fact that two of them are governments, so repeating either
+       here made the same point twice one screen apart. What is left is the figure the band does
+       not have, how much the single largest source is on its own, and the names. */
     R.appendChild(el("b",{text:pc(top3[0].usd,T)+"%"}));
     R.appendChild(el("p",{cls:"i-t-body",
-      text:"of everything tracked comes from one source alone, "+readable(top3[0])+". The three "+
-        "largest are "+listNames(top3)+", and two of those are states rather than register "+
-        "organisations. Read every other figure here knowing that a handful of decisions set "+
-        "the regional total."}));
+      text:"of everything tracked comes from one source alone, "+readable(top3[0])+", followed by "
+        +listNames(top3.slice(1))+"."}));
     var cb=el("div",{cls:"i-conc-bar"});
     top3.forEach(function(r,i){
       cb.appendChild(el("i",{style:"width:"+((r.usd/T)*100).toFixed(2)+"%;background:"+SEC[i],
@@ -4601,11 +4643,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
        a directory of organisations. Nothing links a row in one to a row in the other, and a
        reader arriving from a page of billions will assume otherwise unless it is said here. */
     var over=el("footer",{cls:"i-over"});
-    over.appendChild(el("p",{cls:"i-over-t",
-      text:"Below this point the page stops being a record of reported funding and becomes the "
-         + "register itself: "+nm(m.register_rows)+" organisations, searchable. The order is not "
-         + "a ranking, and appearing there says nothing about whether an organisation gives, "
-         + "receives or accepts applications."}));
+    /* the sentence went, the control stays: it is the only jump from the intelligence half of the
+       page into the register half */
     var go=el("button",{type:"button",cls:"i-over-go",
       text:"Search the "+nm(m.register_rows)+" organisations"});
     go.addEventListener("click",function(){ goTo("recs"); });
@@ -4629,9 +4668,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
       sec.appendChild(el("h3",{cls:"i-dash-h",id:"i-dash-h",
         text:"What is in the register"}));
       sec.appendChild(el("p",{cls:"i-dash-s",
-        text:"Counts of organisations, not money. This is the composition of the register itself: "
-           + "what kind of body each one is and where it is based. Nothing here is a funding "
-           + "figure and none of it can be compared with the amounts above."}));
+        /* one sentence, not three. See the note at the top of this patch. */
+        text:"Counts of organisations, not money: what kind of body each one is and where it "
+           + "is based."}));
       sec.appendChild(el("p",{cls:"i-dash-load",text:"Loading the register breakdown..."}));
       var ctrls=host.querySelector(".controls");
       if(ctrls) host.insertBefore(sec,ctrls); else host.appendChild(sec);
@@ -5086,9 +5125,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
 
     sec.appendChild(el("h3",{cls:"i-dash-h",id:"i-dash-h",text:"What is in the register"}));
     sec.appendChild(el("p",{cls:"i-dash-s",
-      text:"Counts of organisations, not money. This is the composition of the register itself: "
-         + "what kind of body each one is and where it is based. Nothing here is a funding figure "
-         + "and none of it can be compared with the amounts above."}));
+      text:"Counts of organisations, not money: what kind of body each one is and where it "
+         + "is based."}));
 
     var ct=dashTally("country",null);
     var head=el("div",{cls:"i-dash-fig"});
@@ -5172,18 +5210,13 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
         var c=el("div",{cls:"i-dpane full"});
         c.appendChild(el("h4",{cls:"i-t-panel",text:"By state"}));
         c.appendChild(el("p",{cls:"i-t-meta",
-          text:"Every organisation in the register carries a state. Shares are of all "
-             + nm(d.rows.length)+"."}));
+          text:"Every organisation in the register carries a state."}));
         c.appendChild(dashBars(ct,d.rows.length,0,"state"));
         panes.appendChild(c);
       }
     }
     repaint();
 
-    sec.appendChild(el("p",{cls:"i-dash-src",
-      text:"Counted from the register on this page, "+nm(d.rows.length)
-         + " organisations. Organisation counts only; no amount of money appears in this "
-         + "section."}));
   }
 
   /* the data contract, checked before anything is drawn */
