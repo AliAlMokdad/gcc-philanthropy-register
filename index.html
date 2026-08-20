@@ -1416,6 +1416,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 .oe-seg.lead{background:var(--i-c1)}
 .oe-chyr{font:400 10.5px/1 var(--mono);color:var(--ink-3);text-align:right}
 .oe-notes{padding-top:0}
+.oe-prov{margin:var(--s2) 0 0;padding-top:var(--s2);border-top:1px solid var(--i-hair);font:400 11px/1.6 var(--mono);color:var(--ink-3);word-break:break-word}
 .oe-chy{font-variant-numeric:tabular-nums;font-weight:600;color:var(--i-c1)}
 
 /* who delivered it */
@@ -1675,6 +1676,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
        hairline of the accent above it and a firm rule under the whole block. ---- */
 .n-mast{margin:var(--s4) 0 0;padding-top:16px;padding-bottom:20px;
   border-top:3px solid var(--accent);border-bottom:1px solid var(--ink)}
+/* the dateline, set as a paper sets it: small, letterspaced, above the nameplate */
+.n-dateline{margin:0 0 10px;font:600 10.5px/1.3 var(--mono);letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-3)}
 .n-mast-t{margin:0;font:600 clamp(31px,4.6vw,52px)/1.05 var(--serif);color:var(--ink);
   letter-spacing:-.021em;text-wrap:balance;font-optical-sizing:auto}
 /* the ampersand is the one flourish. Set a shade lighter so the two halves of the name read
@@ -1761,13 +1765,24 @@ body:has(#l1:not([hidden])) .pbar{display:none}
        is spelled out in words, so nothing depends on the colour. ---- */
 .n-labels{display:flex;flex-wrap:wrap;align-items:center;gap:5px 10px;
   font:600 10.5px/1.5 var(--mono);letter-spacing:.11em;text-transform:uppercase}
-.n-geo{display:inline-flex;align-items:center;gap:7px;color:var(--n-geo);font-weight:600}
+/* THE KICKER LINKS. Underlined only on hover, like a section label rather than a body link,
+   and the whole thing including the mark is the target. */
+.n-geo{display:inline-flex;align-items:center;gap:7px;color:var(--n-geo);font-weight:600;
+  text-decoration:none;border-bottom:1px solid transparent;
+  /* eight pixels of extra hit area, and no layout change: the padding grows the box and the
+     negative margin gives the space straight back. 17px was a mean target for a thumb. */
+  padding-block:4px;margin-block:-4px}
+.n-geo:hover{border-bottom-color:currentColor}
+.n-geo:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
 .n-geo .flag{flex:none;display:block;width:19px;height:12.5px;border-radius:1.5px;
   box-shadow:inset 0 0 0 .5px rgba(0,0,0,.30)}
 @media (prefers-color-scheme:dark){
   .n-geo .flag{box-shadow:inset 0 0 0 .5px rgba(255,255,255,.30)}
 }
-.n-topic{color:var(--n-meta);font-weight:400;letter-spacing:.09em}
+.n-topic{color:var(--n-meta);font-weight:400;letter-spacing:.09em;text-decoration:none;
+  border-bottom:1px solid transparent;padding-block:4px;margin-block:-4px}
+.n-topic:hover{color:var(--ink-2);border-bottom-color:currentColor}
+.n-topic:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
 .n-labels .dot{color:var(--n-meta);opacity:.4;font-weight:400}
 
 /* ================================ a stream row ================================ */
@@ -1800,15 +1815,19 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .n-kind{font:600 9.5px/1.5 var(--mono);letter-spacing:.11em;text-transform:uppercase;
   color:var(--i-slate)}
 .n-also{font-style:normal;color:var(--n-meta)}
+/* the same eight free pixels of hit area as the kickers, with no layout change. This is the
+   link a reader is actually reaching for. */
 .n-orig{color:var(--accent);text-decoration:none;
-  border-bottom:1px solid var(--accent-line);padding-bottom:1px}
+  border-bottom:1px solid var(--accent-line);padding-bottom:1px;
+  padding-block:4px 5px;margin-block:-4px -5px}
 .n-orig:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .n-orig::after{content:" \2197"}          /* the link leaves the site, and says so */
 
 /* the register tie. Quiet text, never a badge, and it only ever appears when the match was
    exact or a verified alias. */
 .n-org{margin:8px 0 0;font:400 13px/1.5 var(--sans);color:var(--n-meta)}
-.n-org a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-line)}
+.n-org a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-line);
+  padding-block:4px;margin-block:-4px}
 .n-org a:hover{color:var(--ink);border-bottom-color:var(--ink)}
 .n-org a::after{content:" \2192"}
 .n-dest{color:var(--n-geo)}
@@ -6429,16 +6448,36 @@ function filtered(){
 }
 
 /* ------------------------------------------------------------------ row parts */
+/* THE KICKER LINE. Country, topic, and the source type when it is not independent reporting.
+   The first two are LINKS into that filter, which is how a section label works on every news
+   front: a reader who notices KUWAIT on a row can follow it instead of going back up to a
+   select. Real anchors rather than buttons, so they can be middle-clicked and shared. */
 function labels(it){
   var box = el("p", {cls:"n-labels"});
-  var geo = el("span", {cls:"n-geo"});
+
+  var geo = el("a", {cls:"n-geo",
+    href:"#/news?country=" + encodeURIComponent(it.primary_gcc_country)});
+  geo.setAttribute("aria-label", "Show only " + it.primary_gcc_country);
   var mark = flagMark(it.primary_gcc_country);
   if(mark) geo.appendChild(mark);
   geo.appendChild(el("span", {text:it.primary_gcc_country}));
   box.appendChild(geo);
+
   if(it.primary_topic && it.primary_topic !== "General"){
     box.appendChild(el("span", {cls:"dot", "aria-hidden":"true", text:"·"}));
-    box.appendChild(el("span", {cls:"n-topic", text:it.primary_topic}));
+    var tp = el("a", {cls:"n-topic",
+      href:"#/news?topic=" + encodeURIComponent(it.primary_topic),
+      text:it.primary_topic});
+    tp.setAttribute("aria-label", "Show only " + it.primary_topic);
+    box.appendChild(tp);
+  }
+
+  /* the source type belongs where a paper puts ANALYSIS: above the headline, not three lines
+     below it after the publisher. An unlabelled row is independent reporting. */
+  if(LABEL_SHOWN[it.source_type]){
+    box.appendChild(el("span", {cls:"dot", "aria-hidden":"true", text:"·"}));
+    box.appendChild(el("span", {cls:"n-kind",
+      text:SOURCE_LABEL[it.source_type] || "Other source"}));
   }
   return box;
 }
@@ -6468,11 +6507,7 @@ function metaLine(it){
       (it.published_precision === "datetime" ? ", " + timeLabel(d) : "");
     p.appendChild(t);
   }
-  if(LABEL_SHOWN[it.source_type]){
-    p.appendChild(el("span", {cls:"dot", "aria-hidden":"true", text:"·"}));
-    p.appendChild(el("span", {cls:"n-kind",
-      text:SOURCE_LABEL[it.source_type] || "Other source"}));
-  }
+  /* the source type moved up to the kicker, where it is actually seen */
   if((it.also_reported_by || []).length){
     p.appendChild(el("span", {cls:"dot", "aria-hidden":"true", text:"·"}));
     p.appendChild(el("span", {cls:"n-also",
@@ -6701,6 +6736,18 @@ function render(keepFocus){
      three words, and the six states are NAMED: a reader should not have to know what the GCC
      stands for to know whether this page covers their country. */
   var mast = el("div", {cls:"n-mast"});
+  /* the dateline. A paper dates its front page, and this is the honest version of the status
+     line that was removed: it states the day the reader is in rather than making a claim about
+     when the pipeline last ran. */
+  (function(){
+    var d = new Date();
+    var f;
+    try{
+      f = new Intl.DateTimeFormat(undefined,
+        {weekday:"long", day:"numeric", month:"long", year:"numeric"}).format(d);
+    }catch(e){ f = d.toDateString(); }
+    mast.appendChild(el("p", {cls:"n-dateline", text:f}));
+  })();
   var h = el("h2", {cls:"n-mast-t", id:"n-title"});
   h.appendChild(document.createTextNode("GCC Philanthropy News "));
   h.appendChild(el("span", {cls:"amp", text:"&"}));
