@@ -3724,9 +3724,12 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     ]));
     if(!OE) two.className="oe-two one";
     frame.appendChild(two);
-    if(OE) frame.appendChild(el("p",{cls:"oe-warn",
-      text:"Humanitarian work sits inside official aid as one sector, so the same activity "
-         + "can appear in both. They cannot be added."}));
+    frame.appendChild(el("p",{cls:"oe-warn",
+      text:OE
+        ? "Humanitarian work sits inside official aid as one sector, so the same activity "
+          + "can appear in both. They cannot be added."
+        : "The official aid record could not be loaded, so it is not shown here. That is a "
+          + "fault on this page, not a gap in what the Gulf states report."}));
     card.appendChild(frame);
 
     /* THE SWITCHER. Grouped by source and labelled with it, because five equal segments would
