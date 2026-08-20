@@ -1,0 +1,622 @@
+<!doctype html>
+<!-- ANTI_SLOP_BRIEF
+  BOLD MOVE      The handbook skeleton from careemergencytoolkit.org as ARCHITECTURE only: a
+                 horizontal section bar, a breadcrumb, one white sheet on a tinted ground with a
+                 notched corner, and inside it a 285px numbered tree beside the content. Nothing is
+                 browsed as cards. Everything is reached through the tree, the way a manual is.
+  TYPE           The reference's proportions with Ali's faces: numbered uppercase article title at
+                 28px, body at 15px on 1.5, section bar at 13.5px uppercase letterspaced.
+  COLOUR         Ali's tokens only. Blueberry for the active section, titles and links. Slate for
+                 structural rules and the panel. Tinted ground, white sheet. Nothing of the
+                 reference's palette.
+  WORDS          INSIDE AN ARTICLE, EVERY WORD IS ALI'S. The headings, the abstract, the keywords,
+                 the framework rows and the references are transcribed from his document. My slot
+                 labels, my metadata labels and my invented section blurbs have all been removed.
+                 The front page uses his own Purpose and Scope and Accuracy boundary text verbatim.
+                 Section names are his volume names verbatim. The items are called ARTICLES because
+                 that is what his guide calls them.
+  VERIFIABLE     Every figure is computed from the source: 35 articles, the read time from each
+                 article's real word count at 220 words a minute, the fact-check date. Nothing is
+                 estimated.
+-->
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toolkit | GCC Philanthropy</title>
+<meta name="description" content="This collection provides a structured introduction to GCC philanthropy for researchers, philanthropic institutions, humanitarian and development organizations, family offices, corporate social-impact teams, and advisers.">
+<meta name="color-scheme" content="light dark">
+<link rel="icon" type="image/svg+xml" href="../gcc-emblem.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,200..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* ============================================================================
+   GCC PHILANTHROPY TOOLKIT, prototype.
+   Structure measured from careemergencytoolkit.org: container 1140, rail 285 beside
+   the content, one notched white sheet on a tinted ground, breadcrumb above it,
+   numbered uppercase article titles at 28px, dense body type.
+   Colours are Ali's own tokens. None of the reference's palette is used.
+   ========================================================================= */
+:root{
+  --ink:#171A2B; --ink-2:#3B4468; --ink-3:#5B6488;
+  --accent:#3E4CC4; --accent-2:#3341A6; --accent-soft:#E9EDFB; --accent-line:#CFD8F4;
+  --paper:#F5F8FD; --paper-2:#EBF1FB; --line:#DEE7F4; --line-2:#CBD8EC;
+  --focus:#3E4CC4; --mast:#232C5C;
+  --slate:#42506E; --slate-soft:#E8ECF3;
+  --ground:#E6ECF6; --card:#FFFFFF;
+  --on-slate:#FFFFFF;   /* text ON slate, which inverts between themes */
+  --on-accent:#FFFFFF;  /* text ON accent, same reason */
+  --display:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --orange:#A55A12; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.13);
+  --orange-strong:#8A4A0E; --on-orange:#FFF8F1; --field-line:#7F8CAE;
+  --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
+  --rail:285px;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --ink:#EEF0F6; --ink-2:#C2C8DA; --ink-3:#9AA2B8;
+    --accent:#AAB4F0; --accent-2:#C4CCF6; --accent-soft:#1C2138; --accent-line:#343B5C;
+    --paper:#0E1018; --paper-2:#161A26; --line:#282E40; --line-2:#38405C;
+    --focus:#AAB4F0; --mast:#1A2140;
+    --slate:#9AA6C6; --slate-soft:#262C3C;
+    --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16);
+    --orange-strong:#EDAA55; --on-orange:#26160A; --field-line:#66719C;
+    --ground:#0A0C12; --card:#171B27;
+    --on-slate:#0E1018; --on-accent:#0E1018;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+html{background:var(--ground)}
+body{margin:0;background:transparent;color:var(--ink);font:400 15px/1.5 var(--sans);
+  min-height:100vh;display:flex;flex-direction:column}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:url(skyline.webp) center bottom / cover no-repeat;opacity:.085}
+@media (prefers-color-scheme:dark){ body::before{opacity:.05} }
+a{color:var(--accent)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.container{width:100%;max-width:1280px;margin:0 auto;padding:0 var(--s4)}
+
+header.top{background:var(--mast);position:relative}
+header.top .container{padding-top:40px;padding-bottom:46px}
+header.top h1{margin:0;font:600 clamp(28px,3.5vw,44px)/1.06 var(--display);
+  color:#F6F5F2;letter-spacing:-.018em;text-wrap:balance}
+header.top h1 a.home{color:inherit;text-decoration:none}
+header.top h1 a.home:hover .abbr{color:#D6DCF4}
+header.top h1 a.home:focus-visible{outline:2px solid #C6CFE4;outline-offset:4px}
+header.top h1 .abbr{color:#B8C2E8;font-weight:400;transition:color .14s ease-out}
+header.top .kick{display:flex;align-items:center;gap:13px;margin:17px 0 0;
+  font:600 11px/1.6 var(--mono);letter-spacing:.17em;text-transform:uppercase;color:#C6CFE4}
+header.top .kick::before{content:"";flex:none;width:34px;height:2px;border-radius:1px;
+  background:#8E9CD4}
+.tab{position:absolute;left:50%;transform:translateX(-50%);bottom:0;
+  padding:9px 28px 8px;background:var(--orange);color:var(--on-orange);
+  font:600 15px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
+  clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,12px 100%)}
+@media (max-width:760px){
+  .tab{position:static;transform:none;display:inline-block;margin-top:16px}
+}
+
+nav.sections{background:var(--card);border-bottom:1px solid var(--line)}
+nav.sections .container{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--s4)}
+.secrow{flex:1 1 0;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--s4)}
+@media (max-width:480px){
+  .secrow{flex-wrap:nowrap;overflow-x:auto;gap:0 var(--s3);width:100%;
+    scrollbar-width:none;-ms-overflow-style:none}
+  .secrow::-webkit-scrollbar{display:none}
+  .secrow a{flex:none;white-space:nowrap}
+}
+nav.sections a{display:block;padding:15px 0 13px;text-decoration:none;
+  font:600 13px/1.2 var(--sans);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-2);
+  border-bottom:3px solid transparent;margin-bottom:-1px}
+nav.sections a:hover{color:var(--ink)}
+nav.sections a[aria-current="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+nav.sections a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+
+.crumb{padding:var(--s3) 0 0;margin:0;font:400 13px/1.5 var(--sans);color:var(--ink-2)}
+.crumb a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.crumb a:hover{color:var(--ink)}
+.crumb a:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+.crumb .sep{color:var(--ink-3);padding:0 6px}
+
+.sheet{position:relative;background:var(--card);margin:var(--s4) 0 var(--s5);
+  padding:var(--s4) var(--s4) var(--s5);
+  clip-path:polygon(0 0, calc(100% - 40px) 0, 100% 40px, 100% 100%, 0 100%)}
+.sheet-in{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);gap:0 var(--s5)}
+.sheet-in.solo{grid-template-columns:1fr}
+@media (max-width:900px){
+  .sheet{clip-path:none;padding:var(--s3) var(--s3) var(--s4)}
+  .sheet-in{grid-template-columns:1fr;gap:var(--s4)}
+}
+
+.tree{align-self:start;min-width:0}
+@media (min-width:901px){
+  .tree{position:sticky;top:var(--s3);max-height:calc(100vh - 80px);overflow-y:auto;
+    padding-right:var(--s3);border-right:1px solid var(--line);scrollbar-width:thin}
+}
+.tree-h{margin:0 0 var(--s3);font:600 14px/1.35 var(--sans);letter-spacing:.05em;
+  text-transform:uppercase;color:var(--accent)}
+.tree ol{list-style:none;margin:0;padding:0}
+.tree a{display:block;padding:5px 0;text-decoration:none;color:var(--ink-2);
+  font:400 14px/1.4 var(--sans)}
+.tree a:hover{color:var(--ink)}
+.tree a:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.tree a[aria-current="true"]{color:var(--accent);font-weight:600}
+/* the third level lists the article's OWN headings, verbatim. No labels of mine are added. */
+.tree .subs{margin:2px 0 8px;padding-left:var(--s3);border-left:1px solid var(--line)}
+.tree .subs a{padding:4px 0;font:400 13px/1.35 var(--sans);color:var(--ink-3)}
+.tree .subs a:hover{color:var(--ink-2)}
+
+/* ---- the article ---- */
+.doc-meta{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);align-items:baseline;
+  padding-bottom:var(--s3);border-bottom:1px solid var(--line);
+  font:400 11.5px/1.5 var(--mono);color:var(--ink-3)}
+.doc-meta span{white-space:nowrap}
+h2.doc-t::after{content:"";display:block;width:132px;height:4px;border-radius:2px;
+  margin:18px 0 0;background:linear-gradient(90deg,var(--slate) 0,var(--accent) 46%,
+  var(--orange-line) 100%)}
+h2.doc-t{margin:var(--s5) 0 0;font:600 clamp(24px,2.4vw,33px)/1.1 var(--display);
+  letter-spacing:-.008em;
+  text-transform:uppercase;color:var(--accent)}
+h2.doc-t:focus{outline:none}
+@media (max-width:600px){ h2.doc-t{font-size:22px} }
+.doc-lead{margin:var(--s3) 0 0;max-width:88ch;font:400 16px/1.55 var(--sans);color:var(--ink)}
+.doc-kw{margin:var(--s3) 0 0;display:flex;flex-wrap:wrap;gap:4px 12px;
+  font:400 11px/1.4 var(--mono);color:var(--ink-3)}
+.doc-kw i{font-style:normal}
+.doc-sec{margin:var(--s4) 0 0}
+h3.doc-h{margin:0;font:600 18px/1.3 var(--sans);letter-spacing:.01em;color:var(--ink)}
+.doc-sec p{margin:10px 0 0;max-width:88ch;font:400 15px/1.55 var(--sans);color:var(--ink-2)}
+
+table.fw{border-collapse:collapse;width:100%;max-width:88ch;margin:var(--s3) 0 0}
+table.fw th{text-align:left;width:23%;padding:9px 16px 9px 0;vertical-align:top;
+  border-bottom:1px solid var(--line);font:600 14px/1.45 var(--sans);color:var(--ink)}
+table.fw td{padding:9px 0;vertical-align:top;border-bottom:1px solid var(--line);
+  font:400 14.5px/1.5 var(--sans);color:var(--ink-2)}
+table.fw tr:first-child th,table.fw tr:first-child td{border-top:2px solid var(--slate)}
+@media (max-width:560px){
+  table.fw,table.fw tbody,table.fw tr,table.fw th,table.fw td{display:block;width:auto}
+  table.fw th{border-bottom:0;padding-bottom:1px}
+  table.fw td{padding-top:0}
+}
+
+/* the references section keeps ALI'S OWN heading word, References, not a synonym of mine */
+.doc-refs{margin:var(--s5) 0 0;padding-top:var(--s4);border-top:2px solid var(--slate)}
+.doc-refs h3{margin:0 0 var(--s3);font:600 18px/1.3 var(--sans);color:var(--ink)}
+.doc-refs ol{list-style:none;margin:0;padding:0}
+.doc-refs li{margin:0 0 10px;max-width:92ch;padding-left:1.4em;text-indent:-1.4em;
+  font:400 13.5px/1.5 var(--sans);color:var(--ink-2)}
+.doc-refs a{word-break:break-word;text-decoration:underline;text-underline-offset:2px}
+
+
+/* ---- a section's list of articles ---- */
+ol.chapters{list-style:none;margin:var(--s5) 0 0;padding:0}
+ol.chapters li{border-top:1px solid var(--line)}
+ol.chapters li:last-child{border-bottom:1px solid var(--line)}
+ol.chapters a{position:relative;display:grid;grid-template-columns:92px minmax(0,1fr);
+  gap:0 var(--s4);padding:28px var(--s4) 30px;text-decoration:none;color:inherit;
+  transition:background .16s ease-out}
+ol.chapters a::before{content:"";position:absolute;left:0;top:-1px;bottom:-1px;width:3px;
+  background:var(--orange-line);transform:scaleY(0);transform-origin:50% 50%;
+  transition:transform .18s cubic-bezier(.22,.61,.36,1)}
+ol.chapters a:hover::before,ol.chapters a:focus-visible::before{transform:scaleY(1)}
+.ch-g{display:flex;flex-direction:column;gap:9px}
+ol.chapters a:hover{background:var(--paper-2)}
+ol.chapters a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.ch-n{display:block;padding-top:2px;color:var(--slate)}
+.ch-n svg{display:block}
+ol.chapters a:hover .ch-n{color:var(--accent)}
+.dm-mark{display:inline-flex;color:var(--slate)}
+.dm-mark svg{display:block}
+.ch-t{margin:0;max-width:62ch;font:600 19px/1.32 var(--sans);letter-spacing:-.006em;
+  color:var(--ink);text-wrap:balance}
+ol.chapters a:hover .ch-t{color:var(--accent)}
+.ch-ab{margin:10px 0 0;max-width:88ch;font:400 15px/1.66 var(--sans);color:var(--ink-3)}
+.ch-m{font:400 11px/1.5 var(--mono);letter-spacing:.02em;color:var(--ink-3);white-space:nowrap}
+@media (max-width:820px){
+  ol.chapters a{grid-template-columns:1fr;gap:12px;padding:22px var(--s3) 24px}
+  .ch-g{flex-direction:row;align-items:center;gap:12px}
+}
+
+/* ---- the front page ---- */
+.home-col{max-width:76ch;margin-inline:auto}
+.home-h::after{content:"";display:block;width:132px;height:4px;border-radius:2px;
+  margin:18px 0 0;background:linear-gradient(90deg,var(--slate) 0,var(--accent) 46%,
+  var(--orange-line) 100%)}
+.home-h{margin:0;font:600 26px/1.18 var(--display);text-transform:uppercase;color:var(--accent)}
+.home-sub{margin:10px 0 0;font:600 11px/1.5 var(--mono);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-3)}
+.home-p{margin:var(--s3) 0 0;max-width:72ch;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
+
+.find{display:flex;gap:var(--s2);align-items:center;margin-left:auto}
+.find input{width:210px;min-height:44px;padding:0 12px;font:14px/1.2 var(--sans);color:var(--ink);
+  background:var(--card);border:1px solid var(--field-line);border-radius:4px}
+.find input:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+@media (max-width:760px){ .find{margin:0 0 12px;width:100%} .find input{width:100%} }
+.empty{padding:var(--s4) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;
+    scroll-behavior:auto !important}
+}
+@media print{
+  header.top,nav.sections,.crumb,.tree{display:none !important}
+  body::before{display:none !important}
+  .sheet{clip-path:none;margin:0;padding:0}
+  .sheet-in{display:block}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="container">
+    <h1><a class="home" href="../">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1>
+    <p class="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
+  </div>
+  <span class="tab">Toolkit</span>
+</header>
+
+<nav class="sections" aria-label="Toolkit sections"><div class="container" id="secnav"></div></nav>
+
+<div class="container">
+  <p class="crumb" id="crumb"></p>
+  <div class="sheet">
+    <div class="sheet-in" id="sheet"></div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  "use strict";
+  var DATA=null, SECTIONS=[], BY_SLUG={};
+  function EL(id){ return document.getElementById(id); }
+  function el(tag,attrs,kids){
+    var n=document.createElement(tag);
+    if(attrs) for(var k in attrs){
+      if(attrs[k]==null) continue;
+      if(k==="cls") n.className=attrs[k];
+      else if(k==="text") n.textContent=attrs[k];
+      else n.setAttribute(k,attrs[k]);
+    }
+    (kids||[]).forEach(function(c){ if(c) n.appendChild(c); });
+    return n;
+  }
+  var MARK='<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor"'
+    +' stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    +'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>'
+    +'<path d="M14 3v5h5"/><path d="M9 13.5h6"/><path d="M9 17h4"/></svg>';
+  function mark(cls){ var n=el("span",{cls:cls}); n.innerHTML=MARK; return n; }
+  function clear(n){ while(n.firstChild) n.removeChild(n.firstChild); }
+  function norm(s){ return (s||"").toLowerCase().replace(/[^a-z0-9 ]/g," ").replace(/\s+/g," ").trim(); }
+  /* the register's own convention: only http and https survive, so a bad url in the data file
+     cannot become a javascript: or data: link */
+  function safeUrl(u){
+    try{ var p=new URL(u,location.href);
+      return (p.protocol==="http:"||p.protocol==="https:") ? p.href : null; }
+    catch(e){ return null; }
+  }
+  function has(n,st){ return (n.jurisdictions||[]).indexOf(st)>=0; }
+
+  /* SECTION NAMES ARE ALI'S OWN WORDS. The first four are his volume titles from the collection
+     guide with the "Volume N - " prefix dropped. The rest are the place names his own article
+     titles use. Nothing here is a phrase I invented.
+     An article naming several states appears under each of them, because "Foreign Organizations
+     Entering Qatar, Saudi Arabia, and the UAE" genuinely belongs in all three, and forcing it into
+     one would be a filing decision of mine rather than a fact about his material. */
+  var SECDEF=[
+    {id:"foundations",name:"Foundations and Context",
+     pick:function(n){ return n.volume==="Foundations and context"; }},
+    {id:"regulation",name:"Regulation, Governance, and Integrity",
+     pick:function(n){ return n.volume==="Regulation, governance and integrity"; }},
+    {id:"capital",name:"Capital, Partnerships, and Engagement",
+     pick:function(n){ return n.volume==="Capital, partnerships and engagement"; }},
+    {id:"impact",name:"Impact, Stewardship, and Learning",
+     pick:function(n){ return n.volume==="Impact, stewardship and learning"; }},
+    {id:"gcc",name:"The GCC",
+     pick:function(n){ return n.family==="jurisdictional" && has(n,"GCC-wide"); }},
+    {id:"qatar",name:"Qatar",  pick:function(n){ return has(n,"Qatar"); }},
+    {id:"saudi",name:"Saudi Arabia", pick:function(n){ return has(n,"Saudi Arabia"); }},
+    {id:"uae",name:"United Arab Emirates",
+     pick:function(n){ return has(n,"United Arab Emirates"); }},
+    {id:"dubai",name:"Dubai", pick:function(n){ return has(n,"Dubai"); }}
+  ];
+
+  fetch("notes.json").then(function(r){
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return r.json();
+  }).then(function(j){ DATA=j; boot(); }).catch(function(e){
+    EL("sheet").appendChild(el("p",{cls:"empty",
+      text:"The toolkit content could not be loaded. "+(e&&e.message||"")}));
+  });
+
+  function boot(){
+    DATA.notes.forEach(function(n){
+      BY_SLUG[n.slug]=n;
+      /* STRONG: where a match means the article is about the term.
+         HAY: every word of his article, so a term used only in the body is still findable. */
+      var heads=[], body=[];
+      (n.sections||[]).forEach(function(x){
+        heads.push(x.heading||"");
+        (x.paras||[]).forEach(function(p){ body.push(p); });
+        if(x.table) (x.table.rows||[]).forEach(function(r){ body.push(r.join(" ")); });
+      });
+      n._strong=norm([n.title,(n.keywords||[]).join(" "),heads.join(" ")].join(" "));
+      n._hay=norm([n._strong,n.abstract||"",body.join(" "),
+        (n.refs||[]).map(function(r){ return r.text; }).join(" ")].join(" "));
+    });
+    SECDEF.forEach(function(d){
+      var arr=DATA.notes.filter(d.pick);
+      if(arr.length) SECTIONS.push({id:d.id,name:d.name,notes:arr});
+    });
+    /* every article must be reachable from at least one section, or the tree hides part of the
+       collection. Multiple placements are allowed and intended; zero placements is a bug. */
+    var placed={};
+    SECTIONS.forEach(function(s){ s.notes.forEach(function(n){ placed[n.id]=1; }); });
+    var unplaced=DATA.notes.filter(function(n){ return !placed[n.id]; });
+    if(unplaced.length) console.warn("unreachable articles: "+unplaced.map(function(n){return n.id;}));
+    buildNav();
+    window.addEventListener("hashchange",route);
+    route();
+  }
+
+  function buildNav(){
+    var host=EL("secnav"); clear(host);
+    var row=el("div",{cls:"secrow"});
+    SECTIONS.forEach(function(s){
+      row.appendChild(el("a",{href:"#/"+s.id,text:s.name,"data-sec":s.id}));
+    });
+    host.appendChild(row);
+    var f=el("div",{cls:"find"});
+    f.appendChild(el("label",{cls:"sr",for:"q",text:"Search the toolkit"}));
+    var i=el("input",{id:"q",type:"search",autocomplete:"off",spellcheck:"false",
+      maxlength:"120",placeholder:"Search the toolkit"});
+    i.addEventListener("input",function(){
+      if(i.value.trim()) showSearch(i.value); else route();
+    });
+    i.addEventListener("keydown",function(e){
+      if(e.key==="Escape" && i.value){ i.value=""; route(); }
+    });
+    f.appendChild(i);
+    host.appendChild(f);
+  }
+  function markNav(id){
+    [].forEach.call(document.querySelectorAll("#secnav a"),function(a){
+      if(id && a.getAttribute("data-sec")===id) a.setAttribute("aria-current","true");
+      else a.removeAttribute("aria-current");
+    });
+  }
+
+  function route(){
+    var h=location.hash.replace(/^#\/?/,"");
+    var parts=h.split("/").filter(Boolean);
+    var q=EL("q"); if(q && q.value.trim()) q.value="";
+    if(!parts.length){ showHome(); return; }
+    var sec=SECTIONS.filter(function(s){ return s.id===parts[0]; })[0];
+    if(!sec){ showHome(); return; }
+    var art=parts[1] && BY_SLUG[parts[1]];
+    if(art && sec.notes.indexOf(art)>=0) showArticle(sec,art);
+    else if(art){
+      /* a real article under the wrong section: show it under one that actually holds it */
+      var own=SECTIONS.filter(function(s2){ return s2.notes.indexOf(art)>=0; })[0];
+      if(own) showArticle(own,art); else showSection(sec);
+    }
+    else showSection(sec);
+  }
+
+  function crumbs(items){
+    var c=EL("crumb"); clear(c);
+    items.forEach(function(it,i){
+      if(i) c.appendChild(el("span",{cls:"sep",text:"»"}));
+      if(it.href) c.appendChild(el("a",{href:it.href,text:it.text}));
+      else c.appendChild(document.createTextNode(it.text));
+    });
+  }
+  function sheet(solo){
+    var h=EL("sheet"); clear(h);
+    h.className = solo ? "sheet-in solo" : "sheet-in";
+    return h;
+  }
+  function mins(n){ return n.minutes+(n.minutes===1?" minute read":" minutes read"); }
+
+  function showHome(){
+    markNav(null);
+    crumbs([]);
+    document.title="Toolkit | GCC Philanthropy";
+    var host=sheet(true);
+    var left=el("div",{cls:"home-col"});
+    /* Ali's own front matter, transcribed: the guide's title line, its standard, its Purpose and
+       Scope paragraph and its Accuracy boundary. No summary of mine. */
+    left.appendChild(el("h2",{cls:"home-h",text:"GCC Philanthropy"}));
+    var g=DATA.guide||{};
+    [["home-sub",g.standard],["home-p",g.purpose],["home-p",g.nature],["home-p",g.accuracy]]
+      .forEach(function(pr){ if(pr[1]) left.appendChild(el("p",{cls:pr[0],text:pr[1]})); });
+    host.appendChild(left);
+    window.scrollTo(0,0);
+  }
+
+  function showSection(sec){
+    markNav(sec.id);
+    crumbs([{text:"Toolkit",href:"#"},{text:sec.name}]);
+    document.title=sec.name+" | Toolkit";
+    var host=sheet(true);
+    var main=el("div");
+    main.appendChild(el("h2",{cls:"doc-t",text:sec.name}));
+    /* no blurb. A sentence of mine describing his section would be a word he did not write. */
+    main.appendChild(chapterList(sec));
+    host.appendChild(main);
+    window.scrollTo(0,0);
+  }
+
+  function chapterList(sec){
+    var ol=el("ol",{cls:"chapters"});
+    sec.notes.forEach(function(n){
+      var a=el("a",{href:"#/"+sec.id+"/"+n.slug});
+      var gut=el("div",{cls:"ch-g"});
+      gut.appendChild(mark("ch-n"));
+      gut.appendChild(el("span",{cls:"ch-m",text:mins(n)}));
+      a.appendChild(gut);
+      var col=el("div");
+      col.appendChild(el("h3",{cls:"ch-t",text:n.title}));
+      col.appendChild(el("p",{cls:"ch-ab",text:n.abstract}));
+      a.appendChild(col);
+      ol.appendChild(el("li",null,[a]));
+    });
+    return ol;
+  }
+
+  function showArticle(sec,n){
+    markNav(sec.id);
+    crumbs([{text:"Toolkit",href:"#"},{text:sec.name,href:"#/"+sec.id},
+            {text:n.title}]);
+    document.title=n.title+" | Toolkit";
+    var host=sheet(false);
+    host.appendChild(tree(sec,n));
+    var main=el("div");
+
+    /* the only metadata left is the read time and his own numbering. The Part, Jurisdiction,
+       Procedure and Sources labels I had here were my words, so they are gone. */
+    var meta=el("div",{cls:"doc-meta"});
+    meta.appendChild(mark("dm-mark"));
+    meta.appendChild(el("span",{text:mins(n)}));
+    main.appendChild(meta);
+
+    main.appendChild(el("h2",{cls:"doc-t",tabindex:"-1",text:n.title}));
+    /* his Abstract, his Keywords */
+    main.appendChild(el("p",{cls:"doc-lead",text:n.abstract}));
+    if((n.keywords||[]).length){
+      main.appendChild(el("p",{cls:"doc-kw"},
+        n.keywords.map(function(k){ return el("i",{text:k}); })));
+    }
+
+    n.sections.forEach(function(s,i){
+      if(s.heading==="References") return;
+      var box=el("section",{cls:"doc-sec",id:"s"+i});
+      /* HIS HEADING, and nothing above it. The slot labels that used to sit here, Framing and
+         Evidence limits and Framework, were mine. */
+      box.appendChild(el("h3",{cls:"doc-h",text:s.heading}));
+      s.paras.forEach(function(p){ box.appendChild(el("p",{text:p})); });
+      /* the framework keeps its table. Its header row read "Element | Operational question or
+         action" identically on all 35, the one place the shared template was undisguised, so the
+         header is dropped and his own heading captions it. */
+      if(s.table) box.appendChild(fwTable(s.table));
+      main.appendChild(box);
+    });
+
+    if(n.refs.length) main.appendChild(refs(n));
+    host.appendChild(main);
+    window.scrollTo(0,0);
+    var t=main.querySelector("h2.doc-t"); if(t) t.focus({preventScroll:true});
+  }
+
+  function fwTable(tb){
+    var t=el("table",{cls:"fw"}), body=el("tbody");
+    (tb.rows||[]).forEach(function(r){
+      var tr=el("tr");
+      tr.appendChild(el("th",{scope:"row",text:r[0]||""}));
+      tr.appendChild(el("td",{text:r[1]||""}));
+      body.appendChild(tr);
+    });
+    t.appendChild(body);
+    return t;
+  }
+
+  function refs(n){
+    var box=el("section",{cls:"doc-refs",id:"refs"});
+    /* HIS word: the heading in his document is References. */
+    box.appendChild(el("h3",{text:"References"}));
+    var ol=el("ol");
+    n.refs.forEach(function(r){
+      var li=el("li");
+      var safe=r.url && safeUrl(r.url);
+      if(safe && r.text.indexOf(r.url)>=0){
+        var i=r.text.indexOf(r.url);
+        li.appendChild(document.createTextNode(r.text.slice(0,i)));
+        li.appendChild(el("a",{href:safe,rel:"noopener noreferrer",target:"_blank",text:r.url}));
+        li.appendChild(document.createTextNode(r.text.slice(i+r.url.length)));
+      } else li.textContent=r.text;
+      ol.appendChild(li);
+    });
+    box.appendChild(ol);
+    return box;
+  }
+
+  function tree(sec,current){
+    var side=el("nav",{cls:"tree","aria-label":sec.name+" contents"});
+    side.appendChild(el("p",{cls:"tree-h",text:sec.name}));
+    var ol=el("ol");
+    sec.notes.forEach(function(n){
+      var li=el("li");
+      var a=el("a",{href:"#/"+sec.id+"/"+n.slug,text:n.title});
+      if(current && n===current) a.setAttribute("aria-current","true");
+      li.appendChild(a);
+      if(current && n===current){
+        var subs=el("div",{cls:"subs"});
+        n.sections.forEach(function(s,j){
+          var target = s.heading==="References" ? "refs" : ("s"+j);
+          /* his heading text, unchanged */
+          var sa=el("a",{href:"#"+target,text:s.heading});
+          sa.addEventListener("click",function(e){
+            e.preventDefault();
+            var t=document.getElementById(target);
+            if(t) t.scrollIntoView({block:"start",behavior:"auto"});
+          });
+          subs.appendChild(sa);
+        });
+        li.appendChild(subs);
+      }
+      ol.appendChild(li);
+    });
+    side.appendChild(ol);
+    return side;
+  }
+
+  function showSearch(q){
+    markNav(null);
+    crumbs([{text:"Toolkit",href:"#"},{text:"Search"}]);
+    var host=sheet(true);
+    var main=el("div");
+    var words=norm(q).split(" ").filter(Boolean);
+    var hits=[], seen={};
+    /* nothing searchable in the query, so nothing can honestly be called a result */
+    if(!words.length){
+      main.appendChild(el("h2",{cls:"doc-t",text:"Search"}));
+      main.appendChild(el("p",{cls:"empty",text:"Nothing matches "+q}));
+      host.appendChild(main); return;
+    }
+    SECTIONS.forEach(function(s){
+      s.notes.forEach(function(n){
+        if(seen[n.id]) return;
+        if(!words.every(function(w){ return n._hay.indexOf(w)>=0; })) return;
+        var strong=0;
+        words.forEach(function(w){ if(n._strong.indexOf(w)>=0) strong++; });
+        seen[n.id]=1; hits.push({s:s,n:n,strong:strong});
+      });
+    });
+    /* an article whose title or keywords carry the term comes before one that only mentions it */
+    hits.sort(function(a,b){ return (b.strong-a.strong) || (a.n.id-b.n.id); });
+    main.appendChild(el("h2",{cls:"doc-t",text:"Search"}));
+    var ol=el("ol",{cls:"chapters"});
+    hits.forEach(function(h){
+      var a=el("a",{href:"#/"+h.s.id+"/"+h.n.slug});
+      var gut=el("div",{cls:"ch-g"});
+      gut.appendChild(mark("ch-n"));
+      gut.appendChild(el("span",{cls:"ch-m",text:mins(h.n)}));
+      a.appendChild(gut);
+      var col=el("div");
+      col.appendChild(el("h3",{cls:"ch-t",text:h.n.title}));
+      col.appendChild(el("p",{cls:"ch-ab",text:h.n.abstract}));
+      a.appendChild(col);
+      ol.appendChild(el("li",null,[a]));
+    });
+    if(hits.length) main.appendChild(ol);
+    else main.appendChild(el("p",{cls:"empty",text:"Nothing matches "+q}));
+    host.appendChild(main);
+  }
+})();
+</script>
+</body>
+</html>
