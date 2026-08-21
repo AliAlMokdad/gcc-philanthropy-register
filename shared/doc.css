@@ -174,7 +174,11 @@ main{flex:1 0 auto}
 .doc ol{list-style:lower-alpha}
 .doc ol li::marker{font:600 14px var(--mono);color:var(--accent)}
 .doc ul li::marker{color:var(--accent)}
+/* A BARE URL IS ONE UNBREAKABLE WORD. Five links on the privacy page are the URL itself, and
+   the longest is 282px, which pushed a 320px phone 35px sideways. break-word splits a word
+   only when it cannot fit a line alone, so ordinary link text never breaks. */
 .doc a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;
+  overflow-wrap:break-word;
   text-decoration-thickness:1px}
 .doc a:hover{text-decoration-thickness:2px}
 

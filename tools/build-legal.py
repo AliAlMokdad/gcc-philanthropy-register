@@ -102,7 +102,7 @@ def head(title, desc, tab):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>%s | Gulf Cooperation Council (GCC) Philanthropy</title>
+<title>%s | GCC Philanthropy</title>
 <meta name="description" content="%s">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="../gcc-emblem.svg">
