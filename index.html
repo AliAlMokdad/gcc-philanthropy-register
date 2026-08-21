@@ -911,9 +911,10 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 .spoke:hover .spoke-nm,.spoke:focus-visible .spoke-nm{color:var(--accent)}
 .spoke-ct{font:400 12px/1 var(--mono);letter-spacing:.03em;color:var(--ink-3);
   font-variant-numeric:tabular-nums}
-/* In dark mode a white-fielded flag would otherwise bleed into the page, so it keeps the faintest
-   possible edge. Qatar, Bahrain, Oman and the UAE all carry white. */
-@media (prefers-color-scheme:dark){ .spoke .mark{box-shadow:0 0 0 1px rgba(255,255,255,.14)} }
+/* NO EDGE, IN EITHER SCHEME. A hairline was kept here on the theory that a white-fielded flag
+   would bleed into a dark page. The theory is wrong twice over: the dark ground is dark, so white
+   already separates from it by contrast alone, and a visible edge is the exact thing the box
+   removal was for. */
 
 /* the one search, centred under the mark, flat and square like the rest of the register */
 .portal-search{display:flex;gap:10px;max-width:680px;margin:0 auto calc(var(--s5) + var(--s2))}
@@ -1831,7 +1832,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   transform:translateX(-120%);transition:transform .62s cubic-bezier(.22,.61,.36,1)}
 .portal-news a:hover::before,.portal-news a:focus-visible::before{transform:translateX(120%)}
 /* and the accent rule draws itself out from the middle, the same gesture as the gate button */
-.portal-news a::after{content:"";position:absolute;left:0;right:0;top:-2px;height:2px;
+.portal-news a::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;
   background:var(--accent-2);transform:scaleX(0);transform-origin:50% 50%;
   transition:transform .32s cubic-bezier(.22,.61,.36,1)}
 .portal-news a:hover::after,.portal-news a:focus-visible::after{transform:scaleX(1)}

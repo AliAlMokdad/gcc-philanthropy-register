@@ -143,4 +143,12 @@ header.top::before, .gccp-top::before{
 @media (max-width:640px){
   .pagetab{position:static;display:inline-block;margin-top:12px;clip-path:none;border-radius:2px}
 }
+/* DARK MODE TAKES A DARK FOREGROUND, and this is the one place a colour is written literally.
+   --orange is a token that deliberately flips to a LIGHT orange (#E8A55A) for a dark ground, while
+   the foreground above was a hardcoded white that did not flip with it. White on that orange is
+   2.11:1, which is unreadable and was shipped. Every ink token also flips in this block, so a
+   token here would flip back to pale and reproduce the fault; #171A2B is the light scheme's own
+   ink, and on #E8A55A it measures 8.04:1. */
+@media (prefers-color-scheme:dark){ .pagetab{color:#171A2B} }
+
 @media print{ .pagetab{display:none} }

@@ -550,13 +550,18 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     left.appendChild(axisList(themes,"axis-theme"));
 
     left.appendChild(el("h2",{cls:"axis-h",text:"By jurisdiction"}));
-    /* THE SENTENCE THAT STOPS A READER ADDING THE ROWS UP, and it took a correction. It first said
-       these were the same papers read by country, which is false: the thematic and jurisdictional
-       papers are two different sets, 20 and 15. What DOES repeat is inside this axis, where a paper
-       covering three states is listed under each of them. */
+    /* THE SENTENCE THAT STOPS A READER ADDING THE ROWS UP, and it has taken two corrections.
+       It first said these were the same papers read by country, which is false: the two axes are
+       disjoint, 20 thematic and 15 jurisdictional, checked against the data rather than assumed.
+       What DOES repeat is inside this axis, where a paper covering several states is listed under
+       each of them. The second correction is "and their minutes": the sentence covered the paper
+       count only, so a reader adding the minute column still got a number that did not reconcile.
+       The rows here total 19 papers and 38 minutes against the 15 and 30 actually behind them, and
+       the 84 in the lede is the whole collection of 35, not this axis. */
     left.appendChild(el("p",{cls:"axis-note",
       text:"A separate set of country papers. One covering several states is listed under each, "
-         + "so these rows add up to more than the " + byPlace + " papers behind them."}));
+         + "so these rows, and their minutes, add up to more than the " + byPlace
+         + " papers behind them."}));
     left.appendChild(axisList(places,"axis-place"));
 
     host.appendChild(left);
