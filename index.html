@@ -3746,7 +3746,12 @@ var listOpen=false;
 
 function controlsActive(){
   var c=readControls();
-  return !!(c.q || c.pick || c.pick2 || c.email || c.phone || c.website);
+  /* THE FOCUS BELONGS IN THIS LIST, and leaving it out was a filter that did nothing a reader
+     could see. On the whole-register view the list is collapsed behind a gate until something is
+     filtered, and the gate asked six controls and not the seventh. Selecting a focus computed 579
+     rows and left the list shut and the briefing above it unchanged, so the only visible effect was
+     the tally. */
+  return !!(c.q || c.pick || c.pick2 || c.theme || c.email || c.phone || c.website);
 }
 /* the gate is in play only where the list is not itself the answer: the whole-register view with
    nothing typed and nothing filtered */
@@ -6671,7 +6676,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
      filters. This block adds no elements to their page and changes none of theirs; it does
      READ the six controls and listen for their events, because the controls are what decide
      whether the whole register is on screen. */
-  var FILTERS=["q","in","cat","has"], touched=false;
+  var FILTERS=["q","in","cat","focus","has"], touched=false;
   function isAllView(){
     var raw=location.hash.replace(/^#\/?/,"");
     var parts=raw.split("?");
@@ -6691,6 +6696,10 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
     if(w && !w.hidden && sel && sel.value) return false;
     var w2=document.getElementById("pick2wrap"), sel2=document.getElementById("pick2");
     if(w2 && !w2.hidden && sel2 && sel2.value) return false;
+    /* the focus is a slice like any other: with one applied, the briefing's 1,862 no longer
+       describes the list underneath it, which is the whole reason this test exists */
+    var w3=document.getElementById("pick3wrap"), sel3=document.getElementById("pick3");
+    if(w3 && !w3.hidden && sel3 && sel3.value) return false;
     /* The URL is honoured only until the reader touches something.  It is needed for a
        shared link that arrives already filtered, where the panel would otherwise flash
        before the router fills the box, but once a control has been used the controls are
@@ -6795,7 +6804,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   }
   window.addEventListener("hashchange",watch);
   /* the controls fire immediately, so the panel moves with the list */
-  ["q","f-email","f-phone","f-website","pick","pick2"].forEach(function(id){
+  ["q","f-email","f-phone","f-website","pick","pick2","pick3"].forEach(function(id){
     var n=document.getElementById(id);
     if(!n) return;
     var go=function(){ touched=true; sync(); };
@@ -8044,6 +8053,12 @@ if(document.readyState === "loading"){
   /* a pointer that leaves the window never sends another move, so the last state would stick */
   document.addEventListener("mouseleave", clearAll);
   window.addEventListener("blur", clearAll);
+  /* NOR DOES IT SURVIVE A ROUTE CHANGE. Approaching the mark, moving to the register and coming
+     back without touching the mouse left the mark still at three times its size, because nothing
+     had sent another move to bring --prox down. Measured at matrix(2.99, ...) on return, and the
+     door .near animations the same. A route change means the portal has been rebuilt or hidden, so
+     the state it held is stale; the next movement restores it in a frame. */
+  window.addEventListener("hashchange", clearAll);
 
   sync();
   if(fine.addEventListener){
