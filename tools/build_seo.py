@@ -83,15 +83,8 @@ def block(url, title, desc, extra_ld=None):
            '<meta property="og:url" content="%s">' % esc(url),
            '<meta property="og:title" content="%s">' % esc(title),
            '<meta property="og:description" content="%s">' % esc(desc),
-           # A RASTER, NOT THE SVG. og:image served image/svg+xml and the platforms that matter
-           # accept png and jpeg only, so a shared link showed no picture at all. 1200 by 630 is
-           # the ratio they crop to, and summary_large_image is the card that uses it: plain
-           # summary asks for a square thumbnail and would cut the wordmark off.
-           '<meta property="og:image" content="%s/gcc-share.png">' % SITE,
-           '<meta property="og:image:width" content="1200">',
-           '<meta property="og:image:height" content="630">',
-           '<meta property="og:image:type" content="image/png">',
-           '<meta name="twitter:card" content="summary_large_image">',
+           '<meta property="og:image" content="%s/gcc-emblem.svg">' % SITE,
+           '<meta name="twitter:card" content="summary">',
            '<meta name="twitter:title" content="%s">' % esc(title),
            '<meta name="twitter:description" content="%s">' % esc(desc)]
     if extra_ld:

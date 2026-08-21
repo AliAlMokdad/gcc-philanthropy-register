@@ -877,17 +877,36 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 .portal{margin:0 auto;padding:var(--s4) 0 0;text-align:center}
 .portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
   text-transform:uppercase;color:var(--ink-3)}
-.portal-word{max-width:740px;margin:0 auto;font:500 clamp(24px,3.5vw,38px)/1.16 var(--display);
-  color:var(--ink);letter-spacing:-.2px;font-optical-sizing:auto;text-wrap:balance}
+/* 600, not 500. The masthead of a reference work should carry weight, and Source Serif 4 is
+   loaded as a variable face across 200..900, so 600 is a real drawn weight rather than a
+   synthesised one. Tracking tightens with the extra weight because at 38px a heavier serif needs
+   less air between letters, not more. font-optical-sizing stays on: it is what makes this face
+   thicken its stems and open its counters at display size instead of scaling up a text cut. */
+.portal-word{max-width:800px;margin:0 auto;font:600 clamp(25px,3.6vw,40px)/1.14 var(--display);
+  color:var(--ink);letter-spacing:-.4px;font-optical-sizing:auto;text-wrap:balance}
 /* THE IDENTITY IS THE NAME AND ONE SENTENCE. A tagline sat between them and Ali removed it. The
    rule under the name closes the nameplate, so what follows reads as description rather than as
    more title. The sentence itself is his wording. */
-.portal-lede{max-width:58ch;margin:14px auto 0;font:400 15.5px/1.65 var(--sans);
-  color:var(--ink-3);text-wrap:pretty}
+/* THE STANDFIRST, and it was the weakest thing on the page. It sat in system sans at 400 in the
+   lightest ink on the scale, which is the treatment this site uses for captions and metadata, so
+   the one sentence explaining what the whole site IS was set like a footnote.
+   It now takes the display serif, one continuous size step above the body, at 450 so it carries
+   without competing with the 600 name above it, in --ink-2 rather than --ink-3 so it reads as
+   text rather than as an aside. Serif under serif is the deliberate part: a name in one face and
+   its explanation in another reads as a product page, the same face at two weights reads as a
+   masthead, which is the register this page wants.
+   The measure widens to 64ch because the sentence is longer than the one it replaces, and
+   text-wrap:balance evens the line lengths so a centred three-line block sits as a block rather
+   than as a staircase. */
+.portal-lede{max-width:64ch;margin:18px auto 0;
+  font:500 clamp(16px,1.35vw,18.5px)/1.55 var(--display);
+  color:var(--ink-2);letter-spacing:0;font-optical-sizing:auto;text-wrap:balance}
 /* no font-style:italic: the italic subsets are no longer requested, so this would be a sheared
    fake. Colour and weight already separate the abbreviation from the name around it. */
-.portal-word .abbr{color:inherit;font-weight:400}
-.portal-word::after{content:"";display:block;width:54px;height:3px;margin:14px auto 0;
+/* the parenthetical is a gloss on the name, not part of it, so it sits one step back in both
+   weight and ink. At 400 against a 600 name the gap read as a fault rather than a choice. */
+.portal-word .abbr{color:var(--ink-2);font-weight:500}
+.portal-word::after{content:"";display:block;width:64px;height:3px;margin:16px auto 0;
   background:var(--spectrum);border-radius:2px}
 
 /* the ring: a 3x3 grid, mark in the centre, six states around it. Grid, not absolute
@@ -1052,7 +1071,10 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 }
 /* on a phone the button drops under a full-width field so the placeholder reads whole */
 @media (max-width:480px){
-  .portal-word{font-size:25px;line-height:1.12}
+  .portal-word{font-size:25px;line-height:1.12;letter-spacing:-.3px}
+  /* the standfirst comes down with it. Left at 18.5px under a 25px name the two were nearly the
+     same size and the hierarchy collapsed. */
+  .portal-lede{font-size:15.5px;line-height:1.52;margin-top:14px}
   .portal-search{flex-wrap:wrap}
   .portal-search input{flex-basis:100%;padding:0 14px}
   .portal-search input::placeholder{font-size:15px}
@@ -2370,11 +2392,8 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 <meta property="og:url" content="https://gccphilanthropy.org/">
 <meta property="og:title" content="Gulf Cooperation Council (GCC) Philanthropy">
 <meta property="og:description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
-<meta property="og:image" content="https://gccphilanthropy.org/gcc-share.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
-<meta name="twitter:card" content="summary_large_image">
+<meta property="og:image" content="https://gccphilanthropy.org/gcc-emblem.svg">
+<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gulf Cooperation Council (GCC) Philanthropy">
 <meta name="twitter:description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gccphilanthropy.org/#website","url":"https://gccphilanthropy.org/","name":"GCC Philanthropy","alternateName":"Gulf Cooperation Council Philanthropy","inLanguage":"en-GB","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://gccphilanthropy.org/?search={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Dataset","@id":"https://gccphilanthropy.org/#register","name":"Gulf Cooperation Council (GCC) Philanthropy Register","description":"A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.","url":"https://gccphilanthropy.org/","inLanguage":"en-GB","creator":{"@type":"Person","name":"Ali Al Mokdad"},"isAccessibleForFree":true,"variableMeasured":["name","type","focus","country","city","website","email","phone","linkedin","contact","title","area"],"spatialCoverage":[{"@type":"Country","name":"United Arab Emirates"},{"@type":"Country","name":"Saudi Arabia"},{"@type":"Country","name":"Qatar"},{"@type":"Country","name":"Kuwait"},{"@type":"Country","name":"Bahrain"},{"@type":"Country","name":"Oman"}],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://gccphilanthropy.org/data.json"}}]}</script>
@@ -2504,8 +2523,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   <div id="l1" hidden>
     <section class="portal" aria-labelledby="portal-word">
       <h2 class="portal-word" id="portal-word">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</h2>
-      <p class="portal-lede">A donor intelligence, registry, data, news and knowledge platform
-        covering philanthropy across the Gulf Cooperation Council countries.</p>
+      <p class="portal-lede">One platform bringing together funders, philanthropic
+        organizations, data, news and knowledge across the six Gulf Cooperation Council
+        countries.</p>
       <div class="ring" id="ring">
         <!-- INTEL BLOCK 1 of 4. The emblem keeps its original destination, the whole
              register at #/a/all. That page now opens with the funding intelligence above
