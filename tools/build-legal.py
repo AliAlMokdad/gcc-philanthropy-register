@@ -312,3 +312,32 @@ written.append((p, len(page)))
 for p, n in written:
     print("  %-52s %6d bytes" % (os.path.relpath(p, ROOT).replace("\\", "/"), n))
 print("\nbuilt %d pages from %s" % (len(written), os.path.abspath(SRC)))
+
+# ---------------------------------------------------------------- the SEO block
+# THIS BUILD REWRITES THESE FOUR PAGES WHOLESALE, so anything another tool injected into their
+# heads is destroyed by it. tools/build_seo.py maintains a marker-delimited block carrying the
+# canonical, the Open Graph tags, the Twitter card and one JSON-LD object per page, across all
+# thirteen real URLs on this site.
+#
+# LOSING IT HERE IS THE WORST KIND OF REGRESSION, and it was demonstrated rather than imagined:
+# a run of this generator removed the block from all four pages while the other nine kept theirs,
+# and nothing about the pages looked broken. A note telling the next person to run build_seo.py
+# afterwards would have failed the same way, so this calls it instead. build_seo.py is idempotent
+# and only rewrites between its own markers, so running it here is safe and running it twice is
+# harmless.
+seo = os.path.join(ROOT, "tools", "build_seo.py")
+if os.path.exists(seo):
+    import subprocess
+    print("\nre-applying the SEO block, because this build just overwrote the page heads")
+    r = subprocess.run([sys.executable, seo, "--write"], cwd=ROOT,
+                       capture_output=True, text=True, encoding="utf-8", errors="replace")
+    for line in [l for l in (r.stdout or "").splitlines() if l.strip()][-4:]:
+        print("   " + line)
+    if r.returncode != 0:
+        print("   build_seo.py exited %d, so these four pages have NO canonical and NO share "
+              "card until it runs successfully." % r.returncode)
+        if r.stderr:
+            print("   " + r.stderr.strip().splitlines()[-1])
+else:
+    print("\ntools/build_seo.py is not present, so these four pages carry no canonical and no "
+          "share card while the rest of the site does.")
