@@ -1378,23 +1378,23 @@ body:not(.list-only) #cats{display:none !important}
   width:52px;height:30px}
 .cprof-mark{display:block;border-radius:1px}
 .cprof-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
-.cprof-eyebrow{font:600 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-3)}
 .cprof-name{font:500 19px/1.2 var(--display);color:inherit;font-optical-sizing:auto;
   overflow-wrap:break-word}
-/* the arrow travels, the band does not: a target that shifts as the pointer arrives runs away */
-.cprof-go{flex:0 0 auto;margin-left:20px;width:22px;height:22px;color:var(--ink-3);
-  transition:transform .18s cubic-bezier(.22,.61,.36,1),color .18s ease}
-.cprof-a:hover .cprof-go,.cprof-a:focus-visible .cprof-go{transform:translateX(4px);
-  color:var(--accent-2)}
 @media (max-width:600px){
   .cprof-a{padding:10px 12px;gap:11px;min-height:60px}
   .cprof-name{font-size:17px}
   .cprof-flag{width:46px;height:28px}
 }
+/* THE NAME UNDERLINES ON HOVER, and that is not decoration. Removing the arrow took away the one
+   element that said this plate is somewhere to go: a bordered box on a pale ground with an accent
+   rule reads as a callout, and a callout is not clicked. The text is already in the link colour and
+   the border and ground shift on hover, but an underline on the words is the site's own way of
+   saying link, so it is unambiguous rather than merely inferable. The band itself still does not
+   move, because a target that shifts as the pointer arrives is a target that runs away. */
+.cprof-a:hover .cprof-name,.cprof-a:focus-visible .cprof-name{
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
 @media (prefers-reduced-motion:reduce){
-  .cprof-a,.cprof-go{transition:none}
-  .cprof-a:hover .cprof-go,.cprof-a:focus-visible .cprof-go{transform:none}
+  .cprof-a{transition:none}
 }
 .i-card{background:var(--i-surface);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 
@@ -2688,12 +2688,8 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <p class="cprof" id="cprof" hidden><a class="cprof-a" id="cproflink" href="members/">
        <span class="cprof-flag" id="cprofflag" aria-hidden="true"></span>
        <span class="cprof-txt">
-         <span class="cprof-eyebrow">Country profile</span>
          <span class="cprof-name" id="cprofname">Read the country profile</span>
-       </span>
-       <svg class="cprof-go" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path
-          d="M4 12h13m0 0-5-5m5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"
-          stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
+       </span></a></p>
     <div class="controls" id="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
@@ -4045,10 +4041,12 @@ function setCountryProfile(sel){
       fm.setAttribute("height", fh.toFixed(1));
       fbox.appendChild(fm);
     }
-    /* the accessible name stays a full sentence: "Country profile" alone would read as a heading
-       rather than as somewhere to go */
-    var nm = el("cprofname");
-    if(nm) nm.textContent = sel.name;
+    /* THE LABEL IS NOT WRITTEN HERE, and that is the point. It read "Read the country profile" in
+       the markup and this line replaced it with the country name before anyone saw it, so the one
+       phrase Ali asked for by name never reached the screen. The visible text is now fixed in the
+       markup and the country is identified by its flag beside it and by the heading directly
+       above. Only the accessible name is composed, because a screen reader meets this link out of
+       that context and needs to know which country it opens. */
     a.setAttribute("aria-label", "Read the " + sel.name + " country profile");
     box.hidden = false;
   });
