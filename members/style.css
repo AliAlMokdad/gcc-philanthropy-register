@@ -175,7 +175,7 @@ body{background:transparent}
    #D3DCE1 with .14em tracking widening to .18em, and the Fluent spectrum ribbon at 40 per
    cent along the foot of the band.
    ============================================================================= */
-.gccp-top,.gccp-foot{
+.gccp-top{
   --gccp-mast:#232C5C;
   --gccp-ink-3:#5B6488;
   --gccp-accent:#3E4CC4;
@@ -207,24 +207,10 @@ body{background:transparent}
 
 /* THE FOOT. No panorama here: these pages already carry one, and the register's footer no
    longer holds its own copy, so a second would put the same picture on the page twice. */
-.gccp-foot{position:relative;border-top:1px solid #DEE7F4;background:#F5F8FD}
-.gccp-foot .gccp-wrap{padding-top:24px;padding-bottom:24px}
-.gccp-foot p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
-  font:500 12.5px/1.6 var(--gccp-sans);color:var(--gccp-ink-3)}
-.gccp-foot a{display:inline-flex;align-items:center;min-height:40px;
-  font:600 14px/1.6 var(--gccp-serif);color:var(--gccp-accent);
-  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
-  letter-spacing:.15px}
-.gccp-foot a:hover{color:var(--gccp-accent-2)}
-.gccp-foot a.gccp-ava{flex:0 0 auto;min-height:0;border-radius:50%;line-height:0;
-  text-decoration:none;box-shadow:0 0 0 1px var(--gccp-line-2),0 2px 7px rgba(20,24,36,.14);
-  transition:box-shadow .18s ease,transform .18s ease}
-.gccp-foot a.gccp-ava img{width:40px;height:40px;border-radius:50%;display:block;
-  object-fit:cover}
-.gccp-foot a.gccp-ava:hover,.gccp-foot a.gccp-ava:focus-visible{transform:scale(1.14);
-  box-shadow:0 0 0 1px #E7B23A,0 0 16px 3px rgba(242,194,74,.55)}
-@media (prefers-reduced-motion:reduce){
-  .gccp-foot a.gccp-ava:hover,.gccp-foot a.gccp-ava:focus-visible{transform:none} }
+/* THE FOOTER MOVED TO shared/chrome.css. These pages carried their own .gccp-foot, which held
+   the portrait and the credit and no links at all, in serif 14px where every other footer on
+   the site used mono 11px. No page emits .gccp-foot now, so the rules are removed rather than
+   left to be read as live. */
 
 /* the body text, now English, so it is set in the page's own sans rather than the Arabic face
    and given a readable measure instead of a full-width column */

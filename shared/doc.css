@@ -236,19 +236,15 @@ main{flex:1 0 auto}
 /* ---------------------------------------------------------------- the footer
    The same signature the main page carries, so the four pages end the way every other page ends.
    Its three-column form lives in index.html, which owns the main page's footer. */
-footer.sig{border-top:1px solid var(--line);background:var(--paper);
-  padding:var(--s4) 0;margin-top:auto}
-footer.sig .wrap{max-width:1280px;margin:0 auto;padding:0 var(--s4)}
-.sig-links{display:flex;flex-wrap:wrap;gap:8px var(--s4);margin:0;padding:0;list-style:none;
-  justify-content:center}
-.sig-links a{font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;
-  color:var(--ink-3);text-decoration:none}
-.sig-links a:hover{color:var(--accent)}
-.sig-links a[aria-current]{color:var(--ink)}
-.sig-back{display:block;margin:var(--s3) 0 0;text-align:center;
-  font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
-.sig-back a{color:inherit;text-decoration:none}
-.sig-back a:hover{color:var(--accent)}
+/* ONE DECLARATION, AND IT IS LOAD-BEARING. The whole footer now lives in shared/chrome.css, which
+   every page loads. This file used to carry a second implementation, a flat row of links plus a
+   brand line, and its own footer.sig .wrap at max-width 1280 with 24px padding. That last one was
+   not harmless: doc.css loads after chrome.css, so these five pages rendered 437px columns while
+   every other page rendered 403px, same markup, different measure.
+   What must stay is margin-top:auto. body above is a flex column at min-height 100vh, so auto is
+   what pins the footer to the bottom of a short page; chrome.css sets a fixed space instead, which
+   would leave it floating mid-page on the shortest of these. */
+footer.sig{margin-top:auto}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none !important;transition:none !important;

@@ -157,3 +157,58 @@ header.top::before, .gccp-top::before{
 @media (prefers-color-scheme:dark){ .pagetab{color:#171A2B} }
 
 @media print{ .pagetab{display:none} }
+
+/* ==========================================================================
+   THE SITE SIGNATURE FOOTER, ONE IMPLEMENTATION FOR ALL PAGES.
+   There were four footers before this: the home page's three-column one, a flat row of links on the
+   five generated notice pages, the photo and credit alone on the seven country pages under a
+   completely separate .gccp-foot system, and nothing at all on the toolkit. Measured at 1270px they
+   were 117, 105, 89 and 0 pixels tall, with three different link treatments, and two of the four
+   offered no route to Privacy or Terms.
+   The shape is the one Ali specified: FAQ and Connect far left, his photo and credit centred, Terms
+   of Use and Privacy Policy far right. Every page loads this file, so this is where it belongs.
+   index.html keeps its own inline copy of these rules, which loads after this file and therefore
+   still wins, so the reference page is untouched by this block.
+   ========================================================================== */
+footer.sig{position:relative;border-top:1px solid var(--line);background:var(--paper);
+  margin-top:var(--s5)}
+footer.sig .wrap{position:relative;z-index:1;max-width:1240px;margin:0 auto;
+  padding:var(--s4) var(--s5)}
+footer.sig p{margin:0;display:flex;align-items:center;gap:11px;justify-content:center;
+  font:500 12.5px/1.6 var(--sans);color:var(--ink-2)}
+footer.sig a{display:inline-flex;align-items:center;min-height:40px;
+  font:600 14px/1.6 var(--sans);color:var(--accent);
+  text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
+  letter-spacing:.15px}
+footer.sig a:hover{color:var(--accent-2)}
+/* the portrait: a circle beside the credit, growing a touch and glowing warm on hover */
+footer.sig a.sig-ava{flex:0 0 auto;min-height:0;border-radius:50%;line-height:0;
+  text-decoration:none;box-shadow:0 0 0 1px var(--line-2),0 2px 7px rgba(20,24,36,.14);
+  transition:box-shadow .18s ease,transform .18s ease}
+footer.sig a.sig-ava img{width:40px;height:40px;border-radius:50%;display:block;object-fit:cover}
+footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:scale(1.14);
+  box-shadow:0 0 0 1px #E7B23A,0 0 16px 3px rgba(242,194,74,.55)}
+@media (prefers-reduced-motion:reduce){
+  footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:none}
+}
+footer.sig .sig-cols{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:var(--s4)}
+footer.sig .sig-col{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+footer.sig .sig-col-l{align-items:flex-start}
+footer.sig .sig-col-r{align-items:flex-end}
+/* the four meta links are mono and quiet, so they read as site furniture rather than as content */
+footer.sig .sig-col a{min-height:32px;font:600 11px/1.6 var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);text-decoration:none}
+footer.sig .sig-col a:hover{color:var(--accent);text-decoration:underline;
+  text-decoration-thickness:1px;text-underline-offset:3px}
+footer.sig .sig-col a[aria-current]{color:var(--ink)}
+footer.sig .sig-col a:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+footer.sig .sig-cols p{justify-content:center}
+/* one column on a phone, and the credit leads, because a name above two pairs of links reads as a
+   signature while a name buried between them reads as a list item */
+@media (max-width:700px){
+  footer.sig .sig-cols{grid-template-columns:1fr;justify-items:center;gap:var(--s3)}
+  footer.sig .sig-cols p{order:-1}
+  footer.sig .sig-col{flex-direction:row;gap:var(--s4);align-items:center}
+  footer.sig .wrap{padding:var(--s4)}
+}

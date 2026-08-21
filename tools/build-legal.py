@@ -64,18 +64,37 @@ FOOT_LINKS = [("../faq/", "FAQ", "faq"), ("../connect/", "Connect", "connect"),
               ("../terms/", "Terms of Use", "terms"), ("../privacy/", "Privacy Policy", "privacy")]
 
 def footer(current):
-    li = []
-    for href, label, key in FOOT_LINKS:
-        cur = ' aria-current="page"' if key == current else ""
-        li.append('      <li><a href="%s"%s>%s</a></li>' % (href, cur, E(label)))
-    return ("""<footer class="sig">
+    '''THE SITE SIGNATURE, the same three columns as every other page on the site.
+
+    This used to emit a flat row of four links with the brand name beneath it and no ownership
+    credit, which made these five the only pages that did not carry his name, while the seven
+    country pages were the only ones that did not carry the links, and the toolkit carried
+    neither. One shape now. The rules live in shared/chrome.css, which every page already loads.
+    '''
+    NL = chr(10)
+    def link(slug, label):
+        cur = ' aria-current="page"' if slug == current else ""
+        return '      <li><a href="../%s/"%s>%s</a></li>' % (slug, cur, E(label))
+    left = NL.join([link("faq", "FAQ"), link("connect", "Connect")])
+    right = NL.join([link("terms", "Terms of Use"), link("privacy", "Privacy Policy")])
+    return '''<footer class="sig">
   <div class="wrap">
-    <ul class="sig-links">
+    <nav class="sig-cols" aria-label="Site information">
+    <ul class="sig-col sig-col-l">
 %s
     </ul>
-    <p class="sig-back"><a href="../">Gulf Cooperation Council (GCC) Philanthropy</a></p>
+    <p><a class="sig-ava" href="https://www.linkedin.com/in/ali-al-mokdad/"
+       target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
+       src="../ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
+       class="sig-cred">Owned and managed by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
+       target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
+    <ul class="sig-col sig-col-r">
+%s
+    </ul>
+    </nav>
   </div>
-</footer>""" % "\n".join(li))
+</footer>''' % (left, right)
+
 
 def head(title, desc, tab):
     return """<!doctype html>
