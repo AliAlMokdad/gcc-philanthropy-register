@@ -330,7 +330,12 @@ details.more ol.ranked{margin-top:var(--s3)}
      Qatar is the widest at 28:11: at 190 it came out 484px and pushed 30px into the
      heading column, where at 172 it is 438px and clears it. The box hugs the flag
      exactly, which matters because the scrim below is painted on this box. */
-  top:50%;transform:translateY(-50%);height:min(34vw,244px);
+  /* ONE CONTINUOUS SCALE, NO STEP. This was min(34vw,244px) with a phone rule of
+     min(34vw,132px), so the same flag was 132px flat from 414px all the way to 899px and
+     then 244px at 900px: an 85 per cent jump across one pixel, which is why it read as a
+     different size on a phone than on a laptop. clamp holds the phone where it was, grows
+     through the tablet range the old rule froze, and reaches the same ceiling. */
+  top:50%;transform:translateY(-50%);height:clamp(128px,19vw,244px);
   line-height:0;pointer-events:none;opacity:.16}
 /* Faded by a MASK on the flag's own alpha, so there is no edge anywhere to see.
    A scrim was tried first and was wrong: laying a paper-coloured gradient OVER the flag
@@ -361,7 +366,9 @@ details.more ol.ranked{margin-top:var(--s3)}
   .l2head:has(> .flagplate[hidden]) > .inner{padding-right:var(--s5)}
 }
 @media (max-width:899px){
-  .flagplate{height:min(34vw,132px);opacity:.10;right:-6%}
+  /* size is handled by the clamp above, so only the two legibility values remain: fainter
+     and further off-canvas, because the heading sits closer to the plate on a narrow screen */
+  .flagplate{opacity:.10;right:-6%}
 }
 
 /* ---------- flag backdrops ----------
@@ -2363,8 +2370,11 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 <meta property="og:url" content="https://gccphilanthropy.org/">
 <meta property="og:title" content="Gulf Cooperation Council (GCC) Philanthropy">
 <meta property="og:description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
-<meta property="og:image" content="https://gccphilanthropy.org/gcc-emblem.svg">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://gccphilanthropy.org/gcc-share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Gulf Cooperation Council (GCC) Philanthropy">
 <meta name="twitter:description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gccphilanthropy.org/#website","url":"https://gccphilanthropy.org/","name":"GCC Philanthropy","alternateName":"Gulf Cooperation Council Philanthropy","inLanguage":"en-GB","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://gccphilanthropy.org/?search={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Dataset","@id":"https://gccphilanthropy.org/#register","name":"Gulf Cooperation Council (GCC) Philanthropy Register","description":"A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.","url":"https://gccphilanthropy.org/","inLanguage":"en-GB","creator":{"@type":"Person","name":"Ali Al Mokdad"},"isAccessibleForFree":true,"variableMeasured":["name","type","focus","country","city","website","email","phone","linkedin","contact","title","area"],"spatialCoverage":[{"@type":"Country","name":"United Arab Emirates"},{"@type":"Country","name":"Saudi Arabia"},{"@type":"Country","name":"Qatar"},{"@type":"Country","name":"Kuwait"},{"@type":"Country","name":"Bahrain"},{"@type":"Country","name":"Oman"}],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://gccphilanthropy.org/data.json"}}]}</script>
