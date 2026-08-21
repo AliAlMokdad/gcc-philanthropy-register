@@ -233,3 +233,34 @@ SPF that fails.
 Two files in the repository root, `GCC Philanthropy Register - Privacy, Terms and FAQ.docx` and
 `.pdf`. Deliverables Ali asked to keep in the project folder. **Do not `git add -A`**: committing
 them would make them publicly downloadable from the live site.
+
+### The shared working tree, and why `git add <path>` is not safe here
+
+Both sessions of 21 August were in ONE working tree, not merely one repository. That is the whole
+explanation for two near-losses, and it is worth stating as a rule rather than as an anecdote.
+
+First, commit `ed2725a` carried this session's footer rewrite without mentioning it, because the
+footer edit was sitting uncommitted in `index.html` when the other session ran `git add index.html`.
+
+Then the reverse. Ali asked for one word changed in every page footer, `Compiled by` becoming
+`Owned and managed by`. That phrase lives in the seven `members/*.html` files, and staging them
+picked up **257 lines** of the other session's in-flight work: the `seo:start` blocks from
+`tools/build_seo.py`, the `country-hub:start` sections from `tools/build_member_hubs.py`, and the
+removal of `<meta name="robots" content="noindex">`. Committing that would have published generated
+pages while their generators were still untracked, and silently made the member pages indexable.
+
+**THE RULE. In a shared working tree, `git add <path>` commits whatever is in that file, not what
+you changed in it.** For a small edit to a file another session may be holding, build the blob and
+stage it directly:
+
+    git show "HEAD:$f" > tmp          # the file WITHOUT anyone's uncommitted work
+    ...apply only your own change to tmp...
+    sha=$(git hash-object -w --no-filters tmp)
+    git update-index --cacheinfo 100644,"$sha","$f"
+
+The commit then contains your change alone and the other session's work stays in the working tree.
+Verify it worked by reading `git show --stat HEAD`: if a one-word change reports more than one line
+changed, stop.
+
+`git status` is also not a safe guard here. It shows the shared tree, so a file can appear modified
+because of work that is not yours, and it can appear clean seconds after someone else commits.
