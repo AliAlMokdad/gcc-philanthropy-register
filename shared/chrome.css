@@ -241,3 +241,23 @@ footer.sig .sig-rights{margin:10px 0 0;padding-top:11px;
 @media (max-width:640px){
   footer.sig .sig-rights{margin-top:var(--s3);padding-top:13px;letter-spacing:.08em}
 }
+
+/* ==================== PHONE ONLY: the product bar in two rows, not three ====================
+   MEASURED at 390px: the bar was 153px, a 44px brand line plus a nav list wrapping to three rows
+   at 90px, because five labels at 12px with 12px of padding each need more than one 342px row can
+   hold and the gaps pushed the fifth onto a line of its own.
+
+   The labels are not shortened and nothing is hidden, because a nav that hides a destination on a
+   phone has moved the problem rather than solved it. The padding between items comes down instead,
+   which is space that only exists to separate a pointer's hover target and is not needed when the
+   target is a finger arriving in one place. Each item keeps a 44px height, so every destination is
+   still a full-size tap target; the row simply stops being three rows deep.
+
+   Above this query the bar is untouched. */
+@media (max-width:600px){
+  .pbar .wrap{padding-top:6px;padding-bottom:4px}
+  .pbar nav{gap:var(--s2)}
+  .pbar-brand{min-height:38px}
+  .pbar-nav{gap:0 2px}
+  .pbar-nav a{padding:0 7px;min-height:40px}
+}

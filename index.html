@@ -2097,6 +2097,172 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .pn-label{display:block;font:600 clamp(16px,1.7vw,19px)/1.26 var(--serif);color:var(--ink);
   letter-spacing:-.008em;text-wrap:balance;position:relative;z-index:1}
 .portal-news a:hover .pn-label{color:var(--accent-2)}
+
+
+/* THE BROWSE TOGGLE DOES NOT EXIST ABOVE THE PHONE QUERY. Declared before the query, so the
+   phone rule can override it; declared after, it would win and leave the index permanently shut. */
+.mcats{display:none}
+
+/* ==================== PHONE ONLY: the category index folds ====================
+   MEASURED. On a 390x844 phone the register lays out as a 153px product bar, a 254px title band,
+   the 71px search bar, and then 789px of category index before the tally and the first
+   organisation at y=1560. The index is the single largest block on the page and it sits between
+   the search and the results.
+
+   It is not removed, because browsing by category is a real way into 1,862 rows and on the
+   register it is one of only two. It folds, with the count on the control so a reader knows what
+   is behind it rather than guessing, and the tiles are laid out two-up when open rather than as
+   26 full-width rows.
+
+   Same visual language as the filter toggle above it deliberately: two folded controls on one
+   screen should look like one idea rather than two inventions. */
+@media (max-width:600px){
+  #cats{padding-top:18px}
+  .cats-head{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    margin-bottom:0}
+  .mcats{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:0 0 auto;
+    min-height:44px;min-width:104px;padding:0 12px;
+    font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-2);background:var(--paper);
+    border:1px solid var(--line-2);border-radius:7px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent}
+  .mcats-n{font:600 10.5px/1 var(--mono);color:var(--ink-3)}
+  .mcats:active{transform:scale(.97);border-color:var(--accent-line)}
+  .mcats[aria-expanded="true"]{color:var(--accent-2);border-color:var(--accent-line);
+    background:var(--accent-soft)}
+  .mcats[aria-expanded="true"] .mcats-n{color:var(--accent-2)}
+  /* folded: the heading and its control only */
+  #cats > ol.ranked,#cats > details.more{display:none}
+  #cats.mopen > ol.ranked{display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    margin-top:16px;animation:mf-in .22s cubic-bezier(.22,.61,.36,1) both}
+  #cats.mopen > details.more{display:block;animation:mf-in .22s cubic-bezier(.22,.61,.36,1) both}
+  /* two-up tiles need less padding and a smaller label than one full-width row */
+  #cats.mopen ol.ranked a{min-height:56px;padding:10px 12px}
+  #cats.mopen ol.ranked .t{font-size:13.5px;line-height:1.3}
+  #cats.mopen ol.ranked a::before{top:8px;bottom:8px}
+  /* the tail list inside the disclosure gets the same two-up grid */
+  #cats.mopen details.more ol.ranked{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  #cats.mopen details.more summary{min-height:44px;display:flex;align-items:center}
+}
+@media (max-width:600px) and (prefers-reduced-motion:reduce){
+  #cats.mopen > ol.ranked,#cats.mopen > details.more{animation:none}
+  .mcats:active{transform:none}
+}
+
+
+/* ==================== PHONE ONLY: the header stops eating the screen ====================
+   MEASURED at 390x844 before any of this. The chrome above the search box came to 407px, made of
+   a 153px product bar (a 44px brand plus a nav wrapping to THREE rows at 90px), a 28px section
+   tab, and a 254px title band. Inside that band: 24px of padding, then another 52px on the inner
+   block, a 40px back link, an 81px title carrying 16px of margin above, 16px below and 16px of
+   padding under that, and then 48px of margin below the whole band.
+
+   None of that is wrong on a laptop, where the viewport is 950px and the band is the page's
+   entrance. On a phone it is 48 per cent of the screen spent before a reader can do anything, so
+   the stacked paddings are halved and the doubled margins around the title are collapsed to one.
+   Nothing is removed: the back link, the title, the tab and the wash all stay. */
+@media (max-width:600px){
+  .l2head{padding-top:14px;margin-bottom:20px}
+  .l2head .inner{padding-top:22px;padding-bottom:16px}
+  /* 16 above and 16 below plus 16 of padding is three gaps doing one gap's work */
+  #selname{margin-top:8px;margin-bottom:6px;padding-bottom:0}
+  .pagetab{margin-top:8px}
+}
+
+/* THE TOGGLE DOES NOT EXIST ABOVE THE PHONE QUERY, and this rule has to come BEFORE that query
+   rather than after it. Declared afterwards at equal specificity it wins the cascade, which
+   folded the filters away on a phone and removed the only control that could unfold them.
+   Measured: the toggle reported display:none at 390px with the filters hidden, i.e. strictly
+   worse than before the change. */
+.mfilt{display:none}
+
+/* ==================== PHONE ONLY: the filter bar ====================
+   MEASURED FIRST. On a 390x844 phone this row was 329px tall in five stacked rows: the search at
+   50, three selects at 45 each and the checkbox group at 40, with 16px gaps. That is 39 per cent
+   of the screen spent on controls before a single organisation is visible, on a page running to
+   4.9 screens. And nothing on the page was sticky, so changing a filter after scrolling meant
+   travelling back to the top and losing your place.
+
+   THE FOUR FILTERS FOLD, and they keep their values while folded, so what is filtered does not
+   change: readControls() reads the same selects whether they are on screen or not. The row becomes
+   the search plus a toggle, about 66px, so roughly 260px of screen comes back.
+
+   THE BAR STICKS, because on a list this long the search is the control you reach for repeatedly.
+   It bleeds the 24px of main padding on each side and puts it back inside, so it reads as a
+   full-width toolbar rather than a floating card, and it carries the page ground so rows pass
+   under it rather than through it. z-index 80 clears the decorative glow, which sits at 70.
+   Sticky works because every ancestor up to main is overflow:visible; one clipping ancestor
+   anywhere in that chain would have disabled it silently. */
+@media (max-width:600px){
+  #controls{position:sticky;top:0;z-index:80;
+    gap:10px;padding:10px var(--s4);
+    margin-inline:calc(-1 * var(--s4));
+    background:var(--paper);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 6px 12px -8px rgba(20,24,36,.16)}
+  /* BASIS ZERO, NOT AUTO. With an auto basis the field contributed its own content width to
+     the flex line, so the line needed 470px against the 390 available and wrapped. At zero
+     it takes whatever the row has left after the toggle, which is what keeps the bar to one
+     row at every phone width. */
+  #controls .search{flex:1 1 0;min-width:0}
+  /* 16px is not a taste choice: iOS zooms the whole page when a focused field is under 16px */
+  /* THE SAME HEIGHT AS THE TOGGLE BESIDE IT. The field was 50px against the toggle's 46, which
+     reads as a misalignment rather than as a hierarchy at this size. 48 for both, and 16px type
+     because anything under 16 makes iOS zoom the whole page when the field takes focus. */
+  #controls .search input{height:48px;min-height:48px;font-size:16px}
+  .mfilt{min-height:48px}
+  /* WIDTH RESERVED FOR THE BADGE, so switching a filter on cannot reflow the bar. Measured
+     without it: folded and clean the bar was 71px, and folded with one filter active it was
+     127px, because the badge widened the button just enough to wrap the search field onto a
+     second row. A control bar that grows 56px taller the moment you use it is worse than one
+     that is simply tall. 118px holds FILTERS at 12px mono with .1em tracking plus a two-digit
+     count plus the padding, so the row is the same height in every state. */
+  .mfilt{display:inline-flex;align-items:center;justify-content:center;gap:7px;flex:0 0 auto;
+    min-height:46px;min-width:118px;padding:0 12px;
+    font:600 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-2);background:var(--paper);
+    border:1px solid var(--line-2);border-radius:7px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent}
+  .mfilt-n{display:inline-flex;align-items:center;justify-content:center;
+    min-width:18px;height:18px;padding:0 5px;border-radius:9px;
+    font:600 10.5px/1 var(--mono);color:var(--paper);background:var(--accent-2)}
+  /* PRESSED, NOT HOVERED. There is no pointer here, so the state that matters is the one under
+     the thumb, and it is a scale rather than a colour because a finger covers the colour at the
+     exact moment it would be read. */
+  .mfilt:active{transform:scale(.97);border-color:var(--accent-line)}
+  .mfilt[aria-expanded="true"],.mfilt.has-on{color:var(--accent-2);
+    border-color:var(--accent-line);background:var(--accent-soft)}
+  #controls .pick,#controls fieldset.has{display:none}
+  #controls.mopen{flex-wrap:wrap}
+  /* LABEL ABOVE THE CONTROL, NOT BESIDE IT, and the render is what settled this. A fixed 76px
+     label column was meant to align three selects on one edge; CATEGORY is wider than 76px at
+     11px mono with .1em tracking, so it pushed its own select right while CITY and FOCUS stayed
+     put, the three edges stepped, and the widest select ran past the panel. Stacking removes the
+     competition for horizontal space entirely: every control is full width, every edge agrees,
+     and nothing can overflow no matter how long a label gets. It is also the form pattern a phone
+     keyboard expects, since the label stays visible above the field being edited. */
+  #controls.mopen .pick{display:flex;flex-direction:column;align-items:stretch;
+    flex:1 1 100%;gap:5px}
+  #controls.mopen .pick select{width:100%;max-width:none;min-height:46px}
+  #controls.mopen .pick label{font:600 11px/1.3 var(--mono);letter-spacing:.1em;
+    text-transform:uppercase;color:var(--ink-3)}
+  #controls.mopen fieldset.has{display:flex;flex-direction:column;align-items:stretch;
+    flex:1 1 100%;gap:6px;padding-bottom:2px}
+  #controls.mopen fieldset.has legend{float:left;width:100%;padding:0;
+    font:600 11px/1.3 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3)}
+  /* the three chips share one row, which they fit: three 44px targets in 342px */
+  #controls.mopen fieldset.has .chip{flex:1 1 0}
+  #controls.mopen fieldset.has{flex-flow:row wrap}
+  #controls.mopen .pick,#controls.mopen fieldset.has{
+    animation:mf-in .22s cubic-bezier(.22,.61,.36,1) both}
+}
+@keyframes mf-in{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+@media (max-width:600px) and (prefers-reduced-motion:reduce){
+  #controls.mopen .pick,#controls.mopen fieldset.has{animation:none}
+  .mfilt:active{transform:none}
+}
+
 @media (max-width:600px){
   .portal-news{margin-top:18px}
   .portal-news a{padding:13px 16px 14px}
@@ -2700,6 +2866,13 @@ body:has(#l1:not([hidden])) .pbar{display:none}
         <input id="q" type="search" autocomplete="off" spellcheck="false" maxlength="300"
                placeholder="Describe what you fund, in your own words">
       </div>
+      <!-- THE PHONE FILTER TOGGLE. It does not exist above the phone query, so a laptop never
+           sees it and the desktop control row stays exactly what it was. On a phone the four
+           filters below fold behind it, which is where 273 of the 329px this row used to spend
+           have gone. The count is not decoration: with the filters folded a reader has no other
+           way to know one is still narrowing the list. -->
+      <button type="button" class="mfilt" id="mfilt" aria-expanded="false"
+              aria-controls="controls">Filters<span class="mfilt-n" id="mfiltn" hidden></span></button>
       <div class="pick" id="pickwrap" hidden>
         <label for="pick" id="picklabel">Where</label>
         <select id="pick"></select>
@@ -2734,6 +2907,12 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <div class="cats" id="cats" aria-labelledby="cats-title" hidden>
       <div class="cats-head">
         <h3 class="cats-title" id="cats-title">Organisation categories</h3>
+        <!-- PHONE ONLY. Measured at 390x844: this index is 789px tall, nearly a whole extra
+             screen, and on the register it sits between the search box and the first result. A
+             reader who came to search scrolls past a wall of 26 tiles to reach the list. It does
+             not exist above the phone query, so a pointer sees the index exactly as before. -->
+        <button type="button" class="mcats" id="mcats" aria-expanded="false"
+                aria-controls="types">Browse<span class="mcats-n" id="mcatsn"></span></button>
       </div>
       <ol class="ranked" id="types"></ol>
       <details class="more" id="moretypes">
@@ -4056,6 +4235,82 @@ function setCountryProfile(sel){
   });
 }
 
+/* THE PHONE FILTER TOGGLE. Folding the filters away hides state, and the badge is what puts that
+   state back. It counts from readControls(), the same read the filtering itself uses, so the
+   number cannot drift from what the list is actually doing. It excludes the search box, which is
+   never folded and speaks for itself. */
+function activeFilterCount(){
+  var c = readControls(), k = 0;
+  if(c.pick) k++;
+  if(c.pick2) k++;
+  if(c.theme) k++;
+  if(c.email) k++;
+  if(c.phone) k++;
+  if(c.website) k++;
+  return k;
+}
+
+function syncFilterBadge(){
+  var b = el("mfiltn"), btn = el("mfilt");
+  if(!b || !btn) return;
+  var k = activeFilterCount();
+  b.textContent = k ? String(k) : "";
+  b.hidden = !k;
+  btn.setAttribute("aria-label", k ? "Filters, " + k + " active" : "Filters");
+  /* a filter on but folded out of sight still shows on the control itself */
+  btn.classList.toggle("has-on", !!k);
+}
+
+function initMobileFilters(){
+  var btn = el("mfilt"), box = el("controls");
+  if(!btn || !box) return;
+  btn.addEventListener("click", function(){
+    var open = box.classList.toggle("mopen");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    /* opening pushes the list down, so bring the bar back to the top of the viewport rather than
+       leaving the reader looking at the middle of a panel that just expanded above them */
+    if(open && box.getBoundingClientRect().top < 0) box.scrollIntoView({block:"start"});
+  });
+  syncFilterBadge();
+}
+
+/* THE PHONE CATEGORY FOLD. The count is read from the rendered list rather than from a constant,
+   so it cannot fall out of step with what buildL1 actually put there: the head list plus whatever
+   the disclosure holds. */
+function initMobileCats(){
+  var btn = el("mcats"), box = el("cats"), num = el("mcatsn");
+  if(!btn || !box) return;
+  var head = el("types"), rest = el("types-rest");
+  var total = (head ? head.children.length : 0) + (rest ? rest.children.length : 0);
+  if(num) num.textContent = total ? String(total) : "";
+  btn.setAttribute("aria-label", total ? "Browse " + total + " organisation categories" : "Browse");
+  btn.addEventListener("click", function(){
+    var open = box.classList.toggle("mopen");
+    btn.setAttribute("aria-expanded", open ? "true" : "false");
+    /* closing from below the fold would otherwise leave the reader somewhere with no context */
+    if(!open && box.getBoundingClientRect().top < 0) box.scrollIntoView({block:"start"});
+  });
+}
+
+/* THE PLACEHOLDER HAS TO FIT THE BOX IT IS IN. The register's field carries "Describe what you
+   fund, in your own words", which is right at 520px and clipped mid-word at 214px, where it read
+   as "Describe what you fun". A clipped instruction is worse than a shorter one. The landing page
+   already shortens its own placeholder below 480px; this is the same idea applied to the field
+   that survives on every list view, and it is set from script rather than from a second markup
+   attribute so there is exactly one place the desktop wording lives.
+
+   THE STRING IS CHOSEN BY MEASUREMENT, not by eye. The field offers 176px of text room at 390px.
+   Measured on a canvas at the field's own computed font: the desktop wording is 305px, "Search
+   mandate, focus or place" is 220px and still clipped, and "Search mandate or place" is 175px,
+   which fits by one pixel and is therefore the same boundary case that has already cost this
+   project a round. "Search the register" is 132px and still fits at 320px, where the room drops
+   to about 144px. */
+function shortenPhonePlaceholder(){
+  if(!window.matchMedia || !window.matchMedia("(max-width:600px)").matches) return;
+  var q = el("q");
+  if(q) q.placeholder = "Search the register";
+}
+
 function syncList(){
   var gated=listGated(), gate=el("listgate"), wrap=el("listwrap"), btn=el("lgbtn");
   /* the category index rides with the gate: both are entrances to the whole register, and neither
@@ -4071,6 +4326,7 @@ function syncList(){
 
 function render(){
   if(!current) return;
+  syncFilterBadge();
   var total=pageCount();
   if(page>total) page=total;
   if(page<1) page=1;
@@ -5213,6 +5469,9 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   paintKick();
   buildL1();
   wire();
+  initMobileFilters();
+  initMobileCats();
+  shortenPhonePlaceholder();
   route();
 }).catch(function(e){
   fail("The register could not be loaded ("+e.message+"). ");
