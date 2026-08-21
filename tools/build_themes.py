@@ -28,7 +28,24 @@ deliberately absent: a partner's proposed crosswalk had 120 labelled as educatio
 when 120 is health and 110 is education, and had one code serving two themes, so the family names
 are given and the codes are left to be taken from the source.
 
-FOUR TERMS WERE REMOVED AFTER AUDITING THEM, and the removals matter more than the additions.
+SEVEN TERMS HAVE BEEN REMOVED AFTER AUDITING THEM, and the removals matter more than the
+additions. Three of them came from a second pass that measured the false-positive SHARE of every
+remaining suspect term rather than judging it from a few examples. "venture" was 78 per cent wrong,
+32 of its 41 rows being venture capital or a venture investor, which is an asset class and is
+already what the register's own type column says with "VC/Fund with Impact Mandate". "inclusion" was
+35 per cent wrong on financial, digital and economic inclusion, while "inclusive" is 0 per cent
+wrong, so the adjective stayed and the noun went. "energy" read as environmental in a sample and is
+not: a random twelve of its 42 rows gave a state energy company, a gas holding company managing
+national energy assets, an energy and industrial arm, and construction-energy-marine as a sector
+list. Only 9 of the 42 had "energy" as their only environment term, and most of those nine were
+energy companies rather than environmental funders, so removing it drops almost nothing true.
+
+Terms measured and KEPT, with their false-positive share: treatment 3 per cent, food 3 per cent,
+innovation 6 per cent, young 11 per cent. Those are the residue of any keyword method and the
+term carries the right sense in the large majority. Also checked and clean: aid, art, eye, mental,
+hearing, blood, special needs, language, learning, inclusive.
+
+THE FIRST FOUR REMOVALS, from the original audit.
 "charitable" drove 311 of the welfare rows and names the vehicle rather than the cause: "the Al
 Jomaih charitable foundations", "family charitable and endowment giving". "family" drove 260 of the
 439 women rows and in this corpus overwhelmingly means "family business group", a legal form.
@@ -81,7 +98,7 @@ THEMES = [
      {"dac": "Social infrastructure and services", "fts": "Food Security, Early Recovery"}),
     ("environment", "Water, environment and climate",
      ["water", "wells", "sanitation", "hygiene", "environment", "environmental", "climate",
-      "sustainability", "sustainable", "renewable", "energy", "conservation", "biodiversity",
+      "sustainability", "sustainable", "renewable", "conservation", "biodiversity",
       "wildlife", "marine", "recycling", "carbon"],
      {"dac": "Water supply and sanitation, Environmental protection", "fts": "WASH"}),
     ("culture", "Culture, heritage and the arts",
@@ -100,7 +117,7 @@ THEMES = [
      {"dac": None, "fts": "Child Protection"}),
     ("disability", "Disability and inclusion",
      ["disability", "disabilities", "disabled", "autism", "blind", "blindness", "deaf",
-      "hearing", "wheelchair", "rehabilitation", "special needs", "inclusion", "inclusive",
+      "hearing", "wheelchair", "rehabilitation", "special needs", "inclusive",
       "down"],
      {"dac": None, "fts": "Protection"}),
     ("women", "Women and girls",
@@ -109,8 +126,7 @@ THEMES = [
     ("enterprise", "Enterprise and livelihoods",
      ["entrepreneur", "entrepreneurs", "entrepreneurship", "enterprise", "enterprises",
       "startup", "startups", "sme", "smes", "microfinance", "micro-finance", "livelihood",
-      "livelihoods", "employment", "jobs", "innovation", "incubator", "accelerator",
-      "venture"],
+      "livelihoods", "employment", "jobs", "innovation", "incubator", "accelerator"],
      {"dac": "Banking and financial services, Industry", "fts": "Livelihoods"}),
     ("sport", "Sport and recreation",
      ["sport", "sports", "athletic", "athletics", "football", "recreation", "fitness"],

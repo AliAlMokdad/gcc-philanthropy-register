@@ -3441,7 +3441,20 @@ function fillPick3(sel){
   if(!wrap || !s3) return;
   if(!THEMES){
     wrap.hidden = true;
-    loadThemes().then(function(ok){ if(ok && current === sel) fillPick3(sel); });
+    /* THE LIST HAS ALREADY RENDERED BY NOW, AND THAT IS THE WHOLE PROBLEM. On a cold load of a
+       shared ?focus= link, route() reaches here before the index exists, so readControls reads a
+       hidden control as no filter, the list renders unfiltered, and writeHash then drops focus from
+       the URL. Filling the select afterwards left it displaying a filter that had not been applied:
+       measured on a fresh profile, #/a/list?focus=education showed the select on education with all
+       1,862 rows listed and the parameter gone from the hash.
+       So the deferred call re-applies. apply(false) rather than apply(true) because a link may also
+       carry ?p= and resetting to page one would discard it. Only when a theme is actually pending,
+       so an ordinary visit does not pay for a second render. */
+    loadThemes().then(function(ok){
+      if(!ok || current !== sel) return;
+      fillPick3(sel);
+      if(el("pick3").value) apply(false);
+    });
     return;
   }
   var counts = {}, i, k;

@@ -396,6 +396,16 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
       text:"The toolkit content could not be loaded. "+(e&&e.message||"")}));
   });
 
+  /* WHAT IS ON SCREEN NOW, counted rather than inferred from the URL.
+     A paper's body arrives asynchronously, and the guard for that used to be "has the hash
+     changed". It is not enough: typing in the search box changes the whole sheet and does NOT
+     touch the hash. Measured with the body fetch held open, a reader who typed "zakat" saw the
+     search results with 11 hits and then had them replaced by the paper when its body landed.
+     Every function that takes over the sheet claims the next number, and a deferred render is
+     dropped unless it still owns it. */
+  var screenSeq=0;
+  function claimScreen(){ return ++screenSeq; }
+
   /* the body of one paper, fetched once and kept on the note */
   var bodyPending={};
   function ensureBody(n){
@@ -480,6 +490,21 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     if(unplaced.length) console.warn("unreachable articles: "+unplaced.map(function(n){return n.id;}));
     buildNav();
     window.addEventListener("hashchange",route);
+    /* A CLICK ON A LINK TO THE PAGE YOU ARE ALREADY ON IS A RETRY, and it used to be nothing.
+       Changing the hash to its current value raises no hashchange, so route() never ran again.
+       That was invisible until a paper's body failed to fetch: the fallback showed the section,
+       and clicking the same paper link did nothing at all, so that one paper was unreachable until
+       the reader navigated somewhere else and back. Measured with the first request aborted: one
+       request made, one click, no second request. Now a same-hash click re-routes, which retries
+       the body because a failed fetch is not cached. */
+    document.addEventListener("click",function(e){
+      if(!e.target.closest) return;
+      var a=e.target.closest('a[href^="#/"]');
+      if(!a) return;
+      if(a.getAttribute("href")!==location.hash) return;   /* a real move; let the hash do it */
+      e.preventDefault();
+      route();
+    });
     route();
   }
 
@@ -534,9 +559,10 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
          that only carries its catalog entry. A miss renders the section instead of a blank sheet. */
       var target=sec.notes.indexOf(art)>=0 ? sec
         : (SECTIONS.filter(function(s2){ return s2.notes.indexOf(art)>=0; })[0] || null);
-      var want=location.hash;
+      var mine=claimScreen();
       ensureBody(art).then(function(ok){
-        if(location.hash!==want) return;      /* the reader moved on while it was in flight */
+        /* not just the hash: a search typed while this was in flight owns the sheet now */
+        if(mine!==screenSeq) return;
         if(ok && target) showArticle(target,art);
         else showSection(sec);
       });
@@ -600,6 +626,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   }
 
   function showHome(){
+    claimScreen();
     markNav(null);
     crumbs([]);
     document.title="Toolkit | Gulf Cooperation Council (GCC) Philanthropy";
@@ -728,6 +755,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   })();
 
   function showSection(sec){
+    claimScreen();
     markNav(sec.id);
     crumbs([{text:"Toolkit",href:"#"},{text:sec.name}]);
     document.title=sec.name+" | Toolkit | Gulf Cooperation Council (GCC) Philanthropy";
@@ -758,6 +786,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   }
 
   function showArticle(sec,n){
+    claimScreen();
     markNav(sec.id);
     crumbs([{text:"Toolkit",href:"#"},{text:sec.name,href:"#/"+sec.id},
             {text:n.title}]);
@@ -864,6 +893,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   }
 
   function showSearch(q){
+    claimScreen();
     markNav(null);
     crumbs([{text:"Toolkit",href:"#"},{text:"Search"}]);
     var host=sheet(true);

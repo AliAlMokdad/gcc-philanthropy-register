@@ -133,7 +133,6 @@
     "sustainability",
     "sustainable",
     "renewable",
-    "energy",
     "conservation",
     "biodiversity",
     "wildlife",
@@ -145,7 +144,7 @@
     "dac": "Water supply and sanitation, Environmental protection",
     "fts": "WASH"
    },
-   "rows": 314
+   "rows": 305
   },
   {
    "key": "culture",
@@ -241,7 +240,6 @@
     "wheelchair",
     "rehabilitation",
     "special needs",
-    "inclusion",
     "inclusive",
     "down"
    ],
@@ -249,7 +247,7 @@
     "dac": null,
     "fts": "Protection"
    },
-   "rows": 135
+   "rows": 121
   },
   {
    "key": "women",
@@ -291,14 +289,13 @@
     "jobs",
     "innovation",
     "incubator",
-    "accelerator",
-    "venture"
+    "accelerator"
    ],
    "crosswalk": {
     "dac": "Banking and financial services, Industry",
     "fts": "Livelihoods"
    },
-   "rows": 198
+   "rows": 178
   },
   {
    "key": "sport",
@@ -555,7 +552,6 @@
    "country": "Saudi Arabia",
    "themes": [
     "children",
-    "disability",
     "education",
     "enterprise",
     "health",
@@ -570,9 +566,6 @@
     ],
     "children": [
      "children"
-    ],
-    "disability": [
-     "inclusion"
     ],
     "women": [
      "women"
@@ -745,7 +738,6 @@
    "name": "Emirates NBD",
    "country": "United Arab Emirates",
    "themes": [
-    "disability",
     "education",
     "environment"
    ],
@@ -755,9 +747,6 @@
     ],
     "environment": [
      "sustainability"
-    ],
-    "disability": [
-     "inclusion"
     ]
    }
   },
@@ -841,7 +830,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "environment",
      "renewable",
      "sustainability"
@@ -1139,7 +1127,6 @@
     ],
     "environment": [
      "climate",
-     "energy",
      "sustainable",
      "water"
     ],
@@ -1157,7 +1144,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "sustainability"
     ]
    }
@@ -1495,7 +1481,6 @@
      "treatment"
     ],
     "environment": [
-     "energy",
      "renewable",
      "water"
     ]
@@ -1656,7 +1641,6 @@
      "research"
     ],
     "environment": [
-     "energy",
      "sustainable"
     ]
    }
@@ -2578,19 +2562,6 @@
    }
   },
   {
-   "i": 137,
-   "name": "Al Ghaith Energy (Al Ghaith Group)",
-   "country": "United Arab Emirates",
-   "themes": [
-    "environment"
-   ],
-   "evidence": {
-    "environment": [
-     "energy"
-    ]
-   }
-  },
-  {
    "i": 138,
    "name": "Al Ghawtah Charitable Society in Mawqaq",
    "country": "Saudi Arabia",
@@ -2681,7 +2652,6 @@
      "education"
     ],
     "environment": [
-     "energy",
      "environmental",
      "marine"
     ],
@@ -3162,7 +3132,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "sustainability",
      "sustainable"
     ]
@@ -3173,16 +3142,12 @@
    "name": "Alinma Bank - Amad Sustainability and Social Responsibility Programme",
    "country": "Saudi Arabia",
    "themes": [
-    "disability",
     "education",
     "enterprise"
    ],
    "evidence": {
     "education": [
      "literacy"
-    ],
-    "disability": [
-     "inclusion"
     ],
     "enterprise": [
      "entrepreneur"
@@ -3225,19 +3190,6 @@
    "evidence": {
     "children": [
      "youth"
-    ]
-   }
-  },
-  {
-   "i": 182,
-   "name": "AlNowais Investments",
-   "country": "United Arab Emirates",
-   "themes": [
-    "environment"
-   ],
-   "evidence": {
-    "environment": [
-     "energy"
     ]
    }
   },
@@ -3607,8 +3559,7 @@
    ],
    "evidence": {
     "disability": [
-     "disabilities",
-     "inclusion"
+     "disabilities"
     ]
    }
   },
@@ -4011,19 +3962,6 @@
    "evidence": {
     "culture": [
      "heritage"
-    ]
-   }
-  },
-  {
-   "i": 231,
-   "name": "DC Pro Engineering",
-   "country": "United Arab Emirates",
-   "themes": [
-    "environment"
-   ],
-   "evidence": {
-    "environment": [
-     "energy"
     ]
    }
   },
@@ -4663,7 +4601,6 @@
    "evidence": {
     "environment": [
      "carbon",
-     "energy",
      "environment",
      "environmental",
      "sustainability"
@@ -4762,8 +4699,7 @@
      "children"
     ],
     "disability": [
-     "down",
-     "inclusion"
+     "down"
     ]
    }
   },
@@ -4997,15 +4933,11 @@
    "name": "Gulf Islamic Investments (GII)",
    "country": "United Arab Emirates",
    "themes": [
-    "enterprise",
     "islamic"
    ],
    "evidence": {
     "islamic": [
      "islamic"
-    ],
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -5094,19 +5026,6 @@
    "evidence": {
     "women": [
      "women"
-    ]
-   }
-  },
-  {
-   "i": 298,
-   "name": "HALA Ventures (HALA Capital)",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -5315,19 +5234,6 @@
     "environment": [
      "environmental",
      "sustainability"
-    ]
-   }
-  },
-  {
-   "i": 314,
-   "name": "Impact46",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -6258,19 +6164,6 @@
    }
   },
   {
-   "i": 374,
-   "name": "Merak Capital",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
-    ]
-   }
-  },
-  {
    "i": 375,
    "name": "Midland Doctors",
    "country": "United Arab Emirates",
@@ -6739,7 +6632,6 @@
      "scholarships"
     ],
     "environment": [
-     "energy",
      "marine"
     ],
     "culture": [
@@ -6822,8 +6714,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "entrepreneurship",
-     "venture"
+     "entrepreneurship"
     ]
    }
   },
@@ -7215,8 +7106,7 @@
    "evidence": {
     "enterprise": [
      "innovation",
-     "startups",
-     "venture"
+     "startups"
     ]
    }
   },
@@ -7350,7 +7240,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "sustainable"
     ]
    }
@@ -7557,8 +7446,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startup",
-     "venture"
+     "startup"
     ]
    }
   },
@@ -7643,19 +7531,6 @@
    }
   },
   {
-   "i": 468,
-   "name": "Saudi Industrial Development Fund (SIDF)",
-   "country": "Saudi Arabia",
-   "themes": [
-    "environment"
-   ],
-   "evidence": {
-    "environment": [
-     "energy"
-    ]
-   }
-  },
-  {
    "i": 469,
    "name": "Saudi National Bank (SNB) - Ahalina Social Responsibility Programme",
    "country": "Saudi Arabia",
@@ -7724,8 +7599,7 @@
      "youth"
     ],
     "disability": [
-     "disability",
-     "inclusion"
+     "disability"
     ]
    }
   },
@@ -7960,7 +7834,6 @@
     ],
     "environment": [
      "conservation",
-     "energy",
      "environmental",
      "sustainability"
     ],
@@ -8323,8 +8196,7 @@
      "health"
     ],
     "disability": [
-     "disabilities",
-     "inclusion"
+     "disabilities"
     ],
     "sport": [
      "sport"
@@ -8342,19 +8214,6 @@
     "enterprise": [
      "entrepreneurs",
      "entrepreneurship"
-    ]
-   }
-  },
-  {
-   "i": 509,
-   "name": "STV",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -8393,7 +8252,6 @@
    "name": "Taaleem",
    "country": "United Arab Emirates",
    "themes": [
-    "disability",
     "education",
     "environment"
    ],
@@ -8403,9 +8261,6 @@
     ],
     "environment": [
      "sustainability"
-    ],
-    "disability": [
-     "inclusion"
     ]
    }
   },
@@ -8693,8 +8548,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "entrepreneurs",
-     "venture"
+     "entrepreneurs"
     ]
    }
   },
@@ -10453,19 +10307,6 @@
    }
   },
   {
-   "i": 651,
-   "name": "BECO Capital",
-   "country": "United Arab Emirates",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
-    ]
-   }
-  },
-  {
    "i": 652,
    "name": "Bedaya Center for Entrepreneurship and Career Development",
    "country": "Qatar",
@@ -10805,7 +10646,6 @@
    "evidence": {
     "environment": [
      "conservation",
-     "energy",
      "sustainability"
     ]
    }
@@ -10867,8 +10707,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startup",
-     "venture"
+     "startup"
     ]
    }
   },
@@ -11030,8 +10869,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startups",
-     "venture"
+     "startups"
     ]
    }
   },
@@ -12600,8 +12438,7 @@
      "health"
     ],
     "environment": [
-     "conservation",
-     "energy"
+     "conservation"
     ],
     "children": [
      "youth"
@@ -12636,19 +12473,6 @@
     "education": [
      "research",
      "university"
-    ]
-   }
-  },
-  {
-   "i": 813,
-   "name": "Nama Ventures",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -12739,7 +12563,6 @@
    "name": "Network International",
    "country": "United Arab Emirates",
    "themes": [
-    "disability",
     "environment"
    ],
    "evidence": {
@@ -12747,9 +12570,6 @@
      "carbon",
      "environmental",
      "sustainability"
-    ],
-    "disability": [
-     "inclusion"
     ]
    }
   },
@@ -12762,24 +12582,10 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "environment",
      "marine",
      "sustainability",
      "water"
-    ]
-   }
-  },
-  {
-   "i": 822,
-   "name": "Nuwa Capital",
-   "country": "United Arab Emirates",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -12807,19 +12613,6 @@
     "health": [
      "medical",
      "surgery"
-    ]
-   }
-  },
-  {
-   "i": 826,
-   "name": "Outliers Venture Capital",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -13160,8 +12953,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "innovation",
-     "venture"
+     "innovation"
     ]
    }
   },
@@ -13242,8 +13034,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startups",
-     "venture"
+     "startups"
     ]
    }
   },
@@ -13291,7 +13082,6 @@
      "health"
     ],
     "environment": [
-     "energy",
      "environment",
      "sustainable"
     ],
@@ -14249,7 +14039,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "environmental",
      "sustainability"
     ]
@@ -14516,8 +14305,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "entrepreneurship",
-     "venture"
+     "entrepreneurship"
     ]
    }
   },
@@ -15026,16 +14814,12 @@
    "name": "ADNOC Logistics and Services (ADNOC L&S)",
    "country": "United Arab Emirates",
    "themes": [
-    "disability",
     "health",
     "women"
    ],
    "evidence": {
     "health": [
      "health"
-    ],
-    "disability": [
-     "inclusion"
     ],
     "women": [
      "women"
@@ -15177,7 +14961,6 @@
    "name": "Al Ansari Exchange",
    "country": "United Arab Emirates",
    "themes": [
-    "disability",
     "education",
     "health",
     "islamic",
@@ -15201,9 +14984,6 @@
     ],
     "islamic": [
      "orphans"
-    ],
-    "disability": [
-     "inclusion"
     ]
    }
   },
@@ -15351,7 +15131,6 @@
    "evidence": {
     "environment": [
      "climate",
-     "energy",
      "sustainable"
     ]
    }
@@ -15419,8 +15198,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startup",
-     "venture"
+     "startup"
     ]
    }
   },
@@ -15631,19 +15409,6 @@
    }
   },
   {
-   "i": 1027,
-   "name": "Bunat Ventures",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
-    ]
-   }
-  },
-  {
    "i": 1028,
    "name": "Careem",
    "country": "United Arab Emirates",
@@ -15741,19 +15506,6 @@
    }
   },
   {
-   "i": 1034,
-   "name": "COTU Ventures",
-   "country": "United Arab Emirates",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
-    ]
-   }
-  },
-  {
    "i": 1035,
    "name": "Cultural Development Fund",
    "country": "Saudi Arabia",
@@ -15796,7 +15548,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "environmental",
      "sustainability"
     ]
@@ -15893,7 +15644,6 @@
     ],
     "environment": [
      "climate",
-     "energy",
      "environment",
      "sustainability"
     ]
@@ -16173,7 +15923,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "sustainability",
      "sustainable"
     ],
@@ -16466,7 +16215,6 @@
    "evidence": {
     "environment": [
      "conservation",
-     "energy",
      "sustainability",
      "water"
     ]
@@ -16747,16 +16495,11 @@
    "name": "Enova",
    "country": "United Arab Emirates",
    "themes": [
-    "enterprise",
     "environment"
    ],
    "evidence": {
     "environment": [
-     "energy",
      "sustainability"
-    ],
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -16783,7 +16526,6 @@
     ],
     "environment": [
      "climate",
-     "energy",
      "water"
     ],
     "culture": [
@@ -16822,7 +16564,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "environment",
      "renewable",
      "sustainability",
@@ -17014,7 +16755,6 @@
      "healthcare"
     ],
     "environment": [
-     "energy",
      "sustainability"
     ]
    }
@@ -17096,19 +16836,6 @@
     ],
     "enterprise": [
      "livelihoods"
-    ]
-   }
-  },
-  {
-   "i": 1114,
-   "name": "Global Ventures",
-   "country": "United Arab Emirates",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -17343,8 +17070,7 @@
      "debt"
     ],
     "enterprise": [
-     "smes",
-     "venture"
+     "smes"
     ]
    }
   },
@@ -17438,8 +17164,7 @@
     ],
     "enterprise": [
      "entrepreneurs",
-     "innovation",
-     "venture"
+     "innovation"
     ]
    }
   },
@@ -17553,8 +17278,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startup",
-     "venture"
+     "startup"
     ]
    }
   },
@@ -17611,7 +17335,6 @@
    "country": "Saudi Arabia",
    "themes": [
     "education",
-    "enterprise",
     "islamic"
    ],
    "evidence": {
@@ -17622,9 +17345,6 @@
     "islamic": [
      "endowment",
      "waqf"
-    ],
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -17902,19 +17622,6 @@
    "evidence": {
     "relief": [
      "relief"
-    ]
-   }
-  },
-  {
-   "i": 1167,
-   "name": "Middle East Venture Partners (MEVP)",
-   "country": "United Arab Emirates",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -18429,8 +18136,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startups",
-     "venture"
+     "startups"
     ]
    }
   },
@@ -18606,7 +18312,6 @@
      "research"
     ],
     "environment": [
-     "energy",
      "environment",
      "water"
     ]
@@ -18617,15 +18322,11 @@
    "name": "Qatar Investment Authority (QIA)",
    "country": "Qatar",
    "themes": [
-    "education",
-    "enterprise"
+    "education"
    ],
    "evidence": {
     "education": [
      "scholarship"
-    ],
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -18634,15 +18335,11 @@
    "name": "QatarEnergy",
    "country": "Qatar",
    "themes": [
-    "education",
-    "environment"
+    "education"
    ],
    "evidence": {
     "education": [
      "education"
-    ],
-    "environment": [
-     "energy"
     ]
    }
   },
@@ -18987,7 +18684,6 @@
    "name": "Rove Hotels",
    "country": "United Arab Emirates",
    "themes": [
-    "disability",
     "enterprise",
     "environment",
     "women"
@@ -18996,9 +18692,6 @@
     "environment": [
      "sustainability",
      "sustainable"
-    ],
-    "disability": [
-     "inclusion"
     ],
     "women": [
      "gender"
@@ -19108,19 +18801,6 @@
     ],
     "disability": [
      "rehabilitation"
-    ]
-   }
-  },
-  {
-   "i": 1249,
-   "name": "Sadu Capital",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -19264,7 +18944,6 @@
      "health"
     ],
     "environment": [
-     "energy",
      "water"
     ]
    }
@@ -19275,15 +18954,11 @@
    "country": "Saudi Arabia",
    "themes": [
     "enterprise",
-    "environment",
     "relief"
    ],
    "evidence": {
     "relief": [
      "aid"
-    ],
-    "environment": [
-     "energy"
     ],
     "enterprise": [
      "entrepreneurship",
@@ -19303,19 +18978,6 @@
      "learning",
      "research",
      "university"
-    ]
-   }
-  },
-  {
-   "i": 1259,
-   "name": "Saudi Venture Capital and Private Equity Association (VCPEA)",
-   "country": "Saudi Arabia",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
     ]
    }
   },
@@ -19722,8 +19384,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "jobs",
-     "venture"
+     "jobs"
     ]
    }
   },
@@ -19767,8 +19428,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "sme",
-     "venture"
+     "sme"
     ]
    }
   },
@@ -20312,16 +19972,11 @@
    "name": "VentureSouq",
    "country": "United Arab Emirates",
    "themes": [
-    "enterprise",
     "environment"
    ],
    "evidence": {
     "environment": [
-     "carbon",
-     "energy"
-    ],
-    "enterprise": [
-     "venture"
+     "carbon"
     ]
    }
   },
@@ -20334,7 +19989,6 @@
    ],
    "evidence": {
     "environment": [
-     "energy",
      "sustainability",
      "water"
     ]
@@ -20354,8 +20008,7 @@
      "university"
     ],
     "enterprise": [
-     "entrepreneurs",
-     "venture"
+     "entrepreneurs"
     ]
    }
   },
@@ -20865,7 +20518,6 @@
    "themes": [
     "children",
     "education",
-    "environment",
     "health",
     "sport"
    ],
@@ -20876,31 +20528,11 @@
     "health": [
      "health"
     ],
-    "environment": [
-     "energy"
-    ],
     "children": [
      "youth"
     ],
     "sport": [
      "sports"
-    ]
-   }
-  },
-  {
-   "i": 1359,
-   "name": "Bank ABC (Arab Banking Corporation)",
-   "country": "Bahrain",
-   "themes": [
-    "disability",
-    "environment"
-   ],
-   "evidence": {
-    "environment": [
-     "energy"
-    ],
-    "disability": [
-     "inclusion"
     ]
    }
   },
@@ -21229,8 +20861,7 @@
     ],
     "disability": [
      "autism",
-     "disability",
-     "inclusion"
+     "disability"
     ]
    }
   },
@@ -21555,8 +21186,7 @@
     ],
     "disability": [
      "disabilities",
-     "down",
-     "inclusion"
+     "down"
     ],
     "enterprise": [
      "employment"
@@ -23146,8 +22776,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "startups",
-     "venture"
+     "startups"
     ]
    }
   },
@@ -23183,8 +22812,7 @@
    "evidence": {
     "enterprise": [
      "incubator",
-     "innovation",
-     "venture"
+     "innovation"
     ]
    }
   },
@@ -23296,25 +22924,11 @@
    }
   },
   {
-   "i": 1520,
-   "name": "Bapco Energies",
-   "country": "Bahrain",
-   "themes": [
-    "environment"
-   ],
-   "evidence": {
-    "environment": [
-     "energy"
-    ]
-   }
-  },
-  {
    "i": 1521,
    "name": "Oman LNG Development Foundation",
    "country": "Oman",
    "themes": [
     "culture",
-    "disability",
     "education",
     "enterprise",
     "environment",
@@ -23338,9 +22952,6 @@
     "culture": [
      "culture",
      "heritage"
-    ],
-    "disability": [
-     "inclusion"
     ],
     "enterprise": [
      "entrepreneurship"
@@ -23421,8 +23032,7 @@
      "heritage"
     ],
     "disability": [
-     "disability",
-     "inclusion"
+     "disability"
     ],
     "women": [
      "women"
@@ -23518,19 +23128,6 @@
    }
   },
   {
-   "i": 1532,
-   "name": "Oman Technology Fund",
-   "country": "Oman",
-   "themes": [
-    "enterprise"
-   ],
-   "evidence": {
-    "enterprise": [
-     "venture"
-    ]
-   }
-  },
-  {
    "i": 1533,
    "name": "Phaze Ventures",
    "country": "Oman",
@@ -23539,8 +23136,7 @@
    ],
    "evidence": {
     "enterprise": [
-     "innovation",
-     "venture"
+     "innovation"
     ]
    }
   },
@@ -24046,8 +23642,7 @@
    ],
    "evidence": {
     "disability": [
-     "disabilities",
-     "inclusion"
+     "disabilities"
     ],
     "sport": [
      "sport"
@@ -26693,7 +26288,6 @@
      "food"
     ],
     "environment": [
-     "energy",
      "environment",
      "water"
     ]
@@ -26928,16 +26522,12 @@
    "name": "National Bank of Kuwait",
    "country": "Kuwait",
    "themes": [
-    "disability",
     "education",
     "women"
    ],
    "evidence": {
     "education": [
      "literacy"
-    ],
-    "disability": [
-     "inclusion"
     ],
     "women": [
      "women"
@@ -26967,7 +26557,6 @@
      "youth"
     ],
     "disability": [
-     "inclusion",
      "special needs"
     ],
     "sport": [
@@ -27039,7 +26628,6 @@
    "name": "Burgan Bank",
    "country": "Kuwait",
    "themes": [
-    "disability",
     "environment",
     "health",
     "relief",
@@ -27055,9 +26643,6 @@
     "environment": [
      "conservation",
      "environmental"
-    ],
-    "disability": [
-     "inclusion"
     ],
     "sport": [
      "sports"
@@ -27099,17 +26684,12 @@
    "name": "Warba Bank",
    "country": "Kuwait",
    "themes": [
-    "disability",
     "environment"
    ],
    "evidence": {
     "environment": [
-     "energy",
      "renewable",
      "sustainable"
-    ],
-    "disability": [
-     "inclusion"
     ]
    }
   },
@@ -27317,7 +26897,6 @@
      "education"
     ],
     "environment": [
-     "energy",
      "renewable"
     ]
    }
@@ -27519,15 +27098,11 @@
    "name": "en.v",
    "country": "Kuwait",
    "themes": [
-    "disability",
     "education"
    ],
    "evidence": {
     "education": [
      "research"
-    ],
-    "disability": [
-     "inclusion"
     ]
    }
   },
@@ -27890,8 +27465,7 @@
    "evidence": {
     "enterprise": [
      "sme",
-     "startups",
-     "venture"
+     "startups"
     ]
    }
   },
@@ -28162,8 +27736,7 @@
    ],
    "evidence": {
     "environment": [
-     "carbon",
-     "energy"
+     "carbon"
     ],
     "disability": [
      "inclusive"
