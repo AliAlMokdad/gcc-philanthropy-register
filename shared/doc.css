@@ -259,3 +259,106 @@ footer.sig .wrap{max-width:1280px;margin:0 auto;padding:0 var(--s4)}
   .sheet{border:0;padding:0}
   .doc a{color:inherit;text-decoration:none}
 }
+
+/* ============================================================ /alialmokdad/
+ * A COPY OF HIS OWN ABOUT PAGE, IN THIS SITE'S HAND RATHER THAN THAT SITE'S.
+ * alialmokdad.com runs gold on near-black in Cormorant. Reproducing that here would put a second
+ * site's identity inside the register. So the words are his, verbatim, and the treatment is this
+ * one: blueberry on light, Source Serif for the voice, IBM Plex Mono for the chrome, and the
+ * oversized numerals the register already uses to count things. Same person, visibly a different
+ * document, which is the point.
+ *
+ * IT IS THE WIDEST PAGE IN THIS SET. The notices are documents and are measured for reading; this
+ * is a profile, so the expertise list runs two across from 900px and the whole sheet is allowed to
+ * breathe rather than being held to a single column. */
+
+.sheet:has(.bio-head){max-width:1240px}
+
+.doc .bio-head{max-width:none;margin:0 0 var(--s5);padding-bottom:var(--s4);
+  border-bottom:1px solid var(--line)}
+.doc .bio-eyebrow{margin:0 0 var(--s3);
+  font:600 11px/1.6 var(--mono);letter-spacing:.26em;text-transform:uppercase;color:var(--accent)}
+/* the one bold move on the page: the name at a size nothing else here comes near */
+.doc .bio-head h1{margin:0;font:600 clamp(42px,7.4vw,84px)/1.02 var(--display);
+  color:var(--mast);letter-spacing:-1.4px;text-wrap:balance}
+.doc .bio-sub{margin:var(--s3) 0 0;font:400 clamp(17px,2vw,21px)/1.4 var(--serif);
+  color:var(--ink-2);font-style:italic}
+
+/* the three services, as pills. The label is beside the mark rather than hidden behind it, so the
+   link is legible to someone who does not recognise a glyph. */
+.doc .bio-soc{display:flex;flex-wrap:wrap;gap:10px;margin:var(--s4) 0 0}
+.doc .bio-soc .soc{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 16px;
+  border:1px solid var(--line-2);border-radius:999px;text-decoration:none;
+  background:var(--i-surface,#fff);
+  transition:border-color .15s ease-out,color .15s ease-out}
+.doc .bio-soc .soc svg{width:16px;height:16px;flex:none;fill:var(--accent)}
+.doc .bio-soc .soc span{font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-2)}
+.doc .bio-soc .soc:hover{border-color:var(--accent)}
+.doc .bio-soc .soc:hover span{color:var(--accent)}
+.doc .bio-soc .soc:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+
+.doc .bio-sec{margin:0 0 var(--s5)}
+.doc .bio-sec > h2{margin:0 0 var(--s3);font:600 clamp(22px,2.6vw,28px)/1.2 var(--display);
+  color:var(--mast)}
+.doc .bio-label{margin:0 0 6px;
+  font:600 11px/1.6 var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--ink-3)}
+.doc .bio-sec > p{max-width:72ch;margin:0 0 var(--s3);font:400 16px/1.7 var(--serif);color:var(--ink)}
+
+/* THE EXPERTISE LIST. Nine entries, so a single column is a wall and three across would cut the
+   measure too short. Two across from 900px, each one led by its number in mono at a size that
+   makes the list countable at a glance. */
+.doc .x-list{list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:1fr;gap:var(--s4) var(--s5)}
+@media (min-width:900px){ .doc .x-list{grid-template-columns:1fr 1fr} }
+.doc .x-list li{margin:0;padding:var(--s3) 0 0;border-top:1px solid var(--line)}
+.doc .x-list .x-n{margin:0 0 4px;font:600 13px/1 var(--mono);letter-spacing:.1em;color:var(--accent)}
+.doc .x-list h3{margin:0 0 8px;font:600 17px/1.3 var(--serif);color:var(--mast)}
+.doc .x-list li p:last-child{margin:0;font:400 14.5px/1.65 var(--serif);color:var(--ink-2)}
+
+.doc .bio-close{margin:var(--s5) 0 0;padding-top:var(--s4);border-top:1px solid var(--line);
+  font:600 11px/1.6 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--ink-3)}
+
+/* the FAQ answer that leads here */
+.doc .more{margin:-6px 0 var(--s3)}
+.doc .more a{font:600 11px/1.6 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none;border-bottom:1px solid var(--accent-line)}
+.doc .more a:hover{border-bottom-color:var(--accent)}
+
+/* MOTION, AND ONLY WHERE IT MEANS SOMETHING. The nine entries settle in sequence on load, which
+   reads as a list arriving rather than as decoration, and the name rises once. Anyone who has
+   asked for less motion gets none: the guard is the site's own reduced-motion block, and these
+   rules put the element in its final state there rather than leaving it invisible. */
+@keyframes bio-rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){
+  .doc .bio-head h1,.bio-sub,.bio-soc{animation:bio-rise .55s cubic-bezier(.2,.7,.2,1) both}
+  .doc .bio-sub{animation-delay:.06s}
+  .doc .bio-soc{animation-delay:.12s}
+  .doc .x-list li{animation:bio-rise .5s cubic-bezier(.2,.7,.2,1) both}
+  .doc .x-list li:nth-child(1){animation-delay:.02s}
+  .doc .x-list li:nth-child(2){animation-delay:.06s}
+  .doc .x-list li:nth-child(3){animation-delay:.10s}
+  .doc .x-list li:nth-child(4){animation-delay:.14s}
+  .doc .x-list li:nth-child(5){animation-delay:.18s}
+  .doc .x-list li:nth-child(6){animation-delay:.22s}
+  .doc .x-list li:nth-child(7){animation-delay:.26s}
+  .doc .x-list li:nth-child(8){animation-delay:.30s}
+  .doc .x-list li:nth-child(9){animation-delay:.34s}
+}
+
+@media print{
+  .doc .bio-soc{display:none}
+  .doc .x-list{grid-template-columns:1fr 1fr}
+}
+
+/* THE TWO PROSE SECTIONS RUN SIDE BY SIDE from 1000px. Measured before this rule: 521px of a
+   1232px sheet sat empty to the right of a 598px column, which is the same lopsided void the
+   notices had. A profile has no contents rail to fill that width, so the width carries the two
+   halves of the story instead. Below 1000px they stack, because two 40-character columns are
+   worse than one readable one. */
+.doc .bio-cols{display:grid;grid-template-columns:1fr;gap:var(--s5)}
+@media (min-width:1000px){
+  .doc .bio-cols{grid-template-columns:1fr 1fr;gap:clamp(40px,4vw,72px);align-items:start}
+  .doc .bio-cols > .bio-sec{margin-bottom:0}
+}
+.doc .bio-cols > .bio-sec > p{max-width:62ch}

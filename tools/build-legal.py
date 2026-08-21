@@ -164,6 +164,10 @@ def render(blocks):
             out.append("<p>%s</p>" % linkify(E(b[1])))
         elif k == "q":
             out.append("<h3>%s</h3>" % E(b[1]))
+        elif k == "more":
+            # a paragraph that is only a link. It exists so an answer can end in a word rather
+            # than in a bare URL, and so the label and the target both live in the content module.
+            out.append('<p class="more"><a href="%s">%s</a></p>' % (E(b[2]), E(b[1])))
         elif k == "lead":
             out.append('<p><span class="lead">%s</span>%s</p>' % (E(b[1]), linkify(E(b[2]))))
         elif k == "kv":
@@ -304,6 +308,68 @@ page = (head(C.TITLE["connect"], C.CONNECT_ALT, C.TAB["connect"])
         + notice()
         + "\n" + (TAIL % footer("connect")))
 d = os.path.join(ROOT, "connect")
+os.makedirs(d, exist_ok=True)
+p = os.path.join(d, "index.html")
+open(p, "w", encoding="utf-8", newline="\n").write(page)
+written.append((p, len(page)))
+
+# ---------------------------------------------------------------- /alialmokdad/
+# A copy of his own about page, in this site's hand rather than that site's. His runs gold on dark
+# in Cormorant; this runs blueberry on light in Source Serif with oversized mono numerals, which is
+# the register's own language. Same person, visibly a different document.
+#
+# EVERY WORD COMES FROM C.ABOUT, which was parsed out of alialmokdad.com/about-me rather than
+# retyped. The only strings this section contributes are the three social labels, which are the
+# names of the three services.
+ICONS = {
+ "LinkedIn": "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 "
+             "2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 "
+             "4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 "
+             "2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 "
+             "13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 "
+             "24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+ "YouTube":  "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 "
+             "0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 "
+             "3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 "
+             "0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 "
+             "12l-6.273 3.568z",
+ "X":        "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 "
+             "1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z",
+}
+
+A = C.ABOUT
+social = "".join(
+    '<a class="soc" href="%s" target="_blank" rel="noopener noreferrer" aria-label="%s">'
+    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="%s"/></svg>'
+    '<span>%s</span></a>' % (E(url), E(name), ICONS[name], E(name))
+    for name, url in C.SOCIAL if name in ICONS)
+
+expertise = "".join(
+    '<li><p class="x-n">%02d</p><h3>%s</h3><p>%s</p></li>' % (i, E(label), E(detail))
+    for i, (label, detail) in enumerate(A["expertise"], 1))
+
+about_body = (
+ '<header class="bio-head">'
+ '<p class="bio-eyebrow">%s</p>'
+ '<h1>%s</h1>'
+ '<p class="bio-sub">%s</p>'
+ '<nav class="bio-soc" aria-label="Elsewhere">%s</nav>'
+ '</header>'
+ '<div class="bio-cols">'
+ '<section class="bio-sec"><h2>%s</h2>%s</section>'
+ '<section class="bio-sec"><p class="bio-label">%s</p><h2>%s</h2>%s</section>'
+ '</div>'
+ '<section class="bio-sec bio-x"><h2>%s</h2><ol class="x-list">%s</ol>'
+ '<p class="bio-close">%s</p></section>'
+) % (E(A["eyebrow"]), E(A["name"]), E(A["subtitle"]), social,
+     E(A["journey_h"]), "".join("<p>%s</p>" % E(p) for p in A["journey"]),
+     E(A["about_label"]), E(A["about_h"]),
+     "".join("<p>%s</p>" % E(p) for p in A["about"]),
+     E(A["expertise_h"]), expertise, E(A["closing"]))
+
+page = (head(A["name"], A["subtitle"], "About")
+        + "\n" + about_body + "\n" + (TAIL % footer("about")))
+d = os.path.join(ROOT, "alialmokdad")
 os.makedirs(d, exist_ok=True)
 p = os.path.join(d, "index.html")
 open(p, "w", encoding="utf-8", newline="\n").write(page)
