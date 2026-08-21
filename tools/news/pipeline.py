@@ -417,6 +417,23 @@ GENERIC_NAMES = {
 }
 
 
+def _entity_id(name, country):
+    """The register's own identity rule, imported rather than restated.
+
+    register_id used to be "r%d" % n, the row's POSITION in data.json. The exporter reads the
+    workbook in sheet order and the workbook is edited by hand, so sorting it or inserting a row
+    moved every id. That id is also the key for drop_orgs in news-decisions.json, so an editorial
+    suppression of a false match would have begun suppressing a real one. Nothing had been
+    suppressed yet, which is the only reason this was still free to change."""
+    import os as _os
+    import sys as _sys
+    _root = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
+    if _root not in _sys.path:
+        _sys.path.insert(0, _root)
+    from identity import entity_id
+    return entity_id(name, country)
+
+
 def build_register_index(register):
     """From data.json to a matching index. Only names that can carry a match are indexed:
     a name must fold to at least two tokens and eleven characters and must not be a
@@ -426,7 +443,7 @@ def build_register_index(register):
     ki = {k: i for i, k in enumerate(keys)}
     idx = {}
     skipped = 0
-    for n, row in enumerate(register["rows"]):
+    for row in register["rows"]:
         name = (row[ki["name"]] or "").strip()
         if not name:
             continue
@@ -434,8 +451,9 @@ def build_register_index(register):
         if len(f) < 11 or len(f.split()) < 2 or f in GENERIC_NAMES:
             skipped += 1
             continue
-        rec = {"register_id": "r%d" % n, "name": name,
-               "country": (row[ki["country"]] or "").strip(),
+        country = (row[ki["country"]] or "").strip()
+        rec = {"register_id": _entity_id(name, country), "name": name,
+               "country": country,
                "type": (row[ki["type"]] or "").strip()}
         # last one wins on a duplicate folded name; they are the same institution
         idx[f] = rec

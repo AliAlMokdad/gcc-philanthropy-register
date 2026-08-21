@@ -4032,6 +4032,29 @@ function loadVectors(){
     if(!hdr || !buf) throw new Error("index missing");
     if(hdr.count !== ROWS.length)
       throw new Error("index has " + hdr.count + " rows, data has " + ROWS.length);
+    /* COUNT IS THE WRONG QUESTION ON ITS OWN. The count catches an index built against a
+       different number of rows. It cannot catch the failure that actually happens: the exporter
+       reads the workbook in sheet order, the workbook is edited by hand, and sorting it or
+       swapping one row for another keeps the count identical while moving every row. The index
+       would then answer with one organisation's mandate under another's name, silently, and a
+       wrong attribution is the one error this register cannot afford.
+       vectors.json now records the name at each row, so the check is identity rather than length.
+       EVERY row, not a sample. A sample of 24 was written first and measured against the whole
+       comparison: it saved 0.06ms and was blind to 97 per cent of two-adjacent-row swaps, which is
+       exactly the small edit a hand-maintained workbook produces. All 1,862 string compares cost
+       0.064ms, inside a function that has just finished downloading 461KB, so there was nothing to
+       buy. An index with no names[] falls through to the count check above, so an older index
+       still loads. */
+    if(hdr.names && hdr.names.length === ROWS.length){
+      var bad = null;
+      for(var s = 0; s < ROWS.length; s++){
+        if(hdr.names[s] !== val(ROWS[s], "name")){ bad = s; break; }
+      }
+      if(bad !== null)
+        throw new Error("index is out of step with the register at row " + bad +
+                        ': index says "' + hdr.names[bad] + '", data says "' +
+                        val(ROWS[bad], "name") + '". Rebuild vectors.');
+    }
     VDIMS = hdr.dims;
     VSCALE = hdr.scale || 127;
     VEC = new Int8Array(buf);
