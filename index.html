@@ -860,8 +860,15 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
   grid-template-columns:1fr 1fr;grid-template-areas:"mk mk" "s1 s2" "s3 s4" "s5 s6";
   gap:var(--s4) var(--s3);max-width:520px;margin:var(--s5) auto calc(var(--s5) + var(--s4))}
 .ring-mark{grid-area:mk;display:flex;align-items:center;justify-content:center;margin-bottom:var(--s2)}
-.emblem-link{display:block;border-radius:4px;transition:opacity .12s ease-out}
-.emblem-link:hover{opacity:.82}
+.emblem-link{display:block;border-radius:4px}
+/* THE MARK ANSWERS THE POINTER. It used to dim to 82 per cent, which reads as something switching
+   off rather than something inviting a click. It grows instead, four per cent, on the easing this
+   page already uses for its own motion, and slowly enough at .34s to feel like weight rather than
+   a twitch. Four per cent of a 120px mark is under five pixels, so the target does not run from
+   the pointer that just arrived at it. */
+.emblem{transition:transform .34s cubic-bezier(.22,.61,.36,1)}
+.emblem-link:hover .emblem,
+.emblem-link:focus-visible .emblem{transform:scale(1.04)}
 .emblem-link:focus-visible{outline:2px solid var(--focus);outline-offset:4px}
 .emblem{display:block;width:120px;height:auto;max-width:100%}
 @media (prefers-color-scheme:dark){
@@ -889,14 +896,24 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
   text-decoration:none;color:inherit;padding:10px 6px;border-radius:2px;
   transition:background-color .12s ease-out}
 .spoke:hover,.spoke:focus-visible{background:var(--accent-soft)}
-.spoke-flag{display:flex;align-items:center;justify-content:center;height:56px}
-.spoke .mark{display:block;height:100%;width:auto;max-width:104px;border-radius:2px;
-  box-shadow:0 0 0 1px #D8D3CA}
+.spoke-flag{display:flex;align-items:center;justify-content:center;height:48px}
+/* NO OUTLINE, AND NOTHING LETTERBOXED INSIDE ONE.
+   Two faults made one. A 1px box-shadow drew a visible box around every flag, and max-width:104px
+   forced that box to 104 by 56, an aspect of 1.86, whatever the flag's own aspect was. An SVG then
+   fits its artwork inside that box and leaves the rest as background, so Qatar at 11:28 sat as a
+   band in the middle of an outlined rectangle with pale gaps above and below it. That is the border
+   Ali could see.
+   Each flag now takes its own width from its own ratio, so the artwork IS the box: there is no
+   outline to notice and no empty space to fill. The height comes down from 56 to 48 so that Qatar,
+   the widest at 2.545, is 122px inside a 154px spoke rather than pressed against its edge. */
+.spoke .mark{display:block;height:100%;width:auto;border-radius:1px}
 .spoke-nm{font:600 16px/1.22 var(--serif);color:var(--ink);text-wrap:balance}
 .spoke:hover .spoke-nm,.spoke:focus-visible .spoke-nm{color:var(--accent)}
 .spoke-ct{font:400 12px/1 var(--mono);letter-spacing:.03em;color:var(--ink-3);
   font-variant-numeric:tabular-nums}
-@media (prefers-color-scheme:dark){ .spoke .mark{box-shadow:0 0 0 1px rgba(255,255,255,.18)} }
+/* In dark mode a white-fielded flag would otherwise bleed into the page, so it keeps the faintest
+   possible edge. Qatar, Bahrain, Oman and the UAE all carry white. */
+@media (prefers-color-scheme:dark){ .spoke .mark{box-shadow:0 0 0 1px rgba(255,255,255,.14)} }
 
 /* the one search, centred under the mark, flat and square like the rest of the register */
 .portal-search{display:flex;gap:10px;max-width:680px;margin:0 auto calc(var(--s5) + var(--s2))}
@@ -1793,16 +1810,43 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .portal-news{display:grid;grid-template-columns:repeat(auto-fit,minmax(196px,1fr));gap:12px;
   max-width:1180px;margin:22px auto 0;padding:0}
 @media (max-width:520px){ .portal-news{grid-template-columns:1fr} }
-.portal-news a{display:block;padding:16px 20px;text-decoration:none;
+/* THE FIVE DOORS. Centred, no arrow, and they answer the pointer.
+   The lift is 2px and the growth 1.5 per cent, which on a 200px card is three pixels: enough that
+   the card reads as having come forward, small enough that the target does not move out from under
+   a pointer that has just arrived. This page's own rule is that hover motion belongs on a
+   pseudo-element for exactly that reason, and the two sweeps below obey it. */
+.portal-news a{position:relative;display:flex;align-items:center;justify-content:center;
+  min-height:78px;padding:16px 18px;text-decoration:none;overflow:hidden;
   border:1px solid var(--line-2);border-top:2px solid var(--accent);border-radius:2px;
-  background:var(--paper);text-align:left;transition:border-color .12s,background .12s}
-.portal-news a:hover{border-color:var(--accent);background:var(--accent-soft)}
+  background:var(--paper);text-align:center;
+  transition:border-color .18s ease-out, background .18s ease-out,
+             transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .28s ease-out}
+.portal-news a:hover,.portal-news a:focus-visible{
+  border-color:var(--accent);background:var(--accent-soft);
+  transform:translateY(-2px) scale(1.015);
+  box-shadow:0 6px 18px -8px rgba(35,44,92,.28)}
+/* the sheen: one pass of light across the card per approach */
+.portal-news a::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.72) 50%,transparent 62%);
+  transform:translateX(-120%);transition:transform .62s cubic-bezier(.22,.61,.36,1)}
+.portal-news a:hover::before,.portal-news a:focus-visible::before{transform:translateX(120%)}
+/* and the accent rule draws itself out from the middle, the same gesture as the gate button */
+.portal-news a::after{content:"";position:absolute;left:0;right:0;top:-2px;height:2px;
+  background:var(--accent-2);transform:scaleX(0);transform-origin:50% 50%;
+  transition:transform .32s cubic-bezier(.22,.61,.36,1)}
+.portal-news a:hover::after,.portal-news a:focus-visible::after{transform:scaleX(1)}
+@media (prefers-reduced-motion:reduce){
+  .portal-news a,.portal-news a::before,.portal-news a::after,.emblem{transition:none}
+  .portal-news a:hover,.portal-news a:focus-visible{transform:none;box-shadow:none}
+  .portal-news a:hover::before,.portal-news a:focus-visible::before{transform:translateX(-120%)}
+  .emblem-link:hover .emblem,.emblem-link:focus-visible .emblem{transform:none}
+}
 .portal-news a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-/* the ceiling drops from 20px to 18px now there are five doors in a row rather than four: at 20
-   the two longest labels wrapped and stranded their arrow alone on a second line. */
-.pn-label{display:block;font:600 clamp(16px,1.55vw,18px)/1.28 var(--serif);color:var(--ink);
-  letter-spacing:-.008em;text-wrap:balance}
-.pn-label::after{content:" \2192";color:var(--accent)}
+/* the ceiling goes back up now the arrow is gone: it was dropped to 18 because the two longest
+   labels wrapped and stranded that arrow on a line of its own, which was a symptom of the arrow
+   rather than of the type size */
+.pn-label{display:block;font:600 clamp(16px,1.7vw,19px)/1.26 var(--serif);color:var(--ink);
+  letter-spacing:-.008em;text-wrap:balance;position:relative;z-index:1}
 .portal-news a:hover .pn-label{color:var(--accent-2)}
 @media (max-width:600px){
   .portal-news{margin-top:18px}
@@ -2520,8 +2564,11 @@ function svgEl(tag,attrs){
    ratio, so nothing is stretched. A previous build reduced Saudi Arabia to a plain
    green rectangle, which is not the flag: the shahada is real Arabic text set in a
    system Arabic face, and the sword is beneath it pointing to the hoist. */
+/* OMAN WAS THE ONE WRONG RATIO. Its box was 70 by 40, which is 1.75, and the flag is 1:2. Every
+   other entry here already matches its official ratio: UAE 1:2, Saudi Arabia 2:3, Qatar 11:28,
+   Kuwait 1:2, Bahrain 3:5. The drawing below is widened to match rather than stretched into it. */
 var FLAG_BOX={"united arab emirates":[60,30],"saudi arabia":[60,40],"qatar":[56,22],
-              "kuwait":[60,30],"bahrain":[50,30],"oman":[70,40]};
+              "kuwait":[60,30],"bahrain":[50,30],"oman":[80,40]};
 var AR_FACE="'Traditional Arabic','Arabic Typesetting','Noto Naskh Arabic',"
           + "'Segoe UI','Times New Roman',serif";
 
@@ -2595,10 +2642,12 @@ function countryMark(name,cls){
        It is drawn as a simplified glyph rather than traced in detail: at the size
        this renders, a faithful outline would turn to mud, and a muddy national
        emblem is worse than a clean simplified one. */
-    s.appendChild(svgEl("rect",{x:0,y:0,width:70,height:13.34,fill:"#FFFFFF"}));
-    s.appendChild(svgEl("rect",{x:0,y:13.34,width:70,height:13.33,fill:"#DB171B"}));
-    s.appendChild(svgEl("rect",{x:0,y:26.67,width:70,height:13.33,fill:"#028002"}));
-    s.appendChild(svgEl("rect",{x:0,y:0,width:17.5,height:40,fill:"#DB171B"}));
+    /* widened from 70 to 80 with the hoist band kept at a quarter of the length, so the bands and
+       the band ratio are unchanged and only the field is longer */
+    s.appendChild(svgEl("rect",{x:0,y:0,width:80,height:13.34,fill:"#FFFFFF"}));
+    s.appendChild(svgEl("rect",{x:0,y:13.34,width:80,height:13.33,fill:"#DB171B"}));
+    s.appendChild(svgEl("rect",{x:0,y:26.67,width:80,height:13.33,fill:"#028002"}));
+    s.appendChild(svgEl("rect",{x:0,y:0,width:20,height:40,fill:"#DB171B"}));
     /* The national emblem: a sheathed khanjar over two crossed swords.
 
        Two earlier attempts are the reason this looks the way it does. Thin strokes
@@ -2610,7 +2659,9 @@ function countryMark(name,cls){
        It is a simplification and is meant to be read as one. A faithful tracing of the
        ornamented sheath and belt would turn to mud at the size this renders, and a
        muddy national emblem is a worse outcome than a clean simplified one. */
-    var g=svgEl("g",{});
+    /* the emblem is translated, not scaled: the hoist band grew from 17.5 to 20, so its centre
+       moved right by 1.25 and the emblem follows it at exactly the size it was drawn */
+    var g=svgEl("g",{transform:"translate(1.25,0)"});
     var sw=svgEl("g",{fill:"#FFFFFF"});
     sw.appendChild(svgEl("path",{d:"M3.5,8.6 L4.5,7.7 L14.1,15.4 L13.2,16.4 Z"}));
     sw.appendChild(svgEl("path",{d:"M13.2,7.7 L14.1,8.6 L4.5,16.4 L3.5,15.4 Z"}));
