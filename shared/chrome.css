@@ -41,11 +41,16 @@
   .pbar .wrap{padding-left:var(--s4, 24px);padding-right:var(--s4, 24px)}
 }
 
-/* FOUR LABELS ON A PHONE. The row carries one more word than it was built for, so it gives up its
-   inter-item gap and some padding and tracking rather than cutting the last label. Below 344px it
-   wraps to two lines instead of scrolling, because a word cut in half reads as a defect whether or
-   not the row can be pushed. */
-@media (max-width:560px){
+/* THE COMPACT ROW, AND ITS BREAKPOINT IS A MEASURED NUMBER RATHER THAN A ROUND ONE.
+   The row gives up its inter-item gap and some padding and tracking rather than cutting a label.
+   That treatment used to start at 560px, which was right while the bar read
+   "Main page | Donor Intelligence | Register | News | Toolkit | Members". The labels have since
+   become "Atlas | Register | News & Insights | Toolkit | Countries": one item fewer but two longer
+   words, and the row now needs 626px at full padding. So between 561px and 625px it had no compact
+   treatment and no wrap either, and it overflowed by 26px. Measured on every page that carries the
+   bar, at 600px, before this line moved.
+   700px covers the whole band with room for a label to grow again. */
+@media (max-width:700px){
   .pbar nav{flex-wrap:wrap;gap:var(--s2) var(--s3)}
   .pbar .wrap{padding-top:9px;padding-bottom:2px}
   .pbar-nav{width:auto;margin-inline:calc(var(--s4) * -1);padding-left:var(--s4);

@@ -362,3 +362,72 @@ footer.sig .wrap{max-width:1280px;margin:0 auto;padding:0 var(--s4)}
   .doc .bio-cols > .bio-sec{margin-bottom:0}
 }
 .doc .bio-cols > .bio-sec > p{max-width:62ch}
+
+/* ============================================================ THE PROFILE, RESHAPED
+ * Ali asked for this page landscape, for the social links to be proper marks, and for the whole
+ * thing to look better. These rules come after the originals above deliberately: they override
+ * rather than replace, so the notices that share this stylesheet are untouched.
+ *
+ * WHAT WAS WRONG WITH THE HEAD. The name, the descriptor and the three links were a vertical pile,
+ * so the first screen of a 1240px sheet used a third of its width and the rest was empty. They now
+ * share one band, identity on one side and marks on the other, which is what makes the page read
+ * wide instead of tall.
+ *
+ * The descriptor is longer than the line it replaced, one clause rather than four words, so it is
+ * capped at a readable measure instead of being allowed to run the full width of the sheet. */
+.doc .bio-head{display:grid;grid-template-columns:1fr;gap:var(--s4);align-items:end}
+@media (min-width:900px){
+  .doc .bio-head{grid-template-columns:minmax(0,1fr) auto;
+    gap:clamp(28px,4vw,64px);padding-bottom:var(--s4)}
+}
+.doc .bio-id{min-width:0}
+.doc .bio-id h1{margin:0}
+/* MEASURED, NOT GUESSED. 34ch was the first attempt and it was far too tight: at 1440 the identity
+   column is 898px wide, the descriptor used 356px of it, wrapped to four lines, and left a 600px
+   void between its last line and the marks. The descriptor is 99 characters, so a 52ch measure puts
+   it on two lines and takes about 90px off the height of the band. */
+.doc .bio-sub{max-width:min(100%, 52ch)}
+@media (min-width:900px){
+  /* the marks sit on the baseline of the name, not floating above the descriptor */
+  .doc .bio-head .bio-soc{margin:0;justify-content:flex-end}
+}
+
+/* THE MARKS. A circle each, the glyph the whole control, the service name in aria-label and title
+ * rather than set beside it in uppercase mono. 46px so the target clears the 44px minimum with a
+ * pixel to spare on each side, and the fill inverts on hover so the state is unmistakable rather
+ * than a border changing colour by one shade. */
+.doc .bio-soc{gap:12px}
+.doc .bio-soc .soc{width:46px;height:46px;min-height:0;padding:0;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--line-2);background:var(--paper);
+  transition:background .2s ease-out, border-color .2s ease-out, transform .2s ease-out}
+.doc .bio-soc .soc svg{width:20px;height:20px;transition:fill .2s ease-out}
+.doc .bio-soc .soc:hover{background:var(--accent);border-color:var(--accent);
+  transform:translateY(-2px)}
+.doc .bio-soc .soc:hover svg{fill:#FFFFFF}
+.doc .bio-soc .soc:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+
+/* NINE ENTRIES ACROSS THREE COLUMNS from 1200px, which is where a third column stops cutting the
+ * measure too short: at 1240px minus the gutters each column holds about 46 characters, and the
+ * detail lines are two to three sentences. Three across turns a nine-deep wall into three rows,
+ * which is the same content read landscape. Below that the existing two-column and single-column
+ * rules still apply. */
+@media (min-width:1200px){
+  .doc .x-list{grid-template-columns:repeat(3,1fr);gap:var(--s4) clamp(28px,3vw,48px)}
+}
+
+/* the number leads the entry rather than sitting above it, so the eye can count down a column */
+.doc .x-list li{display:grid;grid-template-columns:auto 1fr;
+  column-gap:14px;row-gap:0;align-items:baseline}
+.doc .x-list .x-n{grid-row:1;grid-column:1;margin:0;font-size:12px;color:var(--ink-3)}
+.doc .x-list h3{grid-row:1;grid-column:2;margin:0}
+.doc .x-list li p:last-child{grid-row:2;grid-column:2;margin:6px 0 0}
+
+@media (prefers-reduced-motion:reduce){
+  .doc .bio-soc .soc,.doc .bio-soc .soc svg{transition:none}
+  .doc .bio-soc .soc:hover{transform:none}
+}
+@media print{
+  .doc .bio-head{grid-template-columns:1fr}
+  @media (min-width:1200px){ .doc .x-list{grid-template-columns:1fr 1fr} }
+}

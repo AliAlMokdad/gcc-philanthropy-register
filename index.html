@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gulf Cooperation Council (GCC) Philanthropy Register</title>
+<title>GCC Philanthropy | Gulf Cooperation Council Philanthropy</title>
 <meta name="description" content="A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -870,12 +870,20 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 .portal{margin:0 auto;padding:var(--s4) 0 0;text-align:center}
 .portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
   text-transform:uppercase;color:var(--ink-3)}
-.portal-word{max-width:740px;margin:0 auto;font:500 clamp(24px,3.5vw,38px)/1.16 var(--display);
-  color:var(--ink);letter-spacing:-.2px;font-optical-sizing:auto;text-wrap:balance}
+.portal-word{max-width:740px;margin:0 auto;font:500 clamp(34px,6vw,60px)/1.08 var(--display);
+  color:var(--ink);letter-spacing:-1px;font-optical-sizing:auto;text-wrap:balance}
+/* THE IDENTITY IS THREE LINES, IN THIS ORDER: the name, what it is for, then what it covers.
+   The rule under the name closes the nameplate, so the two lines below it read as description
+   rather than as more title. The sentence names the six countries' council in full because it is
+   the one place on this screen that spells the abbreviation out. */
+.portal-tag{max-width:32ch;margin:20px auto 0;font:400 clamp(17px,2.2vw,22px)/1.35 var(--display);
+  color:var(--ink-2);letter-spacing:-.1px;text-wrap:balance}
+.portal-lede{max-width:58ch;margin:14px auto 0;font:400 15.5px/1.65 var(--sans);
+  color:var(--ink-3);text-wrap:pretty}
 /* no font-style:italic: the italic subsets are no longer requested, so this would be a sheared
    fake. Colour and weight already separate the abbreviation from the name around it. */
 .portal-word .abbr{color:inherit;font-weight:400}
-.portal-word::after{content:"";display:block;width:54px;height:3px;margin:14px auto 0;
+.portal-word::after{content:"";display:block;width:54px;height:3px;margin:20px auto 0;
   background:var(--spectrum);border-radius:2px}
 
 /* the ring: a 3x3 grid, mark in the centre, six states around it. Grid, not absolute
@@ -1026,7 +1034,9 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 }
 /* on a phone the button drops under a full-width field so the placeholder reads whole */
 @media (max-width:480px){
-  .portal-word{font-size:25px;line-height:1.12}
+  /* MEASURED, NOT ESTIMATED: at 375px the name holds one line to 44px and breaks at 46px,
+     so 44 is the ceiling and it scales below that rather than sitting at one fixed size. */
+  .portal-word{font-size:clamp(30px,11vw,44px);line-height:1.06;letter-spacing:-.6px}
   .portal-search{flex-wrap:wrap}
   .portal-search input{flex-basis:100%;padding:0 14px}
   .portal-search input::placeholder{font-size:15px}
@@ -2335,13 +2345,13 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Gulf Cooperation Council (GCC) Philanthropy">
 <meta property="og:url" content="https://gccphilanthropy.org/">
-<meta property="og:title" content="Gulf Cooperation Council (GCC) Philanthropy Register">
+<meta property="og:title" content="GCC Philanthropy | Gulf Cooperation Council Philanthropy">
 <meta property="og:description" content="A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
 <meta property="og:image" content="https://gccphilanthropy.org/gcc-emblem.svg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Gulf Cooperation Council (GCC) Philanthropy Register">
+<meta name="twitter:title" content="GCC Philanthropy | Gulf Cooperation Council Philanthropy">
 <meta name="twitter:description" content="A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gccphilanthropy.org/#website","url":"https://gccphilanthropy.org/","name":"Gulf Cooperation Council (GCC) Philanthropy Register","inLanguage":"en-GB","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://gccphilanthropy.org/?search={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Dataset","@id":"https://gccphilanthropy.org/#register","name":"Gulf Cooperation Council (GCC) Philanthropy Register","description":"A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.","url":"https://gccphilanthropy.org/","inLanguage":"en-GB","creator":{"@type":"Person","name":"Ali Al Mokdad"},"isAccessibleForFree":true,"variableMeasured":["name","type","focus","country","city","website","email","phone","linkedin","contact","title","area"],"spatialCoverage":[{"@type":"Country","name":"United Arab Emirates"},{"@type":"Country","name":"Saudi Arabia"},{"@type":"Country","name":"Qatar"},{"@type":"Country","name":"Kuwait"},{"@type":"Country","name":"Bahrain"},{"@type":"Country","name":"Oman"}],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://gccphilanthropy.org/data.json"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gccphilanthropy.org/#website","url":"https://gccphilanthropy.org/","name":"GCC Philanthropy","alternateName":"Gulf Cooperation Council Philanthropy","inLanguage":"en-GB","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://gccphilanthropy.org/?search={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Dataset","@id":"https://gccphilanthropy.org/#register","name":"Gulf Cooperation Council (GCC) Philanthropy Register","description":"A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.","url":"https://gccphilanthropy.org/","inLanguage":"en-GB","creator":{"@type":"Person","name":"Ali Al Mokdad"},"isAccessibleForFree":true,"variableMeasured":["name","type","focus","country","city","website","email","phone","linkedin","contact","title","area"],"spatialCoverage":[{"@type":"Country","name":"United Arab Emirates"},{"@type":"Country","name":"Saudi Arabia"},{"@type":"Country","name":"Qatar"},{"@type":"Country","name":"Kuwait"},{"@type":"Country","name":"Bahrain"},{"@type":"Country","name":"Oman"}],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://gccphilanthropy.org/data.json"}}]}</script>
 <!-- seo:end -->
 </head>
 <body>
@@ -2436,12 +2446,11 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <nav aria-label="GCC Philanthropy products">
       <a class="pbar-brand" href="#">GCC Philanthropy</a>
       <ul class="pbar-nav">
-        <li><a href="#" class="pbar-main">Main page</a></li>
-        <li><a href="#/a/all" data-nav="intel">Donor Intelligence</a></li>
+        <li><a href="#/a/all" data-nav="intel">Atlas</a></li>
         <li><a href="#/a/list" data-nav="register">Register</a></li>
-        <li><a href="#/news" data-nav="news">News</a></li>
+        <li><a href="#/news" data-nav="news">News &amp; Insights</a></li>
         <li><a href="toolkit/">Toolkit</a></li>
-        <li><a href="members/">Members</a></li>
+        <li><a href="members/">Countries</a></li>
       </ul>
     </nav>
   </div>
@@ -2468,7 +2477,10 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 
   <div id="l1" hidden>
     <section class="portal" aria-labelledby="portal-word">
-      <h2 class="portal-word" id="portal-word">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy Register</h2>
+      <h2 class="portal-word" id="portal-word">GCC Philanthropy</h2>
+      <p class="portal-tag">One platform for Gulf philanthropy.</p>
+      <p class="portal-lede">A registry, data, news and knowledge platform covering
+        philanthropy across the six Gulf Cooperation Council countries.</p>
       <div class="ring" id="ring">
         <!-- INTEL BLOCK 1 of 4. The emblem keeps its original destination, the whole
              register at #/a/all. That page now opens with the funding intelligence above
@@ -2487,16 +2499,16 @@ body:has(#l1:not([hidden])) .pbar{display:none}
            categories, because that is the order a reader uses this page in. -->
       <p class="portal-news">
         <a href="members/" id="membersdoor">
-          <span class="pn-label">GCC Members</span>
+          <span class="pn-label">Countries</span>
         </a>
         <a href="#/a/all" id="intellink">
-          <span class="pn-label">Donor Intelligence</span>
+          <span class="pn-label">Atlas</span>
         </a>
         <a href="#/a/list" id="fulllist">
           <span class="pn-label">Register</span>
         </a>
         <a href="#/news" id="newsdoor">
-          <span class="pn-label">News &amp; Developments</span>
+          <span class="pn-label">News &amp; Insights</span>
         </a>
         <a href="toolkit/" id="toolkitdoor">
           <span class="pn-label">Toolkit</span>
@@ -3900,13 +3912,13 @@ function select(kind,s){
        either way, so both flow through computeFiltered, fillPick and the pager unchanged. */
     if(s === "list"){
       return {kind:"a",slug:"list",
-        name:"Gulf Cooperation Council (GCC) Philanthropy Register",
-        parts:["Gulf Cooperation Council (GCC)","Philanthropy Register"],
+        name:"GCC Philanthropy Register",
+        parts:["GCC Philanthropy","Register"],
         sub:"",rows:ROWS.slice()};
     }
     return {kind:"a",slug:"all",
-      name:"Gulf Cooperation Council (GCC) Philanthropy Donor Intelligence",
-      parts:["Gulf Cooperation Council (GCC)","Philanthropy Donor Intelligence"],
+      name:"GCC Philanthropy Atlas",
+      parts:["GCC Philanthropy","Atlas"],
       sub:"",rows:ROWS.slice()};
   }
   var item=SLUGS[kind][s];
@@ -4106,11 +4118,13 @@ function route(){
     nameEl.classList.remove("is-lockup");
   }
   el("selsub").textContent=sel.sub;
-  /* ONE TITLE FORMULA: what this page is, then the site, with the abbreviation spelled out
-     because a reader who does not already know what GCC stands for is exactly the reader a tab
-     title has to serve. Two routes carry the site's own name inside their heading, so the shared
-     part is taken off the front rather than printed twice. */
-  var SITE = "Gulf Cooperation Council (GCC) Philanthropy";
+  /* ONE TITLE FORMULA: what this page is, then the site. The short brand is used here, not the
+     expanded one, because the expanded form and the sentence that explains it are on the home
+     screen a reader has already passed through, and repeating it in every tab is the repetition
+     the brand rules exclude. Two routes carry the site's own name inside their heading, so the
+     shared part is taken off the front rather than printed twice. SITE MUST STAY A PREFIX OF
+     THOSE ROUTE NAMES or the strip stops firing and the brand prints twice. */
+  var SITE = "GCC Philanthropy";
   var subject = sel.name.indexOf(SITE) === 0
     ? sel.name.slice(SITE.length).trim() || "Register"
     : sel.name;
@@ -4162,7 +4176,7 @@ function showL1(clean){
   if(nb) nb.hidden=true;
   el("l1").hidden=false;
   paintPage(null);
-  document.title="Gulf Cooperation Council (GCC) Philanthropy Register";
+  document.title="GCC Philanthropy | Gulf Cooperation Council Philanthropy";
   if(clean && history.replaceState){
     /* the search string is kept, minus ?view=, which belongs to the intelligence route and was
        being carried onto the portal where it means nothing */
@@ -6895,8 +6909,8 @@ function rslug(s){
    organisation" is that organisation searched for in the full list.
 
    THAT LIST NOW HAS ITS OWN ROUTE AND THIS FOLLOWS IT. These seventeen links pointed at
-   #/a/all, which since the split is the Donor Intelligence briefing: following one landed on
-   the organisation list, but the page named itself Donor Intelligence and marked that as the
+   #/a/all, which since the split is the Atlas briefing: following one landed on
+   the organisation list, but the page named itself Atlas and marked that as the
    current product, so the reader ended up somewhere that did not match what they clicked.
    #/a/list is the register, which is what "in the register" means. */
 function orgHref(name){
@@ -7851,7 +7865,7 @@ function markNav(){
      "home". A country or a category view IS the register, so those mark it too. */
   /* THE TAB NAMES THE VIEW, and it is set here because this is already the one place that knows
      which view is showing. Presentation only: the same word is in the heading and the title. */
-  var TAB={news:"News", register:"Register", intel:"Donor Intelligence"};
+  var TAB={news:"News & Insights", register:"Register", intel:"Atlas"};
   var current = "";
   if(path === "news") current = "news";
   else if(path === "a/list") current = "register";
@@ -7932,7 +7946,7 @@ function watch(){
   if(key === lastKey && (built || failed)) return;
   lastKey = key;
   if(host) host.hidden = false;
-  document.title = "News and Developments | Gulf Cooperation Council (GCC) Philanthropy";
+  document.title = "News & Insights | GCC Philanthropy";
   readUrl();
   if(!FEED && !failed){ load(); }
   else { render(); }

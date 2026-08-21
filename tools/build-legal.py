@@ -41,12 +41,11 @@ PBAR = """<div class="pbar">
     <nav aria-label="Products">
       <a class="pbar-brand" href="../">GCC Philanthropy</a>
       <ul class="pbar-nav">
-        <li><a href="../">Main page</a></li>
-        <li><a href="../#/a/all">Donor Intelligence</a></li>
+        <li><a href="../#/a/all">Atlas</a></li>
         <li><a href="../#/a/list">Register</a></li>
-        <li><a href="../#/news">News</a></li>
+        <li><a href="../#/news">News &amp; Insights</a></li>
         <li><a href="../toolkit/">Toolkit</a></li>
-        <li><a href="../members/">Members</a></li>
+        <li><a href="../members/">Countries</a></li>
       </ul>
     </nav>
   </div>
@@ -338,34 +337,47 @@ ICONS = {
 }
 
 A = C.ABOUT
+# THE MARK CARRIES IT, NOT A WORD BESIDE IT. These were pills with the service name set in
+# uppercase mono next to a 16px glyph, which made three links look like three buttons and put more
+# weight on the words LinkedIn, YouTube and X than they earn on a profile. The name now lives in
+# aria-label for a screen reader and in title for a pointer, and the glyph is the whole control.
 social = "".join(
-    '<a class="soc" href="%s" target="_blank" rel="noopener noreferrer" aria-label="%s">'
-    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="%s"/></svg>'
-    '<span>%s</span></a>' % (E(url), E(name), ICONS[name], E(name))
+    '<a class="soc" href="%s" target="_blank" rel="noopener noreferrer" '
+    'aria-label="%s" title="%s">'
+    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="%s"/></svg></a>'
+    % (E(url), E(name), E(name), ICONS[name])
     for name, url in C.SOCIAL if name in ICONS)
 
 expertise = "".join(
     '<li><p class="x-n">%02d</p><h3>%s</h3><p>%s</p></li>' % (i, E(label), E(detail))
     for i, (label, detail) in enumerate(A["expertise"], 1))
 
+# A LANDSCAPE HEADER. The name, the descriptor and the three marks were stacked, so the first
+# screen of a 1240px sheet was four things in a vertical pile with the width unused. They now sit
+# across it: the identity on one side, the marks on the other, sharing one band. The page reads
+# wide rather than tall, which is what was asked for.
+#
+# AN EMPTIED STRING PRINTS NOTHING. The eyebrow and the closing line were removed from the content
+# rather than from the template, so both are guarded: an empty value produces no element at all,
+# not an empty one holding its own margin.
+eyebrow = '<p class="bio-eyebrow">%s</p>' % E(A["eyebrow"]) if A["eyebrow"].strip() else ""
+closing = '<p class="bio-close">%s</p>' % E(A["closing"]) if A["closing"].strip() else ""
+
 about_body = (
  '<header class="bio-head">'
- '<p class="bio-eyebrow">%s</p>'
- '<h1>%s</h1>'
- '<p class="bio-sub">%s</p>'
+ '<div class="bio-id">%s<h1>%s</h1><p class="bio-sub">%s</p></div>'
  '<nav class="bio-soc" aria-label="Elsewhere">%s</nav>'
  '</header>'
  '<div class="bio-cols">'
  '<section class="bio-sec"><h2>%s</h2>%s</section>'
  '<section class="bio-sec"><p class="bio-label">%s</p><h2>%s</h2>%s</section>'
  '</div>'
- '<section class="bio-sec bio-x"><h2>%s</h2><ol class="x-list">%s</ol>'
- '<p class="bio-close">%s</p></section>'
-) % (E(A["eyebrow"]), E(A["name"]), E(A["subtitle"]), social,
+ '<section class="bio-sec bio-x"><h2>%s</h2><ol class="x-list">%s</ol>%s</section>'
+) % (eyebrow, E(A["name"]), E(A["subtitle"]), social,
      E(A["journey_h"]), "".join("<p>%s</p>" % E(p) for p in A["journey"]),
      E(A["about_label"]), E(A["about_h"]),
      "".join("<p>%s</p>" % E(p) for p in A["about"]),
-     E(A["expertise_h"]), expertise, E(A["closing"]))
+     E(A["expertise_h"]), expertise, closing)
 
 page = (head(A["name"], A["subtitle"], "About")
         + "\n" + about_body + "\n" + (TAIL % footer("about")))
