@@ -184,15 +184,31 @@ def render(blocks):
         i += 1
     return "\n".join(out)
 
-def title_block(h1, standfirst, index_items):
-    idx = ""
-    if index_items:
-        idx = ('<ul class="index">%s</ul>' % "".join(
-            '<li><a href="#s%s"><span>%s</span>%s</a></li>' % (n, E(n), E(t))
-            for n, t in index_items))
-    return ('<h1>%s</h1>\n<p class="standfirst">%s</p>\n'
-            '<dl class="meta"><dt>%s</dt><dd>%s</dd></dl>\n%s'
-            % (E(h1), E(standfirst), E(C.FORM["version"]), E(C.DATED), idx))
+def index_list(index_items):
+    """The section titles the document already has, linked. A contents page, on paper."""
+    if not index_items:
+        return ""
+    return ('<nav class="index" aria-label="Sections"><ul>%s</ul></nav>' % "".join(
+        '<li><a href="#%s"><span>%s</span>%s</a></li>' % (anchor, E(label), E(t))
+        for anchor, label, t in index_items))
+
+
+def doc_head(h1, standfirst, version=True):
+    """Full width, above the two columns. An empty standfirst renders nothing at all rather
+       than an empty paragraph that still takes its margin."""
+    out = ['<header class="doc-head"><h1>%s</h1>' % E(h1)]
+    if standfirst:
+        out.append('<p class="standfirst">%s</p>' % E(standfirst))
+    if version:
+        out.append('<dl class="meta"><dt>%s</dt><dd>%s</dd></dl>'
+                   % (E(C.FORM["version"]), E(C.DATED)))
+    out.append('</header>')
+    return "\n".join(out)
+
+
+def notice():
+    """The standing disclaimer. Asked for on the FAQ, the terms and the connect page."""
+    return '<aside class="notice" role="note"><p>%s</p></aside>' % linkify(E(C.NOTICE))
 
 # The standfirsts come from the content module, the same place the Word edition reads them, so the
 # two renderers cannot drift. They were hardcoded in both builders until a partner review pointed
@@ -202,9 +218,17 @@ PAGES = [(k, C.TITLE[k], C.TAB[k], C.STANDFIRST[k], blocks)
 
 written = []
 for key, h1, tab, standfirst, blocks in PAGES:
-    idx = [(b[1], b[2]) for b in blocks if b[0] == "h2"]
-    body = title_block(h1, standfirst, idx) + "\n" + render(blocks)
-    page = head(h1, standfirst, tab) + "\n" + body + "\n" + (TAIL % footer(key))
+    # numbered sections index by number; the FAQ has groups instead, so it indexes those
+    idx = [("s" + b[1], b[1], b[2]) for b in blocks if b[0] == "h2"]
+    if not idx:
+        idx = [("g-" + slug(b[1]), "", b[1]) for b in blocks if b[0] == "grp"]
+    parts = [doc_head(h1, standfirst)]
+    if key in ("faq", "terms"):
+        parts.append(notice())
+    parts.append('<div class="doc-cols">%s<div class="doc-body">%s</div></div>'
+                 % (index_list(idx), render(blocks)))
+    body = "\n".join(parts)
+    page = head(h1, standfirst or h1, tab) + "\n" + body + "\n" + (TAIL % footer(key))
     d = os.path.join(ROOT, key)
     os.makedirs(d, exist_ok=True)
     p = os.path.join(d, "index.html")
@@ -214,15 +238,6 @@ for key, h1, tab, standfirst, blocks in PAGES:
 # ---------------------------------------------------------------- the connect page
 # Its only prose is the FAQ's own answer to "How do I reach you?", lifted from the same content
 # module rather than written again here.
-reach = None
-for i, b in enumerate(C.FAQ):
-    if b[0] == "q" and b[1].strip().lower().startswith("how do i reach you"):
-        reach = C.FAQ[i + 1][1]
-        break
-if reach is None:
-    raise SystemExit("the FAQ no longer answers 'How do I reach you?', so the connect page has "
-                     "no source for its one line of prose. Fix the content module or this build.")
-
 FORM = """<form class="cform" id="cform" method="post" action="%(action)s" novalidate>
   <div class="cf-row">
     <label for="cf-name">%(name)s</label>
@@ -278,12 +293,15 @@ FORM_JS = """<script>
 
 SENT, FAILED = C.FORM["sent"], C.FORM["failed"]
 
-page = (head(C.TITLE["connect"], reach, C.TAB["connect"])
-        + "\n<h1>%s</h1>\n" % E(C.TITLE["connect"])
-        + '<p class="standfirst">%s</p>\n' % linkify(E(reach))
-        + '<dl class="meta"><dt>%s</dt><dd>%s</dd></dl>\n' % (E(C.FORM["version"]), E(C.DATED))
-        + FORM + "\n"
+# No version row here: this page is a form, not a notice with a date in force.
+# The email line sits BELOW the form, because it begins "Or" and therefore has to follow
+# something. The standing notice closes the page.
+page = (head(C.TITLE["connect"], C.CONNECT_ALT, C.TAB["connect"])
+        + "\n" + doc_head(C.TITLE["connect"], "", version=False)
+        + "\n" + FORM + "\n"
         + (FORM_JS % (E(SENT), E(FAILED), E(FAILED)))
+        + '\n<p class="alt">%s</p>\n' % linkify(E(C.CONNECT_ALT))
+        + notice()
         + "\n" + (TAIL % footer("connect")))
 d = os.path.join(ROOT, "connect")
 os.makedirs(d, exist_ok=True)

@@ -30,6 +30,32 @@ html{-webkit-text-size-adjust:100%;background:var(--paper-2)}
 body{margin:0;background:transparent;color:var(--ink);
   font:400 15px/1.5 var(--sans);min-height:100vh;display:flex;flex-direction:column}
 
+/* ---------------------------------------------------------------- the ground
+   TWO FIXED LAYERS BEHIND THE SHEET, both in the site's own hand.
+   body::before is brushed colour: displaced, blurred ellipses under a turbulence filter, which is
+   the technique #brushes, #l2brush, #cwash and the masthead wash already use on this site. A flat
+   linear gradient would have been easier and would have read as a different hand.
+   body::after is gcc-skyline.webp, a picture the register already ships, as a faint band at the
+   foot. Both are deliberately very transparent: the sheet is the thing being read.
+   THEY ARE PSEUDO-ELEMENTS, NOT BACKGROUNDS, because a background shorthand in any page's own
+   stylesheet would wipe them. That is the same reason chrome.css paints the masthead wash this
+   way rather than setting background-image on the band. */
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 900' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='b' x='-30%25' y='-30%25' width='160%25' height='160%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.011' numOctaves='4' seed='13' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='90' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='26'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23b)'%3E%3Cellipse cx='170' cy='150' rx='430' ry='170' fill='%233E4CC4' opacity='0.30' transform='rotate(-11 170 150)'/%3E%3Cellipse cx='1040' cy='300' rx='400' ry='150' fill='%2300BCF2' opacity='0.22' transform='rotate(9 1040 300)'/%3E%3Cellipse cx='620' cy='690' rx='470' ry='170' fill='%23E2853A' opacity='0.20' transform='rotate(-5 620 690)'/%3E%3Cellipse cx='120' cy='780' rx='330' ry='140' fill='%235B63E6' opacity='0.18' transform='rotate(7 120 780)'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-size:100% 100%;background-position:center;
+  opacity:.55}
+body::after{content:"";position:fixed;left:0;right:0;bottom:0;z-index:-1;pointer-events:none;
+  height:min(38vh,320px);
+  background:url("../gcc-skyline.webp") center bottom/cover no-repeat;
+  opacity:.07;
+  mask:linear-gradient(to bottom,transparent 0,#000 62%,#000 100%);
+  -webkit-mask:linear-gradient(to bottom,transparent 0,#000 62%,#000 100%)}
+@media (prefers-color-scheme:dark){
+  body::before{opacity:.42}
+  body::after{opacity:.10}
+}
+@media (forced-colors:active){ body::before,body::after{display:none} }
+
 .container{width:100%;max-width:1280px;margin:0 auto;padding:0 var(--s4)}
 
 /* ---------------------------------------------------------------- the masthead
@@ -55,15 +81,32 @@ header.top .kick::before{content:"";flex:none;width:34px;height:2px;border-radiu
    because these pages are the same kind of thing: one document, read top to bottom. */
 main{flex:1 0 auto}
 .doc-wrap{padding:var(--s5) 0 var(--s5)}
-/* THE SHEET HUGS THE TEXT. Measured first: at the register's full 1280 measure the sheet came out
-   1217px wide around a 582px text column, which left a 507px void on ONE side and read as a
-   broken layout rather than a wide margin. Capping the sheet and centring the column inside it
-   turns that into an even margin, which is what a printed notice looks like. The register's own
-   1280 measure exists to hold a table of 1,862 rows and is wrong for continuous prose. */
+/* THE SHEET IS LANDSCAPE, AND ITS WIDTH IS USED RATHER THAN LEFT EMPTY.
+   The first attempt capped the sheet at 920 around a centred column, because at the register's
+   full measure a single column left a 507px void on one side. Ali asked for the wider, landscape
+   feel instead, so the sheet opens out and the extra width now carries the section index in a rail
+   beside the prose. That is the toolkit's own construction, a numbered tree next to the content,
+   and it is what turns the width into composition rather than a gap.
+   THE PROSE MEASURE DOES NOT MOVE. A wide sheet is a layout; a wide line of text is unreadable, so
+   .doc-body stays at 72 characters however wide the sheet gets. */
 .sheet{background:var(--i-surface,#fff);border:1px solid var(--line);
-  padding:var(--s5) clamp(var(--s4),5vw,64px);
-  max-width:920px;margin-inline:auto}
-.doc{max-width:72ch;margin-inline:auto}
+  padding:var(--s5) clamp(var(--s4),4vw,56px);
+  max-width:1200px;margin-inline:auto}
+.doc{max-width:none}
+
+/* the head runs above the two columns, with its own text capped so the title and the standfirst
+   never stretch into a line nobody can track */
+.doc-head{max-width:62ch;margin:0 0 var(--s4)}
+
+.doc-cols{display:block}
+.doc-body{max-width:72ch}
+@media (min-width:1000px){
+  .doc-cols{display:grid;grid-template-columns:250px minmax(0,1fr);
+    gap:clamp(32px,4vw,72px);align-items:start}
+  /* the rail holds still while the document scrolls past it, which is the point of a contents
+     list on a long notice */
+  .doc-cols > .index{position:sticky;top:var(--s4)}
+}
 
 /* the title block. VERSION is a mono row rather than a sentence, so the date is a fact on the
    page and not a line of prose that has to be written and rewritten. */
@@ -76,17 +119,34 @@ main{flex:1 0 auto}
   font:400 11px/1.6 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
 .doc .meta dd{margin:0;font:600 14px/1.6 var(--serif);color:var(--ink)}
 
-/* the section index. Nothing here is written: it is the section titles the document already has,
-   linked. It is what a contents page is on paper. */
-.doc .index{margin:var(--s5) 0 0;padding:0;list-style:none;
-  columns:2;column-gap:var(--s5)}
+/* THE INDEX RAIL. Nothing in it is written: it is the section titles the document already has,
+   linked. A contents page, on paper. Below 1000px it stops being a rail and becomes a plain list
+   above the text, because a 250px column beside prose does not fit on a phone. */
+.doc .index{margin:0 0 var(--s4);padding:0 0 var(--s3);border-bottom:1px solid var(--line)}
+.doc .index ul{margin:0;padding:0;list-style:none;columns:2;column-gap:var(--s4)}
 .doc .index li{margin:0 0 7px;break-inside:avoid}
 .doc .index a{display:flex;gap:10px;font:400 14px/1.45 var(--serif);color:var(--ink-2);
   text-decoration:none;border-bottom:1px solid transparent}
 .doc .index a span{flex:none;min-width:1.4em;
   font:600 12px/1.6 var(--mono);color:var(--accent)}
 .doc .index a:hover{color:var(--accent);border-bottom-color:var(--accent-line)}
-@media (max-width:640px){ .doc .index{columns:1} }
+@media (min-width:1000px){
+  .doc .index{margin:0;padding:0 var(--s4) 0 0;border-bottom:0;
+    border-right:1px solid var(--line)}
+  .doc .index ul{columns:1}
+}
+@media (max-width:640px){ .doc .index ul{columns:1} }
+
+/* THE STANDING NOTICE, on the FAQ, the terms and the connect page. It is a caveat, so it takes the
+   orange this site already reserves for a caveat on the news desk, and it is set a step smaller
+   than the body because it qualifies the document rather than forming part of its argument. */
+.notice{margin:0 0 var(--s5);padding:14px 18px;
+  background:var(--orange-soft);border-left:3px solid var(--orange-strong)}
+.notice p{margin:0;font:400 14px/1.6 var(--serif);color:var(--ink)}
+
+/* the connect page's alternative to the form, placed below it because it begins with "Or" */
+.alt{max-width:52ch;margin:var(--s4) 0 var(--s5);padding-top:var(--s3);
+  border-top:1px solid var(--line);font:400 15px/1.6 var(--serif);color:var(--ink-2)}
 
 /* ---------------------------------------------------------------- the body
    Section numbers are mono and blueberry, the title is serif 600 in the masthead navy. Same
@@ -99,6 +159,13 @@ main{flex:1 0 auto}
 .doc h2.grp{display:block;margin-top:var(--s5);padding-top:var(--s4);
   border-top:1px solid var(--line);
   font:600 11px/1.6 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+/* THE FIRST THING IN THE BODY COLUMN CARRIES NO RULE AND NO LEAD-IN SPACE.
+   Seen on the render, not computed: the FAQ opened with a hairline floating above its first group
+   label, because that rule exists to SEPARATE groups and there is nothing above the first one to
+   separate it from. The same space also pushed the body's first line below the rail's first item,
+   so the two columns read as accidentally offset rather than aligned. */
+.doc-body > *:first-child{margin-top:0}
+.doc-body > h2.grp:first-child{padding-top:0;border-top:0}
 .doc h3{margin:var(--s4) 0 6px;font:600 16px/1.35 var(--serif);color:var(--mast)}
 .doc p{margin:0 0 var(--s3);font:400 15.5px/1.65 var(--serif);color:var(--ink)}
 .doc p .lead{font-weight:600;color:var(--mast)}
@@ -186,7 +253,9 @@ footer.sig .wrap{max-width:1280px;margin:0 auto;padding:0 var(--s4)}
 
 @media print{
   html{background:#fff}
+  body::before,body::after{display:none}
   .pbar,footer.sig,.doc .index{display:none}
+  .notice{background:none;border-left-color:#666}
   .sheet{border:0;padding:0}
   .doc a{color:inherit;text-decoration:none}
 }
