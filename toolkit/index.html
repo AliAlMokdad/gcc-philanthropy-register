@@ -749,7 +749,13 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
       ".axis-theme a:hover .axis-t{color:var(--accent-2)}"+
       ".axis-place a:hover .axis-t{text-decoration:underline;text-underline-offset:3px}"+
       ".axis a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}"+
-      "@media (max-width:600px){.axis a{flex-wrap:wrap;gap:4px}.axis-m{width:100%}}";
+      "@media (max-width:600px){.axis a{flex-wrap:wrap;gap:4px}.axis-m{width:100%}}"+
+      /* GREEN IS GEOGRAPHY IN BOTH SCHEMES, and until now it was only geography in one.
+         --i-country-ink is defined nowhere in the repository, so #1B5A50 won in dark mode too
+         and the jurisdiction labels measured 2.14:1 against the dark card. The token is given a
+         dark value here rather than changing the two var() sites, so the light green is untouched.
+         #7FCBBD is the same hue lifted to carry text on the dark ground: 10.11:1. */
+      "@media (prefers-color-scheme:dark){:root{--i-country-ink:#7FCBBD}}";
     document.head.appendChild(st);
   })();
 

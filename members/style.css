@@ -324,3 +324,31 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
   .country-hub{border-top:1px solid #999}
   .ch-metric{border:1px solid #999}
 }
+
+/* ---------------------------------------------------------------- dark scheme
+   WHY THIS BLOCK HAS TO EXIST. The page takes --ink from shared/tokens.css, which flips to
+   #EEF0F6 in dark mode, while every surface below was declared here as a fixed warm light
+   value. Half the pair flipped and half did not, so a dark-mode reader got #EEF0F6 text on
+   #FEFBF0 paper: measured at 1.10:1 on the country headings, 1.14:1 on the figures, and 19
+   elements under 3:1 on one country page. Unreadable rather than merely low contrast.
+
+   The values below invert the warm identity instead of replacing it: the cream becomes a warm
+   near-black, the gold brightens enough to carry text on it, and the hairline stays a hairline.
+   Measured against the flipping ink family: page 16.43:1, card 15.39:1, muted 7.57:1,
+   gold 10.33:1, gold-dark 7.76:1. --warm-line is 1.45:1 by intent, because it draws a rule
+   and never text, which is the same relationship --line has to --paper in tokens.css. */
+@media (prefers-color-scheme:dark){
+  :root{
+    --page:#14120D;
+    --nav:#1A1712;
+    --strip:#201C14;
+    --footer:#2A2418;
+    --card:#1C1913;
+    --warm-line:#38311F;
+    --map-off:#241F16;
+    --map-on:#D1A770;
+    --muted:#ADA491;
+    --gold:#E3BC55;
+    --gold-dark:#C9A238;
+  }
+}

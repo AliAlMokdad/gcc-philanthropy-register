@@ -53,6 +53,14 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;z-index:-1;pointer
 @media (prefers-color-scheme:dark){
   body::before{opacity:.42}
   body::after{opacity:.10}
+  /* THE READING SURFACE HAD NO DARK VALUE. .sheet is painted with var(--i-surface,#fff), and
+     --i-surface is defined nowhere in the repository, so the fallback won in both schemes while
+     --ink flipped to #EEF0F6 around it. The result on /privacy/ was 43 elements at 1.14:1, near
+     white text on white paper, which is the whole policy unreadable. Defining the token here
+     rather than editing the three var() sites keeps the light default exactly as it was.
+     #161A26 is the tokens.css dark --paper-2, so the sheet sits one step above the page ground,
+     the same relationship it has in light. Measured 15.23:1 against --ink. */
+  :root{--i-surface:#161A26}
 }
 @media (forced-colors:active){ body::before,body::after{display:none} }
 
@@ -485,3 +493,39 @@ footer.sig{margin-top:auto}
    The top margin goes too: var(--s5) pushed the first field 48px below the heading beside it, so
    the two columns started on different lines. */
 .doc .cgrid-form .cform{max-width:none;margin-top:0}
+
+/* ---------------------------------------------------------------- dark headings
+   THE SECOND HALF OF THE SAME FAULT. Giving --i-surface a dark value fixed the reading surface
+   and left the headings behind, because --mast is used two ways: it paints the masthead band and
+   it colours .doc h1, h2, h2 .n, h3, .lead and the three bio and cross-list headings. As a band it
+   must stay dark in dark mode, so it cannot be flipped in tokens.css without breaking the band.
+   Before this block those headings measured 1.10:1, dark navy on the now-dark sheet.
+
+   --accent is the same navy lifted for a dark ground: 8.68:1 on the sheet, against the body's
+   15.23:1. That is deliberately the same ordering the light scheme has, where the heading at
+   13.24:1 sits just under the body at 17.23:1, so the heading still reads as an accent rather
+   than shouting louder than the prose.
+
+   THIS BLOCK IS AT THE END OF THE FILE ON PURPOSE. Every selector below is repeated verbatim from
+   its light rule, so the specificity is identical and only source order decides. Placed with the
+   other dark rules at line 53 it would have lost to the light rules at 121 to 324 and been dead
+   on arrival, which is the exact defect this round set out to remove. */
+@media (prefers-color-scheme:dark){
+  .doc h1{color:var(--accent)}
+  .doc h2{color:var(--accent)}
+  .doc h3{color:var(--accent)}
+  .doc p .lead{color:var(--accent)}
+  .doc .bio-head h1{color:var(--accent)}
+  .doc .bio-sec > h2{color:var(--accent)}
+  .doc .x-list h3{color:var(--accent)}
+
+  /* THE OTHER DIRECTION OF THE SAME FAULT, and it was already live before this round.
+     --accent is a BACKGROUND in two places, and both put a hardcoded #FFFFFF on top of it. That
+     is right in light, where --accent is #3E4CC4 and white measures 6.92:1. In dark --accent
+     lifts to #AAB4F0 and --accent-2 to #C4CCF6, so white fell to 2.00:1 on the send button at
+     rest and 1.58:1 on hover, and the social icon went the same way. The label has to go dark
+     when the ground goes light: #0E1018 is the dark --paper, measuring 9.49:1 at rest and
+     12.04:1 on hover. Nothing here touches the light scheme, where white stays correct. */
+  .cf-send{color:#0E1018}
+  .doc .bio-soc .soc:hover svg{fill:#0E1018}
+}
