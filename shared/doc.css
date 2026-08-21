@@ -1,0 +1,192 @@
+/* THE DOCUMENT SURFACE. The four site-meta pages: the privacy policy, the terms of use, the FAQ
+ * and the connect form.
+ *
+ * WHY THEY ARE THEIR OWN TIER. The product bar names what this site IS: the register, the donor
+ * intelligence, the news desk, the toolkit, the member states. These four pages are not products,
+ * they are statements ABOUT the site, so they never enter that bar and they are reached from the
+ * footer of every page instead. They still CARRY the bar, because a reader who lands on a policy
+ * from a search result must not be stranded, and the page tab names the surface the way it does on
+ * the toolkit and the member states.
+ *
+ * WHY A NARROWER MEASURE THAN .container. The register's 1280 measure exists to hold a table of
+ * 1,862 rows. Continuous prose at that width is unreadable, so the chrome keeps .container and the
+ * text sits in an inner .doc capped at 72 characters. That is the one layout departure on these
+ * pages and reading measure is the whole reason for it.
+ *
+ * TYPE. Source Serif 4 for the prose, IBM Plex Mono for numbers and labels, exactly as the rest of
+ * the site. WEIGHTS ARE 400 AND 600 ONLY. Source Serif 4 is a variable face that will happily
+ * render 200, and a legal notice set in a hairline weight reads as decoration rather than as a
+ * statement anyone stands behind, so no rule here asks for less than 400.
+ *
+ * COLOUR. Tokens only, from shared/tokens.css, which also carries the dark scheme. Orange stays
+ * reserved for the page tab, as everywhere else on the site. The one place a state colour is
+ * needed is the form: --accent when a message is sent, --orange-strong when it is not, which is
+ * the same orange the news desk already uses to mark a caveat.
+ *
+ * REQUIRES shared/tokens.css then shared/chrome.css, in that order, before this file. */
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--paper-2)}
+body{margin:0;background:transparent;color:var(--ink);
+  font:400 15px/1.5 var(--sans);min-height:100vh;display:flex;flex-direction:column}
+
+.container{width:100%;max-width:1280px;margin:0 auto;padding:0 var(--s4)}
+
+/* ---------------------------------------------------------------- the masthead
+   Transcribed from the toolkit so the band is the same band. The wash and the tab come from
+   chrome.css; these are the two type rules that live in each page's own sheet there. */
+header.top{background:var(--mast);position:relative}
+header.top .container{padding-top:var(--s4);padding-bottom:var(--s4)}
+header.top .brandline{margin:0;font:600 20px/1.25 var(--display);
+  color:#F6F5F2;letter-spacing:0;text-wrap:balance}
+header.top .brandline a.home{color:inherit;text-decoration:none}
+header.top .brandline a.home:hover .abbr{color:#D6DCF4}
+header.top .brandline a.home:focus-visible{outline:2px solid #C6CFE4;outline-offset:4px}
+header.top .brandline .abbr{color:#B8C2E8;font-weight:400}
+header.top .kick{display:flex;align-items:center;gap:13px;margin:17px 0 0;
+  font:600 11px/1.6 var(--mono);letter-spacing:.17em;text-transform:uppercase;color:#C6CFE4;
+  padding-right:200px}
+header.top .kick::before{content:"";flex:none;width:34px;height:2px;border-radius:1px;
+  background:#8E9CD4}
+@media (max-width:640px){ header.top .kick{padding-right:0} }
+
+/* ---------------------------------------------------------------- the sheet
+   One white sheet on the tinted ground, the same construction the toolkit uses for an article,
+   because these pages are the same kind of thing: one document, read top to bottom. */
+main{flex:1 0 auto}
+.doc-wrap{padding:var(--s5) 0 var(--s5)}
+/* THE SHEET HUGS THE TEXT. Measured first: at the register's full 1280 measure the sheet came out
+   1217px wide around a 582px text column, which left a 507px void on ONE side and read as a
+   broken layout rather than a wide margin. Capping the sheet and centring the column inside it
+   turns that into an even margin, which is what a printed notice looks like. The register's own
+   1280 measure exists to hold a table of 1,862 rows and is wrong for continuous prose. */
+.sheet{background:var(--i-surface,#fff);border:1px solid var(--line);
+  padding:var(--s5) clamp(var(--s4),5vw,64px);
+  max-width:920px;margin-inline:auto}
+.doc{max-width:72ch;margin-inline:auto}
+
+/* the title block. VERSION is a mono row rather than a sentence, so the date is a fact on the
+   page and not a line of prose that has to be written and rewritten. */
+.doc h1{margin:0;font:600 clamp(28px,4.4vw,40px)/1.1 var(--display);color:var(--mast);
+  letter-spacing:-.2px}
+.doc .standfirst{margin:14px 0 0;font:400 17px/1.5 var(--serif);color:var(--ink-2)}
+.doc .meta{display:flex;gap:14px;align-items:baseline;margin:var(--s4) 0 0;
+  padding-top:var(--s3);border-top:1px solid var(--line)}
+.doc .meta dt{flex:none;min-width:74px;margin:0;
+  font:400 11px/1.6 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.doc .meta dd{margin:0;font:600 14px/1.6 var(--serif);color:var(--ink)}
+
+/* the section index. Nothing here is written: it is the section titles the document already has,
+   linked. It is what a contents page is on paper. */
+.doc .index{margin:var(--s5) 0 0;padding:0;list-style:none;
+  columns:2;column-gap:var(--s5)}
+.doc .index li{margin:0 0 7px;break-inside:avoid}
+.doc .index a{display:flex;gap:10px;font:400 14px/1.45 var(--serif);color:var(--ink-2);
+  text-decoration:none;border-bottom:1px solid transparent}
+.doc .index a span{flex:none;min-width:1.4em;
+  font:600 12px/1.6 var(--mono);color:var(--accent)}
+.doc .index a:hover{color:var(--accent);border-bottom-color:var(--accent-line)}
+@media (max-width:640px){ .doc .index{columns:1} }
+
+/* ---------------------------------------------------------------- the body
+   Section numbers are mono and blueberry, the title is serif 600 in the masthead navy. Same
+   relationship the Word edition uses, because it is the same document. */
+.doc h2{display:flex;gap:16px;align-items:baseline;
+  margin:var(--s5) 0 var(--s3);scroll-margin-top:var(--s4);
+  font:600 clamp(19px,2.2vw,22px)/1.25 var(--display);color:var(--mast)}
+.doc h2 .n{flex:none;min-width:1.5em;
+  font:600 14px/1.5 var(--mono);color:var(--accent);letter-spacing:.02em}
+.doc h2.grp{display:block;margin-top:var(--s5);padding-top:var(--s4);
+  border-top:1px solid var(--line);
+  font:600 11px/1.6 var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.doc h3{margin:var(--s4) 0 6px;font:600 16px/1.35 var(--serif);color:var(--mast)}
+.doc p{margin:0 0 var(--s3);font:400 15.5px/1.65 var(--serif);color:var(--ink)}
+.doc p .lead{font-weight:600;color:var(--mast)}
+.doc ul,.doc ol{margin:0 0 var(--s3);padding-left:1.6em}
+.doc li{margin:0 0 8px;font:400 15.5px/1.65 var(--serif);color:var(--ink)}
+.doc ol{list-style:lower-alpha}
+.doc ol li::marker{font:600 14px var(--mono);color:var(--accent)}
+.doc ul li::marker{color:var(--accent)}
+.doc a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px;
+  text-decoration-thickness:1px}
+.doc a:hover{text-decoration-thickness:2px}
+
+/* the contact panel in section 1 of the policy, and the same treatment for the address on the
+   connect page. The address is the one thing on either page a reader came for. */
+.doc .kv{margin:0 0 var(--s4);padding:12px 16px;background:var(--accent-soft);
+  border-left:2px solid var(--accent)}
+.doc .kv span{font:400 14px/1.6 var(--serif);color:var(--ink-2)}
+.doc .kv b{font:600 14.5px/1.6 var(--mono);color:var(--accent-2);font-weight:600}
+
+/* ---------------------------------------------------------------- the form
+   Fields are 44px, borders are --line-2, the ring is --focus. Nothing is styled into a state it
+   is not in: a field is not painted red before it has been filled in wrongly. */
+.cform{margin:var(--s5) 0 0;max-width:52ch}
+.cf-row{margin:0 0 var(--s4)}
+.cf-row label{display:block;margin:0 0 6px;
+  font:400 11px/1.6 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.cform input[type=text],.cform input[type=email],.cform textarea{
+  width:100%;min-height:44px;padding:11px 13px;
+  background:var(--i-surface,#fff);color:var(--ink);
+  border:1px solid var(--line-2);border-radius:2px;
+  font:400 15px/1.5 var(--serif)}
+.cform textarea{min-height:168px;resize:vertical}
+.cform input:focus-visible,.cform textarea:focus-visible{
+  outline:2px solid var(--focus);outline-offset:1px;border-color:var(--focus)}
+.cform input::placeholder,.cform textarea::placeholder{color:var(--ink-3);opacity:1}
+
+/* the honeypot. Off-screen rather than display:none, because some bots skip hidden inputs and
+   fill the ones they can see in the DOM. aria-hidden and tabindex -1 keep it away from anyone
+   real, including a screen reader. */
+.cf-trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.cf-check{display:flex;gap:11px;align-items:flex-start;margin:0 0 var(--s4);
+  padding:13px 15px;background:var(--paper-2);border:1px solid var(--line)}
+.cf-check input{flex:none;width:20px;height:20px;margin:1px 0 0;accent-color:var(--accent)}
+.cf-check label{margin:0;font:400 14px/1.45 var(--serif);
+  letter-spacing:0;text-transform:none;color:var(--ink)}
+
+.cf-send{min-height:44px;padding:0 26px;border:0;border-radius:2px;cursor:pointer;
+  background:var(--accent);color:#FFFFFF;
+  font:600 12px/1 var(--mono);letter-spacing:.18em;text-transform:uppercase}
+.cf-send:hover{background:var(--accent-2)}
+.cf-send:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.cf-send[disabled]{opacity:.55;cursor:default}
+
+/* THE RESULT LINE. It says what happened and never more than happened. A form that reports
+   success on a failed request is the one defect this pattern has actually shipped before, so the
+   only thing that turns this green is the receiver confirming it sent. */
+.cf-out{margin:var(--s3) 0 0;padding:12px 15px;border-left:2px solid;
+  font:400 14.5px/1.55 var(--serif);display:none}
+.cf-out.on{display:block}
+.cf-out.ok{border-color:var(--accent);background:var(--accent-soft);color:var(--ink)}
+.cf-out.bad{border-color:var(--orange-strong);background:var(--orange-soft);color:var(--ink)}
+
+/* ---------------------------------------------------------------- the footer
+   The same signature the main page carries, so the four pages end the way every other page ends.
+   Its three-column form lives in index.html, which owns the main page's footer. */
+footer.sig{border-top:1px solid var(--line);background:var(--paper);
+  padding:var(--s4) 0;margin-top:auto}
+footer.sig .wrap{max-width:1280px;margin:0 auto;padding:0 var(--s4)}
+.sig-links{display:flex;flex-wrap:wrap;gap:8px var(--s4);margin:0;padding:0;list-style:none;
+  justify-content:center}
+.sig-links a{font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3);text-decoration:none}
+.sig-links a:hover{color:var(--accent)}
+.sig-links a[aria-current]{color:var(--ink)}
+.sig-back{display:block;margin:var(--s3) 0 0;text-align:center;
+  font:400 11px/1.6 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.sig-back a{color:inherit;text-decoration:none}
+.sig-back a:hover{color:var(--accent)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important;
+    scroll-behavior:auto !important}
+}
+
+@media print{
+  html{background:#fff}
+  .pbar,footer.sig,.doc .index{display:none}
+  .sheet{border:0;padding:0}
+  .doc a{color:inherit;text-decoration:none}
+}
