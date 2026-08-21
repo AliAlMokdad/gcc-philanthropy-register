@@ -87,14 +87,13 @@ def footer(current):
        target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
        src="../ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
        class="sig-cred">Owned and managed by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
-       target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a>
-     <small class="sig-rights">&copy; 2026 GCC Philanthropy&trade;. All rights reserved.</small></span></p>
+       target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
     <ul class="sig-col sig-col-r">
 %s
     </ul>
     </nav>
-  </div>
-</footer>''' % (left, right)
+  <p class="sig-rights">&copy; 2026 GCC Philanthropy&trade;. All rights reserved.</p>
+</div></footer>''' % (left, right)
 
 
 def head(title, desc, tab):

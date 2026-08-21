@@ -1348,24 +1348,54 @@ body:not(.list-only) #cats{display:none !important}
    away. The pseudo sits at bottom:0 and not below the box: an earlier version of this device
    used top:-2px inside a clipped parent and never painted at all, because overflow clips to the
    padding box, and that cost a round of chasing a fix that was already correct. */
-.cprof{margin:0;padding:var(--s3) 0 0}
-/* --accent-2, not --accent, because the "Back to countries" link sits 250px above this one in
-   the same column and uses the darker step. Two links in one column in two shades of the same
-   hue reads as a mistake, and measured they were rgb(0,112,46) against rgb(0,90,38). Matching it
-   also buys contrast on the two red countries, which are the tightest of the six. The colour
-   therefore stays put on hover and the underline alone carries the state change. */
-.cprof-a{position:relative;display:inline-flex;align-items:center;min-height:44px;
-  padding:0 0 4px 15px;text-decoration:none;color:var(--accent-2);
-  font:500 17px/1.3 var(--display);font-optical-sizing:auto}
-.cprof-a::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
-  width:2px;height:21px;background:var(--accent-2);border-radius:1px}
-.cprof-a::after{content:"";position:absolute;left:15px;right:0;bottom:0;height:1px;
-  background:currentColor;transform:scaleX(0);transform-origin:50% 50%;
-  transition:transform .28s cubic-bezier(.22,.61,.36,1)}
-.cprof-a:hover::after,.cprof-a:focus-visible::after{transform:scaleX(1)}
+.cprof{margin:0;padding:var(--s3) 0 var(--s2)}
+/* THE DOOR TO THE PROFILE, and every device in it is one this site already owns.
+   It was a bare 17px text link alone in a 249px gap between the country's name and the filters,
+   which made the one editorial offer on the page look like a footnote. It is a band now: the
+   country's own flag, a mono eyebrow, its name, and an arrow.
+   --accent-2, not --accent, because "Back to countries" sits 250px above it in the same column on
+   the darker step, and two links in one column in two shades of one hue reads as a mistake. On a
+   country route paintPage() has already swapped the accent tokens to that country's own colour, so
+   this band is Kuwait green on Kuwait and Qatar maroon on Qatar without a line of extra code.
+   NO FACT LINE ON IT, deliberately. Printing what is behind the door was the obvious move and the
+   catalog rules it out: UAE and Saudi Arabia carry 5 papers and 7 register areas, Qatar 5 and 3, and
+   Kuwait, Bahrain and Oman carry ZERO papers and ONE area, so any count reads "0" on half the six.
+   The destinations differ too, Kuwait's opening on its system of government and Oman's on its
+   coastline, so no single description is true of all of them. The flag and the name are true
+   everywhere and need no qualification. */
+.cprof-a{position:relative;display:inline-flex;align-items:center;gap:14px;
+  min-height:64px;padding:11px 18px 11px 15px;max-width:100%;
+  border:1px solid var(--line);border-radius:2px;background:var(--paper);
+  text-decoration:none;color:var(--accent-2);
+  transition:border-color .18s ease,background-color .18s ease}
+/* the leading 2px rule, the same mark the category tiles carry, run full height as the band's edge */
+.cprof-a::before{content:"";position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:var(--accent-2);border-radius:1px 0 0 1px}
+.cprof-a:hover,.cprof-a:focus-visible{border-color:var(--accent-line);background:var(--accent-soft)}
 .cprof-a:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
-@media (max-width:600px){ .cprof-a{font-size:16px} }
-@media (prefers-reduced-motion:reduce){ .cprof-a::after{transition:none} }
+/* a fixed plate so the six flags sit on one optical centre line whatever their proportions */
+.cprof-flag{flex:0 0 auto;display:flex;align-items:center;justify-content:center;
+  width:52px;height:30px}
+.cprof-mark{display:block;border-radius:1px}
+.cprof-txt{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cprof-eyebrow{font:600 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3)}
+.cprof-name{font:500 19px/1.2 var(--display);color:inherit;font-optical-sizing:auto;
+  overflow-wrap:break-word}
+/* the arrow travels, the band does not: a target that shifts as the pointer arrives runs away */
+.cprof-go{flex:0 0 auto;margin-left:20px;width:22px;height:22px;color:var(--ink-3);
+  transition:transform .18s cubic-bezier(.22,.61,.36,1),color .18s ease}
+.cprof-a:hover .cprof-go,.cprof-a:focus-visible .cprof-go{transform:translateX(4px);
+  color:var(--accent-2)}
+@media (max-width:600px){
+  .cprof-a{padding:10px 12px;gap:11px;min-height:60px}
+  .cprof-name{font-size:17px}
+  .cprof-flag{width:46px;height:28px}
+}
+@media (prefers-reduced-motion:reduce){
+  .cprof-a,.cprof-go{transition:none}
+  .cprof-a:hover .cprof-go,.cprof-a:focus-visible .cprof-go{transform:none}
+}
 .i-card{background:var(--i-surface);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 
 /* ---- type scale, referenced not guessed ---- */
@@ -2655,8 +2685,15 @@ body:has(#l1:not([hidden])) .pbar{display:none}
          route it is the first thing under the heading and sits directly above the search and the
          list. Hidden in the markup and shown only once the country has been matched to a real
          profile page, so it can never offer a link it cannot honour. -->
-    <p class="cprof" id="cprof" hidden><a class="cprof-a" id="cproflink"
-       href="members/">Read the country profile</a></p>
+    <p class="cprof" id="cprof" hidden><a class="cprof-a" id="cproflink" href="members/">
+       <span class="cprof-flag" id="cprofflag" aria-hidden="true"></span>
+       <span class="cprof-txt">
+         <span class="cprof-eyebrow">Country profile</span>
+         <span class="cprof-name" id="cprofname">Read the country profile</span>
+       </span>
+       <svg class="cprof-go" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path
+          d="M4 12h13m0 0-5-5m5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"
+          stroke-linecap="round" stroke-linejoin="round"/></svg></a></p>
     <div class="controls" id="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
@@ -2756,13 +2793,13 @@ body:has(#l1:not([hidden])) .pbar{display:none}
      target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
      src="ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
      class="sig-cred">Owned and managed by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
-     target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a>
-     <small class="sig-rights">&copy; 2026 GCC Philanthropy&trade;. All rights reserved.</small></span></p>
+     target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
   <ul class="sig-col sig-col-r">
     <li><a href="terms/">Terms of Use</a></li>
     <li><a href="privacy/">Privacy Policy</a></li>
   </ul>
   </nav>
+  <p class="sig-rights">&copy; 2026 GCC Philanthropy&trade;. All rights reserved.</p>
 </div></footer>
 
 <script>
@@ -3995,6 +4032,24 @@ function setCountryProfile(sel){
     var slug = map[sel.slug];
     if(!slug) return;
     a.setAttribute("href", "members/" + slug + ".html");
+    /* the country's own flag on the door, drawn by the same function the ring uses and sized by the
+       same equal-area rule, so a 2:3 Saudi flag and an 11:28 Qatari one cover the same area of the
+       card and neither is stretched to match the other */
+    var fbox = el("cprofflag");
+    if(fbox){
+      fbox.textContent = "";
+      var fm = countryMark(sel.name, "cprof-mark");
+      var vb = fm.getAttribute("viewBox").split(/\s+/), fr = (+vb[2]) / (+vb[3]);
+      var fh = Math.sqrt(1000 / fr);
+      fm.setAttribute("width", (fr * fh).toFixed(1));
+      fm.setAttribute("height", fh.toFixed(1));
+      fbox.appendChild(fm);
+    }
+    /* the accessible name stays a full sentence: "Country profile" alone would read as a heading
+       rather than as somewhere to go */
+    var nm = el("cprofname");
+    if(nm) nm.textContent = sel.name;
+    a.setAttribute("aria-label", "Read the " + sel.name + " country profile");
     box.hidden = false;
   });
 }

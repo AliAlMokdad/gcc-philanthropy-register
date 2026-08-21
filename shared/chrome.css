@@ -221,6 +221,19 @@ footer.sig .sig-cols p{justify-content:center}
    and metadata and the right register for a notice: present, legible, and not asking to be read
    before the name above it. --ink-3 rather than the muted token because muted measures 4.45:1 on
    this ground and AA wants 4.5. */
-footer.sig .sig-cred{display:block}
-footer.sig .sig-rights{display:block;margin-top:3px;
-  font:400 10px/1.65 var(--mono);letter-spacing:.09em;color:var(--ink-3)}
+/* ITS OWN BAND, NOT A SECOND LINE OF THE CREDIT, and the render is what settled it. Sitting
+   inside the credit span it was WIDER than the name above it, both left-aligned from the same
+   point, so the middle cell became a lopsided L and the whole three-column composition stopped
+   reading as centred. Its sentence-case mono also sat oddly between two columns of uppercase
+   links tracked out to .14em.
+   It is now a sibling of the three-column nav rather than a fourth child of it, so the grid and
+   the phone rule that reorders the middle cell with order:-1 are both untouched. Centred, full
+   width, with a hairline above: the footer's closing line rather than a competitor to the credit.
+   10.5px against the 11px of the links either side, one notch quieter, and the same open tracking
+   so it belongs to the same system. */
+footer.sig .sig-rights{margin:16px 0 0;padding-top:14px;
+  border-top:1px solid var(--line);text-align:center;
+  font:400 10.5px/1.6 var(--mono);letter-spacing:.1em;color:var(--ink-3)}
+@media (max-width:640px){
+  footer.sig .sig-rights{margin-top:var(--s3);padding-top:13px;letter-spacing:.08em}
+}
