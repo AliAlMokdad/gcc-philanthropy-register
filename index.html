@@ -728,6 +728,31 @@ footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:scale(1.
   box-shadow:0 0 0 1px #E7B23A,0 0 16px 3px rgba(242,194,74,.55)}
 @media (prefers-reduced-motion:reduce){ footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:none} }
 
+/* THE THREE-COLUMN SIGNATURE. The four site-meta pages are not products, so they are not in the
+   bar at the top; they are reached from here, on every view this file serves. FAQ and Connect on
+   the left, the two notices on the right, the credit in the middle where it already was.
+   THE LINKS ARE MONO AND QUIET, not the serif underlined blue the footer uses for the credit:
+   they are chrome, and the credit is the identity, so they must not compete with it. They need
+   their own rule because footer.sig a already sets a serif 14px underlined accent link.
+   ON A PHONE three columns cannot hold. The credit stacks FIRST, because it is the identity, and
+   the two groups follow it as rows rather than columns. */
+footer.sig .sig-cols{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:var(--s4)}
+footer.sig .sig-col{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+footer.sig .sig-col-l{align-items:flex-start}
+footer.sig .sig-col-r{align-items:flex-end}
+footer.sig .sig-col a{min-height:32px;font:600 11px/1.6 var(--mono);letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);text-decoration:none}
+footer.sig .sig-col a:hover{color:var(--accent);text-decoration:underline;
+  text-decoration-thickness:1px;text-underline-offset:3px}
+footer.sig .sig-col a:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+footer.sig .sig-cols p{justify-content:center}
+@media (max-width:700px){
+  footer.sig .sig-cols{grid-template-columns:1fr;justify-items:center;gap:var(--s3)}
+  footer.sig .sig-cols p{order:-1}
+  footer.sig .sig-col{flex-direction:row;gap:var(--s4);align-items:center}
+}
+
 #state{padding:var(--s5) 0;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
 #state button{min-height:40px;font:600 11px/1 var(--mono);letter-spacing:.1em;
   text-transform:uppercase;color:var(--accent);background:none;
@@ -859,17 +884,51 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 .ring{display:grid;justify-items:center;align-items:center;
   grid-template-columns:1fr 1fr;grid-template-areas:"mk mk" "s1 s2" "s3 s4" "s5 s6";
   gap:var(--s4) var(--s3);max-width:520px;margin:var(--s5) auto calc(var(--s5) + var(--s4))}
-.ring-mark{grid-area:mk;display:flex;align-items:center;justify-content:center;margin-bottom:var(--s2)}
-.emblem-link{display:block;border-radius:4px}
-/* THE MARK ANSWERS THE POINTER. It used to dim to 82 per cent, which reads as something switching
-   off rather than something inviting a click. It grows instead, four per cent, on the easing this
-   page already uses for its own motion, and slowly enough at .34s to feel like weight rather than
-   a twitch. Four per cent of a 120px mark is under five pixels, so the target does not run from
-   the pointer that just arrived at it. */
-.emblem{transition:transform .34s cubic-bezier(.22,.61,.36,1)}
-.emblem-link:hover .emblem,
-.emblem-link:focus-visible .emblem{transform:scale(1.04)}
+.ring-mark{grid-area:mk;display:flex;align-items:center;justify-content:center;
+  margin-bottom:var(--s2);position:relative;z-index:3}
+.emblem-link{display:block;border-radius:4px;position:relative}
+/* THE MARK ANSWERS AN APPROACH, NOT A HOVER. Four per cent on hover was the earlier answer to
+   "it should react", and the brief is now the opposite of cautious: the mark should meet the
+   pointer on the way in and reach three times its size. That cannot be done with :hover, which
+   knows only inside or outside, so a distance watcher writes --prox from 0 at 260px away to 1 at
+   the mark itself and every part of the effect reads from that one number.
+
+   WHY THE TARGET STILL DOES NOT RUN AWAY, which is this page's own rule. transform-origin is the
+   centre, so as the mark grows its left edge moves out and its right edge moves out by the same
+   amount and the CENTRE never moves. The pointer is therefore always heading at a fixed point,
+   and the growth is toward the pointer rather than away from it: the target gets easier to hit,
+   not harder. --prox is squared so the first half of the approach is nearly still and the growth
+   arrives late, which is what makes it read as weight rather than a pounce.
+
+   Three times a 120px mark is 360px, which covers the flag ring behind it. That is why the plate
+   is lifted rather than left to collide: z-index 3 puts the magnified mark cleanly above the six
+   flags, and the halo underneath separates it from them. */
+.emblem-link{isolation:isolate;--prox:0;
+  transform:scale(calc(1 + 2*var(--prox)));
+  transform-origin:50% 50%;
+  transition:transform .42s cubic-bezier(.22,.61,.36,1);
+  will-change:transform}
+/* keyboard focus gets the same gesture at a quarter of the travel: there is no pointer to have
+   approached, so a jump straight to three times would startle rather than answer */
+.emblem-link:focus-visible{--prox:.25}
 .emblem-link:focus-visible{outline:2px solid var(--focus);outline-offset:4px}
+/* THE GOLD, kept as light rather than as a colour: a warm halo that is only ever a wash, in the
+   same ochre the rest of the site uses for a caveat, at an alpha that never becomes a ring. */
+.emblem-link::before{content:"";position:absolute;inset:-22%;border-radius:50%;z-index:-1;
+  pointer-events:none;
+  background:radial-gradient(circle at 50% 50%,rgba(226,133,58,.30) 0%,
+    rgba(226,133,58,.15) 44%,rgba(226,133,58,0) 72%);
+  opacity:var(--prox);transition:opacity .42s ease-out}
+/* ONE PASS OF LIGHT PER APPROACH, not a loop. A repeating glint on a national emblem would read
+   as a badge for sale; a single pass reads as the light catching it once as it turns. The class is
+   added on entering the radius and removed on leaving, so the pass replays per approach rather
+   than running forever. Clipped to a circle because the emblem is a circular seal. */
+.emblem-link::after{content:"";position:absolute;inset:0;border-radius:50%;
+  clip-path:circle(46% at 50% 50%);pointer-events:none;opacity:0}
+.emblem-link.near::after{opacity:1;
+  background:linear-gradient(104deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%);
+  animation:emblemSheen 1.05s cubic-bezier(.3,.7,.3,1) 1 both}
+@keyframes emblemSheen{from{transform:translateX(-135%)} to{transform:translateX(135%)}}
 .emblem{display:block;width:120px;height:auto;max-width:100%}
 @media (prefers-color-scheme:dark){
   /* the official emblem carries dark calligraphy that would vanish on a dark page, so it
@@ -1819,7 +1878,17 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .portal-news a{position:relative;display:flex;align-items:center;justify-content:center;
   min-height:78px;padding:16px 18px;text-decoration:none;overflow:hidden;
   border:1px solid var(--line-2);border-top:2px solid var(--accent);border-radius:2px;
-  background:var(--paper);text-align:center;
+  /* THE GOLD RUNS ALONG THE BOTTOM EDGE as a background layer, not a pseudo-element, because
+     both of those are already spoken for here: ::before is the pass of light across the face and
+     ::after is the accent rule at the top edge. Two layers in ONE shorthand deliberately: a
+     separate background-image declaration would be wiped by any later background: shorthand, which
+     is the exact trap the masthead wash fell into. The gold is a 2px line with a paler highlight
+     at its centre, so what travels reads as a point of light on a warm line rather than a bar
+     sliding past, and every stop is an alpha so it is light on the paper, never a painted edge. */
+  background:linear-gradient(90deg,rgba(226,133,58,0) 0%,rgba(226,133,58,.42) 34%,
+             rgba(247,206,133,.92) 50%,rgba(226,133,58,.42) 66%,rgba(226,133,58,0) 100%)
+             no-repeat -120% 100%/44% 2px, var(--paper);
+  text-align:center;
   transition:border-color .18s ease-out, background .18s ease-out,
              transform .28s cubic-bezier(.22,.61,.36,1), box-shadow .28s ease-out}
 .portal-news a:hover,.portal-news a:focus-visible{
@@ -1836,11 +1905,33 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   background:var(--accent-2);transform:scaleX(0);transform-origin:50% 50%;
   transition:transform .32s cubic-bezier(.22,.61,.36,1)}
 .portal-news a:hover::after,.portal-news a:focus-visible::after{transform:scaleX(1)}
+/* IT STARTS ON APPROACH, NOT ON ARRIVAL. The card already answers a hover with a lift; this
+   answers the pointer being NEAR, which is a different event and needs the distance watcher,
+   since :hover cannot tell 40px away from the next room. The light runs the length of the bottom
+   and off the end, then again, for as long as the pointer stays close. Only background-position
+   moves, so this costs no layout and no paint of the card itself. */
+.portal-news a.near{animation:doorGold 1.75s linear infinite}
+.portal-news a:focus-visible{animation:doorGold 1.75s linear infinite}
+/* THE UNITS MATTER MORE THAN THEY LOOK. A percentage background-position is measured against
+   (container width - image width), NOT the container, so -55% of a 219px card carrying a 96px
+   gradient is only -68px and 28px of the gold stayed on stage at rest: measured, every door was
+   showing a warm smudge at its bottom-left corner before any pointer had moved. -120% clears it
+   at any card width, because both terms scale with the card, and 220% clears the far end. */
+@keyframes doorGold{
+  from{background-position:-120% 100%}
+  to{background-position:220% 100%}
+}
 @media (prefers-reduced-motion:reduce){
   .portal-news a,.portal-news a::before,.portal-news a::after,.emblem{transition:none}
   .portal-news a:hover,.portal-news a:focus-visible{transform:none;box-shadow:none}
   .portal-news a:hover::before,.portal-news a:focus-visible::before{transform:translateX(-120%)}
-  .emblem-link:hover .emblem,.emblem-link:focus-visible .emblem{transform:none}
+  /* the gold and the magnification are motion, so under this setting the gold holds still at the
+     centre of the edge where it reads as a quiet mark, and the mark does not scale at all */
+  .portal-news a.near,.portal-news a:focus-visible{animation:none;background-position:50% 100%}
+  .portal-news a{background-position:-120% 100%}
+  .emblem-link,.emblem-link:focus-visible{transform:none;transition:none}
+  .emblem-link::before{transition:none}
+  .emblem-link.near::after{animation:none;opacity:0}
 }
 .portal-news a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 /* the ceiling goes back up now the arrow is gone: it was dropped to 18 because the two longest
@@ -2494,11 +2585,21 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   </g>
 </svg>
 <div class="wrap">
+  <nav class="sig-cols" aria-label="Site information">
+  <ul class="sig-col sig-col-l">
+    <li><a href="faq/">FAQ</a></li>
+    <li><a href="connect/">Connect</a></li>
+  </ul>
   <p><a class="sig-ava" href="https://www.linkedin.com/in/ali-al-mokdad/"
      target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
      src="ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
      class="sig-cred">Compiled by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
      target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
+  <ul class="sig-col sig-col-r">
+    <li><a href="terms/">Terms of Use</a></li>
+    <li><a href="privacy/">Privacy Policy</a></li>
+  </ul>
+  </nav>
 </div></footer>
 
 <script>
@@ -7612,6 +7713,105 @@ if(document.readyState === "loading"){
 }else{
   boot();
 }
+})();
+</script>
+
+<!-- ===================================================================== PROXIMITY
+     A FIFTH LANE, and deliberately a tiny one. It owns no route, reads no data and touches
+     nothing the other four lanes touch: it writes one custom property and one class name on the
+     portal's own elements. It exists because :hover cannot answer the brief. Hover knows inside
+     and outside; the mark is meant to begin growing while the pointer is still crossing the page
+     toward it, and the gold is meant to start running while the pointer is merely near a door.
+     That is a distance, and a distance has to be measured.
+
+     WHAT IT COSTS. One passive mousemove listener, coalesced into one rAF, so the arithmetic runs
+     at most once per frame however fast the mouse moves. Inside a frame it is six
+     getBoundingClientRect calls and six square roots. It unbinds itself entirely when the pointer
+     is not a fine one, when the reader has asked for reduced motion, and it returns immediately
+     while the portal is off screen, which is every route except the front page. -->
+<script>
+(function(){
+  "use strict";
+  if(!window.matchMedia || !document.querySelector) return;
+
+  var fine = window.matchMedia("(hover:hover) and (pointer:fine)");
+  var still = window.matchMedia("(prefers-reduced-motion:reduce)");
+  var mark  = document.querySelector(".emblem-link");
+  var doors = Array.prototype.slice.call(document.querySelectorAll(".portal-news a"));
+  var portal = document.querySelector(".portal");
+  if(!mark && !doors.length) return;
+
+  /* The mark reaches from far enough away to be an approach rather than a hover: 260px is about
+     two of its own widths. A door answers from 110px, which is close enough to be about THAT
+     door and not the one beside it, since the grid gap is 12px and a cell is near 220px. */
+  var MARK_R = 260, DOOR_R = 110;
+  var mx = 0, my = 0, frame = 0, bound = false;
+
+  function apply(){
+    frame = 0;
+    /* offsetParent is null for a hidden subtree, which is the cheapest true visibility test there
+       is and covers every route where the portal is not the thing on screen */
+    if(portal && portal.offsetParent === null) return;
+
+    if(mark){
+      var r = mark.getBoundingClientRect();
+      if(r.width){
+        /* the centre is invariant under a centre-origin scale, so this distance cannot feed back
+           into the transform that produced it */
+        var dx = mx - (r.left + r.width / 2);
+        var dy = my - (r.top + r.height / 2);
+        var d  = Math.sqrt(dx * dx + dy * dy);
+        var t  = d >= MARK_R ? 0 : 1 - d / MARK_R;
+        t = t * t;                       /* late growth: nearly still for the first half */
+        mark.style.setProperty("--prox", t.toFixed(3));
+        /* the light passes once per approach, so the class has to LEAVE before it can return */
+        if(t > 0.10) mark.classList.add("near");
+        else mark.classList.remove("near");
+      }
+    }
+
+    for(var i = 0; i < doors.length; i++){
+      var b = doors[i].getBoundingClientRect();
+      if(!b.width) continue;
+      /* distance to the RECTANGLE, not to its centre: a wide card should answer a pointer beside
+         its near edge, and a centre measurement would make the long cards feel deaf */
+      var ex = mx < b.left ? b.left - mx : (mx > b.right  ? mx - b.right  : 0);
+      var ey = my < b.top  ? b.top  - my : (my > b.bottom ? my - b.bottom : 0);
+      if(Math.sqrt(ex * ex + ey * ey) <= DOOR_R) doors[i].classList.add("near");
+      else doors[i].classList.remove("near");
+    }
+  }
+
+  function onMove(e){
+    mx = e.clientX; my = e.clientY;
+    if(!frame) frame = requestAnimationFrame(apply);
+  }
+
+  function clearAll(){
+    if(mark){ mark.style.setProperty("--prox", "0"); mark.classList.remove("near"); }
+    for(var i = 0; i < doors.length; i++) doors[i].classList.remove("near");
+  }
+
+  function sync(){
+    var want = fine.matches && !still.matches;
+    if(want === bound) return;
+    bound = want;
+    if(want){ document.addEventListener("mousemove", onMove, {passive:true}); }
+    else { document.removeEventListener("mousemove", onMove); clearAll(); }
+  }
+
+  /* a pointer that leaves the window never sends another move, so the last state would stick */
+  document.addEventListener("mouseleave", clearAll);
+  window.addEventListener("blur", clearAll);
+
+  sync();
+  if(fine.addEventListener){
+    fine.addEventListener("change", sync);
+    still.addEventListener("change", sync);
+  }else if(fine.addListener){
+    fine.addListener(sync);
+    still.addListener(sync);
+  }
 })();
 </script>
 </body>
