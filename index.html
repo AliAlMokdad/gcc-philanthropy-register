@@ -971,22 +971,53 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
    Absolute positions, but DOM order stays reading order so keyboard and screen-reader
    order remain sensible, and it collapses back to the two-column stack below 860px. */
 @media (min-width:860px){
-  .ring{display:block;position:relative;width:100%;max-width:880px;height:480px;
+  /* 540, not 480: a circle of radius 300 needs 206px above and below the centre plus half a
+     spoke, where the old oval only ever reached 182px vertically. */
+  .ring{display:block;position:relative;width:100%;max-width:880px;height:588px;
     margin:var(--s4) auto calc(var(--s5) + var(--s5))}
   .ring .ring-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);margin:0}
   .ring a.spoke{position:absolute;transform:translate(-50%,-50%);width:154px;padding:6px}
-  .ring a:nth-of-type(1){left:28%;top:12%}
-  .ring a:nth-of-type(2){left:72%;top:12%}
-  .ring a:nth-of-type(3){left:12%;top:50%}
-  .ring a:nth-of-type(4){left:88%;top:50%}
-  .ring a:nth-of-type(5){left:28%;top:88%}
-  .ring a:nth-of-type(6){left:72%;top:88%}
+  /* ONE RADIUS, NOT AN OVAL, AND IN PIXELS SO IT SURVIVES A NARROWER RING.
+     Percentages resolve against different axes: left against 880 and top against 480, which is why
+     the same six offsets drew an oval and the radii came out 368, 301, 291, 291, 243, 243, a 125px
+     spread with Kuwait half again as far out as Saudi Arabia. These are offsets from the centre in
+     px, so 300 on the horizontal and hypot(218,206) = 299.9 on the diagonals: equal to a tenth of a
+     pixel, and equal at 860px width as well as at 1440.
+     THE > IS LOAD-BEARING. Without it these rules also matched a.emblem-link, which is the first <a>
+     inside span.ring-mark, and the offset resolved against ITS 120px box rather than the ring's: the
+     old left:28% put the logo 33.6px right of centre and a calc(50% - 218px) put it 158px left. The
+     spokes were a circle and the logo was not at the middle of it. The spokes are the only <a>
+     children of .ring, so > excludes the emblem while nth-of-type still counts the six correctly.
+     AND THE +24px ON EVERY TOP IS THE FLAG, NOT THE BOX. A spoke is a flag with a name under it, so
+     its box centre is 24px below the flag's centre. Putting box centres on the circle left the flag
+     centres at 316.9, 316.9, 301, 301, 284, 284: the top pair read as further out and the bottom pair
+     as closer, because the eye measures the flags. Shifting every top by the same 24px puts the flags
+     on the circle instead. */
+  .ring > a:nth-of-type(1){left:calc(50% - 218px);top:calc(50% - 182px)}
+  .ring > a:nth-of-type(2){left:calc(50% + 218px);top:calc(50% - 182px)}
+  .ring > a:nth-of-type(3){left:calc(50% - 300px);top:calc(50% + 24px)}
+  .ring > a:nth-of-type(4){left:calc(50% + 300px);top:calc(50% + 24px)}
+  .ring > a:nth-of-type(5){left:calc(50% - 218px);top:calc(50% + 230px)}
+  .ring > a:nth-of-type(6){left:calc(50% + 218px);top:calc(50% + 230px)}
 }
 .spoke{display:flex;flex-direction:column;align-items:center;gap:9px;width:100%;
   text-decoration:none;color:inherit;padding:10px 6px;border-radius:2px;
   transition:background-color .12s ease-out}
 .spoke:hover,.spoke:focus-visible{background:var(--accent-soft)}
-.spoke-flag{display:flex;align-items:center;justify-content:center;height:48px}
+/* 56, not 48: the tallest of the six at equal area is Saudi Arabia at 55.4px, and the flags are
+   centred in this box so the row still shares one optical centre line. */
+.spoke-flag{display:flex;align-items:center;justify-content:center;height:56px}
+/* THE FLAG ANSWERS THE POINTER, not only the panel behind it. The spoke already washed its
+   background on hover and the flag itself stayed still, which made the wash read as the whole
+   response. 1.06 is a lift you notice without it becoming a jump, on the same easing curve the
+   emblem uses, and transform-origin is the centre so it grows in place rather than drifting. */
+/* ON THE SPAN, NOT ON THE SVG. An outer <svg> carrying width and height attributes ignores a
+   CSS transform here: scale(1.5) set inline with !important computed as the identity matrix
+   and the box did not move, while the same declaration on this span scaled it from 83.1 to
+   124.6. Put on the svg it would have been a hover effect that silently never fired. */
+.spoke-flag{transform-origin:50% 50%;
+  transition:transform .2s cubic-bezier(.22,.61,.36,1)}
+.spoke:hover .spoke-flag,.spoke:focus-visible .spoke-flag{transform:scale(1.06)}
 /* NO OUTLINE, AND NOTHING LETTERBOXED INSIDE ONE.
    Two faults made one. A 1px box-shadow drew a visible box around every flag, and max-width:104px
    forced that box to 104 by 56, an aspect of 1.86, whatever the flag's own aspect was. An SVG then
@@ -1010,8 +1041,16 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
    that was removed, so the choice is between equal boxes and true ratios and equal boxes is
    what was asked for. Nothing is cropped: the field is filled, so the shahada and the nine
    points are both entirely present, at a different width than official. */
-.spoke .mark{display:block;height:48px;width:96px;border-radius:1px}
-.spoke-nm{font:600 16px/1.22 var(--serif);color:var(--ink);text-wrap:balance}
+/* no width or height here: they are set per flag in buildL1 so each covers the same area at its
+   own official ratio. A fixed size here would override that and bring the distortion back. */
+.spoke .mark{display:block;border-radius:1px}
+/* TWO LINES RESERVED FOR EVERY NAME, because one of them needs two. "United Arab Emirates"
+   fills its 142px content box and wraps, which made that spoke 116px tall against the others'
+   96.5px, and since each spoke is centred on the circle by translate(-50%,-50%) the taller one
+   hung its flag 9.7px higher than its partner. Reserving the second line equalises the box the
+   centring is measured from. Nothing shows under a one-line name: the label is last. */
+.spoke-nm{font:600 16px/1.22 var(--serif);color:var(--ink);text-wrap:balance;
+  min-height:2.44em}
 .spoke:hover .spoke-nm,.spoke:focus-visible .spoke-nm{color:var(--accent)}
 .spoke-ct{font:400 12px/1 var(--mono);letter-spacing:.03em;color:var(--ink-3);
   font-variant-numeric:tabular-nums}
@@ -1298,6 +1337,35 @@ body.list-only #listgate{display:none !important}
    place and the same way as the two lines above it; whether a search is running is decided in
    syncList(). Two conditions, each in the layer that owns it. */
 body:not(.list-only) #cats{display:none !important}
+/* READ THE COUNTRY PROFILE, and every part of it is a device this site already uses.
+   The leading 2px rule is the same mark the category tiles carry. The ink is --accent because
+   the token semantics here reserve accent indigo for a link or an active control, and this is a
+   link. The face is the display serif at 500, which reads as editorial rather than as a button,
+   and it is the same weight as the standfirst on the front page so the two feel authored by the
+   same hand.
+   The underline grows from the centre on hover and it is drawn on a pseudo-element, so the
+   control itself never moves. A target that shifts as the pointer arrives is a target that runs
+   away. The pseudo sits at bottom:0 and not below the box: an earlier version of this device
+   used top:-2px inside a clipped parent and never painted at all, because overflow clips to the
+   padding box, and that cost a round of chasing a fix that was already correct. */
+.cprof{margin:0;padding:var(--s3) 0 0}
+/* --accent-2, not --accent, because the "Back to countries" link sits 250px above this one in
+   the same column and uses the darker step. Two links in one column in two shades of the same
+   hue reads as a mistake, and measured they were rgb(0,112,46) against rgb(0,90,38). Matching it
+   also buys contrast on the two red countries, which are the tightest of the six. The colour
+   therefore stays put on hover and the underline alone carries the state change. */
+.cprof-a{position:relative;display:inline-flex;align-items:center;min-height:44px;
+  padding:0 0 4px 15px;text-decoration:none;color:var(--accent-2);
+  font:500 17px/1.3 var(--display);font-optical-sizing:auto}
+.cprof-a::before{content:"";position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:2px;height:21px;background:var(--accent-2);border-radius:1px}
+.cprof-a::after{content:"";position:absolute;left:15px;right:0;bottom:0;height:1px;
+  background:currentColor;transform:scaleX(0);transform-origin:50% 50%;
+  transition:transform .28s cubic-bezier(.22,.61,.36,1)}
+.cprof-a:hover::after,.cprof-a:focus-visible::after{transform:scaleX(1)}
+.cprof-a:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+@media (max-width:600px){ .cprof-a{font-size:16px} }
+@media (prefers-reduced-motion:reduce){ .cprof-a::after{transition:none} }
 .i-card{background:var(--i-surface);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 
 /* ---- type scale, referenced not guessed ---- */
@@ -2495,7 +2563,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
         <li><a href="#/a/list" data-nav="register">Register</a></li>
         <li><a href="#/news" data-nav="news">News &amp; Insights</a></li>
         <li><a href="toolkit/">Toolkit</a></li>
-        <li><a href="members/">Countries</a></li>
+        <li><a href="members/">GCC Countries</a></li>
       </ul>
     </nav>
   </div>
@@ -2546,7 +2614,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
            the landing and the five destinations are the whole of what it offers. -->
       <p class="portal-news">
         <a href="members/" id="membersdoor">
-          <span class="pn-label">Countries</span>
+          <span class="pn-label">GCC Countries</span>
         </a>
         <a href="#/a/all" id="intellink">
           <span class="pn-label">Atlas</span>
@@ -2583,6 +2651,12 @@ body:has(#l1:not([hidden])) .pbar{display:none}
          view, above the full list. It sits between the title band and the controls so the
          briefing is read first and the list follows underneath. -->
     <section id="intel" hidden aria-labelledby="selname"></section>
+    <!-- READ THE COUNTRY PROFILE. Between the title band and the controls, so on a country
+         route it is the first thing under the heading and sits directly above the search and the
+         list. Hidden in the markup and shown only once the country has been matched to a real
+         profile page, so it can never offer a link it cannot honour. -->
+    <p class="cprof" id="cprof" hidden><a class="cprof-a" id="cproflink"
+       href="members/">Read the country profile</a></p>
     <div class="controls" id="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
@@ -2682,7 +2756,8 @@ body:has(#l1:not([hidden])) .pbar{display:none}
      target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
      src="ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
      class="sig-cred">Owned and managed by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
-     target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
+     target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a>
+     <small class="sig-rights">&copy; 2026 GCC Philanthropy&trade;. All rights reserved.</small></span></p>
   <ul class="sig-col sig-col-r">
     <li><a href="terms/">Terms of Use</a></li>
     <li><a href="privacy/">Privacy Policy</a></li>
@@ -3026,13 +3101,27 @@ function buildL1(){
     var a=make("a","spoke");
     a.href="#/c/"+slug(c.name);
     var flag=make("span","spoke-flag");
-    /* preserveAspectRatio="none" is what lets one 96 by 48 plate hold six different official
-       ratios. It is set HERE and not inside countryMark() because the same function draws the
-       large flag on a country page, and that one is deliberately shown whole and undistorted at
-       its own proportions. Distorting it there would be wrong; matching six of them in a row
-       here is what makes the row read as six equals. */
+    /* MEET, NOT NONE, AND THAT IS THE WHOLE POINT OF THIS LINE.
+       "none" stretched every flag to fill a 2:1 plate, and the six official ratios are not 2:1:
+       UAE 2.0, Kuwait 2.0, Oman 2.0, Bahrain 1.667, Saudi Arabia 1.5, Qatar 2.545. So it widened
+       Saudi Arabia by 33 per cent and Bahrain by 20, and squeezed Qatar by 21. Saudi Arabia was the
+       worst of the three and it is the one Ali could see: its shahada and sword were a third wider
+       than the flag's own proportions.
+       "meet" fits each flag whole inside the same plate, so nothing is stretched, squeezed or
+       cropped. The plate still caps the widest, so the painted widths run 72 to 96 rather than the
+       72 to 122 of the version before the plate existed, and with no outline on the plate the
+       margins are not visible. */
     var mk=countryMark(c.name,"mark");
-    mk.setAttribute("preserveAspectRatio","none");
+    /* EQUAL AREA, so the six read as the same size without any of them being reshaped.
+       A single box cannot hold six different official ratios: filling it stretched Saudi Arabia by
+       33 per cent and squeezed Qatar by 21, and fitting inside it left Saudi Arabia a quarter
+       narrower than its neighbours. Sizing each flag to the same AREA instead gives every one the
+       same amount of colour on screen at its own true proportions. A is the area of the plate these
+       replaced, 96 by 48, so nothing grows or shrinks overall. */
+    var vb=mk.getAttribute("viewBox").split(/\s+/), fr=(+vb[2])/(+vb[3]);
+    var fh=Math.sqrt(4608/fr);
+    mk.setAttribute("width",(fr*fh).toFixed(1));
+    mk.setAttribute("height",fh.toFixed(1));
     flag.appendChild(mk);
     a.appendChild(flag);
     a.appendChild(make("span","spoke-nm",c.name));
@@ -3856,6 +3945,60 @@ function controlsActive(){
 function listGated(){
   return !!current && current.kind==="a" && !controlsActive();
 }
+/* THE COUNTRY PROFILE LINK. The register calls the UAE "united-arab-emirates" and its profile
+   page is members/uae.html, and Saudi Arabia is "saudi-arabia" against members/ksa.html, so four
+   of the six slugs match and two do not. Rather than write a second copy of that mapping here,
+   this reads shared/catalog.json, which is generated from the files on disk by
+   tools/build_catalog.py and already carries register_slug beside member_slug for exactly this
+   kind of lookup. Two places asserting one truth is what this project has spent the day removing.
+   2.1KB gzipped, fetched once, and only when a country is first opened, so the front page and the
+   register never pay for it. */
+var CPROF = null, cprofLoading = null;
+
+function loadCatalog(){
+  if(CPROF) return Promise.resolve(CPROF);
+  if(cprofLoading) return cprofLoading;
+  cprofLoading = fetch("shared/catalog.json").then(function(r){
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }).then(function(j){
+    /* countries is an OBJECT keyed by ISO3 (ARE, SAU, QAT...), not an array. The first version of
+       this walked it with a length index, which on an object is undefined, so the map came back
+       empty and the link never appeared on any country. Reading the values covers both shapes, so
+       a later change to the catalog cannot silently empty it again. */
+    var map = Object.create(null), src = (j && j.countries) || {};
+    var list = Array.isArray(src) ? src : Object.keys(src).map(function(k){ return src[k]; });
+    for(var i = 0; i < list.length; i++){
+      var c = list[i];
+      if(c && c.register_slug && c.member_slug) map[c.register_slug] = c.member_slug;
+    }
+    if(!Object.keys(map).length) throw new Error("catalog carried no country slugs");
+    CPROF = map;
+    return map;
+  }).catch(function(e){
+    /* fails closed and stays quiet on screen: no link is better than one that 404s */
+    console.warn("country profile link unavailable: " + e.message);
+    CPROF = Object.create(null);
+    return CPROF;
+  });
+  return cprofLoading;
+}
+
+function setCountryProfile(sel){
+  var box = el("cprof"), a = el("cproflink");
+  if(!box || !a) return;
+  box.hidden = true;                       /* hidden first, so a stale href is never on screen */
+  if(!sel || sel.kind !== "c") return;
+  loadCatalog().then(function(map){
+    /* the reader may have moved on while the catalog was in flight */
+    if(current !== sel) return;
+    var slug = map[sel.slug];
+    if(!slug) return;
+    a.setAttribute("href", "members/" + slug + ".html");
+    box.hidden = false;
+  });
+}
+
 function syncList(){
   var gated=listGated(), gate=el("listgate"), wrap=el("listwrap"), btn=el("lgbtn");
   /* the category index rides with the gate: both are entrances to the whole register, and neither
@@ -4213,6 +4356,7 @@ function route(){
     nameEl.classList.remove("is-lockup");
   }
   el("selsub").textContent=sel.sub;
+  setCountryProfile(sel);
   /* ONE TITLE FORMULA: what this page is, then the site. The short brand is used here, not the
      expanded one, because the expanded form and the sentence that explains it are on the home
      screen a reader has already passed through, and repeating it in every tab is the repetition

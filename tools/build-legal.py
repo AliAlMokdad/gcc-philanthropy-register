@@ -45,7 +45,7 @@ PBAR = """<div class="pbar">
         <li><a href="../#/a/list">Register</a></li>
         <li><a href="../#/news">News &amp; Insights</a></li>
         <li><a href="../toolkit/">Toolkit</a></li>
-        <li><a href="../members/">Countries</a></li>
+        <li><a href="../members/">GCC Countries</a></li>
       </ul>
     </nav>
   </div>
@@ -87,7 +87,8 @@ def footer(current):
        target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
        src="../ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
        class="sig-cred">Owned and managed by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
-       target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
+       target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a>
+     <small class="sig-rights">&copy; 2026 GCC Philanthropy&trade;. All rights reserved.</small></span></p>
     <ul class="sig-col sig-col-r">
 %s
     </ul>
@@ -257,6 +258,35 @@ for key, h1, tab, standfirst, blocks in PAGES:
     open(p, "w", encoding="utf-8", newline="\n").write(page)
     written.append((p, len(page)))
 
+
+ICONS = {
+ "LinkedIn": "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 "
+             "2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 "
+             "4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 "
+             "2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 "
+             "13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 "
+             "24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
+ "YouTube":  "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 "
+             "0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 "
+             "3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 "
+             "0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 "
+             "12l-6.273 3.568z",
+ "X":        "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 "
+             "1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z",
+}
+
+# ONE SET OF MARKS, USED TWICE. The profile page and the connect page both carry these and they
+# were about to be built twice from the same two lists. The service name lives in aria-label and
+# in title so a screen reader and a pointer both get it, and the glyph is the whole control: set
+# beside the words LinkedIn, YouTube and X in mono, three links read as three buttons and those
+# words carry more weight than they earn.
+SOCIAL_MARKS = "".join(
+    '<a class="soc" href="%s" target="_blank" rel="noopener noreferrer" '
+    'aria-label="%s" title="%s">'
+    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="%s"/></svg></a>'
+    % (E(url), E(name), E(name), ICONS[name])
+    for name, url in C.SOCIAL if name in ICONS)
+
 # ---------------------------------------------------------------- the connect page
 # Its only prose is the FAQ's own answer to "How do I reach you?", lifted from the same content
 # module rather than written again here.
@@ -318,11 +348,29 @@ SENT, FAILED = C.FORM["sent"], C.FORM["failed"]
 # No version row here: this page is a form, not a notice with a date in force.
 # The email line sits BELOW the form, because it begins "Or" and therefore has to follow
 # something. The standing notice closes the page.
+# LANDSCAPE, BECAUSE IT WAS A COLUMN IN A HALL. Measured before this changed: the form was a
+# 345px column pinned to the left of a 980px sheet, so more than half the page was empty and
+# the email sentence wrapped to four lines with roughly 500px of nothing beside it. The form
+# now takes the wider side and the ways to reach a person take the narrower one, so the sheet
+# is used and there is somewhere for the eye to go once the form has been read.
+#
+# The email line moves in beside the marks. It begins with Or, so it still has to follow
+# something, and it does: the form sits to its left and the three marks directly above it. The
+# standing notice stays full width beneath both, because it qualifies the page and not a column.
+CONNECT_BODY = (
+    '<div class="cgrid">'
+    '<div class="cgrid-form">%s%s</div>'
+    '<aside class="cgrid-reach" aria-labelledby="reachh">'
+    '<h2 id="reachh" class="reach-h">Connect with Ali Al Mokdad</h2>'
+    '<nav class="bio-soc" aria-label="Elsewhere">%s</nav>'
+    '<p class="alt">%s</p>'
+    '</aside></div>'
+) % (FORM, (FORM_JS % (E(SENT), E(FAILED), E(FAILED))), SOCIAL_MARKS,
+     linkify(E(C.CONNECT_ALT)))
+
 page = (head(C.TITLE["connect"], C.CONNECT_ALT, C.TAB["connect"])
         + "\n" + doc_head(C.TITLE["connect"], "", version=False)
-        + "\n" + FORM + "\n"
-        + (FORM_JS % (E(SENT), E(FAILED), E(FAILED)))
-        + '\n<p class="alt">%s</p>\n' % linkify(E(C.CONNECT_ALT))
+        + "\n" + CONNECT_BODY + "\n"
         + notice()
         + "\n" + (TAIL % footer("connect")))
 d = os.path.join(ROOT, "connect")
@@ -339,33 +387,9 @@ written.append((p, len(page)))
 # EVERY WORD COMES FROM C.ABOUT, which was parsed out of alialmokdad.com/about-me rather than
 # retyped. The only strings this section contributes are the three social labels, which are the
 # names of the three services.
-ICONS = {
- "LinkedIn": "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 "
-             "2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 "
-             "4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 "
-             "2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 "
-             "13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 "
-             "24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z",
- "YouTube":  "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 "
-             "0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 "
-             "3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 "
-             "0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 "
-             "12l-6.273 3.568z",
- "X":        "M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 "
-             "1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z",
-}
 
 A = C.ABOUT
-# THE MARK CARRIES IT, NOT A WORD BESIDE IT. These were pills with the service name set in
-# uppercase mono next to a 16px glyph, which made three links look like three buttons and put more
-# weight on the words LinkedIn, YouTube and X than they earn on a profile. The name now lives in
-# aria-label for a screen reader and in title for a pointer, and the glyph is the whole control.
-social = "".join(
-    '<a class="soc" href="%s" target="_blank" rel="noopener noreferrer" '
-    'aria-label="%s" title="%s">'
-    '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="%s"/></svg></a>'
-    % (E(url), E(name), E(name), ICONS[name])
-    for name, url in C.SOCIAL if name in ICONS)
+social = SOCIAL_MARKS
 
 expertise = "".join(
     '<li><p class="x-n">%02d</p><h3>%s</h3><p>%s</p></li>' % (i, E(label), E(detail))

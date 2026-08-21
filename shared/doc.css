@@ -431,3 +431,57 @@ footer.sig{margin-top:auto}
   .doc .bio-head{grid-template-columns:1fr}
   @media (min-width:1200px){ .doc .x-list{grid-template-columns:1fr 1fr} }
 }
+
+/* ---------------------------------------------------------------- the connect page, landscape
+
+   It was a 345px form pinned to the left of a 980px sheet with the rest empty, and the email
+   sentence wrapping to four lines beside 500px of nothing. Two columns now: the form, which is
+   the reason for the page, and the ways to reach a person.
+
+   1.25fr against 1fr rather than an even split, because a form with three fields and a button
+   needs the room and three marks plus one sentence do not. minmax(0,...) on both tracks because
+   a grid child with a long unbroken string, and the email address is one, will otherwise refuse
+   to shrink below its content and push the whole sheet sideways.
+
+   It collapses at 860px, which is where the form fields stop being comfortable rather than a
+   round number: below that the two columns each become too narrow to read and stacking is the
+   honest answer. The reach column goes FIRST in the source order it already has, so on a phone
+   the form still comes first and the marks follow it. */
+/* stretch, not start. The divider on the reach column is a border, so with content-height
+   columns it stopped at the bottom of the email sentence, roughly 40 per cent down a much taller
+   form, and a rule that ends in mid-air reads as something unfinished rather than as a division. */
+.doc .cgrid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);
+  gap:clamp(28px,4vw,56px);align-items:stretch}
+@media (max-width:860px){
+  .doc .cgrid{grid-template-columns:minmax(0,1fr);gap:36px}
+}
+
+/* The heading sits at the same weight and face as a section heading elsewhere in these documents,
+   so the column reads as part of the page rather than as a widget dropped into it. */
+.doc .reach-h{margin:0 0 18px;font:600 20px/1.25 var(--display);color:var(--ink);
+  letter-spacing:-.2px;font-optical-sizing:auto}
+@media (max-width:600px){ .doc .reach-h{font-size:18px} }
+
+/* The marks were built for the profile page's header, where they sit in a row at the end of a
+   line. Here they open a column, so they align left and get room beneath them for the sentence
+   that follows. Everything else about them, the 46px circle and the invert on hover, is
+   inherited rather than restated. */
+.doc .cgrid-reach .bio-soc{justify-content:flex-start;margin:0 0 20px}
+.doc .cgrid-reach .alt{margin:0}
+
+/* A hairline between the columns on wide screens only, drawn on the reach column rather than as
+   a border on the grid, so it disappears with the second column when the layout stacks. */
+@media (min-width:861px){
+  .doc .cgrid-reach{padding-left:clamp(28px,4vw,56px);
+    border-left:1px solid var(--line)}
+  .doc .cgrid{gap:0}
+}
+
+/* THE FORM FILLS ITS OWN COLUMN. .cform carries max-width:52ch, which was right when the form was
+   the width of the page and stopped a 980px input. Inside a 603px column it capped the fields at
+   301px and left the left-hand column half empty, which is the same fault the page had before,
+   one level in. The cap is released here rather than changed at source, because 52ch is still the
+   right measure anywhere the form is not in this grid.
+   The top margin goes too: var(--s5) pushed the first field 48px below the heading beside it, so
+   the two columns started on different lines. */
+.doc .cgrid-form .cform{max-width:none;margin-top:0}

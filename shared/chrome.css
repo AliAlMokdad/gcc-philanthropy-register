@@ -212,3 +212,15 @@ footer.sig .sig-cols p{justify-content:center}
   footer.sig .sig-col{flex-direction:row;gap:var(--s4);align-items:center}
   footer.sig .wrap{padding:var(--s4)}
 }
+
+/* THE RIGHTS LINE. It lives INSIDE the credit span, not as a fourth child of .sig-cols. That grid
+   is three columns and its middle cell is the <p> holding the portrait and the credit, so a new
+   sibling would have become a fourth column, and the phone rule that pulls the middle cell up with
+   order:-1 targets that <p> directly. Putting the line inside the span leaves both untouched.
+   Set in the mono face at 10px with open tracking, which is this site's own treatment for labels
+   and metadata and the right register for a notice: present, legible, and not asking to be read
+   before the name above it. --ink-3 rather than the muted token because muted measures 4.45:1 on
+   this ground and AA wants 4.5. */
+footer.sig .sig-cred{display:block}
+footer.sig .sig-rights{display:block;margin-top:3px;
+  font:400 10px/1.65 var(--mono);letter-spacing:.09em;color:var(--ink-3)}
