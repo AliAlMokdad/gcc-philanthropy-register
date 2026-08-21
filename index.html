@@ -3928,6 +3928,49 @@ function writeHash(replace){
   setTimeout(function(){ writing=false; },0);
 }
 
+/* ------------------------------------------------------------------ the query string
+   TWO THINGS LIVE IN location.search AND NEITHER BELONGED TO THE ROUTER, which is why both were
+   wrong in different directions.
+
+   ?view= is the intelligence panel's own view. It was written there and never taken back, so it
+   rode along to every other route: measured, ?view=countries survived a move to #/a/list, then
+   #/news, then #/c/qatar, and then to the bare home page, where the code that cleans the hash
+   deliberately preserved the search string. A reader copying the URL off the news desk shared an
+   intelligence parameter that means nothing there. It belongs to one route and is now removed on
+   leaving it.
+
+   ?search= is the opposite: the structured data on this page declares a SearchAction at
+   ?search={term}, and nothing read it. A declared capability that does nothing is a false claim,
+   and the honest repair is to make it true rather than to withdraw it, since a search URL without
+   a hash is the shareable form and the register already knows how to restore q from a route. */
+function reconcileQuery(){
+  if(!history.replaceState) return false;
+  var sp;
+  try{ sp = new URLSearchParams(location.search); }catch(e){ return false; }
+
+  /* a search handed in by a link or a search engine becomes a real register route, once */
+  var term = sp.get("search");
+  if(term && term.trim()){
+    sp.delete("search");
+    var rest = sp.toString();
+    history.replaceState(null, "", location.pathname + (rest ? "?" + rest : "") +
+      "#/a/list?q=" + encodeURIComponent(term.trim().slice(0, Q_MAX)));
+    return true;
+  }
+
+  /* ?view= is the intelligence panel's, and only on the intelligence route */
+  if(sp.has("view")){
+    var h = location.hash.replace(/^#\/?/, "").split("?")[0].split("/").filter(Boolean);
+    var onIntel = h[0] === "a" && h[1] !== "list";
+    if(!onIntel){
+      sp.delete("view");
+      var r2 = sp.toString();
+      history.replaceState(null, "", location.pathname + (r2 ? "?" + r2 : "") + location.hash);
+    }
+  }
+  return false;
+}
+
 function parseQuery(qs){
   var p={};
   qs.split("&").forEach(function(kv){
@@ -3942,6 +3985,9 @@ function parseQuery(qs){
 
 function route(){
   if(writing) return;
+  /* a ?search= arriving later, from a link inside the page or from history, is turned into a route
+     and this call becomes the one for that route */
+  if(reconcileQuery()) return;
   clearTimeout(timer);
   abandonSearch();          /* the previous page's answer must not follow us here */
   var raw=location.hash.replace(/^#\/?/,"");
@@ -4100,7 +4146,15 @@ function showL1(clean){
   paintPage(null);
   document.title="Gulf Cooperation Council (GCC) Philanthropy Register";
   if(clean && history.replaceState){
-    history.replaceState(null,"",location.pathname+location.search);
+    /* the search string is kept, minus ?view=, which belongs to the intelligence route and was
+       being carried onto the portal where it means nothing */
+    var keep = "";
+    try{
+      var sp = new URLSearchParams(location.search);
+      sp.delete("view");
+      keep = sp.toString();
+    }catch(e){ keep = ""; }
+    history.replaceState(null,"",location.pathname+(keep ? "?"+keep : ""));
   }
   window.scrollTo(0,0);
 }
@@ -4809,6 +4863,8 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   if(!ROWS.length) throw new Error("no usable rows");
   buildNorm();
   buildSlugs();
+  /* before the first route, so a ?search= link lands on the list rather than the portal */
+  reconcileQuery();
   el("state").hidden=true;
   paintKick();
   buildL1();
