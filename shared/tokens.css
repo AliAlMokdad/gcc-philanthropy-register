@@ -1,0 +1,57 @@
+/* THE TOKENS. One file, and the only place these values are written down.
+ *
+ * WHY IT EXISTS. The site had grown three palettes. The register and the news desk ran on the
+ * blueberry set below; the toolkit borrowed most of it; and the member-state pages declared their
+ * own --ink at #161615 and their own --line at #EFE6D0, a warm near-black on cream, which is why
+ * moving between them felt like moving between two different sites rather than two pages.
+ *
+ * WHAT IS CANONICAL. These values are copied verbatim from the :root block in index.html, which is
+ * where the system was actually designed. That file is deliberately NOT edited: it is the largest
+ * and most load-bearing page on the site, and changing its stylesheet to import this one would put
+ * the whole register at risk to fix a problem that lives on the other pages. So index.html remains
+ * the origin and this file is its transcription.
+ *
+ * HOW THE TWO ARE KEPT HONEST. A transcription drifts unless something checks it, so
+ * shared/check-tokens.py compares every value here against index.html and fails on any
+ * difference. That check is the reason this file can be trusted; without it this comment would be
+ * a promise rather than a fact.
+ *
+ * LINK IT FIRST, before any page's own stylesheet, so a page can still override a token
+ * deliberately and never by accident of order. */
+:root{
+
+  /* House style, warmed so the six vivid flags carry the colour and the chrome recedes:
+     ink stays for body text, the masthead has its own smoky blue-grey token, the accent
+     is a softer blue-slate, and the paper is a warm gallery ground. AA checked on paper. */
+  --ink:#171A2B; --slate:#3E4CC4; --ink-2:#3B4468; --ink-3:#5B6488;
+  --accent:#3E4CC4; --accent-2:#3341A6; --accent-soft:#E9EDFB; --accent-line:#CFD8F4;
+  --paper:#F5F8FD; --paper-2:#EBF1FB; --line:#DEE7F4; --line-2:#CBD8EC;
+  --focus:#3E4CC4; --mast:#232C5C;
+  --berry:#5B63E6; --berry-soft:#9AA2EE;
+  --orange:#A55A12; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.13); --orange-strong:#8A4A0E;
+  --spectrum:linear-gradient(120deg,#E3008C,#7B61FF,#0078D4,#00BCF2,#13A10E,#FFB900);
+  --bg-a:rgba(62,76,196,.05); --bg-b:rgba(62,76,196,.03);
+  /* Source Serif 4 for the record voice, IBM Plex Mono for labels and chrome, both from
+     Google Fonts. System sans is kept for dense values and the search field so nothing
+     critical waits on a web font. */
+  --display:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
+}
+
+/* The dark-scheme overrides, transcribed from the same source so a page that links this
+   file behaves in dark mode exactly as the register does. */
+@media (prefers-color-scheme:dark){
+  :root{
+
+    --ink:#EEF0F6; --slate:#AAB4F0; --ink-2:#C2C8DA; --ink-3:#9AA2B8;
+    --accent:#AAB4F0; --accent-2:#C4CCF6; --accent-soft:#1C2138; --accent-line:#343B5C;
+    --paper:#0E1018; --paper-2:#161A26; --line:#282E40; --line-2:#38405C;
+    --focus:#AAB4F0; --mast:#1A2140;
+    --berry:#7A82F0; --berry-soft:#6B74D8;
+    --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16); --orange-strong:#EDAA55;
+    --bg-a:rgba(122,130,240,.07); --bg-b:rgba(122,130,240,.04);
+  }
+}

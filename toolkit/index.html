@@ -23,12 +23,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Toolkit | GCC Philanthropy</title>
+<title>Toolkit | Gulf Cooperation Council (GCC) Philanthropy</title>
 <meta name="description" content="This collection provides a structured introduction to GCC philanthropy for researchers, philanthropic institutions, humanitarian and development organizations, family offices, corporate social-impact teams, and advisers.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" type="image/svg+xml" href="../gcc-emblem.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../shared/tokens.css">
+<link rel="stylesheet" href="../shared/chrome.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,200..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
 /* ============================================================================
@@ -43,13 +45,13 @@
   --accent:#3E4CC4; --accent-2:#3341A6; --accent-soft:#E9EDFB; --accent-line:#CFD8F4;
   --paper:#F5F8FD; --paper-2:#EBF1FB; --line:#DEE7F4; --line-2:#CBD8EC;
   --focus:#3E4CC4; --mast:#232C5C;
-  --slate:#42506E; --slate-soft:#E8ECF3;
+  --slate:#3E4CC4; --slate-soft:#E8ECF3;   /* aligned to the canonical accent */
   --ground:#E6ECF6; --card:#FFFFFF;
   --on-slate:#FFFFFF;   /* text ON slate, which inverts between themes */
   --on-accent:#FFFFFF;  /* text ON accent, same reason */
   --display:"Source Serif 4",Georgia,"Times New Roman",serif;
-  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
-  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono","Segoe UI Mono",Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --orange:#A55A12; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.13);
   --orange-strong:#8A4A0E; --on-orange:#FFF8F1; --field-line:#7F8CAE;
   --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
@@ -81,21 +83,37 @@ a{color:var(--accent)}
 .container{width:100%;max-width:1280px;margin:0 auto;padding:0 var(--s4)}
 
 header.top{background:var(--mast);position:relative}
-header.top .container{padding-top:40px;padding-bottom:46px}
-header.top h1{margin:0;font:600 clamp(28px,3.5vw,44px)/1.06 var(--display);
-  color:#F6F5F2;letter-spacing:-.018em;text-wrap:balance}
-header.top h1 a.home{color:inherit;text-decoration:none}
-header.top h1 a.home:hover .abbr{color:#D6DCF4}
-header.top h1 a.home:focus-visible{outline:2px solid #C6CFE4;outline-offset:4px}
-header.top h1 .abbr{color:#B8C2E8;font-weight:400;transition:color .14s ease-out}
+/* THE MASTHEAD IS THE SAME OBJECT ON EVERY SURFACE. This one was a hero: the site name at up to
+   44px over 86px of padding, against 20px over 24px on the register and the news desk. Two sizes
+   of the same words, one line apart in a reader's journey, is most of why the toolkit felt like a
+   different property. It matches now, and what makes this page itself is the orange tab and the
+   section nav underneath. */
+header.top .container{padding-top:var(--s4);padding-bottom:var(--s4)}
+/* the same move as the register: these styled the brand, so they follow it to .brandline */
+header.top .brandline{margin:0;font:600 20px/1.25 var(--display);
+  color:#F6F5F2;letter-spacing:0;text-wrap:balance}
+header.top .brandline a.home{color:inherit;text-decoration:none}
+header.top .brandline a.home:hover .abbr{color:#D6DCF4}
+header.top .brandline a.home:focus-visible{outline:2px solid #C6CFE4;outline-offset:4px}
+header.top .brandline .abbr{color:#B8C2E8;font-weight:400;transition:color .14s ease-out}
 header.top .kick{display:flex;align-items:center;gap:13px;margin:17px 0 0;
   font:600 11px/1.6 var(--mono);letter-spacing:.17em;text-transform:uppercase;color:#C6CFE4}
 header.top .kick::before{content:"";flex:none;width:34px;height:2px;border-radius:1px;
   background:#8E9CD4}
-.tab{position:absolute;left:50%;transform:translateX(-50%);bottom:0;
-  padding:9px 28px 8px;background:var(--orange);color:var(--on-orange);
-  font:600 15px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
+/* THE TAB MOVES TO THE RIGHT EDGE. It hung centred at the bottom of the masthead, which worked
+   while the masthead was an 86px hero and collided with the member-state strip the moment that
+   masthead became the same 24px object as everywhere else. On the right it clears the strip, which
+   is left-aligned and short, and it still reads as a tab on the band's lower edge. */
+.tab{position:absolute;right:var(--s5);bottom:0;transform:translateY(0);
+  padding:7px 22px 6px;background:var(--orange);color:var(--on-orange);
+  font:600 13px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
   clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,12px 100%)}
+@media (max-width:900px){ .tab{right:var(--s4)} }
+/* THE STRIP CANNOT RUN UNDER THE TAB. Their boxes overlap and only the shortness of the current
+   member-state list keeps the ink apart, which is the kind of thing that holds until someone adds
+   a word. The strip now reserves the tab's width, so the two can never meet. */
+header.top .kick{padding-right:190px}
+@media (max-width:760px){ header.top .kick{padding-right:0} }
 @media (max-width:760px){
   .tab{position:static;transform:none;display:inline-block;margin-top:16px}
 }
@@ -155,10 +173,10 @@ nav.sections a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
   padding-bottom:var(--s3);border-bottom:1px solid var(--line);
   font:400 11.5px/1.5 var(--mono);color:var(--ink-3)}
 .doc-meta span{white-space:nowrap}
-h2.doc-t::after{content:"";display:block;width:132px;height:4px;border-radius:2px;
+h1.doc-t::after{content:"";display:block;width:132px;height:4px;border-radius:2px;
   margin:18px 0 0;background:linear-gradient(90deg,var(--slate) 0,var(--accent) 46%,
   var(--orange-line) 100%)}
-h2.doc-t{margin:var(--s5) 0 0;font:600 clamp(24px,2.4vw,33px)/1.1 var(--display);
+h1.doc-t{margin:var(--s5) 0 0;font:600 clamp(24px,2.4vw,33px)/1.1 var(--display);
   letter-spacing:-.008em;
   text-transform:uppercase;color:var(--accent)}
 /* SUPPRESSED FOR :focus, RESTORED FOR :focus-visible. The article renderer moves focus to this
@@ -166,9 +184,9 @@ h2.doc-t{margin:var(--s5) 0 0;font:600 clamp(24px,2.4vw,33px)/1.1 var(--display)
    trace of where they were. :focus still fires on a script-driven move after a mouse click, so
    the ring stays off there; :focus-visible is what the browser matches when the user is actually
    navigating by keyboard, which is exactly when the ring is needed. */
-h2.doc-t:focus{outline:none}
-h2.doc-t:focus-visible{outline:2px solid var(--focus);outline-offset:4px;border-radius:2px}
-@media (max-width:600px){ h2.doc-t{font-size:22px} }
+h1.doc-t:focus{outline:none}
+h1.doc-t:focus-visible{outline:2px solid var(--focus);outline-offset:4px;border-radius:2px}
+@media (max-width:600px){ h1.doc-t{font-size:22px} }
 .doc-lead{margin:var(--s3) 0 0;max-width:88ch;font:400 16px/1.55 var(--sans);color:var(--ink)}
 .doc-kw{margin:var(--s3) 0 0;display:flex;flex-wrap:wrap;gap:4px 12px;
   font:400 11px/1.4 var(--mono);color:var(--ink-3)}
@@ -257,9 +275,27 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
 </style>
 </head>
 <body>
+<!-- THE PRODUCT BAR, the same component as every other surface. Styles live in
+     shared/chrome.css so this markup cannot drift between documents. The item for the surface you
+     are on carries aria-current, which names it rather than only colouring it. -->
+<div class="pbar">
+  <div class="wrap">
+    <nav aria-label="Products">
+      <a class="pbar-brand" href="../">GCC Philanthropy</a>
+      <ul class="pbar-nav">
+        <li><a href="../#/a/all">Donor Intelligence</a></li>
+        <li><a href="../#/a/list">Register</a></li>
+        <li><a href="../#/news">News</a></li>
+        <li><a href="./" aria-current="page">Toolkit</a></li>
+        <li><a href="../members/">Members</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
 <header class="top">
   <div class="container">
-    <h1><a class="home" href="../">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1>
+    <!-- same reasoning as the register: the site name is not this page's heading -->
+    <p class="brandline"><a class="home" href="../">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></p>
     <p class="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
   </div>
   <span class="tab">Toolkit</span>
@@ -440,10 +476,10 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   function showHome(){
     markNav(null);
     crumbs([]);
-    document.title="Toolkit | GCC Philanthropy";
+    document.title="Toolkit | Gulf Cooperation Council (GCC) Philanthropy";
     var host=sheet(true);
     var left=el("div",{cls:"home-col"});
-    left.appendChild(el("h2",{cls:"home-h",text:"GCC Philanthropy"}));
+    left.appendChild(el("h1",{cls:"home-h",text:"GCC Philanthropy Toolkit"}));
     var ol=el("ol",{cls:"home-toc"});
     SECTIONS.forEach(function(sec){
       var a=el("a",{href:"#/"+sec.id});
@@ -489,10 +525,10 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
   function showSection(sec){
     markNav(sec.id);
     crumbs([{text:"Toolkit",href:"#"},{text:sec.name}]);
-    document.title=sec.name+" | Toolkit";
+    document.title=sec.name+" | Toolkit | Gulf Cooperation Council (GCC) Philanthropy";
     var host=sheet(true);
     var main=el("div");
-    main.appendChild(el("h2",{cls:"doc-t",text:sec.name}));
+    main.appendChild(el("h1",{cls:"doc-t",text:sec.name}));
     /* no blurb. A sentence of mine describing his section would be a word he did not write. */
     main.appendChild(chapterList(sec));
     host.appendChild(main);
@@ -520,7 +556,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     markNav(sec.id);
     crumbs([{text:"Toolkit",href:"#"},{text:sec.name,href:"#/"+sec.id},
             {text:n.title}]);
-    document.title=n.title+" | Toolkit";
+    document.title=n.title+" | Toolkit | Gulf Cooperation Council (GCC) Philanthropy";
     var host=sheet(false);
     host.appendChild(tree(sec,n));
     var main=el("div");
@@ -532,7 +568,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     meta.appendChild(el("span",{text:mins(n)}));
     main.appendChild(meta);
 
-    main.appendChild(el("h2",{cls:"doc-t",tabindex:"-1",text:n.title}));
+    main.appendChild(el("h1",{cls:"doc-t",tabindex:"-1",text:n.title}));
     /* his Abstract, his Keywords */
     main.appendChild(el("p",{cls:"doc-lead",text:n.abstract}));
     if((n.keywords||[]).length){
@@ -557,7 +593,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     if(n.refs.length) main.appendChild(refs(n));
     host.appendChild(main);
     window.scrollTo(0,0);
-    var t=main.querySelector("h2.doc-t"); if(t) t.focus({preventScroll:true});
+    var t=main.querySelector("h1.doc-t"); if(t) t.focus({preventScroll:true});
   }
 
   function fwTable(tb){

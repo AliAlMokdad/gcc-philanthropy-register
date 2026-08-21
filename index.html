@@ -15,6 +15,7 @@
      111 serif elements here were sharing one weight.
      No italic: the only italic on the page was one parenthetical, and buying the italic subsets to
      slant an abbreviation is the wrong trade. -->
+<link rel="stylesheet" href="shared/chrome.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,200..900&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <link rel="icon" type="image/svg+xml" href="gcc-emblem.svg">
 <!--
@@ -158,10 +159,13 @@ a{color:var(--accent)}
 /* masthead: the title, and nothing beside it */
 header.top{border-bottom:1px solid var(--line);background:var(--paper-2)}
 header.top .wrap{padding-top:var(--s4);padding-bottom:var(--s4)}
-h1{font:600 20px/1.25 var(--display);margin:0;letter-spacing:0}
-h1 a{color:inherit;text-decoration:none;display:inline-block}
-h1 a:hover{color:var(--accent)}
-h1 .abbr{color:var(--ink-3);font-weight:400}
+/* These four styled the masthead brand while it was an h1. They follow it to .brandline, so the
+   masthead looks exactly as it did, and a bare h1 selector no longer reaches the page title that
+   now sits below it. */
+.brandline{font:600 20px/1.25 var(--display);margin:0;letter-spacing:0}
+.brandline a{color:inherit;text-decoration:none;display:inline-block}
+.brandline a:hover{color:var(--accent)}
+.brandline .abbr{color:var(--ink-3);font-weight:400}
 
 /* not shouted: a dot in the accent, the label at reading size, and a rule that fades
    out as it travels toward the count */
@@ -376,11 +380,11 @@ details.more ol.ranked{margin-top:var(--s3)}
   color:var(--accent-2);text-decoration:underline;text-decoration-thickness:1px;
   text-underline-offset:3px;padding:0}
 .back:hover{color:var(--ink)}
-h2.sel{font:600 32px/1.08 var(--display);margin:var(--s2) 0 var(--s3);
+h1.sel{font:600 32px/1.08 var(--display);margin:var(--s2) 0 var(--s3);
   letter-spacing:0;position:relative;padding-bottom:var(--s3)}
-h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
+h1.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
   background:var(--accent);border-radius:1px}
-@media (min-width:700px){ h2.sel{font-size:46px;line-height:1.04;letter-spacing:0} }
+@media (min-width:700px){ h1.sel{font-size:46px;line-height:1.04;letter-spacing:0} }
 
 /* ---- THE TITLE LOCKUP, on the whole-register view only.
    Two tiers because the words "Gulf Cooperation Council (GCC) Philanthropy" already sit in the
@@ -392,12 +396,12 @@ h2.sel::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px
    allowed to be bold, and it is the page's actual subject rather than an ornament. ---- */
 /* 560, not 340. The light end of the axis read as delicate at this size; this is the weight of a
    masthead, and Source Serif holds it at 60px without the clog that 600 brings. */
-h2.sel.is-lockup{display:block;font-weight:560;letter-spacing:-.026em;
+h1.sel.is-lockup{display:block;font-weight:560;letter-spacing:-.026em;
   margin-top:var(--s3);padding-bottom:var(--s4);text-wrap:balance}
 /* the band already gives the heading 24px and a rule, so 56px more under it was a gap rather
    than air */
-.l2head:has(h2.sel.is-lockup) > .inner{padding-bottom:var(--s4)}
-h2.sel.is-lockup::after{width:152px;height:5px;border-radius:2px;
+.l2head:has(h1.sel.is-lockup) > .inner{padding-bottom:var(--s4)}
+h1.sel.is-lockup::after{width:152px;height:5px;border-radius:2px;
   background:linear-gradient(90deg,var(--i-s2) 0,var(--i-s3) 42%,var(--i-c3) 78%,var(--i-c2) 100%)}
 .sel-pre{display:flex;align-items:center;gap:12px;
   font:700 12px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
@@ -408,18 +412,18 @@ h2.sel.is-lockup::after{width:152px;height:5px;border-radius:2px;
   background:var(--i-s2)}
 .sel-main{display:block;font-size:clamp(31px,5.4vw,60px);line-height:1.02}
 @media (max-width:700px){
-  h2.sel.is-lockup{padding-bottom:var(--s3)}
+  h1.sel.is-lockup{padding-bottom:var(--s3)}
   .sel-pre{font-size:10.5px;letter-spacing:.13em;margin-bottom:12px;gap:9px}
   .sel-pre::before{width:22px;height:3px}
-  h2.sel.is-lockup::after{width:112px;height:4px}
+  h1.sel.is-lockup::after{width:112px;height:4px}
 }
 /* SUPPRESSED FOR :focus, RESTORED FOR :focus-visible. This heading is focused by script on every
    register navigation, and with the indicator removed outright a keyboard reader lost all trace
    of where they were. :focus is what a script-driven move after a mouse click matches, so the
    ring stays off there; :focus-visible is what the browser matches when the user is actually on
    the keyboard, which is precisely when it is needed. */
-h2.sel:focus{outline:none}
-h2.sel:focus-visible{outline:2px solid var(--focus);outline-offset:5px;border-radius:3px}
+h1.sel:focus{outline:none}
+h1.sel:focus-visible{outline:2px solid var(--focus);outline-offset:5px;border-radius:3px}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
 /* the whole-register route sets no subtitle, so the paragraph renders empty */
 .sel-sub:empty{display:none}
@@ -532,7 +536,7 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
   .listgate:not([hidden]) .lg-go{animation:none}
   .lg-btn::after,.lg-go{transition:none}
 }
-/* same trade as h2.sel: the list container takes focus when the full list is opened, so the ring
+/* same trade as h1.sel: the list container takes focus when the full list is opened, so the ring
    is kept for the keyboard and dropped for the mouse */
 #listwrap:focus{outline:none}
 #listwrap:focus-visible{outline:2px solid var(--focus);outline-offset:4px;border-radius:3px}
@@ -784,13 +788,13 @@ header.top .wrap{padding-top:26px;padding-bottom:26px}
 .kick{margin:10px 0 0;font:600 11px/1.6 var(--mono);letter-spacing:.14em;
   text-transform:uppercase;color:#D3DCE1;text-wrap:balance}
 @media (min-width:760px){ .kick{letter-spacing:.18em} }
-header.top h1{font:600 27px/1.18 var(--display);color:#F4F3F0;letter-spacing:.1px}
-@media (min-width:700px){ header.top h1{font-size:31px} }
-header.top h1 a{color:inherit}
-header.top h1 a:hover{color:#FFFFFF}
+header.top .brandline{font:600 27px/1.18 var(--display);color:#F4F3F0;letter-spacing:.1px}
+@media (min-width:700px){ header.top .brandline{font-size:31px} }
+header.top .brandline a{color:inherit}
+header.top .brandline a:hover{color:#FFFFFF}
 /* the masthead band is deep, so its link focus ring must be light to stay visible on it */
 header.top a:focus-visible{outline-color:#FFFFFF}
-header.top h1 .abbr{color:#BCC7CD;font-weight:400}
+header.top .brandline .abbr{color:#BCC7CD;font-weight:400}
 
 /* section eyebrow: a mono label, a hairline, and a mono tail */
 .eyebrow{align-items:baseline;gap:16px;font:600 12px/1 var(--mono);letter-spacing:.2em;
@@ -1739,33 +1743,16 @@ body.list-only #listgate{display:none !important}
    It sits ABOVE the big masthead rather than inside it, because the masthead is hidden on
    the portal (the centred emblem is the identity there) and a navigation that disappears on
    the front page is not a navigation. On an inner page the two dark bands read as one. */
-.pbar{background:var(--mast);position:relative}
-.pbar .wrap{padding-top:11px;padding-bottom:11px}
-.pbar nav{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);
-  min-height:44px}
 /* min-height 44, like the nav links beside it. Measured at 15px tall before this, which is
    under the 24px minimum for a pointer target and out of step with its own neighbours. */
-.pbar-brand{display:flex;align-items:center;min-height:44px;
-  font:600 11px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;
-  color:#D3DCE1;text-decoration:none;white-space:nowrap}
-.pbar-brand:hover{color:#FFFFFF}
-.pbar-nav{display:flex;align-items:stretch;gap:2px;margin:0;padding:0;list-style:none}
-.pbar-nav a{display:flex;align-items:center;min-height:44px;padding:0 12px;
-  font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
-  color:#C3CDD4;text-decoration:none;border-bottom:2px solid transparent}
-.pbar-nav a:hover{color:#FFFFFF}
 /* the current product. A 2px rule, not a filled pill: the bar is chrome and should not
    compete with the masthead directly beneath it */
-.pbar-nav a[aria-current]{color:#FFFFFF;border-bottom-color:#FFFFFF}
-.pbar a:focus-visible{outline:2px solid #FFFFFF;outline-offset:-2px}
 /* NOT ON THE FRONT DOOR. The portal is deliberately bare: the centred emblem is the identity
    there, which is why the site already hides its own masthead on that view. The product bar
    follows the same rule. It stays on every inner page, including the news desk, where it is
    the way back to the register. */
 body:has(#l1:not([hidden])) .pbar{display:none}
 @media (max-width:560px){
-  .pbar nav{flex-wrap:wrap;gap:var(--s2) var(--s3)}
-  .pbar .wrap{padding-top:9px;padding-bottom:2px}
   /* FOUR LABELS, ONE PHONE ROW. This row was built for three products and now carries four, and
      at 375 the last word was cut by a few pixels: enough to look like a mistake, not enough to
      suggest the row scrolls. Four small concessions buy it back, none visible on its own.
@@ -1784,21 +1771,12 @@ body:has(#l1:not([hidden])) .pbar{display:none}
      overflow-x stays as the safety net for a narrower phone or a large text size. Where it does
      engage, the row now runs off the edge rather than stopping short of it, which reads as
      something you can push rather than something broken. */
-  .pbar-nav{width:auto;margin-inline:calc(var(--s4) * -1);padding-left:var(--s4);
-    padding-right:12px;gap:0;
-    overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .pbar-nav::-webkit-scrollbar{display:none}
-  .pbar-nav a{padding:0 6px;letter-spacing:.1em}
 }
 /* THE NARROWEST PHONES WRAP RATHER THAN SCROLL. Below about 344px four labels cannot share a line
    at a legible size, and the row above would clip the last one mid-word. A word cut in half reads
    as a defect whether or not the row can be pushed, so at this width the row wraps to two lines
    instead: everything is visible, nothing has to be discovered, and the type stays at the size it
    is everywhere else rather than shrinking to buy a single line nobody asked for. */
-@media (max-width:344px){
-  .pbar-nav{flex-wrap:wrap;overflow-x:visible;margin-inline:0;padding-left:0;padding-right:0;
-    row-gap:2px}
-}
 
 /* ================================ the portal door ================================
    Not a third search control and not a marketing card. A single bounded destination with the
@@ -2210,8 +2188,6 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 
 /* ---- print. The controls, the rail and the load button are instruments, not content. ---- */
 @media print{
-  .pbar{background:none;border-bottom:1px solid #999}
-  .pbar-brand,.pbar-nav a{color:#000}
   .n-ctrl,.n-fold,.n-more,.n-reset{display:none !important}
   #news{color:#000}
   .n-row{break-inside:avoid}
@@ -2315,6 +2291,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
         <li><a href="#/a/list" data-nav="register">Register</a></li>
         <li><a href="#/news" data-nav="news">News</a></li>
         <li><a href="toolkit/">Toolkit</a></li>
+        <li><a href="members/">Members</a></li>
       </ul>
     </nav>
   </div>
@@ -2322,7 +2299,12 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 
 <header class="top">
   <div class="wrap">
-    <h1><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></h1>
+    <!-- THE SITE NAME IS NOT THIS PAGE'S HEADING. It was an h1 on every route, which meant the
+         country view, the news desk and the register all announced the same title and none of them
+         said where you were. It is now a paragraph, styled exactly as before, and the h1 is the
+         page's own name a few lines down. The home portal hides this whole masthead, so nothing
+         about that view changes. -->
+    <p class="brandline"><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></p>
     <p class="kick" id="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
   </div>
 </header>
@@ -2393,7 +2375,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
       <span class="flagplate" id="flagplate" aria-hidden="true" hidden></span>
       <div class="inner">
         <a class="back" href="#" id="back">Back to countries and categories</a>
-        <h2 class="sel" id="selname" tabindex="-1"></h2>
+        <h1 class="sel" id="selname" tabindex="-1"></h1>
         <p class="sel-sub" id="selsub"></p>
       </div>
     </div>
@@ -3759,11 +3741,15 @@ function route(){
     nameEl.classList.remove("is-lockup");
   }
   el("selsub").textContent=sel.sub;
-  /* no suffix when the name already carries it, or the tab would read the register's full name
-     twice in one string */
-  document.title = /Gulf Cooperation Council/.test(sel.name)
-    ? sel.name
-    : sel.name+" | Gulf Cooperation Council (GCC) Philanthropy Register";
+  /* ONE TITLE FORMULA: what this page is, then the site, with the abbreviation spelled out
+     because a reader who does not already know what GCC stands for is exactly the reader a tab
+     title has to serve. Two routes carry the site's own name inside their heading, so the shared
+     part is taken off the front rather than printed twice. */
+  var SITE = "Gulf Cooperation Council (GCC) Philanthropy";
+  var subject = sel.name.indexOf(SITE) === 0
+    ? sel.name.slice(SITE.length).trim() || "Register"
+    : sel.name;
+  document.title = subject + " | " + SITE;
   filtered=computeFiltered(sel,readControls());
   render();
   /* render() may have clamped the page, and a stale "in" may have been dropped, so
@@ -7535,7 +7521,7 @@ function watch(){
   if(key === lastKey && (built || failed)) return;
   lastKey = key;
   if(host) host.hidden = false;
-  document.title = "GCC Philanthropy News & Developments | GCC Philanthropy";
+  document.title = "News and Developments | Gulf Cooperation Council (GCC) Philanthropy";
   readUrl();
   if(!FEED && !failed){ load(); }
   else { render(); }

@@ -8,8 +8,12 @@
    The site sets SuisseIntl-Regular, which is a licensed face and not
    distributable, so Inter stands in for it: same grotesque proportions, free.
    ============================================================================= */
+/* THE COLLISION IS THE BUG, NOT THE WARMTH. These pages were designed cream and gold and that is
+   worth keeping. What broke the site was that they redefined --ink, --line and --sans to mean
+   something else, so any component shared with the rest of the site rendered differently here by
+   accident of which file loaded last. The canonical three now come from shared/tokens.css, linked
+   above, and this page's own character keeps its own names. */
 :root{
-  --ink:#161615;
   --muted:#757575;
   --gold:#C39827;
   --gold-dark:#A97F1C;
@@ -18,15 +22,15 @@
   --strip:#FFF8E3;
   --footer:#E0D2AC;
   --card:#FFFFFF;
-  --line:#EFE6D0;
+  --warm-line:#EFE6D0;   /* was --line, renamed off the canonical name */
   --map-on:#D1A770;
   --map-off:#FBF4E4;
-  --sans:"Inter","SuisseIntl-Regular",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --member-sans:"Inter","SuisseIntl-Regular",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
   --ar:"Noto Naskh Arabic","Traditional Arabic",serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--page);color:var(--ink);font:400 16px/1.5 var(--sans);
+body{background:var(--page);color:var(--ink);font:400 16px/1.5 var(--member-sans);
   -webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -53,9 +57,17 @@ a{color:inherit;text-decoration:none}
 .council-member{background:var(--card);border-radius:6px;padding:44px 46px 54px;
   box-shadow:0 1px 3px rgba(120,100,50,.06)}
 .council-member__head{display:flex;align-items:center;gap:26px;
-  padding:0 0 34px;border-bottom:1px solid var(--line)}
+  padding:0 0 34px;border-bottom:1px solid var(--warm-line)}
 .council-member__flag{width:87px;height:52px;object-fit:contain}
-.council-member__name{font-size:20px;font-weight:400}
+/* THE COUNTRY NAME IS THIS PAGE'S TITLE, so it is dressed as one. At 20px in the body sans it read
+   as a caption beside the flag, while the equivalent heading on every other surface is the display
+   face at 32px rising to 46px with an accent rule beneath. Same treatment, held a little smaller
+   because it shares its line with the flag. */
+.council-member__name{margin:0;font:600 32px/1.1 var(--display);letter-spacing:0;
+  color:var(--ink);position:relative;padding-bottom:14px}
+.council-member__name::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
+  background:var(--accent);border-radius:1px}
+@media (min-width:700px){ .council-member__name{font-size:40px;line-height:1.06} }
 .council-member-details{display:flex;align-items:flex-start;gap:60px;padding:30px 0 0}
 .council-member-details__item{display:flex;align-items:center;gap:14px}
 .council-member-details__icon{width:52px;height:52px;border:1px solid #6FB3D6;
@@ -221,8 +233,8 @@ body{background:transparent}
    for this: the face fell back to a serif once the Arabic webfont went, and the paragraphs
    ragged on the wrong edge, which read as centred. Overridden here rather than edited in place,
    so the original rule stays intact if Arabic is ever restored. */
-.council-member__text{font-family:var(--sans)}
-.council-member__text p{font:400 16px/1.7 var(--sans);text-align:left;max-width:68ch;
+.council-member__text{font-family:var(--member-sans)}
+.council-member__text p{font:400 16px/1.7 var(--member-sans);text-align:left;max-width:68ch;
   margin:0 0 20px}
 .council-member__text p:last-child{margin-bottom:0}
 /* THE WAY BACK. Six pages with no route to the list they came from is a dead end: a reader
@@ -234,7 +246,7 @@ body{background:transparent}
    18.11:1 and the gold-dark is spent on the arrow, where 3.66:1 clears the 3:1 that a
    meaningful non-text graphic needs. */
 .council-member__back{display:inline-flex;align-items:center;gap:9px;min-height:40px;
-  margin:0 0 4px;font:600 11px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;
+  margin:0 0 4px;font:600 11px/1 var(--member-sans);letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;
   align-self:flex-start}
 .council-member__back-i{font-size:15px;line-height:1;color:var(--gold-dark)}
@@ -242,7 +254,7 @@ body{background:transparent}
 .council-member__back:focus-visible{outline:2px solid var(--gold-dark);outline-offset:3px;
   border-radius:2px}
 .council-member__source{margin:18px 0 0;max-width:74ch;
-  font:400 12.5px/1.55 var(--sans);color:var(--muted)}
+  font:400 12.5px/1.55 var(--member-sans);color:var(--muted)}
 .council-member__source a{text-decoration:underline;text-underline-offset:2px}
 
 

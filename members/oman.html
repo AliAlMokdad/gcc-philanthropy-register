@@ -3,16 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=0.8">
-<title>Oman</title>
+<title>Oman | Gulf Cooperation Council (GCC) Philanthropy</title>
 <meta name="robots" content="noindex">
 <link rel="icon" href="img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="../shared/tokens.css">
+<link rel="stylesheet" href="../shared/chrome.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body data-bg="oman">
 
+<!-- THE PRODUCT BAR, the same component as every other surface. Styles live in
+     shared/chrome.css so this markup cannot drift between documents. The item for the surface you
+     are on carries aria-current, which names it rather than only colouring it. -->
+<div class="pbar">
+  <div class="wrap">
+    <nav aria-label="Products">
+      <a class="pbar-brand" href="../">GCC Philanthropy</a>
+      <ul class="pbar-nav">
+        <li><a href="../#/a/all">Donor Intelligence</a></li>
+        <li><a href="../#/a/list">Register</a></li>
+        <li><a href="../#/news">News</a></li>
+        <li><a href="../toolkit/">Toolkit</a></li>
+        <li><a href="./" aria-current="page">Members</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
 <header class="gccp-top">
   <div class="gccp-wrap">
     <p class="gccp-h1"><a href="../index.html">Gulf Cooperation Council <span

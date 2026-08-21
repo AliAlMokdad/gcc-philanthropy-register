@@ -1,0 +1,75 @@
+/* THE PRODUCT BAR. The thin navy strip that names the four things this site is and marks which one
+ * you are reading.
+ *
+ * WHY IT IS ITS OWN FILE. It existed only inside index.html, so it appeared on the register, the
+ * intelligence briefing, the news desk and the country pages, and vanished the moment a reader
+ * opened the toolkit or a member state. Those two surfaces then had one way out, a brand link, and
+ * that is what made the site feel like separate sites rather than one. A component that has to look
+ * identical in three documents cannot be written three times.
+ *
+ * TRANSCRIBED FROM index.html, which stays the origin: it is the largest page on the site and is
+ * not being refactored to serve the smaller ones. The rules below are its rules, with only the
+ * home-portal exception left behind, because that exception is about a view that exists in that
+ * file alone.
+ *
+ * REQUIRES shared/tokens.css, for --mast, --mono, --s2, --s3 and --s4. Link tokens first. */
+
+.pbar{background:var(--mast);position:relative}
+.pbar .wrap{padding-top:11px;padding-bottom:11px}
+.pbar nav{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);
+  min-height:44px}
+
+.pbar-brand{display:flex;align-items:center;min-height:44px;
+  font:600 11px/1.4 var(--mono);letter-spacing:.2em;text-transform:uppercase;
+  color:#D3DCE1;text-decoration:none;white-space:nowrap}
+.pbar-brand:hover{color:#FFFFFF}
+
+.pbar-nav{display:flex;align-items:stretch;gap:2px;margin:0;padding:0;list-style:none}
+.pbar-nav a{display:flex;align-items:center;min-height:44px;padding:0 12px;
+  font:600 11px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;
+  color:#C3CDD4;text-decoration:none;border-bottom:2px solid transparent}
+.pbar-nav a:hover{color:#FFFFFF}
+/* the current product is named, not merely coloured, so the mark survives a reader who cannot
+   distinguish the two greys */
+.pbar-nav a[aria-current]{color:#FFFFFF;border-bottom-color:#FFFFFF}
+.pbar a:focus-visible{outline:2px solid #FFFFFF;outline-offset:-2px}
+
+/* THE WRAP. index.html already has one; a document that does not gets the same measure and gutters
+   here, so the bar lines up with the content beneath it on every surface. */
+.pbar .wrap{max-width:1240px;margin:0 auto;padding-left:var(--s5, 48px);padding-right:var(--s5, 48px)}
+@media (max-width:700px){
+  .pbar .wrap{padding-left:var(--s4, 24px);padding-right:var(--s4, 24px)}
+}
+
+/* FOUR LABELS ON A PHONE. The row carries one more word than it was built for, so it gives up its
+   inter-item gap and some padding and tracking rather than cutting the last label. Below 344px it
+   wraps to two lines instead of scrolling, because a word cut in half reads as a defect whether or
+   not the row can be pushed. */
+@media (max-width:560px){
+  .pbar nav{flex-wrap:wrap;gap:var(--s2) var(--s3)}
+  .pbar .wrap{padding-top:9px;padding-bottom:2px}
+  .pbar-nav{width:auto;margin-inline:calc(var(--s4) * -1);padding-left:var(--s4);
+    padding-right:12px;gap:0;
+    overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .pbar-nav::-webkit-scrollbar{display:none}
+  .pbar-nav a{padding:0 6px;letter-spacing:.1em}
+}
+/* FIVE LABELS, NOT FOUR. The wrap used to start at 344px, which was right while the row carried
+   four products. With Members added the row is 14px over at 375px, so the last label is clipped on
+   the commonest phone width there is. Five uppercase mono words do not belong on one 375px line, so
+   the row wraps to two tidy rows instead of scrolling with a cut word on the end. */
+@media (max-width:430px){
+  .pbar-nav{flex-wrap:wrap;overflow-x:visible;margin-inline:0;padding-left:0;padding-right:0;
+    row-gap:2px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .pbar *{animation-duration:.01ms !important;animation-delay:0s !important;
+    animation-iteration-count:1 !important;transition-duration:.01ms !important;
+    transition-delay:0s !important}
+}
+
+@media print{
+  .pbar{background:none;border-bottom:1px solid #999}
+  .pbar-brand,.pbar-nav a{color:#000}
+}
