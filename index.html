@@ -2548,6 +2548,16 @@ body:has(#l1:not([hidden])) .pbar{display:none}
         <label for="pick2" id="pick2label">Category</label>
         <select id="pick2"></select>
       </div>
+      <!-- FOCUS, and it is a filter over what a funder SAYS it funds, not a claim about it.
+           The register's type column is a legal form and its focus column is free text, 1,692
+           distinct strings, so until now the site could not answer who funds education. The index
+           behind this is derived from that text and every tag records the words that produced it.
+           Hidden until the index has loaded and proved itself, so a reader is never offered a
+           filter that would quietly return the wrong organisations. -->
+      <div class="pick" id="pick3wrap" hidden>
+        <label for="pick3" id="pick3label">Focus</label>
+        <select id="pick3"></select>
+      </div>
       <fieldset class="has">
         <legend>Has</legend>
         <label class="chip"><input type="checkbox" id="f-email"><span>Email</span></label>
@@ -2606,7 +2616,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   <p><a class="sig-ava" href="https://www.linkedin.com/in/ali-al-mokdad/"
      target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
      src="ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
-     class="sig-cred">Compiled by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
+     class="sig-cred">Owned and managed by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
      target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
   <ul class="sig-col sig-col-r">
     <li><a href="terms/">Terms of Use</a></li>
@@ -3332,6 +3342,7 @@ function readControls(){
     q: norm(el("q").value.slice(0, Q_MAX)),
     pick: el("pickwrap").hidden ? "" : el("pick").value,
     pick2: el("pick2wrap").hidden ? "" : el("pick2").value,
+    theme: el("pick3wrap").hidden ? "" : el("pick3").value,
     email: el("f-email").checked,
     phone: el("f-phone").checked,
     website: el("f-website").checked
@@ -3339,6 +3350,122 @@ function readControls(){
 }
 /* what the last word pass did, so the count can be described honestly */
 var FIND={q:"",partial:false,related:0,total:0};
+
+/* ------------------------------------------------------------------ the focus axis
+   WHAT THIS IS AND IS NOT. shared/themes.json records, for each register row, which themes its own
+   stated focus text mentions. It is a reading of that text and nothing more: no organisation is
+   classified here, and the terms behind every tag are kept in shared/themes-evidence.json so any
+   one of them can be traced and overruled. The register's type column is a legal form and its
+   focus column is 1,692 distinct free-text strings, so without this the site cannot answer who
+   funds education, which is the commonest question a register like this gets.
+
+   KEYED BY THE ROW, NOT BY ITS INDEX. The file is an array of bitmasks in data.json row order,
+   because that is 2.6KB over the wire against 40KB for the same thing with the words attached. Row
+   order is exactly the coupling this file has been removing elsewhere, so two things guard it. The
+   index carries a fingerprint of the whole name column, recomputed here before anything is
+   believed. And the mapping is built into a Map keyed by the row array itself while walking
+   DATA.rows, so it survives ROWS having dropped a malformed row and shifted every index after it.
+
+   IT FAILS CLOSED. If the fingerprint disagrees, or the file is missing, or its length is wrong,
+   the control stays hidden and no filtering happens. A filter that silently returns the wrong
+   organisations is worse than no filter. */
+var THEMES = null, THEME_MASK = null, themeLoading = null, themeFailed = false;
+var themeWanted = "";
+
+/* FNV-1a 32 over the name column, joined by newlines. The same function in ten lines of Python
+   lives in tools/identity.py, and both were run over the real register: both give 4270336304.
+   About 1ms here, so it is checked every time rather than trusted. */
+function nameFingerprint(rows){
+  var ni = F["name"], i, j, bytes, h = 0x811c9dc5 >>> 0, parts = [];
+  for(i = 0; i < rows.length; i++){
+    var v = rows[i] && rows[i][ni];
+    parts.push(v == null ? "" : String(v));
+  }
+  bytes = new TextEncoder().encode(parts.join("\n"));
+  for(j = 0; j < bytes.length; j++){
+    h ^= bytes[j];
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h >>> 0;
+}
+
+function loadThemes(){
+  if(THEMES) return Promise.resolve(true);
+  if(themeFailed) return Promise.resolve(false);
+  if(themeLoading) return themeLoading;
+  themeLoading = fetch("shared/themes.json").then(function(r){
+    if(!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  }).then(function(j){
+    if(!j || !j.bits || !j.themes) throw new Error("malformed index");
+    var all = DATA && DATA.rows ? DATA.rows : ROWS;
+    if(j.bits.length !== all.length)
+      throw new Error("index has " + j.bits.length + " rows, data has " + all.length);
+    var fp = nameFingerprint(all);
+    if(j.name_fingerprint !== fp)
+      throw new Error("index fingerprint " + j.name_fingerprint + " does not match the register's " +
+                      fp + ": the register has changed since the index was built");
+    THEMES = j;
+    THEME_MASK = new Map();
+    for(var i = 0; i < all.length; i++) THEME_MASK.set(all[i], j.bits[i]);
+    return true;
+  }).catch(function(e){
+    console.warn("focus filter unavailable: " + e.message);
+    themeFailed = true;
+    THEMES = null;
+    THEME_MASK = null;
+    return false;
+  });
+  return themeLoading;
+}
+
+function themeBit(key){
+  if(!THEMES) return -1;
+  for(var i = 0; i < THEMES.themes.length; i++)
+    if(THEMES.themes[i].key === key) return i;
+  return -1;
+}
+function rowHasTheme(row, key){
+  if(!THEME_MASK) return true;      /* no index means no filtering, never a silent exclusion */
+  var b = themeBit(key);
+  if(b < 0) return true;
+  var m = THEME_MASK.get(row);
+  return m ? (m & (1 << b)) !== 0 : false;
+}
+
+/* The options are counted inside the CURRENT selection, the same way fillPick counts places, so a
+   country page offers the themes its own funders actually state and says how many. A theme with no
+   rows here is left out rather than offered as an empty result. */
+function fillPick3(sel){
+  var wrap = el("pick3wrap"), s3 = el("pick3");
+  if(!wrap || !s3) return;
+  if(!THEMES){
+    wrap.hidden = true;
+    loadThemes().then(function(ok){ if(ok && current === sel) fillPick3(sel); });
+    return;
+  }
+  var counts = {}, i, k;
+  for(i = 0; i < sel.rows.length; i++){
+    var m = THEME_MASK.get(sel.rows[i]);
+    if(!m) continue;
+    for(k = 0; k < THEMES.themes.length; k++)
+      if(m & (1 << k)) counts[THEMES.themes[k].key] = (counts[THEMES.themes[k].key] || 0) + 1;
+  }
+  var keys = THEMES.themes.filter(function(t){ return counts[t.key]; });
+  clear(s3);
+  if(!keys.length){ wrap.hidden = true; return; }
+  s3.appendChild(make("option", null, "Any focus"));
+  s3.firstChild.value = "";
+  keys.forEach(function(t){
+    var o = make("option", null, t.label + "  (" + num(counts[t.key]) + ")");
+    o.value = t.key;
+    s3.appendChild(o);
+  });
+  var ok = false, opts = s3.options, j;
+  for(j = 0; j < opts.length; j++) if(opts[j].value === themeWanted){ ok = true; break; }
+  s3.value = ok ? themeWanted : "";
+  wrap.hidden = false;
+}
 
 function computeFiltered(sel,c){
   var field=(sel.kind==="c") ? "city" : "country";
@@ -3348,6 +3475,7 @@ function computeFiltered(sel,c){
     if(c.pick && val(r,field)!==c.pick) return;
     /* the category filter exists only on a country page */
     if(c.pick2 && val(r,"type")!==c.pick2) return;
+    if(c.theme && !rowHasTheme(r,c.theme)) return;
     if(c.email && !val(r,"email")) return;
     if(c.phone && !val(r,"phone")) return;
     if(c.website && !val(r,"website")) return;
@@ -3784,6 +3912,7 @@ function hashFor(targetPage){
   if(c.q) p.push("q="+encodeURIComponent(el("q").value.trim()));
   if(c.pick) p.push("in="+encodeURIComponent(c.pick));
   if(c.pick2) p.push("cat="+encodeURIComponent(c.pick2));
+  if(c.theme) p.push("focus="+encodeURIComponent(c.theme));
   var has=["email","phone","website"].filter(function(k){ return c[k]; });
   if(has.length) p.push("has="+has.join(","));
   if(targetPage && targetPage>1) p.push("p="+targetPage);
@@ -3871,6 +4000,10 @@ function route(){
   var want2=p.cat||"", ok2=false, o2=el("pick2").options, j2;
   for(j2=0;j2<o2.length;j2++) if(o2[j2].value===want2){ ok2=true; break; }
   el("pick2").value = ok2 ? want2 : "";
+  /* the theme index may not have arrived yet, so the wanted value is remembered and applied by
+     fillPick3 when it does, rather than being dropped because it was early */
+  themeWanted = p.focus || "";
+  fillPick3(sel);
   var has=(p.has||"").split(",");
   el("f-email").checked=has.indexOf("email")>-1;
   el("f-phone").checked=has.indexOf("phone")>-1;
@@ -4560,6 +4693,7 @@ function wire(){
      is void: without this its answer landed later and threw the filter away */
   el("pick").addEventListener("change",refreshSearch);
   el("pick2").addEventListener("change",refreshSearch);
+  el("pick3").addEventListener("change",refreshSearch);
   ["f-email","f-phone","f-website"].forEach(function(id){
     el(id).addEventListener("change",refreshSearch);
   });
@@ -4575,6 +4709,8 @@ function wire(){
     el("q").value="";
     el("pick").value="";
     el("pick2").value="";
+    el("pick3").value="";
+    themeWanted="";
     el("f-email").checked=false;
     el("f-phone").checked=false;
     el("f-website").checked=false;
