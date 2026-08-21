@@ -13,10 +13,10 @@ DO NOT HAND-EDIT THE GENERATED PAGES. Edit the content module and run this again
 
     py tools/build-legal.py <path-to-content.py> [repo-root]
 
-The content module is the one used by the Word build. Every string on the four pages comes out of
-it, with three exceptions, and they are the only words on these pages this script contributes:
-the field labels on the connect form (Name, Email, Message), the words on its button and its
-human check, and the two result lines. A form cannot be operated without them.
+The content module is the one used by the Word build, and EVERY string on the four pages comes out
+of it. The connect form's own words live there too, in C.FORM, including the honeypot's label,
+because the trap has to look like a real field to a bot and therefore needs a real one. No string
+on these pages is typed into this file.
 """
 import html
 import os
@@ -93,9 +93,9 @@ def head(title, desc, tab):
   COLOUR      shared/tokens.css only. Blueberry on section numbers, links and the send button.
               Masthead navy on titles. Orange stays reserved for the page tab.
   WORDS       EVERY WORD IS GENERATED from the reviewed content module, so the page and the Word
-              edition cannot disagree. The only strings this build adds are the connect form's
-              field labels, its button, its human check and its two result lines, because a form
-              cannot be operated without them.
+              edition cannot disagree. That includes the headings, the form's labels, its button,
+              its human check, its honeypot label and its two result lines. Nothing is typed into
+              the builder.
   VERIFIABLE  The version date and the register's counts come from the same source as the Word
               edition. Nothing on these pages is estimated or restated from memory.
 -->
@@ -191,17 +191,14 @@ def title_block(h1, standfirst, index_items):
             '<li><a href="#s%s"><span>%s</span>%s</a></li>' % (n, E(n), E(t))
             for n, t in index_items))
     return ('<h1>%s</h1>\n<p class="standfirst">%s</p>\n'
-            '<dl class="meta"><dt>Version</dt><dd>%s</dd></dl>\n%s'
-            % (E(h1), E(standfirst), E(C.DATED), idx))
+            '<dl class="meta"><dt>%s</dt><dd>%s</dd></dl>\n%s'
+            % (E(h1), E(standfirst), E(C.FORM["version"]), E(C.DATED), idx))
 
 # The standfirsts come from the content module, the same place the Word edition reads them, so the
 # two renderers cannot drift. They were hardcoded in both builders until a partner review pointed
 # out that a sentence with two homes is a sentence that will eventually differ.
-PAGES = [
-    ("privacy", "Privacy Policy", "Privacy Policy", C.STANDFIRST["privacy"], C.PRIVACY),
-    ("terms", "Terms of Use", "Terms of Use", C.STANDFIRST["terms"], C.TERMS),
-    ("faq", "Frequently Asked Questions", "FAQ", C.STANDFIRST["faq"], C.FAQ),
-]
+PAGES = [(k, C.TITLE[k], C.TAB[k], C.STANDFIRST[k], blocks)
+         for k, blocks in (("privacy", C.PRIVACY), ("terms", C.TERMS), ("faq", C.FAQ))]
 
 written = []
 for key, h1, tab, standfirst, blocks in PAGES:
@@ -226,31 +223,31 @@ if reach is None:
     raise SystemExit("the FAQ no longer answers 'How do I reach you?', so the connect page has "
                      "no source for its one line of prose. Fix the content module or this build.")
 
-FORM = """<form class="cform" id="cform" method="post" action="%s" novalidate>
+FORM = """<form class="cform" id="cform" method="post" action="%(action)s" novalidate>
   <div class="cf-row">
-    <label for="cf-name">Name</label>
+    <label for="cf-name">%(name)s</label>
     <input id="cf-name" name="name" type="text" maxlength="120" autocomplete="name" required>
   </div>
   <div class="cf-row">
-    <label for="cf-mail">Email</label>
+    <label for="cf-mail">%(email)s</label>
     <input id="cf-mail" name="email" type="email" maxlength="200" autocomplete="email" required>
   </div>
   <div class="cf-row">
-    <label for="cf-msg">Message</label>
+    <label for="cf-msg">%(message)s</label>
     <textarea id="cf-msg" name="message" maxlength="4000" required></textarea>
   </div>
   <div class="cf-trap" aria-hidden="true">
-    <label for="cf-url">Website</label>
+    <label for="cf-url">%(trap)s</label>
     <input id="cf-url" name="website" type="text" tabindex="-1" autocomplete="off">
   </div>
   <input type="hidden" name="t0" id="cf-t0" value="">
   <div class="cf-check">
     <input id="cf-human" name="human" type="checkbox" value="1" required>
-    <label for="cf-human">I am not a robot</label>
+    <label for="cf-human">%(human)s</label>
   </div>
-  <button class="cf-send" type="submit" id="cf-send">Send</button>
+  <button class="cf-send" type="submit" id="cf-send">%(send)s</button>
   <p class="cf-out" id="cf-out" role="status" aria-live="polite"></p>
-</form>""" % E(C.RECEIVER)
+</form>""" % dict({k: E(v) for k, v in C.FORM.items()}, action=E(C.RECEIVER))
 
 FORM_JS = """<script>
 (function(){
@@ -279,14 +276,12 @@ FORM_JS = """<script>
 })();
 </script>"""
 
-SENT   = "Sent. A copy is on its way to connect@gccphilanthropy.org."
-FAILED = ("Not sent. Nothing was delivered, so please write to "
-          "connect@gccphilanthropy.org instead.")
+SENT, FAILED = C.FORM["sent"], C.FORM["failed"]
 
-page = (head("Connect", reach, "Connect")
-        + "\n<h1>Connect</h1>\n"
+page = (head(C.TITLE["connect"], reach, C.TAB["connect"])
+        + "\n<h1>%s</h1>\n" % E(C.TITLE["connect"])
         + '<p class="standfirst">%s</p>\n' % linkify(E(reach))
-        + '<dl class="meta"><dt>Version</dt><dd>%s</dd></dl>\n' % E(C.DATED)
+        + '<dl class="meta"><dt>%s</dt><dd>%s</dd></dl>\n' % (E(C.FORM["version"]), E(C.DATED))
         + FORM + "\n"
         + (FORM_JS % (E(SENT), E(FAILED), E(FAILED)))
         + "\n" + (TAIL % footer("connect")))
