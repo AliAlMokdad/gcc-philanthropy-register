@@ -73,3 +73,74 @@
   .pbar{background:none;border-bottom:1px solid #999}
   .pbar-brand,.pbar-nav a{color:#000}
 }
+
+
+/* ============================================================ THE MASTHEAD WASH
+ * A painterly two-colour wash across the navy band: light blue and a fainter warm orange.
+ *
+ * IN THE HOUSE TECHNIQUE, NOT A GRADIENT. This site already paints with displaced, blurred
+ * ellipses under a turbulence filter: #brushes on the home portal, #l2brush on the inner pages,
+ * #cwash for a country's flag. A flat linear gradient here would have been the easy thing and
+ * would have read as a different hand. So this is the same construction, small enough to live as
+ * one data URI in one rule rather than nine inlined copies of an SVG.
+ *
+ * IT LANDS ON header.top AND .gccp-top, WHICH IS WHY THE MAIN PAGE IS SAFE: the portal hides
+ * header.top entirely, so a rule aimed at it cannot reach that view.
+ *
+ * The opacities are the ones this site already uses for paint, .055 to .10, and they are over navy
+ * rather than paper, so the wash reads as depth and every label above it keeps its contrast. */
+/* IT IS A LAYER, NOT A BACKGROUND IMAGE. The first attempt set background-image on the masthead
+   and it never rendered: every page paints that band with a `background:` SHORTHAND in its own
+   stylesheet, and a shorthand resets background-image to none. Since this file has to load FIRST
+   so a page can still override a token deliberately, the page always wins that argument. Measured
+   before and after: the band was 35,44,92 at every sampled pixel, spread of zero.
+   A pseudo-element cannot be wiped by a shorthand, and it is also how this site already paints:
+   #brushes, #l2brush and #cwash are all separate layers rather than backgrounds. */
+/* isolation:isolate makes the band its own stacking context, so a negative z-index on the wash is
+   contained: it paints above the band's own background and below everything in it. The first
+   attempt instead lifted every child with `header.top>*{position:relative;z-index:1}`, which has
+   higher specificity than .pagetab and therefore overrode the tab's `position:absolute`. A relative
+   box with right:48px does not anchor to the right, it shifts LEFT by 48px, which is exactly where
+   the tab appeared: at x -48, clipped by the edge of the page. One rule too many, and the fix is to
+   delete it rather than fight it. */
+header.top, .gccp-top{position:relative;isolation:isolate}
+header.top::before, .gccp-top::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='a' x='-35%25' y='-60%25' width='170%25' height='220%25'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.013' numOctaves='4' seed='9' result='n'/%3E%3CfeDisplacementMap in='SourceGraphic' in2='n' scale='70' xChannelSelector='R' yChannelSelector='G'/%3E%3CfeGaussianBlur stdDeviation='18'/%3E%3C/filter%3E%3C/defs%3E%3Cg filter='url(%23a)'%3E%3Cellipse cx='250' cy='72' rx='420' ry='62' fill='%2378ADEE' opacity='0.55' transform='rotate(-9 250 72)'/%3E%3Cellipse cx='990' cy='128' rx='450' ry='56' fill='%23F2A24A' opacity='0.30' transform='rotate(7 990 128)'/%3E%3Cellipse cx='630' cy='38' rx='340' ry='44' fill='%2396BEF2' opacity='0.34' transform='rotate(-4 630 38)'/%3E%3C/g%3E%3C/svg%3E");
+  /* STRETCHED, NOT CROPPED. `cover` scales the artwork to fill and crops the overflow, so a band
+     of a different height samples a different part of it: the register masthead stayed near the
+     base navy while the shorter member-state band landed on a dense patch and lifted to
+     (129,104,55), taking four labels below 4.5:1. The artwork is abstract, so mapping the whole of
+     it onto whatever height the band happens to be is both harmless and predictable. */
+  background-repeat:no-repeat;background-size:100% 100%;background-position:center;
+  /* the strokes carry their own alpha; this is the one dial for the whole wash */
+  opacity:.30;
+}
+@media print{ header.top::before, .gccp-top::before{display:none} }
+
+/* ============================================================ THE PAGE TAB
+ * The orange tab that names the surface you are on, hanging off the lower edge of the masthead.
+ *
+ * It existed on the toolkit alone. It is now the marker for every surface that is not the main
+ * page, and it is larger than the toolkit's original, which was 13px and easy to miss against a
+ * band that size.
+ *
+ * IT IS NOT A LINK AND IT IS NOT NAV. The bar above already says where you can go and marks where
+ * you are; this says what you are reading, once, at a size you cannot miss. Presentation only, so
+ * it is aria-hidden and the same word is in the page's own heading and title for anyone who cannot
+ * see it. */
+.pagetab{
+  position:absolute;right:var(--s5, 48px);bottom:0;
+  padding:9px 26px 8px;
+  background:var(--orange, #A55A12);color:#FFFFFF;
+  font:600 15px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
+  clip-path:polygon(0 0,100% 0,calc(100% - 14px) 100%,14px 100%);
+  pointer-events:none;
+}
+@media (max-width:900px){ .pagetab{right:var(--s4, 24px);padding:8px 20px 7px;font-size:13px} }
+/* On a phone the band is short and the strip beneath it is long, so the tab stops hanging and
+   simply follows the strip. */
+@media (max-width:640px){
+  .pagetab{position:static;display:inline-block;margin-top:12px;clip-path:none;border-radius:2px}
+}
+@media print{ .pagetab{display:none} }

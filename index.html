@@ -2287,6 +2287,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <nav aria-label="GCC Philanthropy products">
       <a class="pbar-brand" href="#">GCC Philanthropy</a>
       <ul class="pbar-nav">
+        <li><a href="#" class="pbar-main">Main page</a></li>
         <li><a href="#/a/all" data-nav="intel">Donor Intelligence</a></li>
         <li><a href="#/a/list" data-nav="register">Register</a></li>
         <li><a href="#/news" data-nav="news">News</a></li>
@@ -2307,6 +2308,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <p class="brandline"><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></p>
     <p class="kick" id="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
   </div>
+  <span class="pagetab" id="pagetab" aria-hidden="true"></span>
 </header>
 
 <main id="main" class="wrap">
@@ -7444,9 +7446,13 @@ function markNav(){
   /* NOTHING is current by default. The old default marked Register as the current product on
      every route including the home portal, which was wrong the moment Register stopped meaning
      "home". A country or a category view IS the register, so those mark it too. */
+  /* THE TAB NAMES THE VIEW, and it is set here because this is already the one place that knows
+     which view is showing. Presentation only: the same word is in the heading and the title. */
+  var TAB={news:"News", register:"Register", intel:"Donor Intelligence"};
   var current = "";
   if(path === "news") current = "news";
   else if(path === "a/list") current = "register";
+  else if(path === "a/all") current = "intel";
   else if(path.indexOf("c/") === 0 || path.indexOf("t/") === 0) current = "register";
   /* #/a/all leads with the intelligence briefing, so that is the product a reader on that
      route is looking at. The register list continues underneath it, and the register's own
@@ -7460,6 +7466,8 @@ function markNav(){
       links[i].removeAttribute("aria-current");
     }
   }
+  var tab=document.getElementById("pagetab");
+  if(tab) tab.textContent = TAB[current] || "";
 }
 
 var lastKey = "", reconciles = 0, stateWasShown = false, searchTimer = null;

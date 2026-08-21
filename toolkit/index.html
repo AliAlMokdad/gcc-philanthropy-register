@@ -104,19 +104,11 @@ header.top .kick::before{content:"";flex:none;width:34px;height:2px;border-radiu
    while the masthead was an 86px hero and collided with the member-state strip the moment that
    masthead became the same 24px object as everywhere else. On the right it clears the strip, which
    is left-aligned and short, and it still reads as a tab on the band's lower edge. */
-.tab{position:absolute;right:var(--s5);bottom:0;transform:translateY(0);
-  padding:7px 22px 6px;background:var(--orange);color:var(--on-orange);
-  font:600 13px/1 var(--mono);letter-spacing:.2em;text-transform:uppercase;
-  clip-path:polygon(0 0,100% 0,calc(100% - 12px) 100%,12px 100%)}
-@media (max-width:900px){ .tab{right:var(--s4)} }
 /* THE STRIP CANNOT RUN UNDER THE TAB. Their boxes overlap and only the shortness of the current
    member-state list keeps the ink apart, which is the kind of thing that holds until someone adds
    a word. The strip now reserves the tab's width, so the two can never meet. */
-header.top .kick{padding-right:190px}
+header.top .kick{padding-right:200px}   /* room for the shared .pagetab */
 @media (max-width:760px){ header.top .kick{padding-right:0} }
-@media (max-width:760px){
-  .tab{position:static;transform:none;display:inline-block;margin-top:16px}
-}
 
 nav.sections{background:var(--card);border-bottom:1px solid var(--line)}
 nav.sections .container{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--s4)}
@@ -247,10 +239,13 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
 
 /* ---- the front page ---- */
 .home-col{max-width:76ch;margin-inline:auto}
-.home-h::after{content:"";display:block;width:132px;height:4px;border-radius:2px;
-  margin:18px 0 0;background:linear-gradient(90deg,var(--slate) 0,var(--accent) 46%,
-  var(--orange-line) 100%)}
-.home-h{margin:0;font:600 26px/1.18 var(--display);text-transform:uppercase;color:var(--accent)}
+.home-h::after{content:"";position:absolute;left:0;bottom:0;width:56px;height:2px;
+  background:var(--accent);border-radius:1px}
+/* THE PAGE HEADING, dressed as the register dresses its own: the display face in ink with a
+   short accent rule beneath. It was uppercase in the accent colour, which is a treatment used
+   nowhere else here, and the accent is reserved for links and active controls. */
+.home-h{margin:0;font:600 clamp(28px,3vw,40px)/1.08 var(--display);letter-spacing:0;
+  color:var(--ink);position:relative;padding-bottom:var(--s3)}
 .home-sub{margin:10px 0 0;font:600 11px/1.5 var(--mono);letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-3)}
 .home-p{margin:var(--s3) 0 0;max-width:72ch;font:400 15px/1.6 var(--sans);color:var(--ink-2)}
@@ -283,6 +278,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     <nav aria-label="Products">
       <a class="pbar-brand" href="../">GCC Philanthropy</a>
       <ul class="pbar-nav">
+        <li><a href="../" class="pbar-main">Main page</a></li>
         <li><a href="../#/a/all">Donor Intelligence</a></li>
         <li><a href="../#/a/list">Register</a></li>
         <li><a href="../#/news">News</a></li>
@@ -298,7 +294,7 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     <p class="brandline"><a class="home" href="../">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></p>
     <p class="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
   </div>
-  <span class="tab">Toolkit</span>
+  <span class="pagetab" aria-hidden="true">Toolkit</span>
 </header>
 
 <nav class="sections" aria-label="Toolkit sections"><div class="container" id="secnav"></div></nav>
@@ -366,6 +362,10 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
      pick:function(n){ return has(n,"United Arab Emirates"); }},
     {id:"dubai",name:"Dubai", pick:function(n){ return has(n,"Dubai"); }}
   ];
+
+  /* the thematic half of SECDEF, named once so the landing can tell the two axes apart without a
+     second list to keep in sync */
+  var THEME_IDS=["foundations","regulation","capital","impact"];
 
   fetch("notes.json").then(function(r){
     if(!r.ok) throw new Error("HTTP "+r.status);
@@ -473,20 +473,92 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
      his own standard, purpose, nature and accuracy text, so nothing he wrote has been destroyed
      and any of it goes back by restoring one line. Deleting an author's source text in order to
      hide it from a page is the wrong trade. */
+  /* THE LANDING SHOWS THE SHAPE OF THE COLLECTION, WHICH HAS TWO AXES AND NOT NINE SECTIONS.
+     SECDEF above defines four thematic volumes and five jurisdictions, and the jurisdictional ones
+     RE-CUT the same papers rather than adding new ones: an article about entering Qatar, Saudi
+     Arabia and the UAE genuinely belongs to all three. Listing all nine as "01" through "09" said
+     the opposite. It implied a sequence, so a reader could reasonably add the counts and conclude
+     the collection is twice the size it is. That was the real fault on this page, not its styling.
+
+     So the axes are separated and labelled, the numbering is gone, and the only numbers here are
+     counts, which mean something. Colour follows the register's rule exactly: GREEN IS GEOGRAPHY,
+     and TOPIC HAS NO COLOUR because it is carried by its words. That is why the thematic list is
+     unpainted and the jurisdictional one is not.
+
+     Every figure is counted from notes.json when the page loads. Nothing here is written down. */
+  function axisList(defs, cls){
+    var ol=el("ol",{cls:"axis "+cls});
+    defs.forEach(function(sec){
+      var a=el("a",{href:"#/"+sec.id});
+      a.appendChild(el("span",{cls:"axis-t",text:sec.name}));
+      var mins=sec.notes.reduce(function(t,n){ return t+(n.minutes||0); },0);
+      var meta=el("span",{cls:"axis-m"});
+      meta.appendChild(el("b",{text:String(sec.notes.length)}));
+      meta.appendChild(document.createTextNode(
+        sec.notes.length===1 ? " paper" : " papers"));
+      if(mins) meta.appendChild(el("i",{text:"  " + mins + " min"}));
+      a.appendChild(meta);
+      ol.appendChild(el("li",null,[a]));
+    });
+    return ol;
+  }
+
   function showHome(){
     markNav(null);
     crumbs([]);
     document.title="Toolkit | Gulf Cooperation Council (GCC) Philanthropy";
     var host=sheet(true);
     var left=el("div",{cls:"home-col"});
-    left.appendChild(el("h1",{cls:"home-h",text:"GCC Philanthropy Toolkit"}));
-    var ol=el("ol",{cls:"home-toc"});
-    SECTIONS.forEach(function(sec){
-      var a=el("a",{href:"#/"+sec.id});
-      a.appendChild(el("span",{cls:"toc-t",text:sec.name}));
-      ol.appendChild(el("li",null,[a]));
-    });
-    left.appendChild(ol);
+    left.appendChild(el("h1",{cls:"home-h",text:"Toolkit"}));
+
+    /* THE COLLECTION STATED IN ITS OWN NUMBERS, counted here rather than written down.
+       84 minutes, not "about 1 hours": dividing by sixty and rounding turned an honest figure into
+       a wrong one and an ungrammatical sentence at the same time. Minutes are what the data holds,
+       so minutes are what it says. */
+    var papers=DATA.notes.length;
+    var refs=DATA.notes.reduce(function(t,n){ return t+(n.ref_count||(n.refs||[]).length||0); },0);
+    var mins=DATA.notes.reduce(function(t,n){ return t+(n.minutes||0); },0);
+
+    var themes=SECTIONS.filter(function(s){ return THEME_IDS.indexOf(s.id)>=0; });
+    var places=SECTIONS.filter(function(s){ return THEME_IDS.indexOf(s.id)<0; });
+
+    /* DISTINCT papers behind each axis, because the jurisdictional lists overlap each other: a
+       paper covering three states is counted once here and appears three times below. Counting the
+       rows instead would have claimed a collection larger than it is. */
+    function distinct(list){
+      var seen={}, n=0;
+      list.forEach(function(sec){ sec.notes.forEach(function(a){
+        if(!seen[a.id]){ seen[a.id]=1; n++; } }); });
+      return n;
+    }
+    var byTheme=distinct(themes), byPlace=distinct(places);
+
+    var lede=el("p",{cls:"home-lede"});
+    lede.appendChild(el("b",{text:String(papers)}));
+    lede.appendChild(document.createTextNode(" papers on philanthropy in the Gulf, "));
+    lede.appendChild(el("b",{text:String(byTheme)}));
+    lede.appendChild(document.createTextNode(" organised by theme and "));
+    lede.appendChild(el("b",{text:String(byPlace)}));
+    lede.appendChild(document.createTextNode(" by jurisdiction. "));
+    lede.appendChild(el("b",{text:String(refs)}));
+    lede.appendChild(document.createTextNode(" references, "));
+    lede.appendChild(el("b",{text:String(mins)}));
+    lede.appendChild(document.createTextNode(" minutes of reading."));
+    left.appendChild(lede);
+
+    left.appendChild(el("h2",{cls:"axis-h",text:"By theme"}));
+    left.appendChild(axisList(themes,"axis-theme"));
+
+    left.appendChild(el("h2",{cls:"axis-h",text:"By jurisdiction"}));
+    /* THE SENTENCE THAT STOPS A READER ADDING THE ROWS UP, and it took a correction. It first said
+       these were the same papers read by country, which is false: the thematic and jurisdictional
+       papers are two different sets, 20 and 15. What DOES repeat is inside this axis, where a paper
+       covering three states is listed under each of them. */
+    left.appendChild(el("p",{cls:"axis-note",
+      text:"A separate set of country papers. One covering several states is listed under each, "
+         + "so these rows add up to more than the " + byPlace + " papers behind them."}));
+    left.appendChild(axisList(places,"axis-place"));
+
     host.appendChild(left);
     window.scrollTo(0,0);
   }
@@ -507,18 +579,50 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
          rather than as a decision, and it made this landing the only list on the site whose
          rules stop short of the edge. */
       ".home-col:has(.home-toc){max-width:none;margin-inline:0}"+
-      ".home-toc{list-style:none;margin:var(--s4) 0 0;padding:0;counter-reset:toc}"+
-      ".home-toc li{counter-increment:toc;border-top:1px solid var(--line)}"+
-      ".home-toc li:last-child{border-bottom:1px solid var(--line)}"+
-      ".home-toc a{display:flex;align-items:baseline;gap:18px;padding:17px 4px;"+
-        "text-decoration:none;color:var(--ink)}"+
-      ".home-toc a::before{content:counter(toc,decimal-leading-zero);flex:none;"+
-        "font:600 11px/1.4 var(--mono);letter-spacing:.1em;color:var(--ink-3)}"+
-      ".home-toc .toc-t{font:600 clamp(17px,1.7vw,21px)/1.3 var(--serif);letter-spacing:-.01em;"+
-        "max-width:62ch}"+
-      ".home-toc a:hover{background:var(--accent-soft)}"+
-      ".home-toc a:hover .toc-t{color:var(--accent-2)}"+
-      ".home-toc a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}";
+      /* THE COLUMN IS THE LIST. .home-col centres a 76ch measure, which suits prose and leaves a
+         short list floating in a wide sheet, so here it starts at the sheet's own left edge. The
+         ROW spans it and the TEXT is measured, which is this page's existing convention: ol.chapters
+         sets no width and caps .ch-t at 62ch instead. */
+      ".home-col:has(.axis){max-width:none;margin-inline:0}"+
+
+      ".home-lede{margin:var(--s3) 0 0;max-width:62ch;"+
+        "font:400 17px/1.55 var(--sans);color:var(--ink-2)}"+
+      ".home-lede b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}"+
+
+      /* A GROUP HEADING, not a decorated one. Mono uppercase at label size is what this site uses
+         for a structural label everywhere else, so the two axes are named in the site's own voice. */
+      ".axis-h{margin:var(--s5) 0 0;font:600 11px/1.4 var(--mono);letter-spacing:.17em;"+
+        "text-transform:uppercase;color:var(--ink-3)}"+
+      ".axis-note{margin:10px 0 0;max-width:64ch;font:400 14.5px/1.55 var(--sans);"+
+        "color:var(--ink-3)}"+
+
+      ".axis{list-style:none;margin:var(--s3) 0 0;padding:0}"+
+      ".axis li{border-top:1px solid var(--line)}"+
+      ".axis li:last-child{border-bottom:1px solid var(--line)}"+
+      ".axis a{display:flex;align-items:baseline;justify-content:space-between;gap:24px;"+
+        "padding:16px 4px;text-decoration:none;color:var(--ink)}"+
+      ".axis-t{font:600 clamp(17px,1.7vw,21px)/1.3 var(--serif);letter-spacing:-.01em;"+
+        "max-width:52ch}"+
+      /* the count is metadata, so it takes the metadata treatment and tabular figures, which keeps
+         the column of numbers aligned down the list */
+      ".axis-m{flex:none;font:400 13px/1.4 var(--mono);letter-spacing:.06em;color:var(--ink-3);"+
+        "font-variant-numeric:tabular-nums;white-space:nowrap}"+
+      ".axis-m b{font-weight:600;color:var(--ink-2)}"+
+      /* the read time is information, so it takes a text colour. --line-2 is a hairline colour and
+         measured 1.44:1 against the card, which is not readable by anyone. */
+      ".axis-m i{font-style:normal;color:var(--ink-3)}"+
+
+      /* GREEN IS GEOGRAPHY. It appears on the jurisdictional axis and nowhere else on this page,
+         and the thematic axis carries no colour at all, because the register's rule is that a topic
+         is carried by its words. That is the whole reason these two lists look different. */
+      ".axis-place .axis-t{color:var(--i-country-ink,#1B5A50)}"+
+      ".axis-place .axis-m b{color:var(--i-country-ink,#1B5A50)}"+
+
+      ".axis a:hover{background:var(--accent-soft)}"+
+      ".axis-theme a:hover .axis-t{color:var(--accent-2)}"+
+      ".axis-place a:hover .axis-t{text-decoration:underline;text-underline-offset:3px}"+
+      ".axis a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}"+
+      "@media (max-width:600px){.axis a{flex-wrap:wrap;gap:4px}.axis-m{width:100%}}";
     document.head.appendChild(st);
   })();
 
