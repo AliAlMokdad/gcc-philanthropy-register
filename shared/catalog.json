@@ -1,0 +1,444 @@
+{
+ "region_papers": [
+  {
+   "slug": "choosing-a-legal-form-for-philanthropic-work-in-the-gcc-a-jurisdiction",
+   "title": "Choosing a Legal Form for Philanthropic Work in the GCC: A Jurisdiction-First Decision Method",
+   "minutes": 2
+  },
+  {
+   "slug": "registration-is-not-fundraising-permission-the-three-authorization-mod",
+   "title": "Registration Is Not Fundraising Permission: The Three-Authorization Model",
+   "minutes": 2
+  }
+ ],
+ "generated_from": {
+  "data.json": 1862,
+  "flows.json": "2026-08-19",
+  "news-feed.json": "2026-08-20T14:47:10Z",
+  "oecd.json": "2026-08-19T21:06:23Z",
+  "toolkit/notes.json": "2026-08-20"
+ },
+ "coverage_statuses": [
+  "covered",
+  "aggregate_only",
+  "no_observations",
+  "not_authored"
+ ],
+ "countries": {
+  "ARE": {
+   "label": "United Arab Emirates",
+   "aliases": [
+    "ARE",
+    "United Arab Emirates"
+   ],
+   "register_slug": "united-arab-emirates",
+   "member_slug": "uae",
+   "toolkit_section": "uae",
+   "papers": [
+    {
+     "slug": "the-uae-s-public-benefit-organization-framework-associations-national-",
+     "title": "The UAE's Public-Benefit Organization Framework: Associations, National Societies, Unions, and Solidarity Funds",
+     "minutes": 2
+    },
+    {
+     "slug": "registering-a-public-benefit-organization-in-the-uae-federal-and-emira",
+     "title": "Registering a Public-Benefit Organization in the UAE: Federal and Emirate-Level Decision Paths",
+     "minutes": 2
+    },
+    {
+     "slug": "uae-tax-treatment-of-philanthropy-qualifying-public-benefit-entities-d",
+     "title": "UAE Tax Treatment of Philanthropy: Qualifying Public Benefit Entities, Donor Deductions, and VAT",
+     "minutes": 2
+    },
+    {
+     "slug": "foreign-organizations-entering-qatar-saudi-arabia-and-the-uae-partners",
+     "title": "Foreign Organizations Entering Qatar, Saudi Arabia, and the UAE: Partnership, Branch, or Local Entity?",
+     "minutes": 2
+    },
+    {
+     "slug": "building-philanthropy-knowledge-and-institutional-relationships-in-the",
+     "title": "Building Philanthropy Knowledge and Institutional Relationships in the UAE and Dubai",
+     "minutes": 2
+    }
+   ],
+   "register_areas": [
+    "Abu Dhabi",
+    "Ajman",
+    "Dubai",
+    "Fujairah",
+    "Ras Al Khaimah",
+    "Sharjah",
+    "Umm Al Quwain"
+   ],
+   "coverage": {
+    "register": {
+     "status": "covered",
+     "count": 689
+    },
+    "flows": {
+     "status": "covered",
+     "itemised_rows": 11,
+     "reported_usd": 6888966351,
+     "reported_flows": 925
+    },
+    "news": {
+     "status": "covered",
+     "count": 1,
+     "window_days": 180
+    },
+    "toolkit": {
+     "status": "covered",
+     "count": 5
+    },
+    "oecd": {
+     "status": "covered"
+    }
+   }
+  },
+  "SAU": {
+   "label": "Saudi Arabia",
+   "aliases": [
+    "SAU",
+    "Saudi Arabia"
+   ],
+   "register_slug": "saudi-arabia",
+   "member_slug": "ksa",
+   "toolkit_section": "saudi",
+   "papers": [
+    {
+     "slug": "saudi-arabia-s-nonprofit-legal-forms-associations-civil-foundations-fa",
+     "title": "Saudi Arabia's Nonprofit Legal Forms: Associations, Civil Foundations, Family Funds, and Waqf",
+     "minutes": 2
+    },
+    {
+     "slug": "establishing-a-saudi-nonprofit-from-founder-eligibility-to-registratio",
+     "title": "Establishing a Saudi Nonprofit: From Founder Eligibility to Registration Certificate",
+     "minutes": 2
+    },
+    {
+     "slug": "zakat-income-tax-and-vat-for-saudi-nonprofits-and-donors",
+     "title": "Zakat, Income Tax, and VAT for Saudi Nonprofits and Donors",
+     "minutes": 2
+    },
+    {
+     "slug": "foreign-organizations-entering-qatar-saudi-arabia-and-the-uae-partners",
+     "title": "Foreign Organizations Entering Qatar, Saudi Arabia, and the UAE: Partnership, Branch, or Local Entity?",
+     "minutes": 2
+    },
+    {
+     "slug": "building-an-evidence-based-philanthropy-network-in-qatar-and-saudi-ara",
+     "title": "Building an Evidence-Based Philanthropy Network in Qatar and Saudi Arabia",
+     "minutes": 2
+    }
+   ],
+   "register_areas": [
+    "KSA - Asir",
+    "KSA - Eastern Province",
+    "KSA - Madinah",
+    "KSA - Makkah",
+    "KSA - Other Regions",
+    "KSA - Qassim",
+    "KSA - Riyadh"
+   ],
+   "coverage": {
+    "register": {
+     "status": "covered",
+     "count": 542
+    },
+    "flows": {
+     "status": "covered",
+     "itemised_rows": 2,
+     "reported_usd": 10394551759,
+     "reported_flows": 2818
+    },
+    "news": {
+     "status": "covered",
+     "count": 12,
+     "window_days": 180
+    },
+    "toolkit": {
+     "status": "covered",
+     "count": 5
+    },
+    "oecd": {
+     "status": "covered"
+    }
+   }
+  },
+  "QAT": {
+   "label": "Qatar",
+   "aliases": [
+    "QAT",
+    "Qatar"
+   ],
+   "register_slug": "qatar",
+   "member_slug": "qatar",
+   "toolkit_section": "qatar",
+   "papers": [
+    {
+     "slug": "qatar-s-nonprofit-architecture-charitable-associations-private-foundat",
+     "title": "Qatar's Nonprofit Architecture: Charitable Associations, Private Foundations, and Other NPOs",
+     "minutes": 2
+    },
+    {
+     "slug": "registering-a-private-association-or-foundation-in-qatar-evidence-sequ",
+     "title": "Registering a Private Association or Foundation in Qatar: Evidence, Sequence, and Governance",
+     "minutes": 2
+    },
+    {
+     "slug": "tax-treatment-of-philanthropy-in-qatar-entity-exemptions-and-donor-ded",
+     "title": "Tax Treatment of Philanthropy in Qatar: Entity Exemptions and Donor Deductions",
+     "minutes": 2
+    },
+    {
+     "slug": "foreign-organizations-entering-qatar-saudi-arabia-and-the-uae-partners",
+     "title": "Foreign Organizations Entering Qatar, Saudi Arabia, and the UAE: Partnership, Branch, or Local Entity?",
+     "minutes": 2
+    },
+    {
+     "slug": "building-an-evidence-based-philanthropy-network-in-qatar-and-saudi-ara",
+     "title": "Building an Evidence-Based Philanthropy Network in Qatar and Saudi Arabia",
+     "minutes": 2
+    }
+   ],
+   "register_areas": [
+    "Qatar - Al Rayyan",
+    "Qatar - Doha",
+    "Qatar - Other"
+   ],
+   "coverage": {
+    "register": {
+     "status": "covered",
+     "count": 129
+    },
+    "flows": {
+     "status": "covered",
+     "itemised_rows": 10,
+     "reported_usd": 5366650423,
+     "reported_flows": 3037
+    },
+    "news": {
+     "status": "covered",
+     "count": 28,
+     "window_days": 180
+    },
+    "toolkit": {
+     "status": "covered",
+     "count": 5
+    },
+    "oecd": {
+     "status": "covered"
+    }
+   }
+  },
+  "KWT": {
+   "label": "Kuwait",
+   "aliases": [
+    "KWT",
+    "Kuwait"
+   ],
+   "register_slug": "kuwait",
+   "member_slug": "kuwait",
+   "toolkit_section": null,
+   "papers": [],
+   "register_areas": [
+    "Kuwait"
+   ],
+   "coverage": {
+    "register": {
+     "status": "covered",
+     "count": 199
+    },
+    "flows": {
+     "status": "covered",
+     "itemised_rows": 25,
+     "reported_usd": 767682370,
+     "reported_flows": 4546
+    },
+    "news": {
+     "status": "covered",
+     "count": 2,
+     "window_days": 180
+    },
+    "toolkit": {
+     "status": "not_authored",
+     "count": 0
+    },
+    "oecd": {
+     "status": "covered"
+    }
+   }
+  },
+  "BHR": {
+   "label": "Bahrain",
+   "aliases": [
+    "BHR",
+    "Bahrain"
+   ],
+   "register_slug": "bahrain",
+   "member_slug": "bahrain",
+   "toolkit_section": null,
+   "papers": [],
+   "register_areas": [
+    "Bahrain"
+   ],
+   "coverage": {
+    "register": {
+     "status": "covered",
+     "count": 179
+    },
+    "flows": {
+     "status": "aggregate_only",
+     "itemised_rows": 0,
+     "reported_usd": 39877,
+     "reported_flows": 1
+    },
+    "news": {
+     "status": "no_observations",
+     "count": 0,
+     "window_days": 180
+    },
+    "toolkit": {
+     "status": "not_authored",
+     "count": 0
+    },
+    "oecd": {
+     "status": "covered"
+    }
+   }
+  },
+  "OMN": {
+   "label": "Oman",
+   "aliases": [
+    "OMN",
+    "Oman"
+   ],
+   "register_slug": "oman",
+   "member_slug": "oman",
+   "toolkit_section": null,
+   "papers": [],
+   "register_areas": [
+    "Oman"
+   ],
+   "coverage": {
+    "register": {
+     "status": "covered",
+     "count": 124
+    },
+    "flows": {
+     "status": "covered",
+     "itemised_rows": 1,
+     "reported_usd": 2168698,
+     "reported_flows": 10
+    },
+    "news": {
+     "status": "no_observations",
+     "count": 0,
+     "window_days": 180
+    },
+    "toolkit": {
+     "status": "not_authored",
+     "count": 0
+    },
+    "oecd": {
+     "status": "covered"
+    }
+   }
+  }
+ },
+ "places": {
+  "Abu Dhabi": {
+   "label": "Abu Dhabi",
+   "country": "ARE",
+   "source": "register.area"
+  },
+  "Ajman": {
+   "label": "Ajman",
+   "country": "ARE",
+   "source": "register.area"
+  },
+  "Dubai": {
+   "label": "Dubai",
+   "country": "ARE",
+   "source": "register.area",
+   "count": 2
+  },
+  "Fujairah": {
+   "label": "Fujairah",
+   "country": "ARE",
+   "source": "register.area"
+  },
+  "Ras Al Khaimah": {
+   "label": "Ras Al Khaimah",
+   "country": "ARE",
+   "source": "register.area"
+  },
+  "Sharjah": {
+   "label": "Sharjah",
+   "country": "ARE",
+   "source": "register.area"
+  },
+  "Umm Al Quwain": {
+   "label": "Umm Al Quwain",
+   "country": "ARE",
+   "source": "register.area"
+  },
+  "KSA - Asir": {
+   "label": "KSA - Asir",
+   "country": "SAU",
+   "source": "register.area"
+  },
+  "KSA - Eastern Province": {
+   "label": "KSA - Eastern Province",
+   "country": "SAU",
+   "source": "register.area"
+  },
+  "KSA - Madinah": {
+   "label": "KSA - Madinah",
+   "country": "SAU",
+   "source": "register.area"
+  },
+  "KSA - Makkah": {
+   "label": "KSA - Makkah",
+   "country": "SAU",
+   "source": "register.area"
+  },
+  "KSA - Other Regions": {
+   "label": "KSA - Other Regions",
+   "country": "SAU",
+   "source": "register.area"
+  },
+  "KSA - Qassim": {
+   "label": "KSA - Qassim",
+   "country": "SAU",
+   "source": "register.area"
+  },
+  "KSA - Riyadh": {
+   "label": "KSA - Riyadh",
+   "country": "SAU",
+   "source": "register.area"
+  },
+  "Qatar - Al Rayyan": {
+   "label": "Qatar - Al Rayyan",
+   "country": "QAT",
+   "source": "register.area"
+  },
+  "Qatar - Doha": {
+   "label": "Qatar - Doha",
+   "country": "QAT",
+   "source": "register.area"
+  },
+  "Qatar - Other": {
+   "label": "Qatar - Other",
+   "country": "QAT",
+   "source": "register.area"
+  },
+  "GCC-wide": {
+   "label": "GCC-wide",
+   "country": null,
+   "scope": "region",
+   "source": "toolkit.jurisdictions",
+   "count": 2
+  }
+ }
+}

@@ -16,8 +16,19 @@ A register of philanthropic funders, donors, foundations, corporate giving progr
 endowments and impact investors across all six GCC states. It exists as two deliverables:
 
 **The Excel**, which is the master.
-`Desktop\GCC-Philanthropy-Donors-Funders.xlsx`
+`Desktop\UAE-Philanthropy-Project\GCC-Philanthropy-Donors-Funders another version.xlsx`
 1,862 organisations, 22 tabs, 12 columns, 5,084 live hyperlinks.
+
+> **Read the filename twice.** The master is the one whose name ends "another version". The file
+> beside it called plainly `GCC-Philanthropy-Donors-Funders.xlsx` is an older UAE-era workbook:
+> 1,344 rows, 19 tabs, no Kuwait, no Bahrain, no Oman. This brief used to name that one, and its
+> row and tab counts above have always described the other file. Exporting from the wrong one
+> removes 518 rows, empties three countries, prints "rows exported : 1344" and exits 0, so nothing
+> about the run looks wrong. `export_site_data.py` now refuses a shrink and names what would
+> disappear, but a guard only helps after the wrong file has already been opened.
+>
+> Verified 21 August 2026: exporting from "another version" reproduces the committed data.json
+> byte for byte. That is what makes it the master, not its name.
 
 **The website**, public, built from the Excel.
 Live: https://alialmokdad.github.io/gcc-philanthropy-register/
