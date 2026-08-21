@@ -156,3 +156,80 @@ uncommitted and intact in the working tree.
 **So, in this repo:** re-read `index.html` immediately before editing it, stage exact paths, and
 never `git add -A`. If the diff is bigger than what you changed, stop and look at it before
 committing.
+
+---
+
+## 6. Session of 21 August 2026: the four site-meta pages, and a live 404 they were fixing
+
+Written by the session that shipped `privacy/`, `terms/`, `faq/`, `connect/`, `shared/doc.css` and
+`tools/build-legal.py`. Two sessions were again in this repository at the same time.
+
+### What happened to the footer, and why a commit message does not describe its own contents
+
+`footer.sig` in `index.html` became a three-column layout: FAQ and Connect on the left, the
+existing credit paragraph unchanged in the middle, Terms of Use and Privacy Policy on the right,
+stacking credit-first below 700px. Those 35 added lines were **swept into commit `ed2725a`**, whose
+message is about door hover states. Nothing was lost, and git recorded the change as pure
+insertions around a byte-identical credit paragraph, but `ed2725a` contains footer work it does not
+mention.
+
+**The consequence was a live defect.** `ed2725a` put four footer links on the live site while the
+pages behind them did not exist, so `/faq/`, `/connect/`, `/terms/` and `/privacy/` returned 404 on
+gccphilanthropy.org until `3bfcc14`. If `index.html` is ever reverted, keep the `.sig-cols` block or
+the live footer loses those links again.
+
+### THE FOUR PAGES ARE GENERATED. Do not hand-edit them.
+
+`tools/build-legal.py` renders them from a Python content module that also produces the Word
+edition of the same three notices. One source of words, two renderers, for the reason
+`shared/tokens.css` is checked against the `:root` block in `index.html`: a legal statement written
+twice will differ, and the difference is found by the person the notice protects. A hand edit is
+silently overwritten by the next build.
+
+The only strings the build contributes are the connect form's field labels, its button, its human
+check and its two result lines. A check over the built pages finds zero sentences absent from the
+source.
+
+**Known weakness: the content module lives outside the repository**, in a session scratchpad. It
+has been flagged to Ali. Until it moves in, the generator cannot be re-run by anyone who does not
+have that file.
+
+### Decisions that were measured, so nobody re-derives them
+
+- **The sheet is capped at 920px with the column centred.** At the register's full 1280 measure the
+  sheet came out 1217px around a 582px text column, leaving a 507px void on ONE side, which reads
+  as broken rather than as a wide margin. Measured before and after.
+- **Weights are 400 and 600 only.** Source Serif 4 is a variable face that will render 200 if asked,
+  and the font URL on these pages requests only 400 and 600 for that reason.
+- **The four pages carry the product bar but mark no entry current.** They are not products. The
+  page tab names the surface, as on the toolkit and the member states.
+- A partner review caught the three part standfirsts hardcoded in BOTH builders. They now live in
+  the content module and both renderers read them from there. The rebuild after that refactor was
+  byte-identical, which is what a pure de-duplication should be.
+
+### The connect form, and the mail that now exists
+
+The form posts to `alialmokdadleadership.com/gccp-connect.php` on the shared cPanel, because GitHub
+Pages cannot run a script. It sends one message to `connect@gccphilanthropy.org` and one to a
+personal address, and reports success only when the first is accepted. Honeypot, minimum elapsed
+time and the human check are all enforced server-side; the client checks are advisory. The form has
+a real `action` and `method`, so it works without JavaScript.
+
+**It is origin-locked to `https://gccphilanthropy.org`, so it returns 403 from localhost. That is
+correct behaviour, not a bug**, and it means the form cannot be tested from a preview server.
+
+`connect@gccphilanthropy.org` is now a real mailbox on that cPanel. The domain's DNS changed with
+it: MX to `mail.gccphilanthropy.org`, new A records for `mail` and `webmail`, and an SPF record
+naming `ip4:198.187.31.178`. **The four GitHub Pages A records and the www CNAME were not touched
+and the site still serves 200.** DKIM and DMARC are still missing and Ali knows.
+
+Note for anyone reading the SPF: `.178` is this domain's sending IP per cPanel's own Email
+Deliverability page, and `ailiteracyfoundation.eu` on the same server uses it too. The `.64` in
+`alialmokdadleadership.com`'s SPF is a different node and copying it here would have published an
+SPF that fails.
+
+### Untracked, deliberately
+
+Two files in the repository root, `GCC Philanthropy Register - Privacy, Terms and FAQ.docx` and
+`.pdf`. Deliverables Ali asked to keep in the project folder. **Do not `git add -A`**: committing
+them would make them publicly downloadable from the live site.

@@ -194,15 +194,13 @@ def title_block(h1, standfirst, index_items):
             '<dl class="meta"><dt>Version</dt><dd>%s</dd></dl>\n%s'
             % (E(h1), E(standfirst), E(C.DATED), idx))
 
-# The standfirsts are the part descriptions from the Word edition, so they are the document's own
-# words and not a line written for the web.
+# The standfirsts come from the content module, the same place the Word edition reads them, so the
+# two renderers cannot drift. They were hardcoded in both builders until a partner review pointed
+# out that a sentence with two homes is a sentence that will eventually differ.
 PAGES = [
-    ("privacy", "Privacy Policy", "Privacy Policy",
-     "How the register handles data, what it does not collect, and your rights.", C.PRIVACY),
-    ("terms", "Terms of Use", "Terms of Use",
-     "The terms on which the register may be read, quoted, cited and reused.", C.TERMS),
-    ("faq", "Frequently Asked Questions", "FAQ",
-     "Plain answers to what the register is asked most often.", C.FAQ),
+    ("privacy", "Privacy Policy", "Privacy Policy", C.STANDFIRST["privacy"], C.PRIVACY),
+    ("terms", "Terms of Use", "Terms of Use", C.STANDFIRST["terms"], C.TERMS),
+    ("faq", "Frequently Asked Questions", "FAQ", C.STANDFIRST["faq"], C.FAQ),
 ]
 
 written = []
