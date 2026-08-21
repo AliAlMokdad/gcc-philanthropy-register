@@ -716,7 +716,7 @@ body:has(#intel:not([hidden])) #gulf{display:block}
 }
 @media (forced-colors:active){ #gulf{display:none} }
 @media print{ #gulf{display:none !important} }
-footer.sig .wrap{position:relative;z-index:1;padding-top:var(--s4);padding-bottom:var(--s4)}
+footer.sig .wrap{position:relative;z-index:1;padding-top:var(--s3);padding-bottom:var(--s3)}
 /* the credit steps from --ink-3 to --ink-2. It is the most exposed text over the blend, and one
    step darker takes it from 4.57:1 to 7.9:1 while staying as quiet as a credit line should be. */
 footer.sig p{margin:0;display:flex;align-items:center;gap:11px;justify-content:flex-end;
@@ -745,10 +745,14 @@ footer.sig a.sig-ava:hover,footer.sig a.sig-ava:focus-visible{transform:scale(1.
    the two groups follow it as rows rather than columns. */
 footer.sig .sig-cols{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
   gap:var(--s4)}
-footer.sig .sig-col{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+footer.sig .sig-col{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none}
 footer.sig .sig-col-l{align-items:flex-start}
 footer.sig .sig-col-r{align-items:flex-end}
-footer.sig .sig-col a{min-height:32px;font:600 11px/1.6 var(--mono);letter-spacing:.14em;
+/* THESE TWO NUMBERS ARE ALSO IN chrome.css AND MUST MOVE TOGETHER. This page redeclares the
+   footer column, so a change made only in the shared sheet is silently overridden here and the
+   footer ends up tighter on thirteen pages and unchanged on the one that matters most. 26px keeps
+   the link above the 24px minimum target size. */
+footer.sig .sig-col a{min-height:26px;font:600 11px/1.6 var(--mono);letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-3);text-decoration:none}
 footer.sig .sig-col a:hover{color:var(--accent);text-decoration:underline;
   text-decoration-thickness:1px;text-underline-offset:3px}
@@ -974,7 +978,7 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
   /* 540, not 480: a circle of radius 300 needs 206px above and below the centre plus half a
      spoke, where the old oval only ever reached 182px vertically. */
   .ring{display:block;position:relative;width:100%;max-width:880px;height:588px;
-    margin:var(--s4) auto calc(var(--s5) + var(--s5))}
+    margin:var(--s4) auto calc(var(--s5) + var(--s4))}
   .ring .ring-mark{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);margin:0}
   .ring a.spoke{position:absolute;transform:translate(-50%,-50%);width:154px;padding:6px}
   /* ONE RADIUS, NOT AN OVAL, AND IN PIXELS SO IT SURVIVES A NARROWER RING.
@@ -1060,7 +1064,7 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
    removal was for. */
 
 /* the one search, centred under the mark, flat and square like the rest of the register */
-.portal-search{display:flex;gap:10px;max-width:680px;margin:0 auto calc(var(--s5) + var(--s2))}
+.portal-search{display:flex;gap:10px;max-width:680px;margin:0 auto calc(var(--s4) + var(--s3))}
 .portal-search input{flex:1 1 auto;min-width:0;height:56px;font:16.5px/1.2 var(--sans);
   color:var(--ink);background:var(--paper);border:1px solid var(--line-2);border-radius:7px;
   padding:0 20px;box-shadow:0 1px 2px rgba(20,24,36,.05),inset 0 1px 0 rgba(255,255,255,.5);
