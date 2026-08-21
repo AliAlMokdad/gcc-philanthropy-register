@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GCC Philanthropy | Gulf Cooperation Council Philanthropy</title>
-<meta name="description" content="A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
+<title>Gulf Cooperation Council (GCC) Philanthropy</title>
+<meta name="description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
 <meta name="color-scheme" content="light dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -476,7 +476,7 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
        this extends a convention rather than inventing one, and it keeps a register action from
        borrowing the colour of a funding record it has nothing to do with.
        This used to cite the home page's "See the full list" bar as the precedent. That bar is
-       gone: the way into the whole register is now a door beside GCC Members, in the shared
+       gone: the way into the whole register is now a door beside Countries, in the shared
        accent the other doors use. The convention still holds, it just no longer has that one
        example to point at, and a rationale citing something that no longer exists is worse
        than one stated plainly.
@@ -870,20 +870,17 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 .portal{margin:0 auto;padding:var(--s4) 0 0;text-align:center}
 .portal-kicker{margin:0 0 16px;font:600 12px/1 var(--mono);letter-spacing:.24em;
   text-transform:uppercase;color:var(--ink-3)}
-.portal-word{max-width:740px;margin:0 auto;font:500 clamp(34px,6vw,60px)/1.08 var(--display);
-  color:var(--ink);letter-spacing:-1px;font-optical-sizing:auto;text-wrap:balance}
-/* THE IDENTITY IS THREE LINES, IN THIS ORDER: the name, what it is for, then what it covers.
-   The rule under the name closes the nameplate, so the two lines below it read as description
-   rather than as more title. The sentence names the six countries' council in full because it is
-   the one place on this screen that spells the abbreviation out. */
-.portal-tag{max-width:32ch;margin:20px auto 0;font:400 clamp(17px,2.2vw,22px)/1.35 var(--display);
-  color:var(--ink-2);letter-spacing:-.1px;text-wrap:balance}
+.portal-word{max-width:740px;margin:0 auto;font:500 clamp(24px,3.5vw,38px)/1.16 var(--display);
+  color:var(--ink);letter-spacing:-.2px;font-optical-sizing:auto;text-wrap:balance}
+/* THE IDENTITY IS THE NAME AND ONE SENTENCE. A tagline sat between them and Ali removed it. The
+   rule under the name closes the nameplate, so what follows reads as description rather than as
+   more title. The sentence itself is his wording. */
 .portal-lede{max-width:58ch;margin:14px auto 0;font:400 15.5px/1.65 var(--sans);
   color:var(--ink-3);text-wrap:pretty}
 /* no font-style:italic: the italic subsets are no longer requested, so this would be a sheared
    fake. Colour and weight already separate the abbreviation from the name around it. */
 .portal-word .abbr{color:inherit;font-weight:400}
-.portal-word::after{content:"";display:block;width:54px;height:3px;margin:20px auto 0;
+.portal-word::after{content:"";display:block;width:54px;height:3px;margin:14px auto 0;
   background:var(--spectrum);border-radius:2px}
 
 /* the ring: a 3x3 grid, mark in the centre, six states around it. Grid, not absolute
@@ -973,7 +970,21 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
    Each flag now takes its own width from its own ratio, so the artwork IS the box: there is no
    outline to notice and no empty space to fill. The height comes down from 56 to 48 so that Qatar,
    the widest at 2.545, is 122px inside a 154px spoke rather than pressed against its edge. */
-.spoke .mark{display:block;height:100%;width:auto;border-radius:1px}
+/* ONE SIZE FOR ALL SIX, and that is a deliberate reversal of the note above.
+   Letting each flag take its own width from its own ratio removed the letterboxing, which was
+   the right fix for the border, but it left the six flags visibly unequal: measured on the
+   rendered boxes, Qatar came out 122.2px wide and Saudi Arabia 72.0px at the same 48px height,
+   a spread of 70 per cent, and those were the two Ali picked out by eye without being told.
+   In a row of six countries given equal billing, one flag half the width of another reads as a
+   ranking. So the plate is now a fixed 96 by 48 and each flag fills it exactly.
+   96 by 48 is 2:1, which is chosen rather than averaged: the UAE, Kuwait and Oman flags are
+   already 1:2 officially, so three of the six are untouched at their true proportions. The
+   other three are fitted to it, Bahrain by 20 per cent, Saudi Arabia by 33 and Qatar by 21.
+   The alternative was a common box with each flag whole inside it, which is the letterboxing
+   that was removed, so the choice is between equal boxes and true ratios and equal boxes is
+   what was asked for. Nothing is cropped: the field is filled, so the shahada and the nine
+   points are both entirely present, at a different width than official. */
+.spoke .mark{display:block;height:48px;width:96px;border-radius:1px}
 .spoke-nm{font:600 16px/1.22 var(--serif);color:var(--ink);text-wrap:balance}
 .spoke:hover .spoke-nm,.spoke:focus-visible .spoke-nm{color:var(--accent)}
 .spoke-ct{font:400 12px/1 var(--mono);letter-spacing:.03em;color:var(--ink-3);
@@ -1034,9 +1045,7 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 }
 /* on a phone the button drops under a full-width field so the placeholder reads whole */
 @media (max-width:480px){
-  /* MEASURED, NOT ESTIMATED: at 375px the name holds one line to 44px and breaks at 46px,
-     so 44 is the ceiling and it scales below that rather than sitting at one fixed size. */
-  .portal-word{font-size:clamp(30px,11vw,44px);line-height:1.06;letter-spacing:-.6px}
+  .portal-word{font-size:25px;line-height:1.12}
   .portal-search{flex-wrap:wrap}
   .portal-search input{flex-basis:100%;padding:0 14px}
   .portal-search input::placeholder{font-size:15px}
@@ -1253,6 +1262,13 @@ ol.ranked a::before{top:9px;bottom:9px}
    both stand down. Hidden in CSS rather than by touching another lane's DOM. */
 body.list-only #intel{display:none !important}
 body.list-only #listgate{display:none !important}
+/* The category index belongs to the register route and only to it. #/a/list and #/a/all are both
+   whole-register views, so the script's own gate is true on each, but the Atlas view already opens
+   with the funding briefing above the full list and a 26-item directory underneath that made the
+   page long without answering anything the briefing had not. Route is decided here, in the same
+   place and the same way as the two lines above it; whether a search is running is decided in
+   syncList(). Two conditions, each in the layer that owns it. */
+body:not(.list-only) #cats{display:none !important}
 .i-card{background:var(--i-surface);border:1px solid var(--line);border-radius:3px;overflow:hidden}
 
 /* ---- type scale, referenced not guessed ---- */
@@ -2345,12 +2361,12 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Gulf Cooperation Council (GCC) Philanthropy">
 <meta property="og:url" content="https://gccphilanthropy.org/">
-<meta property="og:title" content="GCC Philanthropy | Gulf Cooperation Council Philanthropy">
-<meta property="og:description" content="A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
+<meta property="og:title" content="Gulf Cooperation Council (GCC) Philanthropy">
+<meta property="og:description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
 <meta property="og:image" content="https://gccphilanthropy.org/gcc-emblem.svg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="GCC Philanthropy | Gulf Cooperation Council Philanthropy">
-<meta name="twitter:description" content="A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
+<meta name="twitter:title" content="Gulf Cooperation Council (GCC) Philanthropy">
+<meta name="twitter:description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gccphilanthropy.org/#website","url":"https://gccphilanthropy.org/","name":"GCC Philanthropy","alternateName":"Gulf Cooperation Council Philanthropy","inLanguage":"en-GB","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://gccphilanthropy.org/?search={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Dataset","@id":"https://gccphilanthropy.org/#register","name":"Gulf Cooperation Council (GCC) Philanthropy Register","description":"A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.","url":"https://gccphilanthropy.org/","inLanguage":"en-GB","creator":{"@type":"Person","name":"Ali Al Mokdad"},"isAccessibleForFree":true,"variableMeasured":["name","type","focus","country","city","website","email","phone","linkedin","contact","title","area"],"spatialCoverage":[{"@type":"Country","name":"United Arab Emirates"},{"@type":"Country","name":"Saudi Arabia"},{"@type":"Country","name":"Qatar"},{"@type":"Country","name":"Kuwait"},{"@type":"Country","name":"Bahrain"},{"@type":"Country","name":"Oman"}],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://gccphilanthropy.org/data.json"}}]}</script>
 <!-- seo:end -->
 </head>
@@ -2444,7 +2460,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
     <!-- the brand sits INSIDE the nav. It is a navigation link, and outside it the only
          content on this bar that was not in any landmark was the wordmark itself. -->
     <nav aria-label="GCC Philanthropy products">
-      <a class="pbar-brand" href="#">GCC Philanthropy</a>
+      <a class="pbar-brand" href="./" id="brandhome">GCC Philanthropy</a>
       <ul class="pbar-nav">
         <li><a href="#/a/all" data-nav="intel">Atlas</a></li>
         <li><a href="#/a/list" data-nav="register">Register</a></li>
@@ -2463,7 +2479,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
          said where you were. It is now a paragraph, styled exactly as before, and the h1 is the
          page's own name a few lines down. The home portal hides this whole masthead, so nothing
          about that view changes. -->
-    <p class="brandline"><a href="#" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></p>
+    <p class="brandline"><a href="./" id="home">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></p>
     <p class="kick" id="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
   </div>
   <span class="pagetab" id="pagetab" aria-hidden="true"></span>
@@ -2477,10 +2493,9 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 
   <div id="l1" hidden>
     <section class="portal" aria-labelledby="portal-word">
-      <h2 class="portal-word" id="portal-word">GCC Philanthropy</h2>
-      <p class="portal-tag">One platform for Gulf philanthropy.</p>
-      <p class="portal-lede">A registry, data, news and knowledge platform covering
-        philanthropy across the six Gulf Cooperation Council countries.</p>
+      <h2 class="portal-word" id="portal-word">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</h2>
+      <p class="portal-lede">A donor intelligence, registry, data, news and knowledge platform
+        covering philanthropy across the Gulf Cooperation Council countries.</p>
       <div class="ring" id="ring">
         <!-- INTEL BLOCK 1 of 4. The emblem keeps its original destination, the whole
              register at #/a/all. That page now opens with the funding intelligence above
@@ -2495,8 +2510,10 @@ body:has(#l1:not([hidden])) .pbar{display:none}
                placeholder="Describe mandate, focus area or location">
         <button type="submit" class="portal-go" aria-label="Search the register">Search</button>
       </form>
-      <!-- NEWS BLOCK 5 of 5: the way in from the front door. Under the search, above the
-           categories, because that is the order a reader uses this page in. -->
+      <!-- NEWS BLOCK 5 of 5: the way in from the front door. Under the search, because that is
+           the order a reader uses this page in. The category index that used to sit below this
+           now lives on the register page beside the full list, so this row is the last thing on
+           the landing and the five destinations are the whole of what it offers. -->
       <p class="portal-news">
         <a href="members/" id="membersdoor">
           <span class="pn-label">Countries</span>
@@ -2514,16 +2531,6 @@ body:has(#l1:not([hidden])) .pbar{display:none}
           <span class="pn-label">Toolkit</span>
         </a>
       </p>
-      <div class="cats" aria-labelledby="cats-title">
-        <div class="cats-head">
-          <h3 class="cats-title" id="cats-title">Organisation categories</h3>
-        </div>
-        <ol class="ranked" id="types"></ol>
-        <details class="more" id="moretypes">
-          <summary id="moresum"></summary>
-          <ol class="ranked" id="types-rest"></ol>
-        </details>
-      </div>
     </section>
   </div>
 
@@ -2537,7 +2544,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
       <span class="l2wash" id="l2wash" aria-hidden="true"></span>
       <span class="flagplate" id="flagplate" aria-hidden="true" hidden></span>
       <div class="inner">
-        <a class="back" href="#" id="back">Back to countries and categories</a>
+        <a class="back" href="./" id="back">Back to countries</a>
         <h1 class="sel" id="selname" tabindex="-1"></h1>
         <p class="sel-sub" id="selsub"></p>
       </div>
@@ -2576,6 +2583,22 @@ body:has(#l1:not([hidden])) .pbar{display:none}
         <label class="chip"><input type="checkbox" id="f-phone"><span>Phone</span></label>
         <label class="chip"><input type="checkbox" id="f-website"><span>Website</span></label>
       </fieldset>
+    </div>
+    <!-- ORGANISATION CATEGORIES. Moved here from the landing page, unchanged. It belongs on the
+         register beside the full list rather than on the front page: both are ways INTO the same
+         1,862 rows, and the reader who wants a category is already here. It is shown by
+         syncList() under exactly the condition that shows the gate below it, so the whole-register
+         view reads as search, then pick a category, then open everything, and all three fold away
+         the moment a search or a filter is running and the answer is the list itself. -->
+    <div class="cats" id="cats" aria-labelledby="cats-title" hidden>
+      <div class="cats-head">
+        <h3 class="cats-title" id="cats-title">Organisation categories</h3>
+      </div>
+      <ol class="ranked" id="types"></ol>
+      <details class="more" id="moretypes">
+        <summary id="moresum"></summary>
+        <ol class="ranked" id="types-rest"></ol>
+      </details>
     </div>
     <!-- THE GATE. Hidden in the markup and shown by syncList() only on the whole-register
          view with no search and no filter running. A country or category route never sees it. -->
@@ -2973,7 +2996,14 @@ function buildL1(){
     var a=make("a","spoke");
     a.href="#/c/"+slug(c.name);
     var flag=make("span","spoke-flag");
-    flag.appendChild(countryMark(c.name,"mark"));
+    /* preserveAspectRatio="none" is what lets one 96 by 48 plate hold six different official
+       ratios. It is set HERE and not inside countryMark() because the same function draws the
+       large flag on a country page, and that one is deliberately shown whole and undistorted at
+       its own proportions. Distorting it there would be wrong; matching six of them in a row
+       here is what makes the row read as six equals. */
+    var mk=countryMark(c.name,"mark");
+    mk.setAttribute("preserveAspectRatio","none");
+    flag.appendChild(mk);
     a.appendChild(flag);
     a.appendChild(make("span","spoke-nm",c.name));
     ring.appendChild(a);
@@ -3374,8 +3404,11 @@ var FIND={q:"",partial:false,related:0,total:0};
    KEYED BY THE ROW, NOT BY ITS INDEX. The file is an array of bitmasks in data.json row order,
    because that is 2.6KB over the wire against 40KB for the same thing with the words attached. Row
    order is exactly the coupling this file has been removing elsewhere, so two things guard it. The
-   index carries a fingerprint of the whole name column, recomputed here before anything is
-   believed. And the mapping is built into a Map keyed by the row array itself while walking
+   index carries a fingerprint of name, country and focus, recomputed here before anything is
+   believed. The name alone was the first version and it was the wrong column: every tag in that
+   file is derived from FOCUS, so editing a mandate without rebuilding served the old
+   classification with the fingerprint still matching. Reproduced before this changed.
+   And the mapping is built into a Map keyed by the row array itself while walking
    DATA.rows, so it survives ROWS having dropped a malformed row and shifted every index after it.
 
    IT FAILS CLOSED. If the fingerprint disagrees, or the file is missing, or its length is wrong,
@@ -3384,16 +3417,39 @@ var FIND={q:"",partial:false,related:0,total:0};
 var THEMES = null, THEME_MASK = null, themeLoading = null, themeFailed = false;
 var themeWanted = "";
 
-/* FNV-1a 32 over the name column, joined by newlines. The same function in ten lines of Python
-   lives in tools/identity.py, and both were run over the real register: both give 4270336304.
-   About 1ms here, so it is checked every time rather than trusted. */
-function nameFingerprint(rows){
-  var ni = F["name"], i, j, bytes, h = 0x811c9dc5 >>> 0, parts = [];
+/* FNV-1a 32 over name, country and focus. The same function in ten lines of Python lives in
+   tools/identity.py, and both were run over the real register: both give 797284964. About 1ms
+   here, so it is checked every time rather than trusted.
+
+   THREE COLUMNS, NOT ONE, and each is there for a failure that was reproduced.
+     name    is what identifies the row.
+     country because two rows are both called "Dolphin Energy", the UAE and Qatar arms of one
+             joint venture, and it is the only repeated name in the register. Swapping them was
+             invisible to a name-only fingerprint AND to a name-by-name comparison, while
+             exchanging their vectors and their theme tags.
+     focus   because both the theme bitmask and the vectors are DERIVED FROM THE MANDATE TEXT, so
+             editing a focus invalidates them without moving a row or changing a name.
+
+   The field joiner is character 31, the unit separator, rather than a printable character: the
+   exporter collapses whitespace but does not strip control characters, so no value can contain it
+   and two different registers cannot collide by a field boundary landing inside a value. Rows are
+   joined by a newline. Both sides hash the UTF-8 bytes, which is what makes Arabic, accented Latin
+   and emoji agree between Python and the browser. */
+var FP_COLUMNS = ["name", "country", "focus"];
+
+function rowFingerprint(rows){
+  var idx = [], c, i, j, r, cell, bytes, h = 0x811c9dc5 >>> 0, parts = [], one = [];
+  for(c = 0; c < FP_COLUMNS.length; c++) idx.push(F[FP_COLUMNS[c]]);
+  var SEP = String.fromCharCode(31), ROWSEP = String.fromCharCode(10);
   for(i = 0; i < rows.length; i++){
-    var v = rows[i] && rows[i][ni];
-    parts.push(v == null ? "" : String(v));
+    r = rows[i]; one.length = 0;
+    for(c = 0; c < idx.length; c++){
+      cell = r && idx[c] !== undefined ? r[idx[c]] : null;
+      one.push(cell == null ? "" : String(cell));
+    }
+    parts.push(one.join(SEP));
   }
-  bytes = new TextEncoder().encode(parts.join("\n"));
+  bytes = new TextEncoder().encode(parts.join(ROWSEP));
   for(j = 0; j < bytes.length; j++){
     h ^= bytes[j];
     h = Math.imul(h, 0x01000193) >>> 0;
@@ -3413,10 +3469,10 @@ function loadThemes(){
     var all = DATA && DATA.rows ? DATA.rows : ROWS;
     if(j.bits.length !== all.length)
       throw new Error("index has " + j.bits.length + " rows, data has " + all.length);
-    var fp = nameFingerprint(all);
-    if(j.name_fingerprint !== fp)
-      throw new Error("index fingerprint " + j.name_fingerprint + " does not match the register's " +
-                      fp + ": the register has changed since the index was built");
+    var fp = rowFingerprint(all);
+    if(j.fingerprint !== fp)
+      throw new Error("index fingerprint " + j.fingerprint + " does not match the register's " +
+                      fp + ": a name, a country or a mandate has changed since the index was built");
     THEMES = j;
     THEME_MASK = new Map();
     for(var i = 0; i < all.length; i++) THEME_MASK.set(all[i], j.bits[i]);
@@ -3772,6 +3828,10 @@ function listGated(){
 }
 function syncList(){
   var gated=listGated(), gate=el("listgate"), wrap=el("listwrap"), btn=el("lgbtn");
+  /* the category index rides with the gate: both are entrances to the whole register, and neither
+     belongs on screen once a search or a filter has already narrowed it */
+  var cats=el("cats");
+  if(cats) cats.hidden=!gated;
   gate.hidden=!gated;
   wrap.hidden=gated && !listOpen;
   /* no count on the button: he asked for the number off it, and the tally directly under the open
@@ -3913,12 +3973,12 @@ function select(kind,s){
     if(s === "list"){
       return {kind:"a",slug:"list",
         name:"GCC Philanthropy Register",
-        parts:["GCC Philanthropy","Register"],
+        parts:["Gulf Cooperation Council (GCC) Philanthropy","Register"],
         sub:"",rows:ROWS.slice()};
     }
     return {kind:"a",slug:"all",
       name:"GCC Philanthropy Atlas",
-      parts:["GCC Philanthropy","Atlas"],
+      parts:["Gulf Cooperation Council (GCC) Philanthropy","Atlas"],
       sub:"",rows:ROWS.slice()};
   }
   var item=SLUGS[kind][s];
@@ -4021,7 +4081,12 @@ function route(){
   clearTimeout(timer);
   abandonSearch();          /* the previous page's answer must not follow us here */
   var raw=location.hash.replace(/^#\/?/,"");
-  if(!raw){ showL1(false); return; }
+  /* TRUE, NOT FALSE, AND THAT ONE FLAG WAS THE BARE # IN THE URL BAR. showL1's cleanup, a
+     replaceState to location.pathname, only runs when this is true. With false, arriving at an
+     empty route left the fragment behind and the address read gccphilanthropy.org/# rather than
+     gccphilanthropy.org/. Measured on the live site before this changed. Every route to an empty
+     hash comes through here, so this is the one place it belongs. */
+  if(!raw){ showL1(true); return; }
   var qs="", i=raw.indexOf("?");
   if(i>-1){ qs=raw.slice(i+1); raw=raw.slice(0,i); }
   var parts=raw.split("/").filter(Boolean);
@@ -4176,7 +4241,7 @@ function showL1(clean){
   if(nb) nb.hidden=true;
   el("l1").hidden=false;
   paintPage(null);
-  document.title="GCC Philanthropy | Gulf Cooperation Council Philanthropy";
+  document.title="Gulf Cooperation Council (GCC) Philanthropy";
   if(clean && history.replaceState){
     /* the search string is kept, minus ?view=, which belongs to the intelligence route and was
        being carried onto the portal where it means nothing */
@@ -4286,6 +4351,20 @@ function loadVectors(){
         throw new Error("index is out of step with the register at row " + bad +
                         ': index says "' + hdr.names[bad] + '", data says "' +
                         val(ROWS[bad], "name") + '". Rebuild vectors.');
+    }
+    /* AND THE FINGERPRINT, because the name comparison above cannot see two of the three ways
+       this index goes stale. Two rows are both called "Dolphin Energy", so swapping them leaves
+       every name matching while their vectors are exchanged. And the vectors are embedded FROM
+       THE MANDATE TEXT, so editing a focus invalidates them without touching a name. Both were
+       reproduced against the real register and both passed the names loop. The fingerprint runs
+       over DATA.rows, the full file, rather than ROWS, which may have dropped a malformed row and
+       would then silently skip the loop above on its length gate. */
+    if(hdr.fingerprint != null && DATA && DATA.rows){
+      var vfp = rowFingerprint(DATA.rows);
+      if(hdr.fingerprint !== vfp)
+        throw new Error("index fingerprint " + hdr.fingerprint + " does not match the register's " +
+                        vfp + ": a name, a country or a mandate has changed, or rows have moved " +
+                        "where every name still matches. Rebuild vectors.");
     }
     VDIMS = hdr.dims;
     VSCALE = hdr.scale || 127;
@@ -4820,15 +4899,17 @@ function wire(){
     writeHash(false);
     window.scrollTo(0,0);
   });
-  el("home").addEventListener("click",function(e){
-    e.preventDefault();
-    if(location.hash){ location.hash=""; }
-    else { showL1(true); }
-  });
-  el("back").addEventListener("click",function(e){
-    e.preventDefault();
-    if(location.hash){ location.hash=""; }
-    else { showL1(true); }
+  /* THE WORDMARK IS A LINK HOME AND HAD NO LISTENER, so clicking the site's own name in the
+     product bar only appended a # and scrolled to the top. It shares this handler now. */
+  ["home","brandhome","back"].forEach(function(id){
+    var a=document.getElementById(id);
+    if(!a) return;
+    a.addEventListener("click",function(e){
+      e.preventDefault();
+      /* showL1(true) both renders the portal and replaceStates the fragment away. Setting
+         location.hash="" is what left the bare #, so it is not used here. */
+      showL1(true);
+    });
   });
   /* one delegated listener for the whole list, however long it grows */
   el("recs").addEventListener("click",function(e){

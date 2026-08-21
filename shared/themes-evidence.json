@@ -1,7 +1,12 @@
 {
  "derived_from": "data.json focus column, 1862 rows",
  "method": "A theme is recorded when the organisation's own stated focus text contains one of that theme's terms, matched on word boundaries. It is a statement about the text, not a judgement about the organisation. Rows matching nothing are left untagged.",
- "name_fingerprint": 4270336304,
+ "fingerprint": 797284964,
+ "fingerprint_columns": [
+  "name",
+  "country",
+  "focus"
+ ],
  "themes": [
   {
    "key": "education",

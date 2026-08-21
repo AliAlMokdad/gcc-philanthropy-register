@@ -69,21 +69,43 @@ def ids_for_rows(keys, rows):
     return out
 
 
-def name_fingerprint(keys, rows):
-    """FNV-1a 32 over the name column, joined by newlines.
+# The columns a positional index actually depends on. A fingerprint over the NAME alone was the
+# first version and it had three holes, all found by review and all reproduced before this changed.
+#
+#   The register contains two rows named "Dolphin Energy", the UAE and Qatar arms of one joint
+#   venture. Swapping them changed nothing a name-only fingerprint or a name-by-name comparison
+#   could see, while exchanging their vectors and their theme tags: culture and sport for education
+#   and environment. Measured, both guards passed.
+#
+#   The theme index is derived from the FOCUS column and was protected by a fingerprint over the
+#   name. Editing a mandate without rebuilding therefore served the old classification silently.
+#
+#   The vectors are embedded from the mandate text too, so the same edit invalidates them and was
+#   equally invisible.
+#
+# name, country and focus together close all three: country separates the two Dolphin rows, and
+# focus is what both derived artefacts are actually built from.
+FINGERPRINT_COLUMNS = ("name", "country", "focus")
 
-    A cheap, complete integrity check for any file that indexes the register BY ROW POSITION.
-    vectors.json can afford to carry all 1,862 names because it is fetched only when meaning search
-    runs. A runtime index cannot: carrying the names costs 19KB gzipped against 2.4KB for the index
-    itself. One integer covers every row instead of a sample, and FNV-1a is ten lines in either
-    language with no crypto and nothing async.
 
-    Verified against a JavaScript implementation over the real register: both produce 4270336304,
-    and the browser computes it in 1.07ms."""
-    ni = keys.index("name")
-    joined = chr(10).join(str(r[ni] if r[ni] is not None else "") for r in rows)
+def row_fingerprint(keys, rows, columns=FINGERPRINT_COLUMNS):
+    """FNV-1a 32 over the columns a positional index depends on.
+
+    Fields are joined by a unit separator and rows by a newline. The separator is chr(31) rather
+    than a printable character because the exporter collapses all whitespace but does not strip
+    control characters, so a value cannot contain it and two different registers cannot collide by
+    a field boundary landing inside a value.
+
+    Ten lines here and ten in index.html, and both are run over the real register in the tests: they
+    agree on plain ASCII, on Arabic, on accented Latin, on emoji and on a value containing the
+    joiner itself."""
+    idx = [keys.index(c) for c in columns]
+    sep, rowsep = chr(31), chr(10)
+    parts = []
+    for r in rows:
+        parts.append(sep.join(str(r[i] if r[i] is not None else "") for i in idx))
     h = 0x811c9dc5
-    for byte in joined.encode("utf-8"):
+    for byte in rowsep.join(parts).encode("utf-8"):
         h ^= byte
         h = (h * 0x01000193) & 0xFFFFFFFF
     return h

@@ -202,11 +202,17 @@ def main():
     # traced back to the words that produced it.
     #
     # The bitmask is keyed by ROW POSITION, which is the coupling this project has just finished
-    # removing elsewhere, so it carries a fingerprint of the name column. One integer covers every
-    # row. The browser recomputes it in about a millisecond and refuses the index if it disagrees,
-    # rather than filtering the wrong organisations.
+    # removing elsewhere, so it carries a fingerprint. One integer covers every row. The browser
+    # recomputes it in about a millisecond and refuses the index if it disagrees, rather than
+    # filtering the wrong organisations.
+    #
+    # THE FIRST VERSION FINGERPRINTED THE NAME COLUMN AND THAT WAS THE WRONG COLUMN. Every tag in
+    # this file is derived from FOCUS, so editing a mandate and not rebuilding left the old
+    # classification in place with the fingerprint still matching. Reproduced: changing one row's
+    # focus to "Marine conservation" kept it tagged culture, and the guard passed. It now
+    # fingerprints name, country and focus, which is what identity.py holds for exactly this reason.
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from identity import name_fingerprint
+    from identity import row_fingerprint, FINGERPRINT_COLUMNS
 
     order = [k for k, _l, _t, _x in THEMES]
     by_i = {r["i"]: r["themes"] for r in rows if r["themes"]}
@@ -218,13 +224,16 @@ def main():
                 m |= 1 << n
         bits.append(m)
 
-    fp = name_fingerprint(K, reg["rows"])
+    fp = row_fingerprint(K, reg["rows"])
     runtime = {
         "count": total,
-        "name_fingerprint": fp,
-        "fingerprint_method": ("FNV-1a 32 over the name column joined by newlines. Recompute it "
-                               "before trusting bits[]: this index is keyed by row position and a "
-                               "reorder keeps the count."),
+        "fingerprint": fp,
+        "fingerprint_columns": list(FINGERPRINT_COLUMNS),
+        "fingerprint_method": ("FNV-1a 32 over name, country and focus. Fields joined by chr(31), "
+                               "rows by chr(10), hashed over the UTF-8 bytes. Recompute it before "
+                               "trusting bits[]: this index is keyed by row position, a reorder "
+                               "keeps the count, and every tag here is derived from focus, so an "
+                               "edited mandate invalidates the tags without moving a row."),
         "order": "bits[i] is register row i; bit n of it is themes[n]",
         "themes": [{"key": k, "label": lab, "rows": counts[k]} for k, lab, _t, _x in THEMES],
         "bits": bits,
@@ -235,7 +244,8 @@ def main():
                    "of that theme's terms, matched on word boundaries. It is a statement about the "
                    "text, not a judgement about the organisation. Rows matching nothing are left "
                    "untagged."),
-        "name_fingerprint": fp,
+        "fingerprint": fp,
+        "fingerprint_columns": list(FINGERPRINT_COLUMNS),
         "themes": [{"key": k, "label": lab, "terms": t, "crosswalk": x, "rows": counts[k]}
                    for k, lab, t, x in THEMES],
         "rows": [{"i": r["i"], "name": reg["rows"][r["i"]][ni],
@@ -256,7 +266,7 @@ def main():
         os.replace(tmp, path)
 
     back = json.load(io.open(OUT, encoding="utf-8"))
-    assert back["bits"] == bits and back["name_fingerprint"] == fp, "runtime index did not read back"
+    assert back["bits"] == bits and back["fingerprint"] == fp, "runtime index did not read back"
     aud = json.load(io.open(AUDIT_OUT, encoding="utf-8"))
     assert len(aud["rows"]) == tagged, "audit file did not read back with every tagged row"
     # and the two agree about the same rows
@@ -265,8 +275,8 @@ def main():
     print()
     print("  written: shared/themes.json %.1f KB runtime, shared/themes-evidence.json %.0f KB audit"
           % (os.path.getsize(OUT) / 1024, os.path.getsize(AUDIT_OUT) / 1024))
-    print("  fingerprint %d, %d tagged rows, both files agree, verified on re-read"
-          % (fp, tagged))
+    print("  fingerprint %d over %s, %d tagged rows, both files agree, verified on re-read"
+          % (fp, ", ".join(FINGERPRINT_COLUMNS), tagged))
 
 
 if __name__ == "__main__":

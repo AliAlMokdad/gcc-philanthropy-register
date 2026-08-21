@@ -36,10 +36,14 @@ import json
 import os
 import sys
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from identity import row_fingerprint, FINGERPRINT_COLUMNS      # noqa: E402
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data.json")
 VEC = os.path.join(ROOT, "vectors.json")
 WRITE = "--write" in sys.argv
+FORCE = "--force" in sys.argv
 
 
 def load(path):
@@ -67,27 +71,66 @@ def main():
 
     vec = load(VEC)
     if vec.get("count") != len(rows):
-        sys.exit("vectors.json count %s does not match %d register rows.\n"
+        sys.exit("vectors.json count %s does not match %d register rows. "
                  "The index is already out of step. Re-run build_vectors.py first."
                  % (vec.get("count"), len(rows)))
     print("vectors.json        : count %d matches the register" % vec["count"])
 
-    if vec.get("names") == names:
-        print("names               : already present and in step, nothing to do")
+    fp = row_fingerprint(keys, rows)
+    print("fingerprint         : %d over %s" % (fp, ", ".join(FINGERPRINT_COLUMNS)))
+
+    if vec.get("names") == names and vec.get("fingerprint") == fp:
+        print("index               : already in step, nothing to do")
         return
 
-    if "names" in vec:
-        diff = [i for i, (a, b) in enumerate(zip(vec["names"], names)) if a != b]
-        print("names               : present but %d rows differ" % len(diff))
-        for i in diff[:5]:
-            print("     row %-5d %r -> %r" % (i, vec["names"][i][:38], names[i][:38]))
+    # THIS SCRIPT MUST NOT BLESS A BROKEN INDEX, and the first version did exactly that. It wrote
+    # whatever the register currently said into vectors.json without touching vectors.bin. So the
+    # sequence "reorder the workbook, export, run this" produced a file claiming an order the
+    # vectors did not have, and the browser then compared the register against that file and passed.
+    # The guard was made to agree with itself rather than with the embeddings.
+    #
+    # An index that is already out of step is a re-embed, not a relabel. Only build_vectors.py can
+    # fix it, because only it can recompute the vectors for the rows that moved.
+    stale = ("fingerprint" in vec and vec["fingerprint"] != fp) or             ("names" in vec and vec["names"] != names)
+    if stale and not FORCE:
+        print()
+        print("REFUSING TO WRITE. vectors.json describes a different register from the one on disk.")
+        if "names" in vec and vec["names"] != names:
+            diff = [i for i, (a, b) in enumerate(zip(vec["names"], names)) if a != b]
+            print("  rows whose name moved : %d" % len(diff))
+            for i in diff[:5]:
+                print("     row %-5d index says %r, data says %r"
+                      % (i, vec["names"][i][:34], names[i][:34]))
+        if "fingerprint" in vec and vec["fingerprint"] != fp:
+            print("  fingerprint          : index %s, data %s" % (vec["fingerprint"], fp))
+            print("                         so a name, a country or a mandate has changed, or rows")
+            print("                         have moved, even where every name still matches")
+        print()
+        print("  vectors.bin holds one embedding per row IN THAT OLD ORDER. Relabelling here would")
+        print("  make the browser's check pass while moved rows answered with another")
+        print("  organisation's mandate. Re-run build_vectors.py, which re-embeds every row, then")
+        print("  run this again.")
+        print()
+        print("  --force overrides this and is only correct when the vectors have already been")
+        print("  rebuilt and it is the labels alone that are behind.")
+        sys.exit(3)
+
+    if stale:
+        print("index               : FORCED over a stale index")
+    elif "names" not in vec:
+        print("index               : names absent, attaching %d" % len(names))
     else:
-        print("names               : absent, attaching %d" % len(names))
+        print("index               : names in step, attaching the fingerprint")
 
     vec["names"] = names
+    vec["fingerprint"] = fp
+    vec["fingerprint_columns"] = list(FINGERPRINT_COLUMNS)
     vec["note"] = ("row i of vectors.bin is the organisation at row i of data.json rows[]. "
-                   "names[i] records which organisation that is, so a reorder is detectable: "
-                   "count alone is not, because a reorder keeps the count.")
+                   "names[i] records which organisation that is, and fingerprint covers name, "
+                   "country and focus across every row. The name alone was not enough: two rows "
+                   "are called Dolphin Energy, so swapping them was invisible to both a name "
+                   "fingerprint and a name-by-name comparison, and the vectors are embedded from "
+                   "the mandate text, so editing a focus invalidates them without changing a name.")
 
     if not WRITE:
         print()
@@ -97,6 +140,7 @@ def main():
     save(VEC, vec)
     back = load(VEC)
     assert back["names"] == names, "vectors.json did not read back with the names written"
+    assert back["fingerprint"] == fp, "vectors.json did not read back with the fingerprint written"
     assert back["count"] == len(rows)
     print()
     print("written             : vectors.json (%.0f KB), verified on re-read"

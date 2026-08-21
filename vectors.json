@@ -5,7 +5,7 @@
  "scale": 127.0,
  "quant": "int8",
  "normalised": true,
- "note": "row i of vectors.bin is the organisation at row i of data.json rows[]. names[i] records which organisation that is, so a reorder is detectable: count alone is not, because a reorder keeps the count.",
+ "note": "row i of vectors.bin is the organisation at row i of data.json rows[]. names[i] records which organisation that is, and fingerprint covers name, country and focus across every row. The name alone was not enough: two rows are called Dolphin Energy, so swapping them was invisible to both a name fingerprint and a name-by-name comparison, and the vectors are embedded from the mandate text, so editing a focus invalidates them without changing a name.",
  "names": [
   "Abdulkadir Al Muhaidib Social Foundation (AMSF)",
   "Abdullah Saleh Al Othaim and Sons Charitable Foundation",
@@ -1869,5 +1869,11 @@
   "Abdullah Al Rajhi Charitable Foundation",
   "The Olayan Group",
   "Effat University Endowments"
+ ],
+ "fingerprint": 797284964,
+ "fingerprint_columns": [
+  "name",
+  "country",
+  "focus"
  ]
 }
