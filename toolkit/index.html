@@ -380,7 +380,15 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
      second list to keep in sync */
   var THEME_IDS=["foundations","regulation","capital","impact"];
 
-  fetch("notes.json").then(function(r){
+  /* THE CATALOG, NOT THE CORPUS. notes.json is 279KB and was fetched before the router had even
+     decided which paper you asked for, so opening one 7KB paper downloaded all thirty-five. That
+     was tolerable while the toolkit was reached through its own landing page; the country hubs now
+     link straight to individual papers from six member pages, so the deep link is the common path.
+     The catalog carries everything the landing page, the section lists and the router need, at
+     8.5KB over the wire. A paper's body arrives when that paper is opened, and the full corpus only
+     when someone types in the search box, because search reads every word of every paper and that
+     is worth keeping exactly as it was. */
+  fetch("catalog.json").then(function(r){
     if(!r.ok) throw new Error("HTTP "+r.status);
     return r.json();
   }).then(function(j){ DATA=j; boot(); }).catch(function(e){
@@ -388,20 +396,77 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
       text:"The toolkit content could not be loaded. "+(e&&e.message||"")}));
   });
 
+  /* the body of one paper, fetched once and kept on the note */
+  var bodyPending={};
+  function ensureBody(n){
+    if(!n) return Promise.resolve(false);
+    if(n.sections) return Promise.resolve(true);
+    if(bodyPending[n.slug]) return bodyPending[n.slug];
+    bodyPending[n.slug]=fetch("papers/"+encodeURIComponent(n.slug)+".json").then(function(r){
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return r.json();
+    }).then(function(b){
+      n.sections=b.sections||[];
+      n.refs=b.refs||[];
+      return true;
+    }).catch(function(e){
+      delete bodyPending[n.slug];
+      console.warn("paper body unavailable: "+n.slug+" ("+e.message+")");
+      return false;
+    });
+    return bodyPending[n.slug];
+  }
+
+  /* the whole corpus, for search only. Search matches on every word of every paper, so it needs
+     what the catalog leaves out. Fetched once, on the first keystroke, never on arrival. */
+  var corpusPending=null;
+  function ensureCorpus(){
+    if(DATA._corpus) return Promise.resolve(true);
+    if(corpusPending) return corpusPending;
+    corpusPending=fetch("notes.json").then(function(r){
+      if(!r.ok) throw new Error("HTTP "+r.status);
+      return r.json();
+    }).then(function(j){
+      var by={};
+      (j.notes||[]).forEach(function(n){ by[n.slug]=n; });
+      DATA.notes.forEach(function(n){
+        var full=by[n.slug];
+        if(full){
+          if(!n.sections) n.sections=full.sections||[];
+          if(!n.refs) n.refs=full.refs||[];
+        }
+        indexNote(n);
+      });
+      DATA._corpus=true;
+      return true;
+    }).catch(function(e){
+      corpusPending=null;
+      console.warn("search index unavailable: "+e.message);
+      return false;
+    });
+    return corpusPending;
+  }
+
+  /* STRONG and HAY, built for one note. Called for every note once the corpus is in, and at boot
+     with only what the catalog holds, so a title match works before search has loaded anything. */
+  function indexNote(n){
+    var heads=[], body=[];
+    (n.sections||[]).forEach(function(x){
+      heads.push(x.heading||"");
+      (x.paras||[]).forEach(function(p){ body.push(p); });
+      if(x.table) (x.table.rows||[]).forEach(function(r){ body.push(r.join(" ")); });
+    });
+    n._strong=norm([n.title,(n.keywords||[]).join(" "),heads.join(" ")].join(" "));
+    n._hay=norm([n._strong,n.abstract||"",body.join(" "),
+      (n.refs||[]).map(function(r){ return r.text; }).join(" ")].join(" "));
+  }
+
   function boot(){
     DATA.notes.forEach(function(n){
       BY_SLUG[n.slug]=n;
-      /* STRONG: where a match means the article is about the term.
-         HAY: every word of his article, so a term used only in the body is still findable. */
-      var heads=[], body=[];
-      (n.sections||[]).forEach(function(x){
-        heads.push(x.heading||"");
-        (x.paras||[]).forEach(function(p){ body.push(p); });
-        if(x.table) (x.table.rows||[]).forEach(function(r){ body.push(r.join(" ")); });
-      });
-      n._strong=norm([n.title,(n.keywords||[]).join(" "),heads.join(" ")].join(" "));
-      n._hay=norm([n._strong,n.abstract||"",body.join(" "),
-        (n.refs||[]).map(function(r){ return r.text; }).join(" ")].join(" "));
+      /* indexed here with only what the catalog holds, so a title or keyword match works before
+         search has fetched anything, and indexed again against the full body once it has */
+      indexNote(n);
     });
     SECDEF.forEach(function(d){
       var arr=DATA.notes.filter(d.pick);
@@ -429,8 +494,19 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     f.appendChild(el("label",{cls:"sr",for:"q",text:"Search the toolkit"}));
     var i=el("input",{id:"q",type:"search",autocomplete:"off",spellcheck:"false",
       maxlength:"120",placeholder:"Search the toolkit"});
+    /* THE FIRST KEYSTROKE FETCHES THE CORPUS, and searching waits for it rather than answering
+       from the catalog and then changing its mind. Search reads every word of every paper, so a
+       partial index would return fewer results and then more, under the reader, which reads as the
+       site being unsure. One short wait on the first search only; after that it is in memory.
+       If the corpus cannot be fetched, the search still runs against titles, keywords and
+       abstracts, which is what the catalog holds, rather than returning nothing. */
     i.addEventListener("input",function(){
-      if(i.value.trim()) showSearch(i.value); else route();
+      var v=i.value;
+      if(!v.trim()){ route(); return; }
+      ensureCorpus().then(function(){
+        if(i.value!==v) return;        /* they typed on; that keystroke owns the next render */
+        showSearch(i.value);
+      });
     });
     i.addEventListener("keydown",function(e){
       if(e.key==="Escape" && i.value){ i.value=""; route(); }
@@ -453,13 +529,20 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     var sec=SECTIONS.filter(function(s){ return s.id===parts[0]; })[0];
     if(!sec){ showHome(); return; }
     var art=parts[1] && BY_SLUG[parts[1]];
-    if(art && sec.notes.indexOf(art)>=0) showArticle(sec,art);
-    else if(art){
-      /* a real article under the wrong section: show it under one that actually holds it */
-      var own=SECTIONS.filter(function(s2){ return s2.notes.indexOf(art)>=0; })[0];
-      if(own) showArticle(own,art); else showSection(sec);
+    if(art){
+      /* the body arrives before the paper is drawn, or showArticle would read n.sections on a note
+         that only carries its catalog entry. A miss renders the section instead of a blank sheet. */
+      var target=sec.notes.indexOf(art)>=0 ? sec
+        : (SECTIONS.filter(function(s2){ return s2.notes.indexOf(art)>=0; })[0] || null);
+      var want=location.hash;
+      ensureBody(art).then(function(ok){
+        if(location.hash!==want) return;      /* the reader moved on while it was in flight */
+        if(ok && target) showArticle(target,art);
+        else showSection(sec);
+      });
+      return;
     }
-    else showSection(sec);
+    showSection(sec);
   }
 
   function crumbs(items){

@@ -198,12 +198,23 @@ def main():
     print("  %-24s description %s, noindex %s"
           % (p, "added" if added else "kept", "lifted" if lifted else "not present"))
 
-    # ---------------- the four site-meta pages, which another session generates
-    for name in ("privacy", "terms", "faq", "connect"):
+    # ---------------- every other single-page directory, DISCOVERED rather than listed.
+    # This was a hardcoded tuple of four names and it went stale the day a fifth page was added:
+    # /alialmokdad/ shipped live with no canonical, no share card and no sitemap entry, while this
+    # script kept reporting "written: 13 page(s)" as though nothing were missing. A list of names
+    # in a generator is a list that will be wrong later, so the directories are read off disk.
+    # members/ and toolkit/ are handled above with their own structured data, and anything without
+    # an index.html is not a page.
+    handled = {"members", "toolkit", "shared", "tools", "country", "papers", ".github", ".git"}
+    found = sorted(d for d in os.listdir(ROOT)
+                   if os.path.isdir(os.path.join(ROOT, d))
+                   and d not in handled
+                   and not d.startswith(".")
+                   and os.path.exists(os.path.join(ROOT, d, "index.html")))
+    print("  single-page directories found: %s" % (", ".join(found) or "none"))
+    for name in found:
         p = "%s/index.html" % name
         full = os.path.join(ROOT, p)
-        if not os.path.exists(full):
-            continue
         src = read(full)
         t, d = title_of(src), desc_of(src)
         url = "%s/%s/" % (SITE, name)
@@ -211,6 +222,9 @@ def main():
               "description": d, "inLanguage": "en-GB", "isPartOf": {"@id": SITE + "/#website"}}
         yield_edits.append((p, apply_block(src, block(url, t, d, ld))))
         pages.append((p, url, src))
+
+    # a page that exists and is not in the sitemap is the failure this replaces, so say the count
+    print("  pages in this run           : %d" % len(pages))
 
     # ---------------- sitemap and robots
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d")
