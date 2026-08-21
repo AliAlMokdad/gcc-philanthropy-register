@@ -40,10 +40,16 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from identity import row_fingerprint, FINGERPRINT_COLUMNS      # noqa: E402
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+# the vector builder lives OUTSIDE this repository. Saying "re-run build_vectors.py" without
+# saying where sends the reader looking for a file that is not here.
+BUILDER = "Desktop/UAE-Philanthropy-Project/scripts/build_vectors.py"
 DATA = os.path.join(ROOT, "data.json")
 VEC = os.path.join(ROOT, "vectors.json")
 WRITE = "--write" in sys.argv
 FORCE = "--force" in sys.argv
+# States that the vectors were rebuilt immediately before this run. See the block in main() on why
+# an index carrying no identity at all cannot be blessed without someone asserting this.
+JUST_BUILT = "--vectors-just-built" in sys.argv
 
 
 def load(path):
@@ -71,9 +77,9 @@ def main():
 
     vec = load(VEC)
     if vec.get("count") != len(rows):
-        sys.exit("vectors.json count %s does not match %d register rows. "
-                 "The index is already out of step. Re-run build_vectors.py first."
-                 % (vec.get("count"), len(rows)))
+        sys.exit("vectors.json count %s does not match %d register rows. The index is already "
+                 "out of step. Rebuild it first with %s"
+                 % (vec.get("count"), len(rows), BUILDER))
     print("vectors.json        : count %d matches the register" % vec["count"])
 
     fp = row_fingerprint(keys, rows)
@@ -82,6 +88,36 @@ def main():
     if vec.get("names") == names and vec.get("fingerprint") == fp:
         print("index               : already in step, nothing to do")
         return
+
+    # NO IDENTITY AT ALL IS NOT THE SAME AS BEING IN STEP, and the first version treated it as if
+    # it were. With neither names nor fingerprint present there is nothing here that says which rows
+    # vectors.bin encodes, so writing the current register's identity into it asserts a
+    # correspondence on no evidence whatever. The dangerous sequence is precise: take an index built
+    # before identity existed, reorder or edit the workbook, export, run this. Every check passes,
+    # because there was never anything to disagree with, and the browser then trusts a file that
+    # says the vectors are in an order they are not.
+    #
+    # This cannot be settled by reading vectors.bin: it holds 1,862 unlabelled 384-dimension
+    # vectors and nothing in it names a row. Only whoever just ran the builder knows. So they say
+    # so. build_vectors.py writes only model, dims, count and scale, so a genuinely fresh index
+    # always lands here, which is why this is a flag and not a refusal.
+    fresh = "names" not in vec and "fingerprint" not in vec
+    if fresh and not (JUST_BUILT or FORCE):
+        print()
+        print("REFUSING TO WRITE. vectors.json carries no names and no fingerprint, so there is")
+        print("nothing here that says which rows vectors.bin holds, and this script cannot find out:")
+        print("the file is unlabelled vectors and only the person who built them knows.")
+        print()
+        print("  If you have JUST rebuilt the vectors from the current data.json, say so:")
+        print("      python tools/add_identity.py --write --vectors-just-built")
+        print("  The builder is outside this repository, at")
+        print("      %s" % BUILDER)
+        print("  and it writes only model, dims, count and scale, so a fresh index always looks")
+        print("  like this one.")
+        print()
+        print("  If you have NOT just rebuilt them, rebuild before running this. Attaching the")
+        print("  current register's identity to an older index is how a reorder becomes invisible.")
+        sys.exit(3)
 
     # THIS SCRIPT MUST NOT BLESS A BROKEN INDEX, and the first version did exactly that. It wrote
     # whatever the register currently said into vectors.json without touching vectors.bin. So the
@@ -108,8 +144,9 @@ def main():
         print()
         print("  vectors.bin holds one embedding per row IN THAT OLD ORDER. Relabelling here would")
         print("  make the browser's check pass while moved rows answered with another")
-        print("  organisation's mandate. Re-run build_vectors.py, which re-embeds every row, then")
-        print("  run this again.")
+        print("  organisation's mandate. Rebuild the vectors, which re-embeds every row, then run")
+        print("  this again. The builder is outside this repository, at")
+        print("      %s" % BUILDER)
         print()
         print("  --force overrides this and is only correct when the vectors have already been")
         print("  rebuilt and it is the labels alone that are behind.")
@@ -117,8 +154,13 @@ def main():
 
     if stale:
         print("index               : FORCED over a stale index")
+    elif fresh:
+        print("index               : fresh index, attaching %d names and the fingerprint on your"
+              % len(names))
+        print("                      assurance that the vectors were just rebuilt")
     elif "names" not in vec:
-        print("index               : names absent, attaching %d" % len(names))
+        print("index               : fingerprint present and matching, attaching %d names"
+              % len(names))
     else:
         print("index               : names in step, attaching the fingerprint")
 
