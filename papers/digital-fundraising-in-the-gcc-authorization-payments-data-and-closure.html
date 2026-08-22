@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en-GB" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital Fundraising in the GCC: Authorization, Payments, Data, and Closure | GCC Philanthropy Toolkit</title>
+<meta name="description" content="Digital fundraising is a regulated operating system, not merely a communications channel. Authorization, campaign identifiers, payment processing, bank settlement, restricted accounting, refunds, donor and beneficiary data, cybersecurity, accessibility, and campaign closure must reconcile...">
+<link rel="canonical" href="https://gccphilanthropy.org/papers/digital-fundraising-in-the-gcc-authorization-payments-data-and-closure.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gulf Cooperation Council (GCC) Philanthropy">
+<meta property="og:url" content="https://gccphilanthropy.org/papers/digital-fundraising-in-the-gcc-authorization-payments-data-and-closure.html">
+<meta property="og:title" content="Digital Fundraising in the GCC: Authorization, Payments, Data, and Closure">
+<meta property="og:description" content="Digital fundraising is a regulated operating system, not merely a communications channel. Authorization, campaign identifiers, payment processing, bank settlement, restricted accounting, refunds, donor and beneficiary data, cybersecurity, accessibility, and campaign closure must reconcile...">
+<meta property="og:image" content="https://gccphilanthropy.org/og-card.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Gulf Cooperation Council (GCC) Philanthropy, with the flags of the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gccphilanthropy.org/og-card.png">
+<meta name="twitter:title" content="Digital Fundraising in the GCC: Authorization, Payments, Data, and Closure">
+<meta name="twitter:description" content="Digital fundraising is a regulated operating system, not merely a communications channel. Authorization, campaign identifiers, payment processing, bank settlement, restricted accounting, refunds, donor and beneficiary data, cybersecurity, accessibility, and campaign closure must reconcile...">
+<link rel="icon" type="image/svg+xml" href="../gcc-emblem.svg">
+<link rel="stylesheet" href="../shared/tokens.css">
+<link rel="stylesheet" href="../shared/chrome.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="../shared/doc.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","@id":"https://gccphilanthropy.org/papers/digital-fundraising-in-the-gcc-authorization-payments-data-and-closure.html","url":"https://gccphilanthropy.org/papers/digital-fundraising-in-the-gcc-authorization-payments-data-and-closure.html","headline":"Digital Fundraising in the GCC: Authorization, Payments, Data, and Closure","description":"Digital fundraising is a regulated operating system, not merely a communications channel. Authorization, campaign identifiers, payment processing, bank settlement, restricted accounting, refunds, donor and beneficiary data, cybersecurity, accessibility, and campaign closure must reconcile...","inLanguage":"en-GB","author":{"@type":"Person","name":"Ali Al Mokdad","url":"https://gccphilanthropy.org/alialmokdad/"},"isPartOf":{"@id":"https://gccphilanthropy.org/#website"},"about":[],"wordCount":563,"dateModified":"2026-08-20"}</script>
+<script>
+/* THE THEME, BEFORE THE FIRST PAINT. Read the stored choice and stamp it on <html> here, in the
+   head, synchronously, because doing it after load means the page draws in the wrong scheme and
+   then corrects itself, which reads as a fault rather than as a preference.
+   NO CHOICE STORED MEANS NO ATTRIBUTE, and the operating system decides through the media query,
+   which is the right default: a reader who has never touched this control should get what their
+   machine already says. */
+(function(){try{var t=localStorage.getItem('gccp-theme');
+if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+document.addEventListener('DOMContentLoaded',function(){
+  var b=document.querySelector('.themetoggle');if(!b)return;
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme:dark)'):{matches:false};
+  function isDark(){var a=document.documentElement.getAttribute('data-theme');
+    return a?a==='dark':mq.matches;}
+  function label(){b.setAttribute('aria-pressed',isDark()?'true':'false');
+    b.setAttribute('title',isDark()?'Switch to light':'Switch to dark');}
+  label();
+  b.addEventListener('click',function(){
+    /* the next state is the opposite of what is on screen NOW, whether that came from a stored
+       choice or from the machine. Writing the result explicitly means the reader keeps the theme
+       they picked even if they later change their system setting. */
+    var next=isDark()?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('gccp-theme',next);}catch(e){}
+    label();
+  });
+});
+</script>
+<style>
+/* the reading column, in the doc idiom the faq and legal pages already use */
+.paper-wrap{max-width:860px;margin:0 auto;padding:0 24px}
+.paper-meta{margin:14px 0 0;font:600 11px/1.6 var(--mono);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-3)}
+.paper-abstract{margin:22px 0 0;font:500 17.5px/1.6 var(--serif);color:var(--ink-2)}
+.paper-body h2{margin:38px 0 12px;font:600 22px/1.25 var(--serif);color:var(--ink)}
+.paper-body p{margin:0 0 14px;font:400 16px/1.65 var(--serif);color:var(--ink);max-width:72ch}
+.paper-refs{margin:8px 0 0;padding-left:22px}
+.paper-refs li{margin:0 0 10px;font:400 13.5px/1.55 var(--serif);color:var(--ink-2);
+  overflow-wrap:anywhere}
+.paper-back{display:inline-flex;align-items:center;min-height:44px;margin:26px 0 0;
+  font:600 12.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);text-decoration:none}
+.paper-back:hover{text-decoration:underline}
+main{padding-top:34px;padding-bottom:64px}
+h1{margin:6px 0 0;font:600 clamp(26px,3.4vw,38px)/1.18 var(--serif);
+  letter-spacing:-.015em;color:var(--ink);max-width:26ch}
+</style>
+</head>
+<body>
+<button class="themetoggle" type="button" aria-pressed="false"
+        aria-label="Dark mode" title="Switch to dark"><span class="tt-g tt-moon" aria-hidden="true">🌙</span><span class="tt-g tt-sun" aria-hidden="true">☀️</span></button>
+<div class="pbar">
+  <div class="wrap">
+    <nav aria-label="Products">
+      <a class="pbar-brand" href="../">GCC Philanthropy</a>
+      <ul class="pbar-nav">
+        <li><a href="../#/a/all">Atlas</a></li>
+        <li><a href="../#/a/list">Register</a></li>
+        <li><a href="../#/news">News &amp; Insights</a></li>
+        <li><a href="../toolkit/" aria-current="page">Toolkit</a></li>
+        <li><a href="../members/">GCC Countries</a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<header class="top">
+  <div class="container">
+    <p class="brandline"><a class="home" href="../">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</a></p>
+    <p class="kick">United Arab Emirates &middot; Saudi Arabia &middot; Qatar &middot; Kuwait &middot; Bahrain &middot; Oman</p>
+  </div>
+  <span class="pagetab" aria-hidden="true">Toolkit</span>
+</header>
+<main>
+  <div class="paper-wrap">
+    <p class="paper-meta">Regulation, governance and integrity · GCC · 3 min read · 4 references</p>
+    <h1>Digital Fundraising in the GCC: Authorization, Payments, Data, and Closure</h1>
+    <p class="paper-abstract">Digital fundraising is a regulated operating system, not merely a communications channel. Authorization, campaign identifiers, payment processing, bank settlement, restricted accounting, refunds, donor and beneficiary data, cybersecurity, accessibility, and campaign closure must reconcile throughout the campaign lifecycle.</p>
+    <div class="paper-body">
+<h2>Beyond the campaign page</h2>
+<p>A digital appeal links public claims, regulatory permission, payment processing, donor identity, banking, beneficiary data, and reporting. A failure in any layer can undermine the whole campaign. In the UAE, donation activity is regulated separately from organizational establishment, including activity conducted through digital channels (United Arab Emirates, 2021). The compliance design must therefore begin before copy, media buying, or platform development.</p>
+<p>A compliant architecture may require an approved national platform, regulated charity, or authorized payment route rather than an independent crowdfunding page. Where a custom platform is permitted, its scope should be limited to the approved purpose, channels, period, and account. Technology should enforce those boundaries rather than merely display them.</p>
+<h2>Control design</h2>
+<p>The system should maintain a campaign master record with permit, owner, dates, target, approved account, currencies, countries, restrictions, and reporting deadlines. Payment events should carry a unique transaction identifier and reconcile daily to the processor and bank. Exceptions such as chargebacks, duplicate payments, foreign-source restrictions, failed transfers, and receipts after closure require documented treatment.</p>
+<p>Cybersecurity controls should address access management, secure development, third-party dependencies, payment-card scope, logging, incident response, backup, and vendor assurance. Donor and beneficiary data should be separated where possible. Collection should follow a minimum-data principle, retention periods should be defined, and sensitive beneficiary evidence should not be exposed through donor-facing systems.</p>
+<h2>Trust, accessibility, and closure</h2>
+<p>Transparency should be specific enough to support informed giving: legal campaign owner, approved purpose, permit where required, destination, treatment of fees, use of excess or unspent funds, privacy notice, and contact route. Claims about allocation or impact must match the accounting and program design. A promise that 100% reaches beneficiaries, for example, requires a separately financed cost model and clear definition of what counts as distribution (UNHCR, 2026).</p>
+<p>Campaign closure is part of design. The public page should stop accepting funds when permission expires, the target is reached if required, or the purpose becomes impossible. Finance completes reconciliation; program teams confirm allocation; compliance closes regulator reporting; and communications publish a proportionate results update. Archived pages should not leave active payment links or outdated legal claims.</p>
+<h2>Why digital collection remains regulated</h2>
+<p>Digital delivery does not remove fundraising law. UAE Federal Law No. 3 of 2021 expressly includes electronic and digital forms within its definition of donations. Abu Dhabi's fundraising policy provides a specific approval route for digital fundraising platforms. Saudi Arabia maintains a donation-collection law and official services for checking or directing lawful donation channels (Department of Community Development, 2023; National Center for Non-Profit Sector, 2026; United Arab Emirates, 2021).</p>
+<p>The resulting system boundary extends beyond the webpage. Authorization, campaign identifiers, payment events, bank settlement, restricted-fund accounting, refunds, donor and beneficiary data, and closure must reconcile. A technically successful payment is not evidence of lawful solicitation or correct use.</p>
+<h2>The digital campaign control set</h2>
+<h2>Running a pre-launch control test</h2>
+<p>A pre-launch test should include a successful donation, failed payment, duplicate transaction, refund, foreign card, expired permit, over-target contribution, privacy request, cyber incident, and campaign closure. Finance, compliance, technology, communications, and program staff should observe the same test and agree the authoritative record. The exercise is designed to expose mismatched identifiers, unclear ownership, and public copy that the ledger or permit cannot support.</p>
+<h2>Conclusion</h2>
+<p>Primary UAE and Saudi sources show that digital collection remains subject to fundraising authorization and channel controls. Operational integrity therefore depends on reconciling the permit, public claim, campaign identifier, payment processor, bank settlement, restricted ledger, beneficiary use, refunds, data rights, and closure. Payment success alone does not establish legal or programmatic correctness.</p>
+<h2>References</h2>
+<h2>References</h2><ol class="paper-refs"><li>Department of Community Development. (2023). Abu Dhabi fundraising policy. Government of Abu Dhabi. https://addcd.gov.ae/-/media/Project/DCD/DCD-v2/White-Paper/FundraisingPolicy2023-PDF-EN.pdf</li><li>National Center for Non-Profit Sector. (2026). Donation collection law [Arabic]. https://ncnp.gov.sa/ar/regulations/%D9%86%D8%B8%D8%A7%D9%85-%D8%AC%D9%85%D8%B9-%D8%A7%D9%84%D8%AA%D8%A8%D8%B1%D8%B9%D8%A7%D8%AA</li><li>United Arab Emirates. (2021). Federal Law No. 3 of 2021 regulating donations. UAE Legislation. https://uaelegislation.gov.ae/en/legislations/1500/download</li><li>United Nations High Commissioner for Refugees. (2026). Islamic philanthropy annual report: Impact 2025. https://zakat.unhcr.org/annualreport/annual-2025/wp-content/uploads/sites/6/2026/02/UNHCR-IP-Report-Impact-2025.pdf</li></ol>
+    </div>
+    <a class="paper-back" href="../toolkit/#/regulation/digital-fundraising-in-the-gcc-authorization-payments-data-and-closure">Read in the interactive toolkit</a>
+  </div>
+</main>
+<footer class="sig">
+  <div class="wrap">
+    <nav class="sig-cols" aria-label="Site information">
+    <ul class="sig-col sig-col-l">
+      <li><a href="../faq/" aria-current="page">FAQ</a></li>
+      <li><a href="../connect/">Connect</a></li>
+    </ul>
+    <p><a class="sig-ava" href="https://www.linkedin.com/in/ali-al-mokdad/"
+       target="_blank" rel="noopener noreferrer" aria-label="Ali Al Mokdad on LinkedIn"><img
+       src="../ali.jpg" alt="" width="40" height="40" loading="lazy" decoding="async"></a><span
+       class="sig-cred">Owned and managed by <a href="https://www.linkedin.com/in/ali-al-mokdad/"
+       target="_blank" rel="noopener noreferrer">Ali Al Mokdad</a></span></p>
+    <ul class="sig-col sig-col-r">
+      <li><a href="../terms/">Terms of Use</a></li>
+      <li><a href="../privacy/">Privacy Policy</a></li>
+    </ul>
+    </nav>
+  <p class="sig-rights">&copy; 2026 GCC Philanthropy&trade;. All rights reserved.</p>
+</div></footer>
+</body>
+</html>
