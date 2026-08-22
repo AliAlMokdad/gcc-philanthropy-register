@@ -607,6 +607,120 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
      unpainted and the jurisdictional one is not.
 
      Every figure is counted from notes.json when the page loads. Nothing here is written down. */
+  /* FURTHER READING, by jurisdiction. Ali's own collection: seventy articles on Gulf
+     philanthropy. Title, year published, link. Nothing else, by instruction, and nothing
+     written about them, because a reading list that editorialises stops being a reading list.
+
+     EVERY LINK WAS FETCHED BEFORE IT WAS PUBLISHED. Sixty resolved and carried the claimed
+     headline. Four academic pieces are given as doi.org rather than publisher URLs, checked
+     against Crossref for title and year, because a DOI does not rot and a publisher path does.
+     Two that block automated fetching were opened in a real browser instead. One was dropped:
+     Zawya returns Page Not Found, so it is not in this list rather than sitting here broken.
+     Two carry no year because their publisher states none, and inventing one is worse than
+     leaving the column empty. */
+  var READING=[
+   {j:"GCC",a:[
+    {t:"Study shines new light on GCC philanthropy",y:null,u:"https://www.circlemena.org/updates/lgt-report-launch/"},
+    {t:"Seizing the opportunity",y:2025,u:"https://www.circlemena.org/resources/insights/abdulla-khoory-on-seizing-the-opportunity/"},
+    {t:"From charity to philanthropy",y:2022,u:"https://www.circlemena.org/resources/insights/from-charity-to-philanthropy/"},
+    {t:"Wealth for impact",y:2025,u:"https://www.circlemena.org/updates/event-report-wealth-for-impact/"},
+    {t:"Microfinance is empowering underserved communities in the GCC",y:2024,u:"https://www.weforum.org/stories/financial-and-monetary-systems/microfinance-is-empowering-underserved-communities-in-the-gcc/"},
+    {t:"Governing the Third Sector in the Gulf: A Systematic Review of Emergence, Capacity, and Policy Dynamics in Qatar, Saudi Arabia, Kuwait, and Oman",y:2026,u:"https://doi.org/10.1002/pad.70098"},
+    {t:"UAE among top donors as Islamic philanthropy provides lifeline for refugees worldwide: UNHCR",y:2026,u:"https://en.aletihad.ae/news/uae/4650641/uae-among-top-donors-as-islamic-philanthropy-provides-lifeli"},
+    {t:"Islamic Instruments for Refugee Financing: The IsDB and UNHCR Collaborative Approach",y:2025,u:"https://doi.org/10.1111/1758-5899.13476"},
+    {t:"Climate goals",y:2026,u:"https://www.circlemena.org/updates/climate-goals/"},
+    {t:"Environmental Social Governance Integration in the Gulf Cooperation Council Capital Markets: A Catalyst for Urban Sustainability",y:2024,u:"https://doi.org/10.1089/scc.2024.0024"},
+   ]},
+   {j:"Saudi Arabia",a:[
+    {t:"Strengthened governance positions GCC's non-profit sectors as significant economic contributors",y:2025,u:"https://oxfordbusinessgroup.com/reports/saudi-arabia/2025-report/philanthropy/positive-impact-strengthened-governance-and-expanding-participation-is-positioning-the-non-profit-sector-as-an-economic-contributor-overview/"},
+    {t:"Flagship Report Highlights Growth Trajectory of Saudi's Nonprofit Sector",y:2025,u:"https://kkf.org.sa/en/news/flagship-report-highlights-growth-trajectory-of-saudi-s-nonprofit-sector/"},
+    {t:"Saudi nonprofit sector revenues surge 22% to SR73 billion in 2024",y:2025,u:"https://saudigazette.com.sa/article/657139/SAUDI-ARABIA/Saudi-nonprofit-sector-revenues-surge-22-to-SR73-billion-in-2024"},
+    {t:"Saudi Arabia Boosts Non-Profit Investment to Drive Social Impact Under Vision 2030",y:2025,u:"https://www.spa.gov.sa/fa/N2321543"},
+    {t:"How to engage people in a changing society",y:2026,u:"https://www.circlemena.org/resources/insights/how-to-engage-people-in-a-changing-society/"},
+    {t:"Saudi next-gens discuss regional giving trends",y:2025,u:"https://www.circlemena.org/updates/saudi-next-gens-discuss-regional-giving-trends/"},
+    {t:"Gates Foundation to open office in Saudi Arabia",y:null,u:"https://www.circlemena.org/updates/gates-foundation-to-open-its-first-mena-regional-office/"},
+    {t:"Gates Foundation partners with KSRelief to eradicate polio, strengthen primary healthcare",y:2024,u:"https://www.arabnews.com/node/2501206/amp"},
+    {t:"Ehsan's Sixth National Charity Campaign Surpasses SAR1.75 Billion in Ramadan Donations",y:2026,u:"https://www.spa.gov.sa/N2543331"},
+    {t:"Volunteerism in Saudi Arabia Shifts Toward High-Impact Professional Service",y:2026,u:"https://www.spa.gov.sa/en/N2501459"},
+   ]},
+   {j:"United Arab Emirates",a:[
+    {t:"Dubai: Not just a R&R destination but a strategic opportunity for NGOs",y:2024,u:"https://www.developmentaid.org/news-stream/post/175173/dubai-strategic-opportunity-for-ngos"},
+    {t:"Dubai Cares concludes a year of remarkable impact, driven by ground-breaking campaigns and record volunteer engagement",y:2025,u:"https://www.mediaoffice.ae/en/news/2025/january/28-01/dubai-cares-concludes-a-year-of-remarkable"},
+    {t:"New Abu Dhabi philanthropy to focus on global health and development",y:2025,u:"https://www.circlemena.org/updates/new-abu-dhabi-philanthropy-to-focus-on-global-health-and-development/"},
+    {t:"New AED100m fund to boost UAE nonprofit sector",y:2026,u:"https://www.circlemena.org/updates/uae-unveils-aed-100m-fund-to-boost-nonprofit-sector/"},
+    {t:"MBRGI spends Dh2.3bn in 2025, reaching 165 million people worldwide",y:2026,u:"https://gulfnews.com/uae/government/mbrgi-spends-dh23bn-in-2025-reaching-165-million-people-worldwide-1.500518835"},
+    {t:"UAE Ramadan initiative raises more than US$1 billion",y:2025,u:"https://www.circlemena.org/updates/uae-ramadan-initiative-raises-more-than-us-1billion/"},
+    {t:"AWQAF Dubai partners with Al Jalila Foundation to develop AED38 million endowment facility",y:2025,u:"https://www.mediaoffice.ae/en/news/2025/march/11-03/awqaf-and-al-jalila-foundation"},
+    {t:"Majra Sustainable Impact Challenge winners announced",y:2025,u:"https://www.circlemena.org/updates/majra-sustainable-impact-challenge-winners-announced/"},
+    {t:"Al Jalila Foundation receives AED435 million in donor contributions in 2025",y:2026,u:"https://www.mediaoffice.ae/en/news/2026/april/16-04/al-jalila-foundation"},
+    {t:"Muna Easa Al Gurg named in TIME100 Philanthropy list for 2026",y:2026,u:"https://gulfnews.com/uae/people/muna-easa-al-gurg-named-in-time100-philanthropy-list-for-2026-1.500544441"},
+    {t:"DP World Foundation delivers AED19 million charity projects in 10 countries in Ramadan",y:2024,u:"https://mediaoffice.ae/en/news/2024/april/25-04/dp-world-announces-acheiving-iniatives-in-ramadan"},
+   ]},
+   {j:"Qatar",a:[
+    {t:"Qatar improves position on Global Philanthropy Environment Index",y:2025,u:"https://www.gulf-times.com/article/704707/international/qatar-improves-position-on-global-philanthropy-environment-index"},
+    {t:"QC implements projects worth QR1.57bn in 2024",y:2025,u:"https://www.gulf-times.com/article/698005/qatar/qc-implements-projects-worth-qr157bn-in-2024"},
+    {t:"Qatar Fund for Development commits over $130 million to global development at UNGA80",y:2025,u:"https://www.qatarfund.org.qa/project/qatar-fund-for-development-commits-over-130-million-to-global-development-at-unga80/"},
+    {t:"EAA Foundation recognised at Qatar's Rawda Award for Social Impact for its Together Project",y:2026,u:"https://educationaboveall.org/media-centre/news/eaa-foundation-recognised-his-highness-sheikh-tamim-bin-hamad-al-thani-qatars"},
+    {t:"Qatar-based actors in global education financing: a document-based case study of Education Above All and the Qatar Fund for Development",y:2026,u:"https://doi.org/10.1080/14767724.2026.2673138"},
+    {t:"EAA's Silatech reaches over five million beneficiaries",y:2025,u:"https://thepeninsulaqatar.com/article/26/11/2025/eaas-silatech-reaches-over-five-million-beneficiaries"},
+    {t:"Qatar Foundation for Social Work concludes 2025 with achievements and plans to strengthen sustainable social impact",y:2025,u:"https://www.qatarsocial.org/en/news/qatar-foundation-social-work-concludes-2025-qualitative-achievements-and-looks-ahead-2026"},
+    {t:"Over 4.17 million people benefit from QRCS projects across 20 countries in H1 2026",y:2026,u:"https://www.qatarliving.com/assets/article/over-4-17-million-people-benefit-from-qrcs-projects-across-20-countries-in-h1-2026"},
+    {t:"QFFD and Aga Khan Development Network sign memorandum of understanding to advance inclusive and sustainable development",y:2025,u:"https://www.qatarfund.org.qa/project/qffd-and-aga-khan-development-network-sign-memorandum-of-understanding-to-advance-inclusive-and-sustainable-development/"},
+    {t:"Jassim and Hamad bin Jassim Charitable Foundation's projects reach 342,973 beneficiaries in 2025",y:2026,u:"https://thepeninsulaqatar.com/article/06/04/2026/jassim-and-hamad-bin-jassim-charitable-foundations-projects-reach-342973-beneficiaries-in-2025"},
+   ]},
+   {j:"Kuwait",a:[
+    {t:"Kuwait charity sector integrates technology and reconstruction for sustainable impact",y:2026,u:"https://kuwaittimes.com/article/45194/kuwait/kuwait-charity-sector-integrates-technology-reconstruction-for-sustainable-impact/"},
+    {t:"UNHCR Kuwait chief highlights zakat's growing impact in assisting forcibly displaced people",y:2025,u:"https://timeskuwait.com/unhcr-kuwait-chief-highlights-zakats-growing-impact-in-assisting-forcibly-displaced-people/"},
+    {t:"Agility's 2025 Kuwait community initiatives to support 5,000+ people",y:2025,u:"https://www.arabtimesonline.com/news/agilitys-2025-kuwait-community-initiatives-to-support-5000-people/"},
+    {t:"talabat records EUR20m in rider tips and EUR6.45m in donations across MENA",y:2026,u:"https://kuwaittimes.com/article/39052/kuwait/other-news/talabat-records-20m-in-rider-tips-645m-in-donations-across-mena/"},
+    {t:"bp Kuwait and IDRAK launch GreenTech Innovators social-investment programme",y:2026,u:"https://kuwaittimes.com/article/39307/business/bp-kuwait-and-idrak-launch-greentech-innovators-social-investment-programme-to-empower-youth-sustainability-leaders/"},
+    {t:"Charity completes rehabilitation programme for 200 people with disabilities",y:2026,u:"https://kuwaittimes.com/article/38766/kuwait/other-news/charity-completes-rehab-program-for-200-with-disabilities/"},
+    {t:"IICO organizes charity exhibition in Kuwait to aid families ahead of Eid Al-Fitr",y:2025,u:"https://www.arabtimesonline.com/news/iico-organizes-charity-exhibition-in-kuwait-to-aid-needy-families-ahead-of-eid-al-fitr/"},
+    {t:"Al-Othman Zakat sponsors orphans across 16 nations",y:2026,u:"https://kuwaittimes.com/article/42584/kuwait/other-news/al-othman-zakat-sponsors-orphans-across-16-nations/"},
+    {t:"Kuwaiti charities expand development partnerships and sustainable initiatives supporting communities in need",y:2026,u:"https://kuwaittimes.com/article/45921/kuwait/kuwaiti-charities-expand-development-partnerships-sustainable-initiatives-supporting-communities-in-need/"},
+   ]},
+   {j:"Oman",a:[
+    {t:"Dar al Atta'a charity programmes focus on sustainability and innovation",y:2025,u:"https://www.muscatdaily.com/2025/07/21/dar-al-attaa-charity-programmes-focus-on-sustainability-innovation/"},
+    {t:"Ishraq fund launched to boost waqf-sector investments",y:2024,u:"https://www.muscatdaily.com/2024/11/04/ishraq-fund-launched-to-boost-waqf-sector-investments/"},
+    {t:"Over 134,900 donors give RO1.67mn via Jood platform",y:2026,u:"https://www.muscatdaily.com/2026/01/11/over-134900-donors-give-ro1-67mn-via-jood-platform/"},
+    {t:"Developmental Foundation for Social Responsibility in Oman's energy sector launched",y:2025,u:"https://timesofoman.com/article/163317-developmental-foundation-for-social-responsibility-in-omans-energy-sector-launched"},
+    {t:"Dar Al Atta'a Association: Community contribution for more sustainable family life",y:2025,u:"https://timesofoman.com/article/160665-dar-al-attaa-association-community-contribution-for-more-sustainable-family-life"},
+    {t:"Oman Charitable Organisation disburses over RO5.3 million in aid during 2025",y:2026,u:"https://www.thearabianstories.com/2026/01/13/oman-charitable-organisation-disburses-over-ro-5-3-million-in-aid-during-2025/"},
+    {t:"Oman's Sohar Port and Freezone implements 11 CSR initiatives, reaching over 4,700 beneficiaries",y:2025,u:"https://www.thearabianstories.com/2025/09/21/omans-sohar-port-and-freezone-implements-11-csr-initiatives-reaching-over-4700-beneficiaries-in-h1-2025/"},
+    {t:"Ooredoo celebrates two decades of making a real difference as it launches its 20th Goodwill Journey",y:2024,u:"https://www.ooredoo.om/en/press-release/ooredoo-celebrates-two-decades-of-making-a-real-difference-as-it-kicks-off-20th-goodwill-journey/"},
+    {t:"Omani Women's Waqf and Their Role in Promoting Sustainable Development Within the Framework of Oman Vision 2040",y:2026,u:"https://al-qanatir.com/aq/article/view/1104"},
+    {t:"Oman unveils first volunteering platform to strengthen social responsibility",y:2025,u:"https://www.muscatdaily.com/2025/06/18/oman-unveils-first-volunteering-platform-to-strengthen-social-responsibility/"},
+   ]},
+   {j:"Bahrain",a:[
+    {t:"Hope Ventures co-invests $300,000 alongside Alfanar Venture Philanthropy in FabricAID",y:2024,u:"https://www.bizbahrain.com/hope-ventures-co-invests-usd-300k-alongside-alfanar-venture-philanthropy-and-mohammed-alaali-in-fabric-aid-through-beban-tv-show/"},
+    {t:"GFH Foundation collaborates with Kaaf Humanitarian to support deserving Bahraini families",y:2026,u:"https://www.bahrainthisweek.com/gfh-foundation-collaborates-with-kaaf-humanitarian-to-support-deserving-bahraini-families/"},
+    {t:"Rashid Alzayani Foundation and Riyadat Mall partner to support families through reuse campaign",y:2026,u:"https://www.bahrainthisweek.com/rashid-alzayani-foundation-and-riyadat-mall-partner-to-support-families-via-reuse-campaign/"},
+    {t:"RHF aids 4,821 families and individuals in 2024",y:2025,u:"https://www.newsofbahrain.com/bahrain/118457.html"},
+    {t:"AlMabarrah AlKhalifia Foundation celebrates 15-year legacy of youth empowerment and social impact",y:2026,u:"https://www.bizbahrain.com/almabarrah-alkhalifia-foundation-celebrates-15-year-legacy-of-youth-empowerment-and-social-impact/"},
+    {t:"RCSI joins forces with Rashid AlZayani Foundation and iWorld for laptop donation",y:2025,u:"https://www.newsofbahrain.com/business/108510.html"},
+    {t:"stc Bahrain's community programmes earn international recognition at 2025 Finance Awards",y:2026,u:"https://www.bahrainthisweek.com/stc-bahrains-community-programs-earn-international-recognition-at-2025-finance-awards/"},
+    {t:"RHF and Lamar Holding sign agreement to support productive families and healthcare programmes",y:2025,u:"https://www.bizbahrain.com/rhf-and-lamar-holding-sign-agreement-to-support-productive-families-healthcare-programmes/"},
+    {t:"'Reassured Homes' brings relief to families across Bahrain",y:2026,u:"https://www.newsofbahrain.com/bahrain/136226.html"},
+    {t:"MKF launches 2026 Ithra summer programmes under the theme 'Skills of the Future'",y:2026,u:"https://www.bahrainthisweek.com/mkf-launches-2026-ithra-summer-programs-under-the-theme-skills-of-the-future/"},
+   ]},
+  ];
+
+  /* ONE ROW IS A TITLE, A YEAR AND A LINK. The title IS the link, so there is no "read more" to
+     write: the shortest honest row is the one where the thing you click is the thing it is called.
+     Tabular numerals so the years form a column the eye can run down rather than a ragged edge.
+     A missing year renders as nothing at all, because two of these publishers date nothing and a
+     guessed year on a reference list is worse than a gap. */
+  function readingList(items){
+    var ol=el("ol",{cls:"rd"});
+    items.forEach(function(r){
+      var a=el("a",{href:r.u,target:"_blank",rel:"noopener noreferrer"});
+      a.appendChild(el("span",{cls:"rd-t",text:r.t}));
+      a.appendChild(el("span",{cls:"rd-y",text:r.y?String(r.y):""}));
+      ol.appendChild(el("li",null,[a]));
+    });
+    return ol;
+  }
+
   function axisList(defs, cls){
     var ol=el("ol",{cls:"axis "+cls});
     defs.forEach(function(sec){
@@ -641,6 +755,16 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
 
     left.appendChild(el("h2",{cls:"axis-h axis-h-place",text:"By jurisdiction"}));
     left.appendChild(axisList(places,"axis-place"));
+
+    /* HIS COLLECTION, AND IT IS NOT HIS WRITING. The two axes above are the thirty-five papers
+       he wrote. These seventy are other people's journalism and research, so they carry a
+       heading that says so: without it a reader counts a hundred and five pieces and credits
+       them all to him, which is the one piece of editorialising this list cannot do without. */
+    left.appendChild(el("h2",{cls:"axis-h axis-h-read",text:"Further reading"}));
+    READING.forEach(function(g){
+      left.appendChild(el("h3",{cls:"rd-j",text:g.j}));
+      left.appendChild(readingList(g.a));
+    });
 
     host.appendChild(left);
     window.scrollTo(0,0);
@@ -719,7 +843,38 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
          and the jurisdiction labels measured 2.14:1 against the dark card. The token is given a
          dark value here rather than changing the two var() sites, so the light green is untouched.
          #7FCBBD is the same hue lifted to carry text on the dark ground: 10.11:1. */
-      "@media (prefers-color-scheme:dark){:root{--i-country-ink:#7FCBBD}}";
+      "@media (prefers-color-scheme:dark){:root{--i-country-ink:#7FCBBD}}"+
+
+      /* FURTHER READING. The same hand as the axes above, one step quieter, because this is what
+         other people wrote and his own papers keep the louder voice.
+         Source Serif for the title because it is a title, Plex Mono for the year because it is a
+         figure, which is the division the whole site already uses. The year is tabular so seventy
+         of them stack into a straight column instead of a ragged edge, and on a phone it drops to
+         its own line at full size rather than shrinking to fit beside the title. */
+      ".axis-h-read{margin-top:calc(var(--s5) + var(--s3))}"+
+      /* 48 above, not 24. Rendered and looked at: at 24 the next country's label sat hard against
+         the last rule of the previous list and the seven groups read as one long list with
+         interruptions rather than as seven. The measurement said 24px and the picture said too
+         tight, and the picture was right. */
+      ".rd-j{display:flex;align-items:center;gap:10px;margin:var(--s5) 0 var(--s2);"+
+        "font:600 11px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;"+
+        "color:var(--ink-3)}"+
+      ".rd-j::before{content:\"\";flex:none;width:16px;height:1px;background:currentColor}"+
+      ".rd{list-style:none;margin:0;padding:0}"+
+      ".rd li{border-top:1px solid var(--line)}"+
+      ".rd li:last-child{border-bottom:1px solid var(--line)}"+
+      ".rd a{display:flex;align-items:baseline;gap:var(--s4);padding:11px 2px;"+
+        "text-decoration:none;color:inherit}"+
+      ".rd a:hover{background:var(--accent-soft)}"+
+      ".rd a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}"+
+      ".rd-t{flex:1 1 auto;min-width:0;font:500 15.5px/1.45 var(--display);color:var(--ink);"+
+        "text-wrap:pretty}"+
+      ".rd a:hover .rd-t{color:var(--accent-2);text-decoration:underline;"+
+        "text-underline-offset:2px}"+
+      ".rd-y{flex:none;font:500 11.5px/1.6 var(--mono);color:var(--ink-3);"+
+        "font-variant-numeric:tabular-nums;letter-spacing:.06em}"+
+      "@media (max-width:600px){.rd a{flex-wrap:wrap;gap:2px}.rd-t{flex:1 1 100%}"+
+        ".rd-y{flex:none}}";
     document.head.appendChild(st);
   })();
 
