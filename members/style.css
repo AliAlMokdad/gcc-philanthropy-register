@@ -95,6 +95,12 @@ a{color:inherit;text-decoration:none}
 .council-member-map path[data-country]{fill:var(--map-off)}
 .council-member-map path[data-name]{fill:var(--muted)}
 .council-member-map path[data-marker]{fill:var(--map-on)}
+/* BAHRAIN IS 1.7px WIDE ON A PHONE. The island renders at 1.7 by 4.9px in the 272px phone
+   map, so its gold active fill is invisible on exactly the page that exists to show it. A
+   thin ring points at it, drawn only when Bahrain is the active state. Qatar at 8.7 by 17.8
+   and Kuwait at 19.5 by 18.1 were measured too and stay legible without one. */
+.council-member-map [data-ring]{display:none;fill:none;stroke:var(--map-on);stroke-width:3}
+.council-member[data-active="bahrain"] .council-member-map [data-ring="bahrain"]{display:block}
 .council-member[data-active="uae"]     .council-member-map path[data-country="uae"],
 .council-member[data-active="bahrain"] .council-member-map path[data-country="bahrain"],
 .council-member[data-active="ksa"]     .council-member-map path[data-country="ksa"],

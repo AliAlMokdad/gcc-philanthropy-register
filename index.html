@@ -459,7 +459,11 @@ h1.sel.is-lockup::after{width:152px;height:5px;border-radius:2px;
    ring stays off there; :focus-visible is what the browser matches when the user is actually on
    the keyboard, which is precisely when it is needed. */
 h1.sel:focus{outline:none}
-h1.sel:focus-visible{outline:2px solid var(--focus);outline-offset:5px;border-radius:3px}
+/* NO RING. The router focuses this heading on every route change for screen readers, and on a
+   fresh load that programmatic focus matched :focus-visible, so a rounded outline painted
+   around the one-word title and read as an empty input box. The heading is tabindex="-1",
+   unreachable by Tab, so no keyboard user loses an indicator they could ever have used. */
+h1.sel:focus-visible{outline:none}
 .sel-sub{font:400 14px/1.5 var(--sans);color:var(--ink-3);margin:0}
 /* the whole-register route sets no subtitle, so the paragraph renders empty */
 .sel-sub:empty{display:none}
@@ -531,7 +535,7 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
   background:var(--orange-soft);border:1px solid var(--orange);border-radius:12px;
   transition:box-shadow .16s ease-out,border-color .16s ease-out}
 .lg-lock{display:flex;flex-direction:column;gap:7px;min-width:0}
-.lg-k{font:600 10px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
+.lg-k{font:600 10.5px/1 var(--mono);letter-spacing:.15em;text-transform:uppercase;
   color:var(--orange-strong)}
 .lg-t{font:500 clamp(19px,2vw,24px)/1.15 var(--serif);letter-spacing:-.01em;
   color:var(--orange-strong)}
@@ -1218,7 +1222,7 @@ ol.ranked a::before{top:9px;bottom:9px}
   /* --i-s3, not --i-s2: measured against the ink line, s2 came out at 2.49:1 and could not be
      seen at 1px, s3 is 4.0:1 and reads as blue beside near-black. */
   background:linear-gradient(90deg,var(--i-s3) 0 76px,var(--ink) 76px) top left/100% 1px no-repeat}
-.i-sig-h{margin:0 0 16px;font:600 9.5px/1 var(--mono);letter-spacing:.13em;
+.i-sig-h{margin:0 0 16px;font:600 10.5px/1 var(--mono);letter-spacing:.13em;
   text-transform:uppercase;color:var(--ink-3)}
 .i-sig-row{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));
   gap:var(--s4) var(--s5,34px)}
@@ -1264,7 +1268,7 @@ ol.ranked a::before{top:9px;bottom:9px}
 
 /* the state selector */
 .i-dash-pick{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin:var(--s3) 0 0}
-.i-dash-pk{font:600 9.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+.i-dash-pk{font:600 10.5px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink-3);margin-right:5px}
 .i-dpill{border:1px solid var(--line);background:var(--i-surface);cursor:pointer;
   border-radius:2px;padding:6px 11px;min-height:32px;
@@ -1575,7 +1579,7 @@ body:not(.list-only) #cats{display:none !important}
 .i-ctl{display:flex;align-items:center;gap:var(--s4);flex-wrap:wrap;
   padding:0 var(--s4) 14px}
 .i-clab{display:flex;align-items:center;gap:8px}
-.i-clab>span{font:600 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+.i-clab>span{font:600 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-3)}
 .i-cfil,.i-cthr{font:400 13px/1.3 var(--sans);color:var(--ink);background:var(--i-surface);
   border:1px solid var(--line);border-radius:2px;padding:7px 9px;min-height:34px}
@@ -1591,7 +1595,7 @@ body:not(.list-only) #cats{display:none !important}
 .i-ctab th{position:sticky;top:0;z-index:1;
   text-align:left;padding:7px var(--s4);background:var(--paper);
   box-shadow:inset 0 -1px 0 var(--i-hair);
-  font:600 9.5px/1.4 var(--mono);letter-spacing:.09em;text-transform:uppercase;
+  font:600 10.5px/1.4 var(--mono);letter-spacing:.09em;text-transform:uppercase;
   color:var(--ink-3);white-space:nowrap}
 .i-ctab td{padding:4px var(--s4);border-bottom:1px solid var(--i-rule);vertical-align:middle}
 .i-ctab tr:last-child td{border-bottom:0}
@@ -1973,7 +1977,7 @@ body:not(.list-only) #cats{display:none !important}
 .i-switch.compact .i-vlab{display:flex;align-items:center;gap:8px;min-width:0}
 .i-switch.compact{padding-top:9px;padding-bottom:9px;align-items:center}
 .i-switch.compact .i-jump{padding:0}
-.i-vlab>span{font:600 9.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+.i-vlab>span{font:600 10.5px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;
   color:var(--ink-3)}
 .i-vsel{font:400 13.5px/1.3 var(--sans);color:var(--ink);background:var(--i-surface);
   border:1px solid var(--line);border-radius:2px;padding:7px 8px;min-height:38px;
@@ -1996,7 +2000,7 @@ body:not(.list-only) #cats{display:none !important}
    scrolled past; the reader who lands on a view from a shared link never saw it at all. */
 .i-src{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;
   padding:9px var(--s4);border-bottom:1px solid var(--i-hair);background:var(--paper)}
-.i-src b{font:600 9.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;
+.i-src b{font:600 10.5px/1.4 var(--mono);letter-spacing:.1em;text-transform:uppercase;
   color:var(--i-s1)}
 .i-src span{font:400 12px/1.5 var(--sans);color:var(--ink-3)}
 /* a jumped-to section should not draw a focus ring as though it were a control */
@@ -2016,7 +2020,7 @@ body:not(.list-only) #cats{display:none !important}
 .i-rows.dense .i-rv{font-size:11.5px}
 .i-rows.dense{max-height:none}
 .oe-taxis{display:flex;justify-content:space-between;margin-top:4px;
-  font:400 10px/1 var(--mono);color:var(--ink-3)}
+  font:400 10.5px/1 var(--mono);color:var(--ink-3)}
 .oe-tmeta{display:block;margin:8px 0 0;font:400 12.5px/1.45 var(--sans);color:var(--ink-2)}
 .oe-tsub{margin:3px 0 0;font:400 11.5px/1.45 var(--sans);color:var(--ink-3)}
 .oe-tcol.top i{background:var(--i-c1)}
@@ -2307,6 +2311,14 @@ body:has(#l1:not([hidden])) .pbar{display:none}
      pills were 32 and the view select 38. */
   .i-jump{min-height:44px;min-width:44px;padding:12px 8px}
   .i-switch.compact .i-jump{padding:12px 8px}
+  /* the compact switch was a 10.5px label, a select too narrow for its own longest option and
+     the organisations link, shoulder to shoulder in 315px. Stacked, the select takes the full
+     width and each control reads alone, the same one-per-row grammar the register's phone
+     search already uses. */
+  .i-switch.compact{flex-wrap:wrap}
+  .i-switch.compact .i-vlab{flex:1 1 100%}
+  .i-switch.compact .i-vlab .i-vsel{flex:1 1 auto;min-width:0}
+  .i-switch.compact .i-jump{width:100%;text-align:left;padding:4px 0 10px}
   .i-dpill{min-height:44px}
   .i-vsel{min-height:44px}
   /* THE NEWS CHIPS. Twenty-four items each carrying a place, a topic and a source link, about
@@ -2719,7 +2731,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 /* margin:0 on all three, and it is load bearing rather than tidy. The children are a p, an
    h3 and a p, so their default block margins were inflating a single line of text into an
    85px box and adding a phantom gap under the strip. */
-.n-off-tag{margin:0;flex:none;font:600 10px/1 var(--mono);letter-spacing:.16em;
+.n-off-tag{margin:0;flex:none;font:600 10.5px/1 var(--mono);letter-spacing:.16em;
   text-transform:uppercase;color:var(--accent-2)}
 .n-off-name{margin:0;font:600 clamp(15px,1.35vw,17.5px)/1.3 var(--serif);color:var(--ink);
   letter-spacing:-.008em}
@@ -2878,7 +2890,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .n-meta time{font:400 11.5px/1.5 var(--mono);letter-spacing:.01em;
   font-variant-numeric:tabular-nums}
 .n-meta .dot{opacity:.45}
-.n-kind{font:600 9.5px/1.5 var(--mono);letter-spacing:.11em;text-transform:uppercase;
+.n-kind{font:600 10.5px/1.5 var(--mono);letter-spacing:.11em;text-transform:uppercase;
   color:var(--i-slate)}
 .n-also{font-style:normal;color:var(--n-meta)}
 /* the same eight free pixels of hit area as the kickers, with no layout change. This is the
@@ -2911,7 +2923,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .n-ctrl{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));
   gap:var(--s3);align-items:end;margin:0 0 var(--s3)}
 .n-f{min-width:0;display:flex;flex-direction:column;gap:5px}
-.n-f label{font:600 9.5px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+.n-f label{font:600 10.5px/1.3 var(--mono);letter-spacing:.12em;text-transform:uppercase;
   color:var(--n-meta)}
 .n-f select,.n-f input{width:100%;min-height:44px;padding:9px 11px;
   font:400 14px/1.4 var(--sans);color:var(--ink);
