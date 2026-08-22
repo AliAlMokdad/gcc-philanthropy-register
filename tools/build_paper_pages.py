@@ -158,8 +158,12 @@ def main():
 <script type="application/ld+json">%(ld)s</script>
 %(theme)s
 <style>
-/* the reading column, in the doc idiom the faq and legal pages already use */
-.paper-wrap{max-width:860px;margin:0 auto;padding:0 24px}
+/* the reading column, in the doc idiom the faq and legal pages already use.
+   THE SHEET IS NOT OPTIONAL. The first build set prose straight onto the skyline
+   background; on a phone the abstract's last lines ran into the saturated blue and
+   every other document page (faq, legal) reads off a white sheet. Same construction
+   here: .doc-wrap > .container > .sheet from shared/doc.css, prose capped inside it. */
+.paper-wrap{max-width:860px;margin:0 auto}
 .paper-meta{margin:14px 0 0;font:600 11px/1.6 var(--mono);letter-spacing:.12em;
   text-transform:uppercase;color:var(--ink-3)}
 .paper-abstract{margin:22px 0 0;font:500 17.5px/1.6 var(--serif);color:var(--ink-2)}
@@ -172,7 +176,6 @@ def main():
   font:600 12.5px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;
   color:var(--accent);text-decoration:none}
 .paper-back:hover{text-decoration:underline}
-main{padding-top:34px;padding-bottom:64px}
 h1{margin:6px 0 0;font:600 clamp(26px,3.4vw,38px)/1.18 var(--serif);
   letter-spacing:-.015em;color:var(--ink);max-width:26ch}
 </style>
@@ -181,6 +184,7 @@ h1{margin:6px 0 0;font:600 clamp(26px,3.4vw,38px)/1.18 var(--serif);
 %(toggle)s
 %(pbar)s
 <main>
+ <div class="doc-wrap"><div class="container"><div class="sheet">
   <div class="paper-wrap">
     <p class="paper-meta">%(vol)s · %(juris)s · %(min)s min read · %(nref)s reference%(refpl)s</p>
     <h1>%(t)s</h1>
@@ -191,6 +195,7 @@ h1{margin:6px 0 0;font:600 clamp(26px,3.4vw,38px)/1.18 var(--serif);
     </div>
     <a class="paper-back" href="../toolkit/#/%(fam)s/%(slug)s">Read in the interactive toolkit</a>
   </div>
+ </div></div></div>
 </main>
 %(footer)s
 </body>
