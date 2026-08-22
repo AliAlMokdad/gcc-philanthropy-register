@@ -2169,6 +2169,75 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   .pagetab{margin-top:8px}
 }
 
+
+/* ==================== PHONE ONLY: thumbs and reading size ====================
+   MEASURED at 390x844 across six surfaces. The recurring failures were not the prose, they were
+   the site's own furniture: the footer meta links at 26px, the back link and the edge control and
+   the portrait at 40, and the masthead brand at 38, which was my own regression from tightening
+   the product bar in the commit before this one. Each is a discrete control a finger has to land
+   on, and each is now 44.
+
+   The reading sizes raised here are the two that are read constantly rather than glanced at: the
+   row context line under every organisation name, which was 12px and appears 18 times on one
+   screen of the register, and the intelligence panel's data labels at 14. */
+@media (max-width:600px){
+  /* the brand is a link to the front page, so it is a target, not a wordmark */
+  .pbar-brand{min-height:44px}
+  .l2head .back,#back{min-height:44px;display:inline-flex;align-items:center}
+  a.edge{min-height:44px;display:inline-flex;align-items:center}
+  footer.sig a.sig-ava{width:44px;height:44px}
+  footer.sig a.sig-ava img{width:44px;height:44px}
+  footer.sig .sig-col a{min-height:44px}
+  /* 12px is too small for the one line that tells you where an organisation is and what it does,
+     and it is on screen eighteen times at once. */
+  /* .rowbtn .rowctx, not .rowctx. The base rule sets this through the font SHORTHAND at
+     (0,2,0) and a bare class selector at (0,1,0) matched and lost twice before this was measured
+     rather than assumed. It is the line under every organisation's name, on screen eighteen times
+     at once, and 12px mono is the smallest reading text on the site. */
+  .rowbtn .rowctx{font-size:13.5px}
+  /* THE ATLAS CONTROLS. A 17px button is not a target: .i-switch.compact .i-jump strips its
+     padding to nothing, which is defensible beside a pointer and not beside a thumb. The donor
+     pills were 32 and the view select 38. */
+  .i-jump{min-height:44px;min-width:44px;padding:12px 8px}
+  .i-switch.compact .i-jump{padding:12px 8px}
+  .i-dpill{min-height:44px}
+  .i-vsel{min-height:44px}
+  /* THE NEWS CHIPS. Twenty-four items each carrying a place, a topic and a source link, about
+     seventy targets at 25 to 28px on a page already running to ten screens. They meet the 24px
+     minimum, so this is comfort rather than conformance, and the answer is a few pixels each
+     rather than 44 apiece: at 44 the page would grow by roughly two more screens and trade a real
+     cost for a smaller one. */
+  .n-geo,.n-topic,.n-orig{min-height:32px}
+  /* the pager is three or four small targets at the end of a long list, which is exactly
+     where a mis-tap costs the most: it moves you to a page you did not want. */
+  nav.pager a{min-height:44px;min-width:44px;display:inline-flex;align-items:center;
+    justify-content:center}
+  /* the intelligence panel's own labels and notes, read rather than glanced at */
+  .i-bt,.i-note,.i-t-meta,.i-rlab{font-size:15px}
+}
+
+/* ==================== PHONE ONLY: press, because there is no hover ====================
+   Every state in this file is written for a pointer arriving and hovering. A finger does not
+   hover: it lands, and the only feedback that exists in that moment is what happens under it. So
+   the list rows, the category tiles and the country door get a press state.
+
+   It is a ground change and a scale, not a colour change on the text, because a thumb covers the
+   text at the exact moment the colour would be read. Guarded on (hover:none) so a laptop with a
+   narrow window keeps its hover behaviour instead of inheriting a touch idiom. */
+@media (hover:none) and (max-width:600px){
+  #recs li.rec > button:active,#recs li.rec > a:active{background:var(--accent-soft)}
+  ol.ranked a:active{background:var(--accent-soft);transform:scale(.99)}
+  .cprof-a:active{background:var(--accent-soft);transform:scale(.995)}
+  .portal-news a:active{background:var(--accent-soft)}
+  .spoke:active{transform:translate(-50%,-50%) scale(.97)}
+  /* the tap flash Android paints over these is redundant once the state is explicit */
+  #recs li.rec > button,ol.ranked a,.cprof-a,.portal-news a{
+    -webkit-tap-highlight-color:transparent}
+}
+@media (hover:none) and (max-width:600px) and (prefers-reduced-motion:reduce){
+  ol.ranked a:active,.cprof-a:active,.spoke:active{transform:none}
+}
+
 /* THE TOGGLE DOES NOT EXIST ABOVE THE PHONE QUERY, and this rule has to come BEFORE that query
    rather than after it. Declared afterwards at equal specificity it wins the cascade, which
    folded the filters away on a phone and removed the only control that could unfold them.

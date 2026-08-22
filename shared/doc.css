@@ -529,3 +529,18 @@ footer.sig{margin-top:auto}
   .cf-send{color:#0E1018}
   .doc .bio-soc .soc:hover svg{fill:#0E1018}
 }
+
+/* PHONE ONLY: document prose at a phone reading size. Measured at 390px, the profile page set its
+   body paragraphs at 14.5px, nine of them, which is a comfortable desktop size read at arm's
+   length and a small one read at a phone's distance. 16px is the size the platform itself uses for
+   body text. The notice pages are left where they are: their paragraphs already sit at 16. */
+@media (max-width:600px){
+  /* THE LAST SELECTOR HERE IS NOT REDUNDANT. .doc .x-list li p:last-child sets its size
+     through the font SHORTHAND at a higher specificity than .doc .x-list p, so the plain
+     descendant selector matched and still lost. Measured: the rule applied and the text
+     computed at 14.5px anyway. Matching the specificity is what actually moves it. */
+  .doc .bio-sec p,.doc .bio-lede,.doc .x-list p,
+  .doc .x-list li p:last-child{font-size:16px;line-height:1.62}
+  /* the four meta links in the footer of every generated page */
+  footer.sig .sig-col a{min-height:44px}
+}
