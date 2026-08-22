@@ -633,57 +633,13 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     var left=el("div",{cls:"home-col"});
     left.appendChild(el("h1",{cls:"home-h",text:"Toolkit"}));
 
-    /* THE COLLECTION STATED IN ITS OWN NUMBERS, counted here rather than written down.
-       84 minutes, not "about 1 hours": dividing by sixty and rounding turned an honest figure into
-       a wrong one and an ungrammatical sentence at the same time. Minutes are what the data holds,
-       so minutes are what it says. */
-    var papers=DATA.notes.length;
-    var refs=DATA.notes.reduce(function(t,n){ return t+(n.ref_count||(n.refs||[]).length||0); },0);
-    var mins=DATA.notes.reduce(function(t,n){ return t+(n.minutes||0); },0);
-
     var themes=SECTIONS.filter(function(s){ return THEME_IDS.indexOf(s.id)>=0; });
     var places=SECTIONS.filter(function(s){ return THEME_IDS.indexOf(s.id)<0; });
 
-    /* DISTINCT papers behind each axis, because the jurisdictional lists overlap each other: a
-       paper covering three states is counted once here and appears three times below. Counting the
-       rows instead would have claimed a collection larger than it is. */
-    function distinct(list){
-      var seen={}, n=0;
-      list.forEach(function(sec){ sec.notes.forEach(function(a){
-        if(!seen[a.id]){ seen[a.id]=1; n++; } }); });
-      return n;
-    }
-    var byTheme=distinct(themes), byPlace=distinct(places);
-
-    var lede=el("p",{cls:"home-lede"});
-    lede.appendChild(el("b",{text:String(papers)}));
-    lede.appendChild(document.createTextNode(" papers on philanthropy in the Gulf, "));
-    lede.appendChild(el("b",{text:String(byTheme)}));
-    lede.appendChild(document.createTextNode(" organised by theme and "));
-    lede.appendChild(el("b",{text:String(byPlace)}));
-    lede.appendChild(document.createTextNode(" by jurisdiction. "));
-    lede.appendChild(el("b",{text:String(refs)}));
-    lede.appendChild(document.createTextNode(" references, "));
-    lede.appendChild(el("b",{text:String(mins)}));
-    lede.appendChild(document.createTextNode(" minutes of reading."));
-    left.appendChild(lede);
-
-    left.appendChild(el("h2",{cls:"axis-h",text:"By theme"}));
+    left.appendChild(el("h2",{cls:"axis-h axis-h-theme",text:"By theme"}));
     left.appendChild(axisList(themes,"axis-theme"));
 
-    left.appendChild(el("h2",{cls:"axis-h",text:"By jurisdiction"}));
-    /* THE SENTENCE THAT STOPS A READER ADDING THE ROWS UP, and it has taken two corrections.
-       It first said these were the same papers read by country, which is false: the two axes are
-       disjoint, 20 thematic and 15 jurisdictional, checked against the data rather than assumed.
-       What DOES repeat is inside this axis, where a paper covering several states is listed under
-       each of them. The second correction is "and their minutes": the sentence covered the paper
-       count only, so a reader adding the minute column still got a number that did not reconcile.
-       The rows here total 19 papers and 38 minutes against the 15 and 30 actually behind them, and
-       the 84 in the lede is the whole collection of 35, not this axis. */
-    left.appendChild(el("p",{cls:"axis-note",
-      text:"A separate set of country papers. One covering several states is listed under each, "
-         + "so these rows, and their minutes, add up to more than the " + byPlace
-         + " papers behind them."}));
+    left.appendChild(el("h2",{cls:"axis-h axis-h-place",text:"By jurisdiction"}));
     left.appendChild(axisList(places,"axis-place"));
 
     host.appendChild(left);
@@ -712,16 +668,24 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
          sets no width and caps .ch-t at 62ch instead. */
       ".home-col:has(.axis){max-width:none;margin-inline:0}"+
 
-      ".home-lede{margin:var(--s3) 0 0;max-width:62ch;"+
-        "font:400 17px/1.55 var(--sans);color:var(--ink-2)}"+
-      ".home-lede b{font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}"+
 
       /* A GROUP HEADING, not a decorated one. Mono uppercase at label size is what this site uses
          for a structural label everywhere else, so the two axes are named in the site's own voice. */
-      ".axis-h{margin:var(--s5) 0 0;font:600 11px/1.4 var(--mono);letter-spacing:.17em;"+
-        "text-transform:uppercase;color:var(--ink-3)}"+
-      ".axis-note{margin:10px 0 0;max-width:64ch;font:400 14.5px/1.55 var(--sans);"+
-        "color:var(--ink-3)}"+
+      /* THE TWO AXIS HEADINGS NOW CARRY THE PAGE. They used to sit under a stat line and a
+         reconciliation note, and 11px muted mono was the right weight for a label with two
+         paragraphs doing the work above it. With both removed these are the only structure in the
+         column, so they take the site's own section marker: a short rule, then the name in the
+         mono voice at full ink. The rule is the motif already used for the masthead kicker and the
+         register's section heads, at the same 2px height.
+         COLOUR FOLLOWS THIS PAGE'S OWN RULE, which is why the two are not identical: green is
+         geography and appears on the jurisdictional axis and nowhere else, while a topic is carried
+         by its words, so the thematic rule stays ink. */
+      ".axis-h{display:flex;align-items:center;gap:13px;margin:var(--s5) 0 var(--s3);"+
+        "font:600 12.5px/1.4 var(--mono);letter-spacing:.19em;"+
+        "text-transform:uppercase;color:var(--ink)}"+
+      ".axis-h::before{content:\"\";flex:none;width:30px;height:2px;border-radius:1px;"+
+        "background:currentColor}"+
+      ".axis-h-place{color:var(--i-country-ink,#1B5A50)}"+
 
       ".axis{list-style:none;margin:var(--s3) 0 0;padding:0}"+
       ".axis li{border-top:1px solid var(--line)}"+
