@@ -2397,6 +2397,57 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   .spoke,.ring .ring-mark{animation:none}
 }
 
+
+/* ==================== PHONE ONLY: the register rows ====================
+   None of this touches the landing page, which has no list.
+
+   CONTACT FIRST. Measured across 1,862 rows: the mandate is 104 characters at the median and 200
+   at the 90th, so three to five wrapped lines at this width, and Contact sat under it plus
+   Category, Where and any named contact. Opening a row to find a phone number meant opening it
+   and then scrolling. The dl becomes a column so one pair can be lifted, and only that pair
+   moves; the rest keep the order they were written in.
+
+   THE NAME CLAMPS TO TWO LINES. Names run to 88 characters with a median of 30 and a 90th
+   percentile of 54, so closed rows were one, two or three lines deep and the list had no rhythm.
+   Two lines is the 90th percentile at this width, so the great majority are untouched and the
+   handful of very long ones stop setting the height of the whole list. The full name is in the
+   panel the row opens, so nothing is lost. */
+@media (max-width:600px){
+  .rec-dl{display:flex;flex-direction:column}
+  .rec-dl dt.is-contact{order:-2}
+  .rec-dl dd.is-contact{order:-1}
+  /* the routes are the reason the row was opened, so they get a target a thumb can hit */
+  .routes .r{min-height:44px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .routes a{padding:2px 0}
+  .routes .copy{min-height:36px;padding:0 12px}
+
+  .rowbtn .nm{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+    overflow:hidden}
+  /* an open row shows the whole name, since that is the row you are reading */
+  .rowbtn[aria-expanded="true"] .nm{-webkit-line-clamp:unset;overflow:visible}
+}
+
+
+/* ==================== PHONE ONLY: the append control ==================== */
+.mmore{display:none}
+@media (max-width:600px){
+  .mmore{display:block;padding:var(--s3) 0 var(--s4)}
+  .mmore[hidden]{display:none}
+  .mmore-b{display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;min-height:52px;padding:0 18px;
+    font:600 12px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent-2);background:var(--paper);
+    border:1px solid var(--line-2);border-radius:7px;cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:background-color .16s ease-out,border-color .16s ease-out}
+  .mmore-b:active{background:var(--accent-soft);border-color:var(--accent-line);
+    transform:scale(.995)}
+  .mmore-b:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+}
+@media (max-width:600px) and (prefers-reduced-motion:reduce){
+  .mmore-b:active{transform:none}
+}
+
 /* THE TOGGLE DOES NOT EXIST ABOVE THE PHONE QUERY, and this rule has to come BEFORE that query
    rather than after it. Declared afterwards at equal specificity it wins the cascade, which
    folded the filters away on a phone and removed the only control that could unfold them.
@@ -3174,6 +3225,15 @@ body:has(#l1:not([hidden])) .pbar{display:none}
       <p class="tally" id="tally" role="status" aria-live="polite"></p>
       <p class="ainote" id="ainote" role="status" aria-live="polite" hidden></p>
       <ul class="recs" id="recs"></ul>
+      <!-- PHONE ONLY, AND IT REPLACES THE PAGER RATHER THAN JOINING IT. The UAE holds 689 rows,
+           which is 35 pages at twenty a page, and Saudi Arabia 28. Paging on a phone means
+           reaching a small control at the foot of the list, tapping it, and being returned to the
+           top of a new page: the reader loses their place every twenty rows. This appends instead,
+           so nothing above the join moves and the scroll position is kept. The pager stays in the
+           document and stays the control on a laptop. -->
+      <div class="mmore" id="mmore" hidden>
+        <button type="button" class="mmore-b" id="mmoreb"></button>
+      </div>
       <nav class="pager" id="pager" aria-label="Pages"></nav>
       <div class="empty" id="empty" hidden>
         <p id="emptymsg"></p>
@@ -3237,6 +3297,10 @@ function val(row,key){
 }
 
 var PER_PAGE=20, page=1, current=null, filtered=[], writing=false;
+/* how many rows the phone list is currently showing. It only ever grows within one set of
+   results and is reset whenever the results themselves change, which is the difference
+   between appending to a list and appending to a different list. */
+var mShown=0;
 var timer=null, seq=0;
 
 function el(id){ return document.getElementById(id); }
@@ -4224,6 +4288,9 @@ function snippetFor(r){
 function apply(resetPage){
   if(!current) return;
   if(resetPage!==false) page=1;
+  /* A NEW SET OF RESULTS IS A NEW LIST. Keeping the window open across a filter change would show
+     240 rows of a 30-row answer and read as though the filter had not worked. */
+  if(resetPage!==false) mShown=0;
   aiRanked=false;              /* this list is the word pass again */
   filtered=computeFiltered(current,readControls());
   render();
@@ -4264,11 +4331,15 @@ function routesFor(r){
 
 function pairsFor(r){
   var dl=make("dl","rec-dl");
-  function pair(label,node){
+  /* the class goes on BOTH halves of the pair, because a dt and its dd have to travel together
+     when the order changes on a phone */
+  function pair(label,node,cls){
     if(!node) return;
-    dl.appendChild(make("dt",null,label));
+    var dt=make("dt",null,label);
     var dd=make("dd");
+    if(cls){ dt.className=cls; dd.className=cls; }
     dd.appendChild(node);
+    dl.appendChild(dt);
     dl.appendChild(dd);
   }
   var focus=val(r,"focus");
@@ -4280,7 +4351,12 @@ function pairsFor(r){
   if(where) pair("Where",document.createTextNode(where));
   var who=val(r,"contact"), title=val(r,"title");
   if(who) pair("Named contact",document.createTextNode(who+(title ? ", "+title : "")));
-  pair("Contact",routesFor(r));
+  /* MEASURED, WHICH IS WHY THIS CARRIES A CLASS. The mandate above it runs to 104 characters at
+     the median and 200 at the 90th percentile, which is three to five wrapped lines on a phone,
+     so on a phone the way to reach an organisation was reliably below the fold of the panel that
+     had just been opened for it. 94 per cent of rows carry at least one route. The class lets the
+     phone stylesheet lift this pair to the top without reordering anything on a laptop. */
+  pair("Contact",routesFor(r),"is-contact");
   return dl;
 }
 
@@ -4345,6 +4421,9 @@ function buildPager(){
   var nav=el("pager");
   clear(nav);
   var total=pageCount();
+  /* the phone shows the append control instead, and the two must never both be on screen */
+  if(phoneList()){ nav.hidden=true; syncMore(); return; }
+  var mm=el("mmore"); if(mm) mm.hidden=true;
   if(filtered.length<=PER_PAGE){ nav.hidden=true; return; }
   nav.hidden=false;
   function step(long,short,target,enabled,cls){
@@ -4571,6 +4650,94 @@ function setStickyContext(sel){
   m.textContent = (sel.parts && sel.parts.length === 2) ? sel.parts[1] : (sel.name || "");
 }
 
+/* One place that answers "is this the phone list", so the accordion, the scroll and anything
+   added later cannot disagree with the stylesheet about where the boundary is. 600px is the same
+   number every phone rule in this file uses. */
+function phoneList(){
+  return !!(window.matchMedia && window.matchMedia("(max-width:600px)").matches);
+}
+function reducedMotion(){
+  return !!(window.matchMedia
+    && window.matchMedia("(prefers-reduced-motion:reduce)").matches);
+}
+
+/* THE APPEND CONTROL. It says how many are left rather than just "more", because on a list of 689
+   the difference between 20 remaining and 500 remaining changes whether a reader keeps tapping or
+   goes back to the search box. */
+function syncMore(){
+  var box = el("mmore"), btn = el("mmoreb");
+  if(!box || !btn) return;
+  if(!phoneList() || !current){ box.hidden = true; return; }
+  var left = filtered.length - mShown;
+  if(left <= 0){ box.hidden = true; return; }
+  var next = Math.min(PER_PAGE, left);
+  box.hidden = false;
+  btn.textContent = "Show " + num(next) + " more";
+  btn.setAttribute("aria-label",
+    "Show " + num(next) + " more of " + num(filtered.length) + " organisations");
+}
+
+/* APPEND, NOT RE-RENDER. Rebuilding the list would put the same rows back in the same places and
+   keep the scroll position by accident, but it would also close whichever row the reader had open
+   and throw away the panel they were reading. So only the new rows are built, and they are added
+   to the end of the list that is already there.
+   The index continues from mShown so the panel ids stay unique inside this render generation,
+   which is what aria-controls on every row above depends on. */
+function appendMore(){
+  if(!current || !phoneList()) return;
+  var from = mShown, to = Math.min(filtered.length, mShown + PER_PAGE);
+  if(to <= from) return;
+  var c = readControls(), list = el("recs");
+  var frag = document.createDocumentFragment();
+  for(var i = from; i < to; i++){
+    frag.appendChild(recFor(filtered[i], i,
+      current.kind === "a" ? false : matchedOutsideName(filtered[i], c.q)));
+  }
+  list.appendChild(frag);
+  mShown = to;
+  syncMore();
+  syncTally();
+  /* NO writeHash HERE, and the comment that used to claim otherwise was wrong. How far the list has
+     been opened is not in the hash: measured after appending, the hash still read
+     #/c/united-arab-emirates with nothing about the window, so the call was doing nothing. Putting
+     it in would mean a shared link restoring 200 rows, which is a change to the hash format the
+     desktop pager also reads, and nobody asked for it. */
+}
+
+/* The tally is written in two places now, so it lives in one function rather than being copied. */
+function syncTally(){
+  var t = el("tally");
+  if(!t || !current) return;
+  if(!filtered.length){ t.textContent = ""; t.hidden = true; return; }
+  var shown = phoneList() ? mShown : Math.min(filtered.length, page*PER_PAGE);
+  var first = phoneList() ? 1 : ((page-1)*PER_PAGE + 1);
+  var out = "Showing " + num(first) + " to " + num(Math.min(shown, filtered.length))
+    + " of " + plural(filtered.length, "organisation", "organisations");
+  /* SAY HOW THE ANSWER WAS REACHED, and this is the reason the tally had to become one function
+     rather than two. A count that quietly includes rows found through a plural or a related word
+     reads as though every one of them used the reader's own wording, and they have no way to tell.
+     render() carried these three sentences and the append path did not, so tapping Show more on a
+     searched list would have dropped the qualification while adding to the very list it qualified. */
+  if(!aiRanked && FIND.q){
+    if(FIND.partial) out += ". Nothing carries the whole phrase, so these match part of it";
+    else if(FIND.related === FIND.total && FIND.total)
+      out += ", all found through related wording";
+    else if(FIND.related) out += ", " + num(FIND.related) + " of them through related wording";
+  }
+  t.hidden = false;
+  t.textContent = out;
+}
+
+function initMoreButton(){
+  var btn = el("mmoreb");
+  if(!btn) return;
+  btn.addEventListener("click", function(){
+    /* the button sits directly under the join, so it must not be what the reader is left looking
+       at: after appending, it has moved down by the height of the rows just added */
+    appendMore();
+  });
+}
+
 function syncList(){
   var gated=listGated(), gate=el("listgate"), wrap=el("listwrap"), btn=el("lgbtn");
   /* the category index rides with the gate: both are entrances to the whole register, and neither
@@ -4591,8 +4758,13 @@ function render(){
   if(page>total) page=total;
   if(page<1) page=1;
   var c=readControls();
-  var start=(page-1)*PER_PAGE;
-  var slice=filtered.slice(start,start+PER_PAGE);
+  /* ON A PHONE THE WINDOW STARTS AT THE TOP AND GROWS. Everything downstream, the tally and the
+     panel ids and the append control, is driven from start and slice, so this is the only place
+     the two behaviours differ. */
+  var phone=phoneList();
+  if(phone && mShown < PER_PAGE) mShown = PER_PAGE;
+  var start = phone ? 0 : (page-1)*PER_PAGE;
+  var slice = phone ? filtered.slice(0, mShown) : filtered.slice(start,start+PER_PAGE);
   seq++;
   var list=el("recs");
   clear(list);
@@ -4604,19 +4776,8 @@ function render(){
   list.appendChild(frag);
 
   if(filtered.length){
-    el("tally").hidden=false;
-    var tally="Showing "+num(start+1)+" to "+num(start+slice.length)
-      + " of "+plural(filtered.length,"organisation","organisations");
-    /* Say how the answer was reached.  A count of matches that quietly includes rows
-       found through a plural or a related word reads as though every one of them used
-       the reader's own wording, and they have no way to tell. */
-    if(!aiRanked && FIND.q){
-      if(FIND.partial) tally+=". Nothing carries the whole phrase, so these match part of it";
-      else if(FIND.related===FIND.total && FIND.total)
-        tally+=", all found through related wording";
-      else if(FIND.related) tally+=", "+num(FIND.related)+" of them through related wording";
-    }
-    el("tally").textContent=tally;
+    /* one writer for this line, shared with the append path */
+    syncTally();
     el("empty").hidden=true;
   }else{
     el("tally").textContent="";
@@ -5666,8 +5827,32 @@ function wire(){
     if(btn){
       var panel=document.getElementById(btn.getAttribute("aria-controls"));
       var open=btn.getAttribute("aria-expanded")==="true";
+      /* ONE OPEN ROW AT A TIME, ON A PHONE ONLY. Any number could be open at once, and on a
+         screen this narrow four expanded panels turn a list into a wall with no way to see what
+         is above or below. A laptop has the height to hold several open and comparing two records
+         is a real thing to want there, so the accordion is phone-only rather than universal. */
+      if(!open && phoneList()){
+        var others=document.querySelectorAll('#recs .rowbtn[aria-expanded="true"]');
+        for(var oi=0;oi<others.length;oi++){
+          if(others[oi]===btn) continue;
+          others[oi].setAttribute("aria-expanded","false");
+          var op=document.getElementById(others[oi].getAttribute("aria-controls"));
+          if(op) op.hidden=true;
+        }
+      }
       btn.setAttribute("aria-expanded",open ? "false" : "true");
       if(panel) panel.hidden=open;
+      /* AND BRING IT UNDER THE BAR. Opening a row near the bottom of the screen put its contents
+         off the bottom, so the answer arrived where it could not be read. The offset is the sticky
+         bar's own height read at the time, not a constant, because that bar is 69px at the top of
+         the page and 93 once it has stuck and taken the selection name. */
+      if(!open && phoneList()){
+        var bar=el("controls");
+        var off=(bar && !bar.hidden) ? bar.getBoundingClientRect().height : 0;
+        var top=btn.getBoundingClientRect().top + window.scrollY - off - 8;
+        window.scrollTo({top:Math.max(0,top),
+          behavior:reducedMotion() ? "auto" : "smooth"});
+      }
       return;
     }
     var cp=e.target.closest(".copy");
@@ -5732,6 +5917,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   wire();
   initMobileFilters();
   initMobileCats();
+  initMoreButton();
   shortenPhonePlaceholder();
   initStickyContext();
   route();
