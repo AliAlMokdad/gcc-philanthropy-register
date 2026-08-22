@@ -64,6 +64,10 @@ document.addEventListener('DOMContentLoaded',function(){
    every other document page (faq, legal) reads off a white sheet. Same construction
    here: .doc-wrap > .container > .sheet from shared/doc.css, prose capped inside it. */
 .paper-wrap{max-width:860px;margin:0 auto}
+/* the faq's sheet opens to 1200 because a section-index rail rides beside its prose.
+   A paper has no rail, so at that width the sheet is half empty on the right; it closes
+   up to hold just the reading column. */
+.sheet{max-width:960px}
 .paper-meta{margin:14px 0 0;font:600 11px/1.6 var(--mono);letter-spacing:.12em;
   text-transform:uppercase;color:var(--ink-3)}
 .paper-abstract{margin:22px 0 0;font:500 17.5px/1.6 var(--serif);color:var(--ink-2)}
