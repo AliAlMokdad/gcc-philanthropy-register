@@ -51,8 +51,8 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;z-index:-1;pointer
   mask:linear-gradient(to bottom,transparent 0,#000 62%,#000 100%);
   -webkit-mask:linear-gradient(to bottom,transparent 0,#000 62%,#000 100%)}
 @media (prefers-color-scheme:dark){
-  body::before{opacity:.42}
-  body::after{opacity:.10}
+  :root:not([data-theme='light']) body::before{opacity:.42}
+  :root:not([data-theme='light']) body::after{opacity:.10}
   /* THE READING SURFACE HAD NO DARK VALUE. .sheet is painted with var(--i-surface,#fff), and
      --i-surface is defined nowhere in the repository, so the fallback won in both schemes while
      --ink flipped to #EEF0F6 around it. The result on /privacy/ was 43 elements at 1.14:1, near
@@ -60,8 +60,7 @@ body::after{content:"";position:fixed;left:0;right:0;bottom:0;z-index:-1;pointer
      rather than editing the three var() sites keeps the light default exactly as it was.
      #161A26 is the tokens.css dark --paper-2, so the sheet sits one step above the page ground,
      the same relationship it has in light. Measured 15.23:1 against --ink. */
-  :root{--i-surface:#161A26}
-}
+  :root:not([data-theme='light']){--i-surface:#161A26}}
 @media (forced-colors:active){ body::before,body::after{display:none} }
 
 .container{width:100%;max-width:1280px;margin:0 auto;padding:0 var(--s4)}
@@ -511,13 +510,13 @@ footer.sig{margin-top:auto}
    other dark rules at line 53 it would have lost to the light rules at 121 to 324 and been dead
    on arrival, which is the exact defect this round set out to remove. */
 @media (prefers-color-scheme:dark){
-  .doc h1{color:var(--accent)}
-  .doc h2{color:var(--accent)}
-  .doc h3{color:var(--accent)}
-  .doc p .lead{color:var(--accent)}
-  .doc .bio-head h1{color:var(--accent)}
-  .doc .bio-sec > h2{color:var(--accent)}
-  .doc .x-list h3{color:var(--accent)}
+  :root:not([data-theme='light']) .doc h1{color:var(--accent)}
+  :root:not([data-theme='light']) .doc h2{color:var(--accent)}
+  :root:not([data-theme='light']) .doc h3{color:var(--accent)}
+  :root:not([data-theme='light']) .doc p .lead{color:var(--accent)}
+  :root:not([data-theme='light']) .doc .bio-head h1{color:var(--accent)}
+  :root:not([data-theme='light']) .doc .bio-sec > h2{color:var(--accent)}
+  :root:not([data-theme='light']) .doc .x-list h3{color:var(--accent)}
 
   /* THE OTHER DIRECTION OF THE SAME FAULT, and it was already live before this round.
      --accent is a BACKGROUND in two places, and both put a hardcoded #FFFFFF on top of it. That
@@ -526,9 +525,8 @@ footer.sig{margin-top:auto}
      rest and 1.58:1 on hover, and the social icon went the same way. The label has to go dark
      when the ground goes light: #0E1018 is the dark --paper, measuring 9.49:1 at rest and
      12.04:1 on hover. Nothing here touches the light scheme, where white stays correct. */
-  .cf-send{color:#0E1018}
-  .doc .bio-soc .soc:hover svg{fill:#0E1018}
-}
+  :root:not([data-theme='light']) .cf-send{color:#0E1018}
+  :root:not([data-theme='light']) .doc .bio-soc .soc:hover svg{fill:#0E1018}}
 
 /* PHONE ONLY: document prose at a phone reading size. Measured at 390px, the profile page set its
    body paragraphs at 14.5px, nine of them, which is a comfortable desktop size read at arm's
@@ -599,3 +597,23 @@ footer.sig{margin-top:auto}
   .doc .index a:active{color:var(--accent);border-bottom-color:var(--accent-line)}
   .doc .more a:active{border-bottom-color:var(--accent)}
 }
+
+
+/* ============================================ AN EXPLICIT DARK CHOICE
+ * These are the same dark values as the blocks above, answering to a chosen theme
+ * rather than to the operating system, because a media query cannot be changed from
+ * script and the toggle has to work on a machine set to light.
+ * Generated from the prefers-color-scheme blocks in this same file, so the two can
+ * never drift: edit the block above and regenerate, never edit one of these by hand. */
+:root[data-theme='dark'] body::before{opacity:.42}
+:root[data-theme='dark'] body::after{opacity:.10}
+:root[data-theme='dark']{--i-surface:#161A26}
+:root[data-theme='dark'] .doc h1{color:var(--accent)}
+:root[data-theme='dark'] .doc h2{color:var(--accent)}
+:root[data-theme='dark'] .doc h3{color:var(--accent)}
+:root[data-theme='dark'] .doc p .lead{color:var(--accent)}
+:root[data-theme='dark'] .doc .bio-head h1{color:var(--accent)}
+:root[data-theme='dark'] .doc .bio-sec > h2{color:var(--accent)}
+:root[data-theme='dark'] .doc .x-list h3{color:var(--accent)}
+:root[data-theme='dark'] .cf-send{color:#0E1018}
+:root[data-theme='dark'] .doc .bio-soc .soc:hover svg{fill:#0E1018}

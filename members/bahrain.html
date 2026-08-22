@@ -25,8 +25,38 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","url":"https://gccphilanthropy.org/members/bahrain.html","name":"Kingdom of Bahrain | GCC Philanthropy","description":"179 funders recorded in Bahrain, reported outbound humanitarian flow of $39,877.","inLanguage":"en-GB","isPartOf":{"@id":"https://gccphilanthropy.org/#website"},"about":{"@type":"Country","name":"Bahrain","identifier":{"@type":"PropertyValue","propertyID":"ISO 3166-1 alpha-3","value":"BHR"}}}</script>
 <!-- seo:end -->
 <meta name="description" content="179 funders recorded in Bahrain, reported outbound humanitarian flow of $39,877.">
+<script>
+/* THE THEME, BEFORE THE FIRST PAINT. Read the stored choice and stamp it on <html> here, in the
+   head, synchronously, because doing it after load means the page draws in the wrong scheme and
+   then corrects itself, which reads as a fault rather than as a preference.
+   NO CHOICE STORED MEANS NO ATTRIBUTE, and the operating system decides through the media query,
+   which is the right default: a reader who has never touched this control should get what their
+   machine already says. */
+(function(){try{var t=localStorage.getItem('gccp-theme');
+if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+document.addEventListener('DOMContentLoaded',function(){
+  var b=document.querySelector('.themetoggle');if(!b)return;
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme:dark)'):{matches:false};
+  function isDark(){var a=document.documentElement.getAttribute('data-theme');
+    return a?a==='dark':mq.matches;}
+  function label(){b.setAttribute('aria-pressed',isDark()?'true':'false');
+    b.setAttribute('title',isDark()?'Switch to light':'Switch to dark');}
+  label();
+  b.addEventListener('click',function(){
+    /* the next state is the opposite of what is on screen NOW, whether that came from a stored
+       choice or from the machine. Writing the result explicitly means the reader keeps the theme
+       they picked even if they later change their system setting. */
+    var next=isDark()?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('gccp-theme',next);}catch(e){}
+    label();
+  });
+});
+</script>
 </head>
 <body data-bg="bahrain">
+<button class="themetoggle" type="button" aria-pressed="false"
+        aria-label="Dark mode" title="Switch to dark"><span class="tt-g tt-moon" aria-hidden="true">🌙</span><span class="tt-g tt-sun" aria-hidden="true">☀️</span></button>
 
 <!-- THE PRODUCT BAR, the same component as every other surface. Styles live in
      shared/chrome.css so this markup cannot drift between documents. The item for the surface you

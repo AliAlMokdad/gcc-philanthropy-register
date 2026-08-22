@@ -44,7 +44,25 @@
 /* The dark-scheme overrides, transcribed from the same source so a page that links this
    file behaves in dark mode exactly as the register does. */
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme='light']){
+
+    --ink:#EEF0F6; --slate:#AAB4F0; --ink-2:#C2C8DA; --ink-3:#9AA2B8;
+    --accent:#AAB4F0; --accent-2:#C4CCF6; --accent-soft:#1C2138; --accent-line:#343B5C;
+    --paper:#0E1018; --paper-2:#161A26; --line:#282E40; --line-2:#38405C;
+    --focus:#AAB4F0; --mast:#1A2140;
+    --berry:#7A82F0; --berry-soft:#6B74D8;
+    --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16); --orange-strong:#EDAA55;
+    --bg-a:rgba(122,130,240,.07); --bg-b:rgba(122,130,240,.04);
+  }}
+
+
+/* ============================================ AN EXPLICIT DARK CHOICE
+ * These are the same dark values as the blocks above, answering to a chosen theme
+ * rather than to the operating system, because a media query cannot be changed from
+ * script and the toggle has to work on a machine set to light.
+ * Generated from the prefers-color-scheme blocks in this same file, so the two can
+ * never drift: edit the block above and regenerate, never edit one of these by hand. */
+:root[data-theme='dark']{
 
     --ink:#EEF0F6; --slate:#AAB4F0; --ink-2:#C2C8DA; --ink-3:#9AA2B8;
     --accent:#AAB4F0; --accent-2:#C4CCF6; --accent-soft:#1C2138; --accent-line:#343B5C;
@@ -54,4 +72,3 @@
     --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16); --orange-strong:#EDAA55;
     --bg-a:rgba(122,130,240,.07); --bg-b:rgba(122,130,240,.04);
   }
-}

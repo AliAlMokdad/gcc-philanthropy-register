@@ -154,7 +154,7 @@ header.top::before, .gccp-top::before{
    2.11:1, which is unreadable and was shipped. Every ink token also flips in this block, so a
    token here would flip back to pale and reproduce the fault; #171A2B is the light scheme's own
    ink, and on #E8A55A it measures 8.04:1. */
-@media (prefers-color-scheme:dark){ .pagetab{color:#171A2B} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) .pagetab{color:#171A2B}}
 
 @media print{ .pagetab{display:none} }
 
@@ -339,3 +339,78 @@ footer.sig .sig-rights{margin:10px 0 0;padding-top:11px;
   .pbar-nav a:active{color:#FFFFFF;background:rgba(255,255,255,.10)}
   .pbar-brand:active{background:rgba(255,255,255,.10)}
 }
+
+
+/* ============================================ AN EXPLICIT DARK CHOICE
+ * These are the same dark values as the blocks above, answering to a chosen theme
+ * rather than to the operating system, because a media query cannot be changed from
+ * script and the toggle has to work on a machine set to light.
+ * Generated from the prefers-color-scheme blocks in this same file, so the two can
+ * never drift: edit the block above and regenerate, never edit one of these by hand. */
+:root[data-theme='dark'] .pagetab{color:#171A2B}
+
+
+/* ============================================================ THE THEME TOGGLE
+ * ANTI_SLOP_BRIEF
+ *   bold move   a 32px stamp in the corner holding one emoji, which swaps. Restraint is the move:
+ *               no pill, no track, no sliding knob, no label. A reference work does not need a
+ *               settings widget to change its own light.
+ *   type        the emoji Ali asked for, at 15px. Small enough to read as a mark rather than as a
+ *               picture, which is the difference between a stamp and a sticker.
+ *   colour      none introduced. --paper for the face and --line-2 for the hairline, so the chip is
+ *               self-contained and legible over the navy bar on thirteen pages and over pale paper
+ *               on the portal, where the bar is hidden. It flips with the tokens like everything
+ *               else, so the control obeys the thing it controls.
+ *   shape       one independent control, so a chip. Not a row, not a card, not a menu.
+ *   verifiable  it either changes the theme and remembers it across pages, or it does not.
+ *
+ * WHERE, AND WHY THERE. Fixed at top 17, right 26. On the thirteen pages that carry the product bar
+ * that centres it in the bar's 66px band, and the bar's nav ends 155px short of the right edge at
+ * 1440, so the two cannot meet. On the portal the bar is hidden, so the same coordinates put it in
+ * the empty top-right corner, clear of the centred title. Measured on both before it was placed.
+ *
+ * LAPTOP ONLY, as asked. Hidden below 900px, which is the breakpoint this site already uses most.
+ * A phone follows its own system setting, which is the right default on a device that has one.
+ *
+ * THE GLYPH IS CHOSEN IN CSS, NOT IN SCRIPT, so it cannot flash the wrong face on the way in. Both
+ * are in the markup and the cascade shows one. The moon offers the dark it does not have yet, and
+ * the sun offers the light back, which is the action rather than the state. */
+.themetoggle{position:fixed;top:17px;right:26px;z-index:80;display:none;
+  width:32px;height:32px;padding:0;margin:0;border-radius:50%;cursor:pointer;
+  /* THE EDGE IS --ink-3, NOT --line-2, AND THE REASON IS FOUR GROUNDS RATHER THAN TASTE.
+     This chip sits on the navy bar on thirteen pages and on the page's own ground on the portal,
+     in two schemes, so it has four backgrounds to survive. Measured every candidate against all
+     four. --line-2 is 9.19:1 on navy in light and then 1.35 on pale paper and 1.54 on the dark
+     bar, so the ring simply disappears in three of the four. --ink-3 gives 5.44, 6.17 and 7.45 on
+     those three, and 2.28 on navy in light, where the chip's own pale face against navy is doing
+     the separating instead. So every state has a boundary well past 3:1, which is what 1.4.11
+     actually asks, rather than one token that reads well in the state you happened to look at. */
+  border:1px solid var(--ink-3);background:var(--paper);
+  line-height:1;text-align:center;
+  -webkit-appearance:none;appearance:none;
+  box-shadow:0 1px 3px rgba(20,24,36,.10);
+  transition:border-color .16s ease-out, transform .16s ease-out, box-shadow .16s ease-out}
+@media (min-width:900px){ .themetoggle{display:grid;place-items:center} }
+.themetoggle:hover{border-color:var(--accent);transform:translateY(-1px);
+  box-shadow:0 3px 9px rgba(20,24,36,.16)}
+.themetoggle:active{transform:translateY(0)}
+.themetoggle:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.themetoggle .tt-g{font-size:15px;line-height:1;display:block;
+  font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+
+/* one glyph at a time, decided by the cascade in all four states */
+.tt-sun{display:none}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme='light']) .tt-moon{display:none}
+  :root:not([data-theme='light']) .tt-sun{display:block}
+}
+:root[data-theme='dark'] .tt-moon{display:none}
+:root[data-theme='dark'] .tt-sun{display:block}
+:root[data-theme='light'] .tt-moon{display:block}
+:root[data-theme='light'] .tt-sun{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  .themetoggle{transition:none}
+  .themetoggle:hover{transform:none}
+}
+@media print{ .themetoggle{display:none} }

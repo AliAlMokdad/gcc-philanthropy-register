@@ -338,7 +338,7 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
    gold 10.33:1, gold-dark 7.76:1. --warm-line is 1.45:1 by intent, because it draws a rule
    and never text, which is the same relationship --line has to --paper in tokens.css. */
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme='light']){
     --page:#14120D;
     --nav:#1A1712;
     --strip:#201C14;
@@ -350,8 +350,7 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
     --muted:#ADA491;
     --gold:#E3BC55;
     --gold-dark:#C9A238;
-  }
-}
+  }}
 
 /* ==================== PHONE ONLY: the way back matches every other phone target
  * The back link is set to a 40px minimum, which clears the 24px floor but sits under the 44 the
@@ -390,3 +389,24 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
 @media (max-width:600px){
   .ch-metrics{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
 }
+
+
+/* ============================================ AN EXPLICIT DARK CHOICE
+ * These are the same dark values as the blocks above, answering to a chosen theme
+ * rather than to the operating system, because a media query cannot be changed from
+ * script and the toggle has to work on a machine set to light.
+ * Generated from the prefers-color-scheme blocks in this same file, so the two can
+ * never drift: edit the block above and regenerate, never edit one of these by hand. */
+:root[data-theme='dark']{
+    --page:#14120D;
+    --nav:#1A1712;
+    --strip:#201C14;
+    --footer:#2A2418;
+    --card:#1C1913;
+    --warm-line:#38311F;
+    --map-off:#241F16;
+    --map-on:#D1A770;
+    --muted:#ADA491;
+    --gold:#E3BC55;
+    --gold-dark:#C9A238;
+  }

@@ -78,7 +78,7 @@ ANTI_SLOP_BRIEF
   --s1:4px; --s2:8px; --s3:16px; --s4:24px; --s5:48px;
 }
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme='light']){
     --ink:#EEF0F6; --slate:#AAB4F0; --ink-2:#C2C8DA; --ink-3:#9AA2B8;
     --accent:#AAB4F0; --accent-2:#C4CCF6; --accent-soft:#1C2138; --accent-line:#343B5C;
     --paper:#0E1018; --paper-2:#161A26; --line:#282E40; --line-2:#38405C;
@@ -86,8 +86,7 @@ ANTI_SLOP_BRIEF
     --berry:#7A82F0; --berry-soft:#6B74D8;
     --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16); --orange-strong:#EDAA55;
     --bg-a:rgba(122,130,240,.07); --bg-b:rgba(122,130,240,.04);
-  }
-}
+  }}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;overflow-x:clip}
 body{overflow-x:clip}
@@ -121,16 +120,15 @@ html{scrollbar-color:var(--berry-soft) transparent;scrollbar-width:thin}
 #berryglow.on{opacity:.4}
 @media (prefers-reduced-motion:reduce){ #berryglow{display:none} }
 @media (prefers-color-scheme:dark){
-  #berryglow{mix-blend-mode:screen;
-    background:radial-gradient(circle,rgba(122,130,240,.13) 0%,rgba(122,130,240,.05) 36%,transparent 60%)}
-}
+  :root:not([data-theme='light']) #berryglow{mix-blend-mode:screen;
+    background:radial-gradient(circle,rgba(122,130,240,.13) 0%,rgba(122,130,240,.05) 36%,transparent 60%)}}
 /* painterly brushes behind the home portal only: soft light-orange and light-blue
    strokes at different angles, edges dissolved by turbulence, so there is no repeating
    pattern. purely decorative, behind all content, hidden on the inner pages. */
 #brushes{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;
   display:none}
 body:has(#l1:not([hidden])) #brushes{display:block}
-@media (prefers-color-scheme:dark){ #brushes{opacity:.6} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) #brushes{opacity:.6}}
 
 /* ---------------------------------------------------------------- the backdrop
    Ali's Gulf picture across the whole front page. It is UNDER the brushes at z-index -2, not over
@@ -161,7 +159,7 @@ body:has(#l1:not([hidden])) #brushes{display:block}
   mask:linear-gradient(to bottom,rgba(0,0,0,.28) 0,#000 34%,#000 76%,rgba(0,0,0,.42) 100%);
   -webkit-mask:linear-gradient(to bottom,rgba(0,0,0,.28) 0,#000 34%,#000 76%,rgba(0,0,0,.42) 100%)}
 body:has(#l1:not([hidden])) #backdrop{display:block}
-@media (prefers-color-scheme:dark){ #backdrop{opacity:.05} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) #backdrop{opacity:.05}}
 @media (forced-colors:active){ #backdrop{display:none} }
 /* an individual country page wears its flag as a soft painterly wash across the whole
    page, in the flag's own colours, faint enough that the text stays the subject */
@@ -170,14 +168,14 @@ body:has(#l1:not([hidden])) #backdrop{display:block}
 #l2brush{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;
   display:none}
 body:has(#l2:not([hidden])):not(.country-view) #l2brush{display:block}
-@media (prefers-color-scheme:dark){ #l2brush{opacity:.55} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) #l2brush{opacity:.55}}
 @media print{ #l2brush{display:none !important} }
 #cwash{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:none}
 body.country-view #cwash{display:block}
 #cwash .cwa{fill:var(--cw1)}
 #cwash .cwb{fill:var(--cw2)}
 #cwash ellipse{opacity:.055}
-@media (prefers-color-scheme:dark){ #cwash ellipse{opacity:.11} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) #cwash ellipse{opacity:.11}}
 .wrap{max-width:1240px;margin:0 auto;padding:0 var(--s5)}
 @media (max-width:700px){ .wrap{padding:0 var(--s4)} }
 a{color:var(--accent)}
@@ -264,8 +262,7 @@ ol.ranked a::before{content:"";position:absolute;left:0;top:12px;bottom:12px;wid
   background:var(--orange-line)}
 ol.ranked a:hover,ol.ranked a:focus-visible{border-color:var(--accent-line)}
 @media (prefers-color-scheme:dark){
-  ol.ranked a{border-color:var(--line);background:var(--paper)}
-}
+  :root:not([data-theme='light']) ol.ranked a{border-color:var(--line);background:var(--paper)}}
 ol.ranked .t{font:500 15.5px/1.34 var(--sans);letter-spacing:0}
 details.more{margin-top:var(--s4)}
 details.more summary{font:600 13px/1 var(--sans);color:var(--accent);cursor:pointer;
@@ -338,7 +335,7 @@ details.more ol.ranked{margin-top:var(--s3)}
    it has gone and the objection to it has not. One line to restore if Ali wants it back. */
 .l2head.has-photo .flagplate{display:none}
 /* the painting is lighter than this ground, so in dark mode it reads at a lower opacity */
-@media (prefers-color-scheme:dark){ .l2head.has-photo::before{opacity:.10} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) .l2head.has-photo::before{opacity:.10}}
 /* a decorative wash is noise in a forced-colours mode */
 @media (forced-colors:active){ .l2head.has-photo::before{display:none} }
 @media print{ .l2head.has-photo::before{display:none !important} }
@@ -381,14 +378,14 @@ details.more ol.ranked{margin-top:var(--s3)}
      #000 0%,rgba(0,0,0,.78) 48%,rgba(0,0,0,0) 86%);
           mask-image:radial-gradient(62% 72% at 50% 50%,
      #000 0%,rgba(0,0,0,.78) 48%,rgba(0,0,0,0) 86%)}
-@media (prefers-color-scheme:dark){ .flagplate{opacity:.20} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) .flagplate{opacity:.20}}
 /* the GCC emblem on the whole-register head: the same soft side watermark, circular,
    dissolved at the edge, low enough that the heading text stays the subject */
 .flagplate.is-emblem{opacity:.18}
 .flagplate .emblem-plate{display:block;height:100%;width:auto;
   -webkit-mask-image:radial-gradient(64% 64% at 50% 50%,#000 0%,rgba(0,0,0,.72) 52%,rgba(0,0,0,0) 86%);
           mask-image:radial-gradient(64% 64% at 50% 50%,#000 0%,rgba(0,0,0,.72) 52%,rgba(0,0,0,0) 86%)}
-@media (prefers-color-scheme:dark){ .flagplate.is-emblem{opacity:.28} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) .flagplate.is-emblem{opacity:.28}}
 @media (min-width:900px){
   .l2head > .inner{padding-right:min(40vw,470px)}
   /* NOTHING TO CLEAR, NOTHING RESERVED. The padding above exists to hold the heading off the
@@ -506,7 +503,7 @@ fieldset.has legend{float:left;font:600 13px/40px var(--sans);letter-spacing:0;
   padding:0 14px;background:var(--paper);transition:border-color .12s ease-out}
 .chip input:hover + span{border-color:var(--accent-line)}
 .chip input:checked + span{background:var(--accent);border-color:var(--accent);color:#FFFFFF}
-@media (prefers-color-scheme:dark){ .chip input:checked + span{color:#0F1412} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) .chip input:checked + span{color:#0F1412}}
 .chip input:focus-visible + span{outline:2px solid var(--focus);outline-offset:2px}
 
 /* ---- THE GATE, the way into the register's own rows.
@@ -649,7 +646,7 @@ nav.pager > a,nav.pager > span{font:500 14px/1 var(--sans);min-width:40px;min-he
   border:1px solid transparent;border-radius:2px;text-decoration:none;color:var(--accent)}
 nav.pager a:hover{background:var(--accent-soft)}
 nav.pager .on{background:var(--accent);color:#FFFFFF;font-weight:700}
-@media (prefers-color-scheme:dark){ nav.pager .on{color:#0F1412} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) nav.pager .on{color:#0F1412}}
 nav.pager .gap{color:var(--ink-3);min-width:20px;padding:0 2px}
 nav.pager .edge{font-weight:600}
 /* A spent Previous or Next stays legible. At opacity .5 it composited to 2.67:1 in
@@ -744,12 +741,11 @@ body:has(#intel:not([hidden])) #gulf{display:block}
    need more presence to register at all, which is the same finding the panorama produced when
    it needed 14 per cent in dark against 10 in light. */
 @media (prefers-color-scheme:dark){
-  #gulf{background:
+  :root:not([data-theme='light']) #gulf{background:
     radial-gradient(74% 128% at 10% 104%, rgba(122,134,246,.24), transparent 64%),
     radial-gradient(62% 118% at 50% 112%, rgba(64,206,246,.19), transparent 62%),
     radial-gradient(70% 128% at 90% 104%, rgba(232,165,90,.17), transparent 64%),
-    linear-gradient(to top, rgba(122,134,246,.08), transparent 74%)}
-}
+    linear-gradient(to top, rgba(122,134,246,.08), transparent 74%)}}
 @media (forced-colors:active){ #gulf{display:none} }
 @media print{ #gulf{display:none !important} }
 footer.sig .wrap{position:relative;z-index:1;padding-top:var(--s3);padding-bottom:var(--s3)}
@@ -905,8 +901,7 @@ footer.sig a{font-family:var(--serif)}
 .door .mark{border-radius:2px;box-shadow:0 0 0 1px #D8D3CA}
 .door:hover .plate,.door:focus-visible .plate{background:var(--paper-2)}
 @media (prefers-color-scheme:dark){
-  .door .mark{box-shadow:0 0 0 1px rgba(255,255,255,.18)}
-}
+  :root:not([data-theme='light']) .door .mark{box-shadow:0 0 0 1px rgba(255,255,255,.18)}}
 
 /* ---------- the portal landing: centred mark, a ring of the six states, one search ---------- */
 /* on the home the centred mark is the identity, so the ink masthead and its ribbon step
@@ -1004,9 +999,8 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
 @media (prefers-color-scheme:dark){
   /* the official emblem carries dark calligraphy that would vanish on a dark page, so it
      sits on a soft light plate in dark mode */
-  .ring-mark{background:#F4F1EA;border-radius:14px;padding:10px}
-  .emblem{width:104px}
-}
+  :root:not([data-theme='light']) .ring-mark{background:#F4F1EA;border-radius:14px;padding:10px}
+  :root:not([data-theme='light']) .emblem{width:104px}}
 /* wide screens: the six states orbit the emblem on an oval, breathing, not a boxed grid.
    Absolute positions, but DOM order stays reading order so keyboard and screen-reader
    order remain sensible, and it collapses back to the two-column stack below 860px. */
@@ -1119,7 +1113,7 @@ body:has(#l1:not([hidden])) footer.sig p{justify-content:center}
   box-shadow:0 2px 7px rgba(20,40,72,.26)}
 .portal-search input{box-shadow:0 1px 1px rgba(20,24,36,.04)}
 .portal-go:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-@media (prefers-color-scheme:dark){ .portal-go{color:#0F1218} }
+@media (prefers-color-scheme:dark){ :root:not([data-theme='light']) .portal-go{color:#0F1218}}
 
 /* the categories keep the quiet typographic list, and span wider than the hero */
 .cats{max-width:none;text-align:left;padding-top:var(--s5);position:relative}
@@ -1560,7 +1554,7 @@ body:not(.list-only) #cats{display:none !important}
    ramp. s1 also colours the big serif figures and the active tab underline, and both of those
    want a light value here too, so one inversion serves every use. */
 @media (prefers-color-scheme:dark){
-  :root{
+  :root:not([data-theme='light']){
     --i-surface:#171B27;
     --i-rule:#262B3A;
     --i-hair:#2A3040;
@@ -1574,8 +1568,7 @@ body:not(.list-only) #cats{display:none !important}
     --i-c4:#368A79; --i-c5:#2A6D5F; --i-c6:#1F5145;
   }
   /* the segment gap in the ribbon is drawn with the surface colour, which now differs */
-  .i-ribbon i{box-shadow:1px 0 0 var(--i-surface)}
-}
+  :root:not([data-theme='light']) .i-ribbon i{box-shadow:1px 0 0 var(--i-surface)}}
 
 /* ---- the countries table: a rank to hold your place, a mono column to compare down,
        a filter, and a threshold. 117 rows is only a wall if you cannot work it. ---- */
@@ -2676,7 +2669,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 #news > *{position:relative;z-index:1}
 /* a decorative wash is noise in a forced-colours mode, and in dark it would be a bright
    rectangle rather than a hint, so it is dimmed there and dropped here */
-@media (prefers-color-scheme: dark){ #news::before{opacity:.05} }
+@media (prefers-color-scheme: dark){ :root:not([data-theme='light']) #news::before{opacity:.05}}
 @media (forced-colors: active){ #news::before{display:none} }
 
 /* ---- the masthead. No mono eyebrow above the title: with the current product already
@@ -2850,8 +2843,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 .n-geo .flag{flex:none;display:block;width:19px;height:12.5px;border-radius:1.5px;
   box-shadow:inset 0 0 0 .5px rgba(0,0,0,.30)}
 @media (prefers-color-scheme:dark){
-  .n-geo .flag{box-shadow:inset 0 0 0 .5px rgba(255,255,255,.30)}
-}
+  :root:not([data-theme='light']) .n-geo .flag{box-shadow:inset 0 0 0 .5px rgba(255,255,255,.30)}}
 .n-topic{color:var(--n-meta);font-weight:400;letter-spacing:.09em;text-decoration:none;
   border-bottom:1px solid transparent;padding-block:4px}
 .n-topic:hover{color:var(--ink-2);border-bottom-color:currentColor}
@@ -3009,6 +3001,60 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   .n-row{break-inside:avoid}
   .n-orig::after{content:" (" attr(href) ")";font:400 9px var(--mono);word-break:break-all}
 }
+
+
+/* ============================================ AN EXPLICIT DARK CHOICE
+ * These are the same dark values as the blocks above, answering to a chosen theme
+ * rather than to the operating system, because a media query cannot be changed from
+ * script and the toggle has to work on a machine set to light.
+ * Generated from the prefers-color-scheme blocks in this same file, so the two can
+ * never drift: edit the block above and regenerate, never edit one of these by hand. */
+:root[data-theme='dark']{
+    --ink:#EEF0F6; --slate:#AAB4F0; --ink-2:#C2C8DA; --ink-3:#9AA2B8;
+    --accent:#AAB4F0; --accent-2:#C4CCF6; --accent-soft:#1C2138; --accent-line:#343B5C;
+    --paper:#0E1018; --paper-2:#161A26; --line:#282E40; --line-2:#38405C;
+    --focus:#AAB4F0; --mast:#1A2140;
+    --berry:#7A82F0; --berry-soft:#6B74D8;
+    --orange:#E8A55A; --orange-line:#E2853A; --orange-soft:rgba(226,133,58,.16); --orange-strong:#EDAA55;
+    --bg-a:rgba(122,130,240,.07); --bg-b:rgba(122,130,240,.04);
+  }
+:root[data-theme='dark'] #berryglow{mix-blend-mode:screen;
+    background:radial-gradient(circle,rgba(122,130,240,.13) 0%,rgba(122,130,240,.05) 36%,transparent 60%)}
+:root[data-theme='dark'] #brushes{opacity:.6}
+:root[data-theme='dark'] #backdrop{opacity:.05}
+:root[data-theme='dark'] #l2brush{opacity:.55}
+:root[data-theme='dark'] #cwash ellipse{opacity:.11}
+:root[data-theme='dark'] ol.ranked a{border-color:var(--line);background:var(--paper)}
+:root[data-theme='dark'] .l2head.has-photo::before{opacity:.10}
+:root[data-theme='dark'] .flagplate{opacity:.20}
+:root[data-theme='dark'] .flagplate.is-emblem{opacity:.28}
+:root[data-theme='dark'] .chip input:checked + span{color:#0F1412}
+:root[data-theme='dark'] nav.pager .on{color:#0F1412}
+:root[data-theme='dark'] #gulf{background:
+    radial-gradient(74% 128% at 10% 104%, rgba(122,134,246,.24), transparent 64%),
+    radial-gradient(62% 118% at 50% 112%, rgba(64,206,246,.19), transparent 62%),
+    radial-gradient(70% 128% at 90% 104%, rgba(232,165,90,.17), transparent 64%),
+    linear-gradient(to top, rgba(122,134,246,.08), transparent 74%)}
+:root[data-theme='dark'] .door .mark{box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+:root[data-theme='dark'] .ring-mark{background:#F4F1EA;border-radius:14px;padding:10px}
+:root[data-theme='dark'] .emblem{width:104px}
+:root[data-theme='dark'] .portal-go{color:#0F1218}
+:root[data-theme='dark']{
+    --i-surface:#171B27;
+    --i-rule:#262B3A;
+    --i-hair:#2A3040;
+    --i-slate:#9AA6C6;
+    --i-slate-soft:#262C3C;
+    --i-country-soft:#173129;
+    --i-country-ink:#7FCBBC;
+    --i-s1:#A9B2FF; --i-s2:#8B95F0; --i-s3:#6E79DC;
+    --i-s4:#5560C0; --i-s5:#454E9E; --i-s6:#3A4288;
+    --i-c1:#86D9C8; --i-c2:#63C2AE; --i-c3:#46A794;
+    --i-c4:#368A79; --i-c5:#2A6D5F; --i-c6:#1F5145;
+  }
+:root[data-theme='dark'] .i-ribbon i{box-shadow:1px 0 0 var(--i-surface)}
+:root[data-theme='dark'] #news::before{opacity:.05}
+:root[data-theme='dark'] .n-geo .flag{box-shadow:inset 0 0 0 .5px rgba(255,255,255,.30)}
 </style>
 <!-- seo:start  generated by tools/build_seo.py, do not hand-edit -->
 <link rel="canonical" href="https://gccphilanthropy.org/">
@@ -3023,8 +3069,38 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 <meta name="twitter:description" content="Explore philanthropy across the Gulf Cooperation Council. GCC Philanthropy brings together organisations, funders, data, news and practical guidance covering Saudi Arabia, the UAE, Qatar, Kuwait, Bahrain and Oman.">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://gccphilanthropy.org/#website","url":"https://gccphilanthropy.org/","name":"GCC Philanthropy","alternateName":"Gulf Cooperation Council Philanthropy","inLanguage":"en-GB","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://gccphilanthropy.org/?search={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Dataset","@id":"https://gccphilanthropy.org/#register","name":"Gulf Cooperation Council (GCC) Philanthropy Register","description":"A register of philanthropic funders, foundations, corporate giving programmes and endowments across the six GCC states: the United Arab Emirates, Saudi Arabia, Kuwait, Bahrain, Qatar and Oman.","url":"https://gccphilanthropy.org/","inLanguage":"en-GB","creator":{"@type":"Person","name":"Ali Al Mokdad"},"isAccessibleForFree":true,"variableMeasured":["name","type","focus","country","city","website","email","phone","linkedin","contact","title","area"],"spatialCoverage":[{"@type":"Country","name":"United Arab Emirates"},{"@type":"Country","name":"Saudi Arabia"},{"@type":"Country","name":"Qatar"},{"@type":"Country","name":"Kuwait"},{"@type":"Country","name":"Bahrain"},{"@type":"Country","name":"Oman"}],"distribution":{"@type":"DataDownload","encodingFormat":"application/json","contentUrl":"https://gccphilanthropy.org/data.json"}}]}</script>
 <!-- seo:end -->
+<script>
+/* THE THEME, BEFORE THE FIRST PAINT. Read the stored choice and stamp it on <html> here, in the
+   head, synchronously, because doing it after load means the page draws in the wrong scheme and
+   then corrects itself, which reads as a fault rather than as a preference.
+   NO CHOICE STORED MEANS NO ATTRIBUTE, and the operating system decides through the media query,
+   which is the right default: a reader who has never touched this control should get what their
+   machine already says. */
+(function(){try{var t=localStorage.getItem('gccp-theme');
+if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
+document.addEventListener('DOMContentLoaded',function(){
+  var b=document.querySelector('.themetoggle');if(!b)return;
+  var mq=window.matchMedia?window.matchMedia('(prefers-color-scheme:dark)'):{matches:false};
+  function isDark(){var a=document.documentElement.getAttribute('data-theme');
+    return a?a==='dark':mq.matches;}
+  function label(){b.setAttribute('aria-pressed',isDark()?'true':'false');
+    b.setAttribute('title',isDark()?'Switch to light':'Switch to dark');}
+  label();
+  b.addEventListener('click',function(){
+    /* the next state is the opposite of what is on screen NOW, whether that came from a stored
+       choice or from the machine. Writing the result explicitly means the reader keeps the theme
+       they picked even if they later change their system setting. */
+    var next=isDark()?'light':'dark';
+    document.documentElement.setAttribute('data-theme',next);
+    try{localStorage.setItem('gccp-theme',next);}catch(e){}
+    label();
+  });
+});
+</script>
 </head>
 <body>
+<button class="themetoggle" type="button" aria-pressed="false"
+        aria-label="Dark mode" title="Switch to dark"><span class="tt-g tt-moon" aria-hidden="true">🌙</span><span class="tt-g tt-sun" aria-hidden="true">☀️</span></button>
 <div id="backdrop" aria-hidden="true"></div>
 <svg id="brushes" aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
   <defs>
