@@ -559,3 +559,27 @@ footer.sig{margin-top:auto}
   .cf-check input[type=checkbox]{width:24px;height:24px;flex:none}
   .cf-check label{min-height:24px;display:flex;align-items:center}
 }
+
+/* ==================== PHONE ONLY: the document index becomes a list you can hit
+ * The index is the only navigation these pages have, and on a phone it is how anyone reaches
+ * clause seven of a fourteen clause document. Measured: each row 21px tall with 28px between
+ * one target and the next, six of them on the FAQ, ten on the privacy policy, fourteen on the
+ * terms. That is a stack of small links with seven pixels of nothing between them, and a
+ * mis-tap lands you in the wrong clause.
+ *
+ * These are not inline links inside a sentence, so the exception that covers a link in a
+ * paragraph does not cover them. Each row is a flex row already, so it takes a height and
+ * centres its content without anything else changing, and the row margin goes because the
+ * height now does that job: the step is 44 rather than 28 plus a gap.
+ *
+ * It costs 96px on the FAQ, 160 on the privacy policy and 224 on the terms, against pages of
+ * about 7000px. Worth it for navigation that works.
+ *
+ * AND THE STANDALONE more LINK, which measured 33x15. It is the entire content of its own
+ * paragraph rather than a word inside a sentence, so it is a control and not prose, and 15px
+ * tall is the smallest target on the site. Its text is untouched. */
+@media (max-width:600px){
+  .doc .index a{min-height:44px;align-items:center}
+  .doc .index li{margin:0}
+  .doc .more a{display:inline-flex;align-items:center;min-height:44px}
+}
