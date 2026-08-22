@@ -1775,6 +1775,16 @@ body:not(.list-only) #cats{display:none !important}
   .i-colv{font-size:10.5px}
 }
 
+/* ==================== PHONE ONLY: the hero heading drops its site name prefix ====================
+   The Atlas and the whole register are the only two routes that set a two part heading, and in
+   both the first part is the site name and the second is the surface: Atlas, Register. On a phone
+   that prefix is the third time the site name is read inside 590px, after the brand in the bar and
+   the line in the band, so the lockup collapses to the part that is not already on screen. Country
+   and category routes never set a prefix, so their headings are untouched. */
+@media (max-width:600px){
+  .sel-pre{display:none}
+}
+
 @media (max-width:600px){
   /* THE COLLAPSE WRITTEN AT 1080px NEVER REACHED THE TWO PANE CASE, and had not since it was
      written. .i-three.two is a two class selector and the 1080px rule is a one class selector,

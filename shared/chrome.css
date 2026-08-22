@@ -274,3 +274,50 @@ footer.sig .sig-rights{margin:10px 0 0;padding-top:11px;
   footer.sig a.sig-ava{width:44px;height:44px}
   footer.sig a.sig-ava img{width:44px;height:44px}
 }
+
+/* ============================================ PHONE ONLY: THE CHROME STOPS REPEATING ITSELF
+ * Measured at 390x844 on every surface that carries the band: the bar is 150px and the band
+ * another 200, so 350px, forty one per cent of the first screen, before a page says anything of
+ * its own. The Atlas put its first figure at y=590, the register showed one row out of 689, and
+ * connect reached its first paragraph at y=1072.
+ *
+ * What was in that 350px was mostly the same words twice. The bar already carries the site name
+ * as a link home, and the band repeated it underneath in full, 26px lower, as a second link to
+ * the same place. The band also listed the six member states, which are decorative here, carry
+ * no links, and on the toolkit and connect wrapped to three lines and left the small decorative
+ * rule beside them stranded against a block of text.
+ *
+ * SO THE TWO LINES OF TEXT GO AND EVERYTHING ELSE STAYS. The band itself stays, and so does the
+ * two colour brush behind it, and so does the orange tag: those are deliberate and the tag is
+ * the one thing in the band that is not said anywhere else above it. What is left is a short
+ * branded strip naming the surface, which is what the band was for.
+ *
+ * Nothing here can reach the main page: the portal hides header.top outright, as the note at the
+ * top of this file records, and the members band is a different element again.
+ *
+ * THE MEMBERS PAGES USE THEIR OWN NAMES for the same two lines, .gccp-h1 and .gccp-kick, and both
+ * are paragraphs rather than headings, so hiding them takes nothing out of the outline. Each page
+ * states its own name in its own h1 further down.
+ *
+ * AND THE TOOLKIT'S SECTION STRIP GOES on a phone, which is the one judgement here rather than a
+ * measurement. It holds nine links, four themes and five jurisdictions, 1445px of them inside a
+ * 342px box. Under 480px it is set to nowrap with overflow-x auto and then scrollbar-width none
+ * and ::-webkit-scrollbar display none, so it scrolls with every cue that it scrolls removed: a
+ * reader sees FOUNDATIONS AND CONTEXT REGULATION, GOVE and nothing tells them there is more.
+ * Restoring a fade would fix the cue and keep the duplication; letting it wrap costs about 235px
+ * for the same. All nine destinations are already on the page 314px below, under BY THEME and BY
+ * JURISDICTION, each with its paper count and reading time, which is the better version of the
+ * same control. So on a phone the page keeps the good copy and drops the broken one. Above 600px
+ * nothing changes and it wraps as it always did. */
+/* THE body PREFIX IS LOAD ORDER, NOT DECORATION. This file is linked before each page's own
+   stylesheet, and two of them restyle these very elements: shared/doc.css and the toolkit both
+   set header.top .kick to display:flex at the same specificity as header.top .kick, so at equal
+   weight the later sheet won and the line stayed on screen while the brandline beside it
+   vanished, because nothing declares display on the brandline. Rather than fix the one selector
+   that lost, every selector here out-specifies a page level rule, so the next page sheet to
+   restyle one of these cannot quietly switch it back on. */
+@media (max-width:600px){
+  body header.top .brandline, body header.top .kick,
+  body .gccp-top .gccp-h1, body .gccp-top .gccp-kick{display:none}
+  body nav.sections .secrow{display:none}
+}
