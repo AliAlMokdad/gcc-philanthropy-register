@@ -1785,6 +1785,45 @@ body:not(.list-only) #cats{display:none !important}
   .sel-pre{display:none}
 }
 
+/* ==================== PHONE ONLY: the news separators stop stranding at line ends
+ * The kicker row and the metadata row are both flex wrap rows carrying an explicit dot span
+ * between items, inserted as a sibling BEFORE each following item. A flex child wraps on its
+ * own, so whenever the item after a dot moved to the next line the dot stayed behind and ended
+ * the line on its own: Saudi Gazette, dot, the date, dot, and then nothing.
+ *
+ * Counted on the live page: 50 of the 89 separators strand at 390px, 59 at 360px and 43 at
+ * 430px, against 4 at 1400px. Every one of the 23 items wraps both rows on a phone, which is
+ * why this never showed on a laptop and shows on every single item on a phone.
+ *
+ * No separator placement survives wrapping. Moved onto the following item as a ::before it
+ * travels with it and opens the next line with a stray dot instead of closing the last one with
+ * it. Binding a dot to its item needs them inside one element, which is markup, not style.
+ *
+ * SO THE ROWS USE THE GAP THEY ALREADY HAVE. Both are already display:flex with a column gap,
+ * so the dots were a second separator on top of a working one. Hiding them alone would tighten
+ * the spacing, because the dot was contributing its own width plus a gap either side, so the
+ * gap takes over the whole job at 16px and 14px.
+ *
+ * Nothing merges once they are gone. In the metadata row every neighbour differs in family,
+ * weight or colour: the publisher is semibold ink, the time is tabular mono, the also reported
+ * line is grey sans, the read link is accent with a rule under it and an arrow after it. In the
+ * kicker the topic is grey at weight 400 and the source kind is slate at 600 and a point
+ * smaller, and the kind already takes its own row at this width anyway.
+ *
+ * The dots stay on a laptop, where they are the house style and only four of eighty nine ever
+ * strand. Those four belong to whoever owns that width. */
+/* THE body PREFIX ON THE GAPS IS SOURCE ORDER. This block sits above the news styles in the
+   file, and .n-labels sets gap:5px 10px as a shorthand further down, so a plain .n-labels
+   column-gap here loses to it at equal weight and the row stayed at 10px while the dots did
+   disappear, because nothing else declares display on them. Out-specifying it fixes the half
+   that lost without moving the block away from the reasoning above. */
+@media (max-width:600px){
+  body .n-labels{column-gap:14px}
+  body .n-labels .dot{display:none}
+  body .n-meta{column-gap:16px}
+  body .n-meta .dot{display:none}
+}
+
 @media (max-width:600px){
   /* THE COLLAPSE WRITTEN AT 1080px NEVER REACHED THE TWO PANE CASE, and had not since it was
      written. .i-three.two is a two class selector and the 1080px rule is a one class selector,
