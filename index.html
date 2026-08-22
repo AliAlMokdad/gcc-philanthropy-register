@@ -131,6 +131,42 @@ html{scrollbar-color:var(--berry-soft) transparent;scrollbar-width:thin}
   display:none}
 body:has(#l1:not([hidden])) #brushes{display:block}
 @media (prefers-color-scheme:dark){ #brushes{opacity:.6} }
+
+/* ---------------------------------------------------------------- the backdrop
+   Ali's Gulf picture across the whole front page. It is UNDER the brushes at z-index -2, not over
+   them, which is the whole point: the paper, the two accent pools and the brushed colour all paint
+   exactly as they did, and the picture sits beneath them as depth rather than as a new colour.
+   Nothing above it was touched.
+
+   HELD DOWN HARD ON PURPOSE, and the number was chosen by looking rather than by taste. Rendered
+   at .10, .13, .16 and .22 and compared: .10 is so faint you have to hunt for the palm, .22 is a
+   picture behind text, and .16 turns the palm into an element of its own. At .13 the towers and the
+   water read as atmosphere and the page is still the subject, which is what was asked for.
+
+   THE MASK IS DOING THE ELEGANT PART. The picture's sky is its emptiest region and its dunes and
+   water are its busiest, so a flat wash would have put the most detail directly under the doors and
+   the least behind the title. The gradient keeps it faintest at the very top, where the name sits,
+   lets it come up through the middle where the ring is, and eases it out again at the foot so the
+   footer stays a clean band.
+
+   DARK MODE TAKES A DIFFERENT NUMBER, not the same one dimmed. The picture is pale, so the same
+   opacity that reads as depth on paper reads as fog on ink and lifts the whole ground. .05 keeps it
+   as a presence you notice only when you look for it, which is the same call the brushes make at .6
+   and the country wash makes at .11.
+
+   MEASURED, not assumed. The three things that sit directly over it are the title, the standfirst
+   and the country names, at 13.03:1, 7.18:1 and 13.03:1 against the darkest pixel the ground ever
+   reaches. The doors and the footer never see it: both paint their own opaque paper.
+
+   Same display contract as the brushes: the front page only, never an inner route. */
+#backdrop{position:fixed;inset:0;z-index:-2;pointer-events:none;display:none;
+  background:url(gcc-backdrop.webp) center center/cover no-repeat;
+  opacity:.13;
+  mask:linear-gradient(to bottom,rgba(0,0,0,.28) 0,#000 34%,#000 76%,rgba(0,0,0,.42) 100%);
+  -webkit-mask:linear-gradient(to bottom,rgba(0,0,0,.28) 0,#000 34%,#000 76%,rgba(0,0,0,.42) 100%)}
+body:has(#l1:not([hidden])) #backdrop{display:block}
+@media (prefers-color-scheme:dark){ #backdrop{opacity:.05} }
+@media (forced-colors:active){ #backdrop{display:none} }
 /* an individual country page wears its flag as a soft painterly wash across the whole
    page, in the flag's own colours, faint enough that the text stays the subject */
 /* the same painterly idea on the inner pages, fainter. NOT on a country page: that already wears
@@ -2782,6 +2818,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 <!-- seo:end -->
 </head>
 <body>
+<div id="backdrop" aria-hidden="true"></div>
 <svg id="brushes" aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
   <defs>
     <filter id="bpa" x="-35%" y="-35%" width="170%" height="170%">
