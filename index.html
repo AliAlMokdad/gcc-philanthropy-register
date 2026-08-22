@@ -1774,6 +1774,18 @@ body:not(.list-only) #cats{display:none !important}
   .i-cols{height:104px}
   .i-colv{font-size:10.5px}
 }
+
+@media (max-width:600px){
+  /* THE COLLAPSE WRITTEN AT 1080px NEVER REACHED THE TWO PANE CASE, and had not since it was
+     written. .i-three.two is a two class selector and the 1080px rule is a one class selector,
+     and a media query adds no specificity, so the rule matched and lost. What a phone was
+     actually getting: two panes of 170px, prose at fifteen characters a line, six bar columns of
+     17px with five of their six value labels overlapping the next, a year axis with no gaps, and
+     names broken mid word down to Gover nment s.
+     Matching the same two classes is the whole fix. The 1080px rule is deliberately left as it
+     is, because it governs tablet and small laptop widths that are not mine to move. */
+  .i-three,.i-three.two{grid-template-columns:1fr}
+}
 </style>
 <style id="oecd-skin">
 /* The official aid lane. It borrows the panel's own tokens and adds one idea of its own:
