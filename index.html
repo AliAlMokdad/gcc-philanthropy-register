@@ -3223,7 +3223,11 @@ document.addEventListener('DOMContentLoaded',function(){
 
   <div id="l1" hidden>
     <section class="portal" aria-labelledby="portal-word">
-      <h2 class="portal-word" id="portal-word">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</h2>
+      <!-- h1, NOT h2. The only other h1 is #selname, the register's country title, and it
+           lives in l2. One layer is ever visible, so each layer carries exactly one h1 and
+           no page shows two. As an h2 the front door had an empty h1 above it and demoted
+           its own name. Every rule here targets .portal-word by class, so nothing restyles. -->
+      <h1 class="portal-word" id="portal-word">Gulf Cooperation Council <span class="abbr">(GCC)</span> Philanthropy</h1>
       <p class="portal-lede">One platform bringing together funders, philanthropic
         organizations, data, news and knowledge across the six Gulf Cooperation Council
         countries.</p>
