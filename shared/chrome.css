@@ -321,3 +321,21 @@ footer.sig .sig-rights{margin:10px 0 0;padding-top:11px;
   body .gccp-top .gccp-h1, body .gccp-top .gccp-kick{display:none}
   body nav.sections .secrow{display:none}
 }
+
+/* ==================== PHONE ONLY: a tap says it landed
+ * Checked every control a finger reaches on this surface against every :active rule loaded,
+ * and these had none: the product bar links on every page, the news place, topic and read
+ * links, the document index rows, the more link and the way back from a country profile. The
+ * register rows, the category cards, the append control and the landing tiles already had one.
+ *
+ * WHAT THEY DO IS WHAT HOVER ALREADY DOES, because hover never fires on a phone and a state
+ * was already chosen for each of these. So nothing new is invented, no colour is added and no
+ * transform is introduced, which is also why none of this needs a reduced motion guard: a
+ * colour is not motion.
+ */
+ /* the bar sits on the dark masthead, where a soft light tint reads as a press and the
+    white the hover already uses carries the rest */
+@media (max-width:600px){
+  .pbar-nav a:active{color:#FFFFFF;background:rgba(255,255,255,.10)}
+  .pbar-brand:active{background:rgba(255,255,255,.10)}
+}

@@ -352,3 +352,26 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
     --gold-dark:#C9A238;
   }
 }
+
+/* ==================== PHONE ONLY: the way back matches every other phone target
+ * The back link is set to a 40px minimum, which clears the 24px floor but sits under the 44 the
+ * rest of the phone chrome uses: the product bar items, the footer columns and the avatar are
+ * all 44. It is the primary way out of a country profile, so it matches them. */
+@media (max-width:600px){
+  .council-member__back{min-height:44px}
+}
+
+/* ==================== PHONE ONLY: a tap says it landed
+ * Checked every control a finger reaches on this surface against every :active rule loaded,
+ * and these had none: the product bar links on every page, the news place, topic and read
+ * links, the document index rows, the more link and the way back from a country profile. The
+ * register rows, the category cards, the append control and the landing tiles already had one.
+ *
+ * WHAT THEY DO IS WHAT HOVER ALREADY DOES, because hover never fires on a phone and a state
+ * was already chosen for each of these. So nothing new is invented, no colour is added and no
+ * transform is introduced, which is also why none of this needs a reduced motion guard: a
+ * colour is not motion.
+ */
+@media (max-width:600px){
+  .council-member__back:active{border-bottom-color:var(--gold-dark)}
+}

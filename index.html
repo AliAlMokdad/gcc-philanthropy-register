@@ -1785,6 +1785,23 @@ body:not(.list-only) #cats{display:none !important}
   .sel-pre{display:none}
 }
 
+/* ==================== PHONE ONLY: a tap says it landed
+ * Checked every control a finger reaches on this surface against every :active rule loaded,
+ * and these had none: the product bar links on every page, the news place, topic and read
+ * links, the document index rows, the more link and the way back from a country profile. The
+ * register rows, the category cards, the append control and the landing tiles already had one.
+ *
+ * WHAT THEY DO IS WHAT HOVER ALREADY DOES, because hover never fires on a phone and a state
+ * was already chosen for each of these. So nothing new is invented, no colour is added and no
+ * transform is introduced, which is also why none of this needs a reduced motion guard: a
+ * colour is not motion.
+ */
+@media (max-width:600px){
+  .n-geo:active{border-bottom-color:currentColor}
+  .n-topic:active{color:var(--ink-2);border-bottom-color:currentColor}
+  .n-orig:active{color:var(--ink);border-bottom-color:var(--ink)}
+}
+
 /* ==================== PHONE ONLY: the news separators stop stranding at line ends
  * The kicker row and the metadata row are both flex wrap rows carrying an explicit dot span
  * between items, inserted as a sibling BEFORE each following item. A flex child wraps on its

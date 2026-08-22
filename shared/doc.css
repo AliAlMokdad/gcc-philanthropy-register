@@ -583,3 +583,19 @@ footer.sig{margin-top:auto}
   .doc .index li{margin:0}
   .doc .more a{display:inline-flex;align-items:center;min-height:44px}
 }
+
+/* ==================== PHONE ONLY: a tap says it landed
+ * Checked every control a finger reaches on this surface against every :active rule loaded,
+ * and these had none: the product bar links on every page, the news place, topic and read
+ * links, the document index rows, the more link and the way back from a country profile. The
+ * register rows, the category cards, the append control and the landing tiles already had one.
+ *
+ * WHAT THEY DO IS WHAT HOVER ALREADY DOES, because hover never fires on a phone and a state
+ * was already chosen for each of these. So nothing new is invented, no colour is added and no
+ * transform is introduced, which is also why none of this needs a reduced motion guard: a
+ * colour is not motion.
+ */
+@media (max-width:600px){
+  .doc .index a:active{color:var(--accent);border-bottom-color:var(--accent-line)}
+  .doc .more a:active{border-bottom-color:var(--accent)}
+}
