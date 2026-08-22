@@ -878,6 +878,35 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     document.head.appendChild(st);
   })();
 
+  /* A SECTION'S OWN FURTHER READING. The landing page lists all seventy by jurisdiction; this puts
+     the relevant ones at the foot of the section a reader has actually opened, so they are not
+     sealed in one block at the bottom of the front page.
+
+     THE MAP IS THE TOOLKIT'S OWN SECTION IDS, not a guess. gcc, qatar, saudi and uae each take
+     their matching group whole. Dubai takes the Emirates articles whose HEADLINE names Dubai,
+     which is a test on the title itself rather than an inference about which emirate a foundation
+     sits in: DP World and Al Jalila are Dubai bodies, but their headlines do not say so and this
+     list does not claim knowledge it cannot show.
+
+     THE FOUR THEMATIC SECTIONS GET NOTHING, deliberately. These seventy articles carry a
+     jurisdiction and no theme, so matching them to Foundations or Regulation would mean inventing
+     a classification and presenting it as his. An empty space is honest; a guessed one is not.
+
+     Kuwait, Bahrain and Oman have no section of their own here, because none of the thirty-five
+     papers covers them, so their twenty-nine articles appear on the landing page only. */
+  var READ_BY_SEC={gcc:"GCC",qatar:"Qatar",saudi:"Saudi Arabia",uae:"United Arab Emirates"};
+  function readingFor(secId){
+    var g,i;
+    if(secId==="dubai"){
+      for(i=0;i<READING.length;i++) if(READING[i].j==="United Arab Emirates") g=READING[i];
+      return g ? g.a.filter(function(r){ return /\bDubai\b/.test(r.t); }) : [];
+    }
+    var want=READ_BY_SEC[secId];
+    if(!want) return [];
+    for(i=0;i<READING.length;i++) if(READING[i].j===want) return READING[i].a;
+    return [];
+  }
+
   function showSection(sec){
     claimScreen();
     markNav(sec.id);
@@ -888,6 +917,11 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
     main.appendChild(el("h1",{cls:"doc-t",text:sec.name}));
     /* no blurb. A sentence of mine describing his section would be a word he did not write. */
     main.appendChild(chapterList(sec));
+    var rd=readingFor(sec.id);
+    if(rd.length){
+      main.appendChild(el("h2",{cls:"axis-h axis-h-read",text:"Further reading"}));
+      main.appendChild(readingList(rd));
+    }
     host.appendChild(main);
     window.scrollTo(0,0);
   }
