@@ -154,10 +154,6 @@ body:has(#l1:not([hidden])) #brushes{display:block}
    as a presence you notice only when you look for it, which is the same call the brushes make at .6
    and the country wash makes at .11.
 
-   MEASURED, not assumed. The three things that sit directly over it are the title, the standfirst
-   and the country names, at 13.03:1, 7.18:1 and 13.03:1 against the darkest pixel the ground ever
-   reaches. The doors and the footer never see it: both paint their own opaque paper.
-
    Same display contract as the brushes: the front page only, never an inner route. */
 #backdrop{position:fixed;inset:0;z-index:-2;pointer-events:none;display:none;
   background:url(gcc-backdrop.webp) center center/cover no-repeat;
@@ -2264,14 +2260,53 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   #recs li.rec > button:active,#recs li.rec > a:active{background:var(--accent-soft)}
   ol.ranked a:active{background:var(--accent-soft);transform:scale(.99)}
   .cprof-a:active{background:var(--accent-soft);transform:scale(.995)}
-  .portal-news a:active{background:var(--accent-soft)}
-  .spoke:active{transform:translate(-50%,-50%) scale(.97)}
+
+  /* ================= THE PRESS THAT THREW A FLAG OFF ITS PLACE =================
+     This read .spoke:active{transform:translate(-50%,-50%) scale(.97)}, copied from the ring,
+     where a spoke IS absolutely positioned and that translate is what centres it on its radius.
+     On a phone the ring is a grid and the spoke is position:static, so the translate had nothing
+     to undo and simply moved the flag. Measured by applying the declared value at 390px: the
+     first spoke went from (24,346) to (-57,286), a shift of 81px left and 60px up, which puts a
+     country flag partly off the screen the instant a thumb touches it.
+
+     Scale alone here. It composes with whatever position the layout has given the element, which
+     is the whole reason the ring version needed a translate and this one must not have it. */
+  .spoke:active{transform:scale(.975)}
+  .spoke:active .spoke-flag{transform:scale(1.04)}
+  .spoke:active .spoke-nm{color:var(--accent-2)}
+
+  /* ================= THE DESTINATION BUTTONS =================
+     Hover lifts these by 2px and scales them up, runs a white sweep across them and draws a 2px
+     accent bar along the top. None of it fires on a phone. The sweep and the bar are reused here
+     on press, unchanged, because they are already this page's motion and a finger deserves the
+     same gesture rather than a second one invented for it. The lift becomes a press DOWN: a
+     control that rises under a thumb is a control moving away from the thing touching it. */
+  .portal-news a:active{background:var(--accent-soft);border-color:var(--accent);
+    transform:scale(.985)}
+  .portal-news a:active::before{transform:translateX(120%)}
+  .portal-news a:active::after{transform:scaleX(1)}
+  .portal-news a:active .pn-label{color:var(--accent-2)}
+
+  /* ================= THE EMBLEM =================
+     On a pointer this grows to three times its size as the hand approaches, driven by --prox, and
+     takes a sheen across it at the end. A phone has no approach, so the sheen is the whole
+     gesture and the growth is a sixteenth of what a mouse gets: three times on tap would cover
+     the six countries the emblem sits among. The gradient is the one .near already defines. */
+  .emblem-link:active{transform:scale(1.06)}
+  .emblem-link:active::after{opacity:1;
+    background:linear-gradient(104deg,transparent 38%,rgba(255,255,255,.55) 50%,transparent 62%);
+    animation:emblemSheen .82s cubic-bezier(.3,.7,.3,1) 1 both}
   /* the tap flash Android paints over these is redundant once the state is explicit */
   #recs li.rec > button,ol.ranked a,.cprof-a,.portal-news a{
     -webkit-tap-highlight-color:transparent}
 }
 @media (hover:none) and (max-width:600px) and (prefers-reduced-motion:reduce){
-  ol.ranked a:active,.cprof-a:active,.spoke:active{transform:none}
+  ol.ranked a:active,.cprof-a:active,.spoke:active,.portal-news a:active,
+  .emblem-link:active{transform:none}
+  .spoke:active .spoke-flag{transform:none}
+  .emblem-link:active::after{animation:none;opacity:0}
+  .portal-news a:active::before{transform:translateX(-120%)}
+  /* the ground and ink changes stay: they are the feedback, and they do not move anything */
 }
 
 
@@ -2317,6 +2352,45 @@ body:has(#l1:not([hidden])) .pbar{display:none}
 @keyframes mctx-in{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
 @media (max-width:600px) and (prefers-reduced-motion:reduce){
   #controls.stuck .mctx{animation:none}
+}
+
+
+/* ==================== PHONE ONLY: the six countries arrive ====================
+   The one thing a phone can do that a proximity effect cannot is show a page assembling itself.
+   The six country cards rise 6px and fade in, 60ms apart, 380ms each, so the row reads as six
+   things arriving in order rather than a block appearing at once. It runs when the landing is on
+   screen, which means it replays on a deliberate return to the front page and never mid-scroll.
+
+   OPACITY AND TRANSFORM ONLY, both compositor properties, so nothing here can cause a layout
+   reflow while it runs. The cards hold their space from the first frame: the animation starts at
+   opacity 0 with the box already laid out, so there is no shift for the eye to catch.
+
+   Nothing is delayed by more than 300ms in total, because a reader who taps a flag at 200ms must
+   not find it still moving. */
+@media (max-width:600px){
+  .spoke{animation:spokeIn .38s cubic-bezier(.22,.61,.36,1) both}
+  /* nth-of-TYPE, not nth-child. The mark at the centre is a span and it is the ring's FIRST
+     child, so the six spokes are children two to seven: nth-child(1) addressed the span and
+     matched nothing, and the sixth spoke fell off the end of the list and started with no delay
+     at all. Measured before this changed: delays came out 0.08, 0.14, 0.20, 0.26, 0.30 and 0, so
+     one flag arrived ahead of the five it was supposed to follow. The spokes are the only anchors
+     in the ring, so counting by type counts exactly them. */
+  .spoke:nth-of-type(1){animation-delay:.02s}
+  .spoke:nth-of-type(2){animation-delay:.08s}
+  .spoke:nth-of-type(3){animation-delay:.14s}
+  .spoke:nth-of-type(4){animation-delay:.20s}
+  .spoke:nth-of-type(5){animation-delay:.26s}
+  .spoke:nth-of-type(6){animation-delay:.30s}
+  /* the mark at the centre of the six settles first, so the row arrives around something */
+  .ring .ring-mark{animation:markIn .42s cubic-bezier(.22,.61,.36,1) both}
+}
+@keyframes spokeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes markIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+/* AN ARRIVAL IS EXACTLY WHAT REDUCED MOTION MEANS TO SWITCH OFF, and both:none rather than
+   duration:0, so the cards are simply present rather than present after a zero-length animation
+   that still has to be scheduled. */
+@media (max-width:600px) and (prefers-reduced-motion:reduce){
+  .spoke,.ring .ring-mark{animation:none}
 }
 
 /* THE TOGGLE DOES NOT EXIST ABOVE THE PHONE QUERY, and this rule has to come BEFORE that query
