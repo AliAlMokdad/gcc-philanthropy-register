@@ -25,12 +25,15 @@
   --warm-line:#EFE6D0;   /* was --line, renamed off the canonical name */
   --map-on:#D1A770;
   --map-off:#FBF4E4;
-  --member-sans:"Inter","SuisseIntl-Regular",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  /* --member-sans held Inter and is gone. Inter is the most recognisable default face in
+     AI-generated design, it was the only font on the site that belonged to no token, and it
+     made these seven pages read as a different publication from the other seven. Prose and
+     titles now use --serif and labels use --mono, the same two faces as every other page. */
   --ar:"Noto Naskh Arabic","Traditional Arabic",serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
-body{background:var(--page);color:var(--ink);font:400 16px/1.5 var(--member-sans);
+body{background:var(--page);color:var(--ink);font:400 16px/1.5 var(--serif);
   -webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
@@ -219,8 +222,8 @@ body{background:transparent}
    for this: the face fell back to a serif once the Arabic webfont went, and the paragraphs
    ragged on the wrong edge, which read as centred. Overridden here rather than edited in place,
    so the original rule stays intact if Arabic is ever restored. */
-.council-member__text{font-family:var(--member-sans)}
-.council-member__text p{font:400 16px/1.7 var(--member-sans);text-align:left;max-width:68ch;
+.council-member__text{font-family:var(--serif)}
+.council-member__text p{font:400 16px/1.7 var(--serif);text-align:left;max-width:68ch;
   margin:0 0 20px}
 .council-member__text p:last-child{margin-bottom:0}
 /* THE WAY BACK. Six pages with no route to the list they came from is a dead end: a reader
@@ -232,7 +235,7 @@ body{background:transparent}
    18.11:1 and the gold-dark is spent on the arrow, where 3.66:1 clears the 3:1 that a
    meaningful non-text graphic needs. */
 .council-member__back{display:inline-flex;align-items:center;gap:9px;min-height:40px;
-  margin:0 0 4px;font:600 11px/1 var(--member-sans);letter-spacing:.12em;text-transform:uppercase;
+  margin:0 0 4px;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase;
   color:var(--ink);text-decoration:none;border-bottom:1px solid transparent;
   align-self:flex-start}
 .council-member__back-i{font-size:15px;line-height:1;color:var(--gold-dark)}
@@ -240,7 +243,7 @@ body{background:transparent}
 .council-member__back:focus-visible{outline:2px solid var(--gold-dark);outline-offset:3px;
   border-radius:2px}
 .council-member__source{margin:18px 0 0;max-width:74ch;
-  font:400 12.5px/1.55 var(--member-sans);color:var(--muted)}
+  font:400 12.5px/1.55 var(--serif);color:var(--muted)}
 .council-member__source a{text-decoration:underline;text-underline-offset:2px}
 
 
@@ -285,21 +288,21 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
 /* a metric with nowhere to go is not a link and does not pretend to be one */
 .ch-metric--flat{border-top-color:var(--warm-line)}
 .ch-fig{font:600 26px/1.05 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
-.ch-lab{font:400 13px/1.3 var(--member-sans);color:var(--ink-3)}
+.ch-lab{font:400 13px/1.3 var(--mono);color:var(--ink-3)}
 /* --ink-3, not --muted. The member palette's --muted is #757575, which at 12px measures
    4.45:1 on this page's cream and 4.34:1 on the hover strip, both under AA's 4.5. It only clears
    the bar on a pure white card, at 4.61. --ink-3 is the canonical token for secondary metadata
    across the whole site and holds 5.46:1 at worst here. */
-.ch-note{font:400 12px/1.35 var(--member-sans);color:var(--ink-3);margin-top:2px}
+.ch-note{font:400 12px/1.35 var(--mono);color:var(--ink-3);margin-top:2px}
 
-.ch-sub{margin:30px 0 12px;font:600 15px/1.3 var(--member-sans);color:var(--ink);
+.ch-sub{margin:30px 0 12px;font:600 15px/1.3 var(--mono);color:var(--ink);
   text-transform:uppercase;letter-spacing:.09em}
 .ch-papers,.ch-areas{list-style:none;margin:0;padding:0}
 .ch-papers li{display:flex;align-items:baseline;gap:14px;padding:11px 0;
   border-bottom:1px solid var(--warm-line)}
 .ch-papers li:first-child{border-top:1px solid var(--warm-line)}
 .ch-papers a{flex:1 1 auto;color:var(--ink);text-decoration:none;
-  font:400 16px/1.35 var(--member-sans);
+  font:400 16px/1.35 var(--serif);
   /* the title is the target and it is capped at a readable measure, not at the sheet width */
   max-width:62ch}
 .ch-papers a:hover{color:var(--gold-dark);text-decoration:underline}
@@ -311,7 +314,7 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
    a link that goes nowhere useful is worse than plain text */
 .ch-areas{display:flex;flex-wrap:wrap;gap:7px}
 .ch-areas li{padding:5px 11px;background:var(--strip);border:1px solid var(--warm-line);
-  border-radius:2px;font:400 13px/1.3 var(--member-sans);color:var(--ink-2)}
+  border-radius:2px;font:400 13px/1.3 var(--mono);color:var(--ink-2)}
 
 @media (max-width:560px){
   .country-hub{margin-top:34px;padding-top:26px}
