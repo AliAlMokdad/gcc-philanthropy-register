@@ -375,3 +375,18 @@ a.ch-metric:focus-visible{outline:2px solid var(--gold-dark);outline-offset:2px}
 @media (max-width:600px){
   .council-member__back:active{border-bottom-color:var(--gold-dark)}
 }
+
+/* ==================== PHONE ONLY: a metric cell has to be wide enough for its own figure
+ * The grid is repeat(auto-fit,minmax(178px,1fr)), so a second column forms as soon as the
+ * container reaches 368px. On a 430px phone that happens; on a 390px phone it does not. So the
+ * WIDER phone got the NARROWER cells, 147px of content each, and the largest figure on the site,
+ * $10,394,551,759 at 163px, ate its right padding and ran into the card border. Measured on Saudi
+ * Arabia at 430px, and on the Emirates at 151px in the same 147px cell.
+ *
+ * The floor was the wrong number rather than the layout being wrong: a cell has to hold the
+ * figure plus the 18px of padding on each side, which is 199px. At 200px a 430px phone falls back
+ * to one column and gets the full width, while 500px and up still pair them, because there the
+ * container is wide enough for two cells that genuinely fit. Nothing above 600px is touched. */
+@media (max-width:600px){
+  .ch-metrics{grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+}
