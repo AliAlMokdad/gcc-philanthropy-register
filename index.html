@@ -683,11 +683,15 @@ nav.pager .pg-sm{display:none}
 footer.sig{position:relative;overflow:hidden;border-top:1px solid var(--line);
   margin-top:var(--s5)}
 /* a light, transparent yellow brush washed across the whole footer, painterly, no edge */
-.foot-brush{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;
-  /* softened, because a cool blue picture over a warm yellow wash at full strength cancels
-     both into grey. At half it stays the site's warm signature underneath rather than a
-     competitor to the panorama. */
-  opacity:.5}
+/* BACK TO FULL STRENGTH, because the thing it was dimmed for is no longer here. This carried
+   opacity:.5 from e3b2eeb, the commit that put the panorama into the footer, and the reason given
+   was that a cool blue picture over a warm yellow wash at full strength cancels both into grey. The
+   panorama was later taken out of the footer, for its own good reason, and the halving stayed
+   behind. So the wash has been sitting at .5 of alphas that are already 0.04 to 0.10, an effective
+   0.04 at its strongest, which on paper is present in the DOM and invisible on the screen.
+   Nothing else about it changes: the six ellipses and their alphas are byte for byte what they were
+   before the panorama arrived, so this is the wash Ali had, not a new one. */
+.foot-brush{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
 /* A COLOUR BLEND AT THE FOOT OF THE PAGE.
 
