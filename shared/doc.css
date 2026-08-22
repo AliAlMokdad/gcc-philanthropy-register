@@ -544,3 +544,18 @@ footer.sig{margin-top:auto}
   /* the four meta links in the footer of every generated page */
   footer.sig .sig-col a{min-height:44px}
 }
+
+/* ==================== PHONE ONLY: the human check meets the minimum target size
+ * The checkbox measured 20x20 and its label 105x20, so the only control the form actually
+ * requires was the smallest thing on the page and sat under the 24px minimum. It is 24px now,
+ * and the label is given the same height and centred against it so the text row is part of the
+ * target rather than a caption beside it. The row's own align-items is flex-start, which is
+ * right for a wrapping label and wrong once the box is taller than one line of text, so the
+ * label centres itself instead of the row changing for everything in it.
+ *
+ * The same 20x20 applies on a laptop, where the minimum is the same and a mouse does not excuse
+ * it, but that width belongs to another session. */
+@media (max-width:600px){
+  .cf-check input[type=checkbox]{width:24px;height:24px;flex:none}
+  .cf-check label{min-height:24px;display:flex;align-items:center}
+}
