@@ -852,14 +852,29 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
          of them stack into a straight column instead of a ragged edge, and on a phone it drops to
          its own line at full size rather than shrinking to fit beside the title. */
       ".axis-h-read{margin-top:calc(var(--s5) + var(--s3))}"+
-      /* 48 above, not 24. Rendered and looked at: at 24 the next country's label sat hard against
-         the last rule of the previous list and the seven groups read as one long list with
-         interruptions rather than as seven. The measurement said 24px and the picture said too
-         tight, and the picture was right. */
-      ".rd-j{display:flex;align-items:center;gap:10px;margin:var(--s5) 0 var(--s2);"+
-        "font:600 11px/1.4 var(--mono);letter-spacing:.16em;text-transform:uppercase;"+
-        "color:var(--ink-3)}"+
-      ".rd-j::before{content:\"\";flex:none;width:16px;height:1px;background:currentColor}"+
+      /* A JURISDICTION IS A NAME, SO IT IS SET IN THE SERIF. It was 11px uppercase mono in
+         muted ink, which is this site's treatment for a LABEL, and it read as a label: the seven
+         countries looked like column headers rather than like the headings of seven sections. The
+         register sets an organisation's name in Source Serif and keeps the mono for figures, and
+         the year column here is already mono, so the division is the one the site already makes.
+
+         THE DOT AND THE TRAILING RULE ARE .eyebrow's, VERBATIM, from index.html: an accent dot in
+         a soft ring, the name, then a hairline that runs out and fades. Reused rather than
+         reinvented, so a reader who has seen a section heading on the register recognises this as
+         the same object.
+
+         19px against the titles' 16.5 at the same weight, plus a dot and a rule the titles do not
+         have. Two points of size alone would not have separated them.
+         48 above, not 24: at 24 the next country sat hard against the last rule of the previous
+         list and seven groups read as one interrupted list. The measurement said 24 was fine and
+         the picture said it was not. */
+      ".rd-j{display:flex;align-items:center;gap:12px;margin:var(--s5) 0 var(--s3);"+
+        "font:600 19px/1.25 var(--display);letter-spacing:-.005em;text-transform:none;"+
+        "color:var(--ink);font-optical-sizing:auto}"+
+      ".rd-j::before{content:\"\";flex:none;width:7px;height:7px;border-radius:50%;"+
+        "background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}"+
+      ".rd-j::after{content:\"\";flex:1 1 auto;height:1px;min-width:16px;"+
+        "background:linear-gradient(90deg,var(--accent-line),transparent)}"+
       ".rd{list-style:none;margin:0;padding:0}"+
       ".rd li{border-top:1px solid var(--line)}"+
       ".rd li:last-child{border-bottom:1px solid var(--line)}"+
@@ -867,13 +882,22 @@ ol.chapters a:hover .ch-t{color:var(--accent)}
         "text-decoration:none;color:inherit}"+
       ".rd a:hover{background:var(--accent-soft)}"+
       ".rd a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}"+
-      ".rd-t{flex:1 1 auto;min-width:0;font:500 15.5px/1.45 var(--display);color:var(--ink);"+
-        "text-wrap:pretty}"+
+      /* 600, NOT 500, AND THE SITE ALREADY WROTE THE REASON DOWN. index.html says it at the
+         masthead: Source Serif 4 is loaded here across 200..900, so 600 is a real drawn weight
+         while 500 sits between two of them. Tracking tightens by a hair with the extra weight,
+         which is the same trade that comment describes.
+         16.5px, up from 15.5. The toolkit's own list titles, .axis-t, run 17 to 21px at 600 with
+         -.01em, so this is that treatment one step down, and the step is because there are seventy
+         of these to scan and eight of those to read.
+         font-optical-sizing on, as it is on every other serif the site sets: it thickens the stems
+         and opens the counters at the size actually rendered instead of scaling a text cut. */
+      ".rd-t{flex:1 1 auto;min-width:0;font:600 16.5px/1.4 var(--display);"+
+        "letter-spacing:-.01em;font-optical-sizing:auto;color:var(--ink);text-wrap:pretty}"+
       ".rd a:hover .rd-t{color:var(--accent-2);text-decoration:underline;"+
         "text-underline-offset:2px}"+
       ".rd-y{flex:none;font:500 11.5px/1.6 var(--mono);color:var(--ink-3);"+
         "font-variant-numeric:tabular-nums;letter-spacing:.06em}"+
-      "@media (max-width:600px){.rd a{flex-wrap:wrap;gap:2px}.rd-t{flex:1 1 100%}"+
+      "@media (max-width:600px){.rd a{flex-wrap:wrap;gap:3px}.rd-t{flex:1 1 100%}"+
         ".rd-y{flex:none}}";
     document.head.appendChild(st);
   })();
