@@ -2238,6 +2238,51 @@ body:has(#l1:not([hidden])) .pbar{display:none}
   ol.ranked a:active,.cprof-a:active,.spoke:active{transform:none}
 }
 
+
+/* the context line and its sentinel do not exist above the phone query */
+.mctx{display:none}
+/* ZERO HEIGHT, NOT ONE PIXEL. At 1px this element added a pixel of flow at EVERY width, and
+   the desktop fingerprint showed everything from the controls down displaced by exactly 1px
+   on all three routes: 39 boxes moved and three page heights grew. A phone-only change that
+   moves the laptop by a pixel is still a phone-only change that moved the laptop. An
+   IntersectionObserver fires on a zero-height box just as well, because what it watches is
+   the box crossing the viewport edge, not the box having a size. */
+.ctl-sentinel{display:block;height:0;margin:0;padding:0}
+
+/* ==================== PHONE ONLY: the bar says where you are ====================
+   The sticky bar solved reach and left orientation open: scrolled into a list, a reader had a
+   search box and no reminder of which country or category they were filtering. The selection name
+   now rides in the bar, and only while the bar is stuck, so it never repeats a heading that is
+   still on screen.
+
+   It is a row that appears rather than a permanent one, which means the bar grows from 69px to
+   about 96 while scrolled. That is the trade: 27px of a scrolled screen for knowing where you
+   are. The alternative, a permanent line, spends the same 27px on the first screen where the real
+   heading is already visible two centimetres above it.
+
+   Detected with an IntersectionObserver on a 1px sentinel immediately above the bar rather than a
+   scroll handler, so there is no listener running on every frame of a flick. */
+@media (max-width:600px){
+  #controls{flex-wrap:wrap}
+  .mctx{display:none;flex:1 1 100%;order:-1;
+    font:600 11px/1.3 var(--mono);letter-spacing:.11em;text-transform:uppercase;
+    color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #controls.stuck .mctx{display:block;
+    animation:mctx-in .2s cubic-bezier(.22,.61,.36,1) both}
+  /* THE SMALLEST LABELS GET A PHONE SIZE. These are glanceable metadata rather than reading text
+     and WCAG sets no minimum, so they are not a conformance failure, but 10.5px is genuinely small
+     held at arm's length and the cost of a point and a half is nothing. Phone only, so the type
+     system on a laptop is untouched. */
+  header.top .kick{font-size:12px}
+  .sel-pre{font-size:11.5px}
+  footer.sig .sig-rights{font-size:11.5px}
+  .tally{font-size:14px}
+}
+@keyframes mctx-in{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+@media (max-width:600px) and (prefers-reduced-motion:reduce){
+  #controls.stuck .mctx{animation:none}
+}
+
 /* THE TOGGLE DOES NOT EXIST ABOVE THE PHONE QUERY, and this rule has to come BEFORE that query
    rather than after it. Declared afterwards at equal specificity it wins the cascade, which
    folded the filters away on a phone and removed the only control that could unfold them.
@@ -2929,6 +2974,7 @@ body:has(#l1:not([hidden])) .pbar{display:none}
        <span class="cprof-txt">
          <span class="cprof-name" id="cprofname">Read the country profile</span>
        </span></a></p>
+    <span class="ctl-sentinel" id="ctlsent" aria-hidden="true"></span>
     <div class="controls" id="controls">
       <div class="search">
         <label class="sr" for="q">Search within this selection</label>
@@ -2942,6 +2988,13 @@ body:has(#l1:not([hidden])) .pbar{display:none}
            way to know one is still narrowing the list. -->
       <button type="button" class="mfilt" id="mfilt" aria-expanded="false"
               aria-controls="controls">Filters<span class="mfilt-n" id="mfiltn" hidden></span></button>
+      <!-- WHERE YOU ARE, once the title band has scrolled away. A sticky search box on its own
+           tells a reader what they can do and not what they are looking at, which on a country
+           page means filtering 129 organisations with no reminder of which country. It appears
+           only while the bar is stuck, so nothing is repeated while the real heading is still on
+           screen. Phone only, and aria-hidden because the heading it echoes is still in the
+           document for a screen reader to reach. -->
+      <span class="mctx" id="mctx" aria-hidden="true"></span>
       <div class="pick" id="pickwrap" hidden>
         <label for="pick" id="picklabel">Where</label>
         <select id="pick"></select>
@@ -4380,6 +4433,29 @@ function shortenPhonePlaceholder(){
   if(q) q.placeholder = "Search the register";
 }
 
+/* THE STUCK STATE. An IntersectionObserver on a 1px sentinel directly above the bar, rather than a
+   scroll listener, so nothing runs per frame while a thumb flicks through 1,862 rows. The sentinel
+   leaving the top of the viewport is exactly the moment the bar becomes stuck, so the two cannot
+   disagree. Set up once; it costs nothing on a route that has no bar. */
+function initStickyContext(){
+  var box = el("controls"), sent = el("ctlsent");
+  if(!box || !sent || !window.IntersectionObserver) return;
+  new IntersectionObserver(function(entries){
+    box.classList.toggle("stuck", !entries[0].isIntersecting);
+  }, {threshold:0}).observe(sent);
+}
+
+/* What the bar says while stuck. The selection's own name, not a label of my own: on a country it
+   is the country, on a category the category, on the whole register the register. sel.parts is the
+   two-tier lockup used by the routes that carry the site's name, and only its second half is the
+   subject, so printing both would put the brand in the bar for no reason. */
+function setStickyContext(sel){
+  var m = el("mctx");
+  if(!m) return;
+  if(!sel){ m.textContent = ""; return; }
+  m.textContent = (sel.parts && sel.parts.length === 2) ? sel.parts[1] : (sel.name || "");
+}
+
 function syncList(){
   var gated=listGated(), gate=el("listgate"), wrap=el("listwrap"), btn=el("lgbtn");
   /* the category index rides with the gate: both are entrances to the whole register, and neither
@@ -4738,6 +4814,7 @@ function route(){
     nameEl.classList.remove("is-lockup");
   }
   el("selsub").textContent=sel.sub;
+  setStickyContext(sel);
   setCountryProfile(sel);
   /* ONE TITLE FORMULA: what this page is, then the site. The short brand is used here, not the
      expanded one, because the expanded form and the sentence that explains it are on the home
@@ -5541,6 +5618,7 @@ fetch("data.json",{cache:"no-cache"}).then(function(r){
   initMobileFilters();
   initMobileCats();
   shortenPhonePlaceholder();
+  initStickyContext();
   route();
 }).catch(function(e){
   fail("The register could not be loaded ("+e.message+"). ");
