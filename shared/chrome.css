@@ -201,7 +201,7 @@ footer.sig .sig-col-r{align-items:flex-end}
    than as air once four of them stacked. 26 is still above the 24px minimum target size, so the
    links stay as tappable as they were; anything under 24 would have traded a real requirement for
    a visual preference. */
-footer.sig .sig-col a{min-height:26px;font:600 11px/1.6 var(--mono);letter-spacing:.14em;
+footer.sig .sig-col a{min-height:26px;font:600 12.5px/1.6 var(--mono);letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-3);text-decoration:none}
 footer.sig .sig-col a:hover{color:var(--accent);text-decoration:underline;
   text-decoration-thickness:1px;text-underline-offset:3px}
@@ -233,11 +233,12 @@ footer.sig .sig-cols p{justify-content:center}
    It is now a sibling of the three-column nav rather than a fourth child of it, so the grid and
    the phone rule that reorders the middle cell with order:-1 are both untouched. Centred, full
    width, with a hairline above: the footer's closing line rather than a competitor to the credit.
-   10.5px against the 11px of the links either side, one notch quieter, and the same open tracking
-   so it belongs to the same system. */
+   11.5px against the 12.5px of the links either side, one notch quieter, and the same open
+   tracking so it belongs to the same system. Both were a point smaller until the type floor
+   was raised; the gap between them is the part that carries the meaning, not the absolute size. */
 footer.sig .sig-rights{margin:10px 0 0;padding-top:11px;
   border-top:1px solid var(--line);text-align:center;
-  font:400 10.5px/1.6 var(--mono);letter-spacing:.1em;color:var(--ink-3)}
+  font:400 11.5px/1.6 var(--mono);letter-spacing:.1em;color:var(--ink-3)}
 @media (max-width:640px){
   footer.sig .sig-rights{margin-top:var(--s3);padding-top:13px;letter-spacing:.08em}
 }
@@ -399,7 +400,7 @@ footer.sig .sig-rights{margin:10px 0 0;padding-top:11px;
   font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 
 /* one glyph at a time, decided by the cascade in all four states */
-.tt-sun{display:none}
+.themetoggle .tt-sun{display:none}
 @media (prefers-color-scheme:dark){
   :root:not([data-theme='light']) .tt-moon{display:none}
   :root:not([data-theme='light']) .tt-sun{display:block}
