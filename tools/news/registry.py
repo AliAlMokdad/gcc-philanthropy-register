@@ -246,6 +246,12 @@ NEGATIVE_PHRASES = [
     "lays the foundation for", "foundational model", "foundation model",
     "charity match", "charity game", "charity shield", "charity football", "charity run",
     "charity cup", "charity golf", "charity fashion",
+    # Saudi Arabia's TAX AGENCY is named the Zakat, Tax and Customs Authority (formerly the
+    # General Authority of Zakat and Tax). Its name put the word "zakat" into a story about
+    # 90-day limits on GCC-registered vehicles, which then shipped as a top development on
+    # the live desk (item 1659acfb4d8c112b, 2026-08-22). An agency name is not a
+    # philanthropy signal; a real zakat-distribution story still carries its own vocabulary.
+    "zakat, tax and customs", "general authority of zakat and tax",
     "research grant for", "phd grant", "study grant", "travel grant", "visa grant",
     "granted permission", "granted approval", "granted a licence to operate",
     "impact of the", "impact on the economy", "environmental impact assessment",

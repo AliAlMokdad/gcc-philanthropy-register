@@ -20,5 +20,10 @@
  ],
  "blocked_domains": [],
  "blocked_ids": [],
- "items": {}
+ "items": {
+  "1659acfb4d8c112b": {
+   "status": "rejected",
+   "note": "Traffic story: 90-day limits and fines for GCC-registered vehicles. The only philanthropy signal was the word zakat inside the tax agency's name (Zakat, Tax and Customs Authority). Registry now cancels that phrase; this id stays blocked for the record."
+  }
+ }
 }
