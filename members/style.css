@@ -121,7 +121,12 @@ a{color:inherit;text-decoration:none}
 @media (max-width:640px){
   .member-states-grid{grid-template-columns:1fr}
   .council-member{padding:28px 20px 34px}
-  .council-member-details{gap:28px;flex-wrap:wrap}}
+  .council-member-details{gap:28px;flex-wrap:wrap}
+  /* THE CLAMP COMES OFF HERE. Three lines was measured against the 416px desktop card. In one
+     column the card is 317px on a 375px phone, where four of the six descriptions need a fourth
+     line, so Bahrain, Oman, Qatar and Kuwait were each holding 115px of text in an 86px box and
+     losing the end of a sentence. The card is min-height, so it grows instead. */
+  .member-states-card__description{display:block;-webkit-line-clamp:none;overflow:visible}}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{transition:none !important;animation:none !important}}
 
