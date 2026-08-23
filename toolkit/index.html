@@ -125,42 +125,49 @@ nav.sections a:hover{color:var(--ink)}
 nav.sections a[aria-current="true"]{color:var(--accent);border-bottom-color:var(--accent)}
 nav.sections a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 
-/* THE BAR NAMES ITS TWO AXES. A cluster keeps its label and its links together when the row
-   wraps, so a laptop reads two labelled lines instead of nine undifferentiated chips. The
-   kicker is the landing's own label in the site's structural-label voice, and it is not a
-   link, so it takes the muted ink and no hover. */
-.secgrp{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--s4)}
-.sec-k{flex:none;padding:15px 0 13px;font:600 10px/1.2 var(--mono);letter-spacing:.16em;
-  text-transform:uppercase;color:var(--ink-3);border-bottom:3px solid transparent;
-  margin-bottom:-1px}
-@media (max-width:480px){
-  .secgrp{flex-wrap:nowrap}
-  .sec-k{white-space:nowrap}
-}
+/* THE BAR IS PILLS UNDER TWO KICKERS, because the first grouped version still read as a wall
+   of long uppercase text and Ali said so. Each link is now a contained chip, so every target
+   has a visible boundary; the themes travel under one-word shorthands (their full titles head
+   the landing and the section pages); the active chip is filled. The kickers share one width
+   so the two pill rows start on a common left edge. */
+.secrow{padding:11px 0;gap:9px 0}
+.secgrp{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.sec-k{flex:none;width:122px;white-space:nowrap;font:600 10px/1.2 var(--mono);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+nav.sections .secgrp a{display:inline-flex;align-items:center;padding:7px 13px;margin:0;
+  border:1px solid var(--line-2);border-radius:999px;
+  font:600 12.5px/1.2 var(--sans);letter-spacing:.01em;text-transform:none;color:var(--ink-2)}
+nav.sections .secgrp a:hover{border-color:var(--accent);color:var(--ink)}
+nav.sections .secgrp a[aria-current="true"]{background:var(--accent);border-color:var(--accent);
+  color:#fff}
+nav.sections .secgrp a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
-/* FLAG-DERIVED MARKS. One fixed box, the flag fills it by slice-crop, because five flags with
-   ratios from 3:2 to 28:11 cannot share a row at one honest size any other way; index.html's
-   member cards solved the same problem with per-flag boxes, and at 18px a uniform mark reads
-   better than five widths. The inset hairline keeps white flag regions from dissolving into
-   the card. The emblem is not a flag, so it is square, uncropped and unruled. */
-.fmark{flex:none;display:inline-flex;overflow:hidden;border-radius:2.5px;
+/* FLAG-DERIVED MARKS AT TRUE PROPORTIONS. The first version crop-filled one fixed box, which
+   cut half the UAE's hoist band away and Ali caught it. Height is fixed per context and the
+   width follows each flag's own viewBox, so nothing is cropped and nothing is stretched. The
+   inset hairline keeps white flag regions from dissolving into the card; the emblem is not a
+   flag, so it is square and unruled. */
+.fmark{flex:none;display:inline-flex;overflow:hidden;border-radius:2px;
   box-shadow:inset 0 0 0 1px rgba(23,26,43,.16)}
-.fmark svg,.fmark img{width:100%;height:100%;display:block}
-.fmark img{object-fit:cover}
+.fmark svg,.fmark img{height:100%;width:auto;display:block}
 .fmark-gcc{border-radius:0;box-shadow:none}
-.fmark-gcc img{object-fit:contain}
-.fmark-nav{width:19px;height:12px;vertical-align:-1px;margin-right:7px}
-nav.sections a{display:inline-flex;align-items:center}
-.fmark-axis{width:26px;height:17px}
-.fmark-axis.fmark-gcc{width:20px;height:20px}
+.fmark-nav{height:12px;margin-right:7px}
+.fmark-axis{height:16px}
+.fmark-axis.fmark-gcc{height:20px}
 .axis-lead{display:flex;align-items:center;gap:11px;min-width:0}
-.fmark-h1{width:33px;height:22px;margin-right:13px;vertical-align:-2px;border-radius:3px}
-.fmark-h1.fmark-gcc{width:28px;height:28px}
+.fmark-h1{height:21px;margin-right:13px;border-radius:3px}
+.fmark-h1.fmark-gcc{height:28px}
 h1.doc-t{display:flex;align-items:center;flex-wrap:wrap}
 @media (max-width:600px){
-  .fmark-h1{width:27px;height:18px;margin-right:10px}
-  .fmark-h1.fmark-gcc{width:22px;height:22px}
+  .fmark-h1{height:17px;margin-right:10px}
+  .fmark-h1.fmark-gcc{height:22px}
 }
+
+/* DUBAI IS A SUB-ENTRY OF THE EMIRATES on the landing: indented, no top rule of its own, so
+   the pair reads as one country with a named emirate inside it. */
+.axis li.axis-subrow{border-top:0}
+.axis li.axis-subrow a{padding-left:41px;padding-top:2px}
+.axis li.axis-subrow .axis-t{font-size:clamp(15px,1.4vw,17.5px)}
 
 .crumb{padding:var(--s3) 0 0;margin:0;font:400 13px/1.5 var(--sans);color:var(--ink-2)}
 .crumb a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
@@ -450,13 +457,17 @@ document.addEventListener('DOMContentLoaded',function(){
      Entering Qatar, Saudi Arabia, and the UAE" genuinely belongs in all three, and forcing it into
      one would be a filing decision of mine rather than a fact about his material. */
   var SECDEF=[
-    {id:"foundations",name:"Foundations and Context",
+    /* nav IS A SHORTHAND, name IS THE TITLE. The bar was unreadable with four full volume
+       titles in it, so each theme travels under its first word there; the full title still
+       heads its landing row, its section page and the tab title, so nothing is renamed,
+       only the chip. */
+    {id:"foundations",name:"Foundations and Context",nav:"Foundations",
      pick:function(n){ return n.volume==="Foundations and context"; }},
-    {id:"regulation",name:"Regulation, Governance, and Integrity",
+    {id:"regulation",name:"Regulation, Governance, and Integrity",nav:"Regulation",
      pick:function(n){ return n.volume==="Regulation, governance and integrity"; }},
-    {id:"capital",name:"Capital, Partnerships, and Engagement",
+    {id:"capital",name:"Capital, Partnerships, and Engagement",nav:"Capital",
      pick:function(n){ return n.volume==="Capital, partnerships and engagement"; }},
-    {id:"impact",name:"Impact, Stewardship, and Learning",
+    {id:"impact",name:"Impact, Stewardship, and Learning",nav:"Impact",
      pick:function(n){ return n.volume==="Impact, stewardship and learning"; }},
     /* THE ABBREVIATION IS SPELLED OUT WHERE IT IS A HEADLINE. Ali's standing rule: never bare
        "GCC" as a name. The section headline, the landing list, the crumb and the tab title all
@@ -466,9 +477,14 @@ document.addEventListener('DOMContentLoaded',function(){
      pick:function(n){ return n.family==="jurisdictional" && has(n,"GCC-wide"); }},
     {id:"qatar",name:"Qatar",  pick:function(n){ return has(n,"Qatar"); }},
     {id:"saudi",name:"Saudi Arabia", pick:function(n){ return has(n,"Saudi Arabia"); }},
+    /* DUBAI RIDES WITH THE EMIRATES. Ali asked why they stood as peers: Dubai is an emirate
+       OF the UAE, so the UAE section now holds every Emirati paper including Dubai's, and
+       Dubai keeps its own section as an indented sub-entry on the landing rather than a
+       top-level peer. The #/dubai route stays alive because the 35 static paper pages link
+       into it; only its presentation moved. */
     {id:"uae",name:"United Arab Emirates",
-     pick:function(n){ return has(n,"United Arab Emirates"); }},
-    {id:"dubai",name:"Dubai", pick:function(n){ return has(n,"Dubai"); }}
+     pick:function(n){ return has(n,"United Arab Emirates") || has(n,"Dubai"); }},
+    {id:"dubai",name:"Dubai",sub:"uae", pick:function(n){ return has(n,"Dubai"); }}
   ];
 
   /* FLAG-DERIVED MARKS for the jurisdictional entries, in the nav, the landing list and the
@@ -619,7 +635,7 @@ document.addEventListener('DOMContentLoaded',function(){
     });
     SECDEF.forEach(function(d){
       var arr=DATA.notes.filter(d.pick);
-      if(arr.length) SECTIONS.push({id:d.id,name:d.name,notes:arr});
+      if(arr.length) SECTIONS.push({id:d.id,name:d.name,nav:d.nav,sub:d.sub,notes:arr});
     });
     /* every article must be reachable from at least one section, or the tree hides part of the
        collection. Multiple placements are allowed and intended; zero placements is a bug. */
@@ -659,7 +675,7 @@ document.addEventListener('DOMContentLoaded',function(){
       var g=el("span",{cls:"secgrp"});
       g.appendChild(el("span",{cls:"sec-k",text:label,"aria-hidden":"true"}));
       SECTIONS.forEach(function(s){
-        if(ids.indexOf(s.id)<0) return;
+        if(ids.indexOf(s.id)<0 || s.sub) return;   /* a sub-entry lives on the landing, not here */
         var a=el("a",{href:"#/"+s.id,"data-sec":s.id});
         var f=flagEl(s.id,"fmark-nav");
         if(f) a.appendChild(f);
@@ -899,7 +915,7 @@ document.addEventListener('DOMContentLoaded',function(){
         sec.notes.length===1 ? " paper" : " papers"));
       if(mins) meta.appendChild(el("i",{text:"  " + mins + " min"}));
       a.appendChild(meta);
-      ol.appendChild(el("li",null,[a]));
+      ol.appendChild(el("li",{cls:sec.sub?"axis-subrow":null},[a]));
     });
     return ol;
   }
