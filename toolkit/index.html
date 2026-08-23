@@ -125,22 +125,39 @@ nav.sections a:hover{color:var(--ink)}
 nav.sections a[aria-current="true"]{color:var(--accent);border-bottom-color:var(--accent)}
 nav.sections a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 
-/* THE BAR IS PILLS UNDER TWO KICKERS, because the first grouped version still read as a wall
-   of long uppercase text and Ali said so. Each link is now a contained chip, so every target
-   has a visible boundary; the themes travel under one-word shorthands (their full titles head
-   the landing and the section pages); the active chip is filled. The kickers share one width
-   so the two pill rows start on a common left edge. */
-.secrow{padding:11px 0;gap:9px 0}
-.secgrp{flex:1 1 100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-.sec-k{flex:none;width:122px;white-space:nowrap;font:600 10px/1.2 var(--mono);
-  letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
-nav.sections .secgrp a{display:inline-flex;align-items:center;padding:7px 13px;margin:0;
-  border:1px solid var(--line-2);border-radius:999px;
-  font:600 12.5px/1.2 var(--sans);letter-spacing:.01em;text-transform:none;color:var(--ink-2)}
-nav.sections .secgrp a:hover{border-color:var(--accent);color:var(--ink)}
-nav.sections .secgrp a[aria-current="true"]{background:var(--accent);border-color:var(--accent);
-  color:#fff}
-nav.sections .secgrp a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+/* THE BAR IS AN EDITORIAL INDEX, the third draft and the one in the site's own hand. Flat
+   uppercase links read as soup; pills read as a template. The masthead already shows how this
+   site lists things: mono entries separated by middle dots, a section kicker opening with a
+   2px rule, green reserved for geography, serif for identity. So the bar is a serif "Toolkit"
+   wordmark that goes home, a hairline, then two stacked dot-separated index lines under their
+   ruled kickers. The active entry takes the accent and a thick offset underline, the same
+   current-page grammar as the site nav above it. */
+.secrow{padding:14px 0 13px;align-items:center;flex-wrap:nowrap;gap:0}
+nav.sections a.tool-home{flex:none;margin:0 22px 0 0;padding:2px 24px 2px 0;
+  border-right:1px solid var(--line);
+  font:600 23px/1.1 var(--display);letter-spacing:-.01em;text-transform:none;
+  color:var(--ink);border-bottom:0}
+nav.sections a.tool-home:hover{color:var(--accent)}
+.secstack{flex:1 1 0;min-width:0;display:flex;flex-direction:column;gap:8px}
+.secgrp{display:flex;flex-wrap:wrap;align-items:center;column-gap:12px;row-gap:5px}
+.sec-k{flex:none;display:flex;align-items:center;gap:8px;width:152px;white-space:nowrap;
+  font:600 10px/1.2 var(--mono);letter-spacing:.17em;text-transform:uppercase;color:var(--ink)}
+.sec-k::before{content:"";flex:none;width:20px;height:2px;border-radius:1px;
+  background:currentColor}
+.secgrp-place .sec-k{color:var(--i-country-ink,#1B5A50)}
+.sec-dot{flex:none;color:var(--line-2);font:600 13px/1 var(--sans)}
+nav.sections .secgrp a{display:inline-flex;align-items:center;padding:2px 0;margin:0;border:0;
+  font:600 13px/1.4 var(--sans);letter-spacing:.01em;text-transform:none;color:var(--ink-2)}
+.secgrp-place a{color:var(--i-country-ink,#1B5A50)}
+nav.sections .secgrp a:hover{color:var(--accent)}
+nav.sections .secgrp a[aria-current="true"]{color:var(--accent);
+  text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:7px;
+  text-decoration-color:var(--accent)}
+nav.sections .secgrp a:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+/* the wordmark column is worth its width only where there is width */
+@media (max-width:900px){
+  nav.sections a.tool-home{display:none}
+}
 
 /* FLAG-DERIVED MARKS AT TRUE PROPORTIONS. The first version crop-filled one fixed box, which
    cut half the UAE's hoist band away and Ali caught it. Height is fixed per context and the
@@ -492,9 +509,7 @@ document.addEventListener('DOMContentLoaded',function(){
      values FLAGS.md traces to the issuing governments; do not "tidy" them here without reading
      that file. Saudi Arabia uses the real artwork for the reason FLAGS.md records (the shahada
      must not be approximated), and The Gulf Cooperation Council takes the emblem the site
-     already uses as its favicon. Dubai is not in FLAGS.md: the emirate's flag is a red field
-     with a white band at the hoist, and the red here is a COMMON RENDERING recorded as an
-     approximation, because no Dubai government source publishes a colour value. */
+     already uses as its favicon. Dubai carries no mark at all, per Ali. */
   var SVGNS="http://www.w3.org/2000/svg";
   function sv(tag,attrs){
     var n=document.createElementNS(SVGNS,tag);
@@ -522,11 +537,8 @@ document.addEventListener('DOMContentLoaded',function(){
       }
       pts.push("0,22");
       s.appendChild(sv("polygon",{points:pts.join(" "),fill:"#FFFFFF"}));
-    }else if(id==="dubai"){
-      s=sv("svg",{viewBox:"0 0 60 30",preserveAspectRatio:"xMidYMid slice","aria-hidden":"true"});
-      s.appendChild(sv("rect",{width:60,height:30,fill:"#CE1126"}));
-      s.appendChild(sv("rect",{width:15,height:30,fill:"#FFFFFF"}));
-    }else{ return null; }
+    }else{ return null; }   /* Dubai deliberately carries NO mark, per Ali: the emirate is not
+                               flagged here, its row rides under the UAE on the name alone */
     box.appendChild(s);
     return box;
   }
@@ -666,16 +678,24 @@ document.addEventListener('DOMContentLoaded',function(){
   function buildNav(){
     var host=EL("secnav"); clear(host);
     var row=el("div",{cls:"secrow"});
-    /* NINE UNDIFFERENTIATED LINKS READ AS SOUP, which is what Ali reported on a laptop: four
-       themes and five places in one flat row give the reader no way to see the two axes the
-       landing page names. So the bar now carries the landing's own labels, "By theme" and
-       "By jurisdiction", as quiet non-interactive kickers before each cluster, and the
-       jurisdictional links carry their flag marks. Same links, same order, now legible. */
-    function cluster(label,ids){
-      var g=el("span",{cls:"secgrp"});
+    /* THE BAR IS AN EDITORIAL INDEX IN THE SITE'S OWN HAND, after two failed drafts: nine flat
+       uppercase links read as soup, and pills read as a template. What this site actually does
+       is the masthead: mono entries separated by middle dots, section kickers opening with a
+       2px rule, green reserved for geography, a serif wordmark. So: "Toolkit" stands at the
+       left as a serif wordmark that goes home, then two stacked index lines, each opened by
+       its ruled kicker, entries dot-separated, jurisdictions flagged and in the geography ink.
+       The active entry takes the accent and a thick offset underline. */
+    var home=el("a",{href:"#",cls:"tool-home",text:"Toolkit"});
+    row.appendChild(home);
+    var stack=el("div",{cls:"secstack"});
+    function cluster(label,ids,cls){
+      var g=el("div",{cls:"secgrp "+cls});
       g.appendChild(el("span",{cls:"sec-k",text:label,"aria-hidden":"true"}));
+      var first=true;
       SECTIONS.forEach(function(s){
         if(ids.indexOf(s.id)<0 || s.sub) return;   /* a sub-entry lives on the landing, not here */
+        if(!first) g.appendChild(el("span",{cls:"sec-dot",text:"·","aria-hidden":"true"}));
+        first=false;
         var a=el("a",{href:"#/"+s.id,"data-sec":s.id});
         var f=flagEl(s.id,"fmark-nav");
         if(f) a.appendChild(f);
@@ -686,8 +706,9 @@ document.addEventListener('DOMContentLoaded',function(){
     }
     var placeIds=SECTIONS.map(function(s){return s.id;})
       .filter(function(id){ return THEME_IDS.indexOf(id)<0; });
-    row.appendChild(cluster("By theme",THEME_IDS));
-    row.appendChild(cluster("By jurisdiction",placeIds));
+    stack.appendChild(cluster("By theme",THEME_IDS,"secgrp-theme"));
+    stack.appendChild(cluster("By jurisdiction",placeIds,"secgrp-place"));
+    row.appendChild(stack);
     host.appendChild(row);
     var f=el("div",{cls:"find"});
     f.appendChild(el("label",{cls:"sr",for:"q",text:"Search the toolkit"}));
