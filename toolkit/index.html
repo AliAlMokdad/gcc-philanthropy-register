@@ -125,6 +125,43 @@ nav.sections a:hover{color:var(--ink)}
 nav.sections a[aria-current="true"]{color:var(--accent);border-bottom-color:var(--accent)}
 nav.sections a:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 
+/* THE BAR NAMES ITS TWO AXES. A cluster keeps its label and its links together when the row
+   wraps, so a laptop reads two labelled lines instead of nine undifferentiated chips. The
+   kicker is the landing's own label in the site's structural-label voice, and it is not a
+   link, so it takes the muted ink and no hover. */
+.secgrp{display:flex;flex-wrap:wrap;align-items:center;gap:0 var(--s4)}
+.sec-k{flex:none;padding:15px 0 13px;font:600 10px/1.2 var(--mono);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);border-bottom:3px solid transparent;
+  margin-bottom:-1px}
+@media (max-width:480px){
+  .secgrp{flex-wrap:nowrap}
+  .sec-k{white-space:nowrap}
+}
+
+/* FLAG-DERIVED MARKS. One fixed box, the flag fills it by slice-crop, because five flags with
+   ratios from 3:2 to 28:11 cannot share a row at one honest size any other way; index.html's
+   member cards solved the same problem with per-flag boxes, and at 18px a uniform mark reads
+   better than five widths. The inset hairline keeps white flag regions from dissolving into
+   the card. The emblem is not a flag, so it is square, uncropped and unruled. */
+.fmark{flex:none;display:inline-flex;overflow:hidden;border-radius:2.5px;
+  box-shadow:inset 0 0 0 1px rgba(23,26,43,.16)}
+.fmark svg,.fmark img{width:100%;height:100%;display:block}
+.fmark img{object-fit:cover}
+.fmark-gcc{border-radius:0;box-shadow:none}
+.fmark-gcc img{object-fit:contain}
+.fmark-nav{width:19px;height:12px;vertical-align:-1px;margin-right:7px}
+nav.sections a{display:inline-flex;align-items:center}
+.fmark-axis{width:26px;height:17px}
+.fmark-axis.fmark-gcc{width:20px;height:20px}
+.axis-lead{display:flex;align-items:center;gap:11px;min-width:0}
+.fmark-h1{width:33px;height:22px;margin-right:13px;vertical-align:-2px;border-radius:3px}
+.fmark-h1.fmark-gcc{width:28px;height:28px}
+h1.doc-t{display:flex;align-items:center;flex-wrap:wrap}
+@media (max-width:600px){
+  .fmark-h1{width:27px;height:18px;margin-right:10px}
+  .fmark-h1.fmark-gcc{width:22px;height:22px}
+}
+
 .crumb{padding:var(--s3) 0 0;margin:0;font:400 13px/1.5 var(--sans);color:var(--ink-2)}
 .crumb a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
 .crumb a:hover{color:var(--ink)}
@@ -421,7 +458,11 @@ document.addEventListener('DOMContentLoaded',function(){
      pick:function(n){ return n.volume==="Capital, partnerships and engagement"; }},
     {id:"impact",name:"Impact, Stewardship, and Learning",
      pick:function(n){ return n.volume==="Impact, stewardship and learning"; }},
-    {id:"gcc",name:"The GCC",
+    /* THE ABBREVIATION IS SPELLED OUT WHERE IT IS A HEADLINE. Ali's standing rule: never bare
+       "GCC" as a name. The section headline, the landing list, the crumb and the tab title all
+       take the full form; the nav bar takes the same name without the article so the chip does
+       not start with "THE". */
+    {id:"gcc",name:"The Gulf Cooperation Council (GCC)",nav:"Gulf Cooperation Council (GCC)",
      pick:function(n){ return n.family==="jurisdictional" && has(n,"GCC-wide"); }},
     {id:"qatar",name:"Qatar",  pick:function(n){ return has(n,"Qatar"); }},
     {id:"saudi",name:"Saudi Arabia", pick:function(n){ return has(n,"Saudi Arabia"); }},
@@ -429,6 +470,50 @@ document.addEventListener('DOMContentLoaded',function(){
      pick:function(n){ return has(n,"United Arab Emirates"); }},
     {id:"dubai",name:"Dubai", pick:function(n){ return has(n,"Dubai"); }}
   ];
+
+  /* FLAG-DERIVED MARKS for the jurisdictional entries, in the nav, the landing list and the
+     section headline. Geometry and colours are REPLICATED from index.html's countryMark, whose
+     values FLAGS.md traces to the issuing governments; do not "tidy" them here without reading
+     that file. Saudi Arabia uses the real artwork for the reason FLAGS.md records (the shahada
+     must not be approximated), and The Gulf Cooperation Council takes the emblem the site
+     already uses as its favicon. Dubai is not in FLAGS.md: the emirate's flag is a red field
+     with a white band at the hoist, and the red here is a COMMON RENDERING recorded as an
+     approximation, because no Dubai government source publishes a colour value. */
+  var SVGNS="http://www.w3.org/2000/svg";
+  function sv(tag,attrs){
+    var n=document.createElementNS(SVGNS,tag);
+    for(var k in attrs) n.setAttribute(k,attrs[k]);
+    return n;
+  }
+  function flagEl(id,cls){
+    var box=el("span",{cls:"fmark "+(id==="gcc"?"fmark-gcc ":"")+(cls||""),"aria-hidden":"true"});
+    if(id==="saudi"){ box.appendChild(el("img",{src:"../flag-saudi-arabia.webp",alt:""})); return box; }
+    if(id==="gcc"){ box.appendChild(el("img",{src:"../gcc-emblem.svg",alt:""})); return box; }
+    var s;
+    if(id==="uae"){
+      s=sv("svg",{viewBox:"0 0 60 30",preserveAspectRatio:"xMidYMid slice","aria-hidden":"true"});
+      s.appendChild(sv("rect",{x:15,width:45,height:10,fill:"#00843D"}));
+      s.appendChild(sv("rect",{x:15,y:10,width:45,height:10,fill:"#FFFFFF"}));
+      s.appendChild(sv("rect",{x:15,y:20,width:45,height:10,fill:"#000000"}));
+      s.appendChild(sv("rect",{width:15,height:30,fill:"#C8102E"}));
+    }else if(id==="qatar"){
+      s=sv("svg",{viewBox:"0 0 56 22",preserveAspectRatio:"xMidYMid slice","aria-hidden":"true"});
+      s.appendChild(sv("rect",{width:56,height:22,fill:"#8A1538"}));
+      var pts=["0,0","13,0"], step=22/9, i;
+      for(i=0;i<9;i++){
+        pts.push("19.5,"+((i+0.5)*step).toFixed(3));
+        pts.push("13,"+((i+1)*step).toFixed(3));
+      }
+      pts.push("0,22");
+      s.appendChild(sv("polygon",{points:pts.join(" "),fill:"#FFFFFF"}));
+    }else if(id==="dubai"){
+      s=sv("svg",{viewBox:"0 0 60 30",preserveAspectRatio:"xMidYMid slice","aria-hidden":"true"});
+      s.appendChild(sv("rect",{width:60,height:30,fill:"#CE1126"}));
+      s.appendChild(sv("rect",{width:15,height:30,fill:"#FFFFFF"}));
+    }else{ return null; }
+    box.appendChild(s);
+    return box;
+  }
 
   /* the thematic half of SECDEF, named once so the landing can tell the two axes apart without a
      second list to keep in sync */
@@ -565,9 +650,28 @@ document.addEventListener('DOMContentLoaded',function(){
   function buildNav(){
     var host=EL("secnav"); clear(host);
     var row=el("div",{cls:"secrow"});
-    SECTIONS.forEach(function(s){
-      row.appendChild(el("a",{href:"#/"+s.id,text:s.name,"data-sec":s.id}));
-    });
+    /* NINE UNDIFFERENTIATED LINKS READ AS SOUP, which is what Ali reported on a laptop: four
+       themes and five places in one flat row give the reader no way to see the two axes the
+       landing page names. So the bar now carries the landing's own labels, "By theme" and
+       "By jurisdiction", as quiet non-interactive kickers before each cluster, and the
+       jurisdictional links carry their flag marks. Same links, same order, now legible. */
+    function cluster(label,ids){
+      var g=el("span",{cls:"secgrp"});
+      g.appendChild(el("span",{cls:"sec-k",text:label,"aria-hidden":"true"}));
+      SECTIONS.forEach(function(s){
+        if(ids.indexOf(s.id)<0) return;
+        var a=el("a",{href:"#/"+s.id,"data-sec":s.id});
+        var f=flagEl(s.id,"fmark-nav");
+        if(f) a.appendChild(f);
+        a.appendChild(document.createTextNode(s.nav||s.name));
+        g.appendChild(a);
+      });
+      return g;
+    }
+    var placeIds=SECTIONS.map(function(s){return s.id;})
+      .filter(function(id){ return THEME_IDS.indexOf(id)<0; });
+    row.appendChild(cluster("By theme",THEME_IDS));
+    row.appendChild(cluster("By jurisdiction",placeIds));
     host.appendChild(row);
     var f=el("div",{cls:"find"});
     f.appendChild(el("label",{cls:"sr",for:"q",text:"Search the toolkit"}));
@@ -780,6 +884,13 @@ document.addEventListener('DOMContentLoaded',function(){
     var ol=el("ol",{cls:"axis "+cls});
     defs.forEach(function(sec){
       var a=el("a",{href:"#/"+sec.id});
+      var f=flagEl(sec.id,"fmark-axis");
+      if(f){
+        var lead=el("span",{cls:"axis-lead"});
+        lead.appendChild(f);
+        lead.appendChild(el("span",{cls:"axis-t",text:sec.name}));
+        a.appendChild(lead);
+      }else
       a.appendChild(el("span",{cls:"axis-t",text:sec.name}));
       var mins=sec.notes.reduce(function(t,n){ return t+(n.minutes||0); },0);
       var meta=el("span",{cls:"axis-m"});
@@ -817,7 +928,10 @@ document.addEventListener('DOMContentLoaded',function(){
        them all to him, which is the one piece of editorialising this list cannot do without. */
     left.appendChild(el("h2",{cls:"axis-h axis-h-read",text:"Further reading"}));
     READING.forEach(function(g){
-      left.appendChild(el("h3",{cls:"rd-j",text:g.j}));
+      /* the group KEY stays "GCC" because tools/build_member_hubs.py parses these labels;
+         only the displayed heading takes the full name, per the no-bare-GCC rule */
+      left.appendChild(el("h3",{cls:"rd-j",
+        text:g.j==="GCC" ? "The Gulf Cooperation Council (GCC)" : g.j}));
       left.appendChild(readingList(g.a));
     });
 
@@ -993,7 +1107,11 @@ document.addEventListener('DOMContentLoaded',function(){
     document.title=sec.name+" | GCC Philanthropy Toolkit";
     var host=sheet(true);
     var main=el("div");
-    main.appendChild(el("h1",{cls:"doc-t",text:sec.name}));
+    var h1=el("h1",{cls:"doc-t"});
+    var hf=flagEl(sec.id,"fmark-h1");
+    if(hf) h1.appendChild(hf);
+    h1.appendChild(document.createTextNode(sec.name));
+    main.appendChild(h1);
     /* no blurb. A sentence of mine describing his section would be a word he did not write. */
     main.appendChild(chapterList(sec));
     var rd=readingFor(sec.id);
