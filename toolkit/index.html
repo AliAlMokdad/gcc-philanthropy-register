@@ -159,25 +159,31 @@ nav.sections .secgrp a:focus-visible{outline:2px solid var(--focus);outline-offs
   nav.sections a.tool-home{display:none}
 }
 
-/* FLAG-DERIVED MARKS AT TRUE PROPORTIONS. The first version crop-filled one fixed box, which
-   cut half the UAE's hoist band away and Ali caught it. Height is fixed per context and the
-   width follows each flag's own viewBox, so nothing is cropped and nothing is stretched. The
-   inset hairline keeps white flag regions from dissolving into the card; the emblem is not a
-   flag, so it is square and unruled. */
+/* FLAG-DERIVED MARKS, ONE SIZE PER CONTEXT. Every mark shares a fixed 2:1 box, per Ali:
+   uneven widths read as untidy. Inside it each flag is scaled to fill and cropped at the FLY
+   ONLY (xMinYMid slice in the svg, left-anchored cover for the artwork), because every one of
+   these flags keeps its identity at the hoist; an earlier centre-out crop cut the UAE's hoist
+   band in half. The inset hairline keeps white flag regions from dissolving into the card;
+   the emblem is not a flag, so it sits square, uncropped and unruled, at the same height. */
 .fmark{flex:none;display:inline-flex;overflow:hidden;border-radius:2px;
   box-shadow:inset 0 0 0 1px rgba(23,26,43,.16)}
-.fmark svg,.fmark img{height:100%;width:auto;display:block}
+.fmark svg,.fmark img{width:100%;height:100%;display:block}
+.fmark img{object-fit:cover;object-position:left center}
 .fmark-gcc{border-radius:0;box-shadow:none}
-.fmark-nav{height:12px;margin-right:7px}
-.fmark-axis{height:16px}
-.fmark-axis.fmark-gcc{height:20px}
+.fmark-gcc img{object-fit:contain;object-position:center}
+.fmark-nav{width:24px;height:12px;margin-right:7px}
+.fmark-nav.fmark-gcc{width:13px;height:13px}
+.fmark-axis{width:32px;height:16px}
+.fmark-axis.fmark-gcc{width:20px;height:20px}
 .axis-lead{display:flex;align-items:center;gap:11px;min-width:0}
-.fmark-h1{height:21px;margin-right:13px;border-radius:3px}
-.fmark-h1.fmark-gcc{height:28px}
+.fmark-h1{width:42px;height:21px;margin-right:13px;border-radius:3px}
+.fmark-h1.fmark-gcc{width:28px;height:28px}
 h1.doc-t{display:flex;align-items:center;flex-wrap:wrap}
+.fmark-rd{width:28px;height:14px}
+.fmark-rd.fmark-gcc{width:18px;height:18px}
 @media (max-width:600px){
-  .fmark-h1{height:17px;margin-right:10px}
-  .fmark-h1.fmark-gcc{height:22px}
+  .fmark-h1{width:34px;height:17px;margin-right:10px}
+  .fmark-h1.fmark-gcc{width:22px;height:22px}
 }
 
 /* DUBAI IS A SUB-ENTRY OF THE EMIRATES on the landing: indented, no top rule of its own, so
@@ -520,15 +526,20 @@ document.addEventListener('DOMContentLoaded',function(){
     var box=el("span",{cls:"fmark "+(id==="gcc"?"fmark-gcc ":"")+(cls||""),"aria-hidden":"true"});
     if(id==="saudi"){ box.appendChild(el("img",{src:"../flag-saudi-arabia.webp",alt:""})); return box; }
     if(id==="gcc"){ box.appendChild(el("img",{src:"../gcc-emblem.svg",alt:""})); return box; }
+    /* EVERY MARK SHARES ONE 2:1 BOX and the crop is anchored at the HOIST (xMinYMid slice),
+       because that is where every one of these flags keeps its identity: the UAE's red band,
+       Qatar's and Bahrain's serrations, Kuwait's trapezium, Oman's emblem band. Cropping the
+       fly loses plain field; cropping centre-out, as an earlier draft did, cut the UAE's
+       hoist in half. */
     var s;
     if(id==="uae"){
-      s=sv("svg",{viewBox:"0 0 60 30",preserveAspectRatio:"xMidYMid slice","aria-hidden":"true"});
+      s=sv("svg",{viewBox:"0 0 60 30",preserveAspectRatio:"xMinYMid slice","aria-hidden":"true"});
       s.appendChild(sv("rect",{x:15,width:45,height:10,fill:"#00843D"}));
       s.appendChild(sv("rect",{x:15,y:10,width:45,height:10,fill:"#FFFFFF"}));
       s.appendChild(sv("rect",{x:15,y:20,width:45,height:10,fill:"#000000"}));
       s.appendChild(sv("rect",{width:15,height:30,fill:"#C8102E"}));
     }else if(id==="qatar"){
-      s=sv("svg",{viewBox:"0 0 56 22",preserveAspectRatio:"xMidYMid slice","aria-hidden":"true"});
+      s=sv("svg",{viewBox:"0 0 56 22",preserveAspectRatio:"xMinYMid slice","aria-hidden":"true"});
       s.appendChild(sv("rect",{width:56,height:22,fill:"#8A1538"}));
       var pts=["0,0","13,0"], step=22/9, i;
       for(i=0;i<9;i++){
@@ -537,11 +548,50 @@ document.addEventListener('DOMContentLoaded',function(){
       }
       pts.push("0,22");
       s.appendChild(sv("polygon",{points:pts.join(" "),fill:"#FFFFFF"}));
+    }else if(id==="kuwait"){
+      s=sv("svg",{viewBox:"0 0 60 30",preserveAspectRatio:"xMinYMid slice","aria-hidden":"true"});
+      s.appendChild(sv("rect",{width:60,height:10,fill:"#007A3D"}));
+      s.appendChild(sv("rect",{y:10,width:60,height:10,fill:"#FFFFFF"}));
+      s.appendChild(sv("rect",{y:20,width:60,height:10,fill:"#CE1126"}));
+      s.appendChild(sv("polygon",{points:"0,0 15,10 15,20 0,30",fill:"#000000"}));
+    }else if(id==="bahrain"){
+      s=sv("svg",{viewBox:"0 0 50 30",preserveAspectRatio:"xMinYMid slice","aria-hidden":"true"});
+      s.appendChild(sv("rect",{width:50,height:30,fill:"#CE1126"}));
+      var bp=["0,0","15,0"], bstep=30/5, bi;
+      for(bi=0;bi<5;bi++){
+        bp.push("21,"+((bi+0.5)*bstep).toFixed(3));
+        bp.push("15,"+((bi+1)*bstep).toFixed(3));
+      }
+      bp.push("0,30");
+      s.appendChild(sv("polygon",{points:bp.join(" "),fill:"#FFFFFF"}));
+    }else if(id==="oman"){
+      s=sv("svg",{viewBox:"0 0 80 40",preserveAspectRatio:"xMinYMid slice","aria-hidden":"true"});
+      s.appendChild(sv("rect",{width:80,height:13.34,fill:"#FFFFFF"}));
+      s.appendChild(sv("rect",{y:13.34,width:80,height:13.33,fill:"#DB171B"}));
+      s.appendChild(sv("rect",{y:26.67,width:80,height:13.33,fill:"#028002"}));
+      s.appendChild(sv("rect",{width:20,height:40,fill:"#DB171B"}));
+      var og=sv("g",{transform:"translate(1.25,0)"});
+      var swd=sv("g",{fill:"#FFFFFF"});
+      swd.appendChild(sv("path",{d:"M3.5,8.6 L4.5,7.7 L14.1,15.4 L13.2,16.4 Z"}));
+      swd.appendChild(sv("path",{d:"M13.2,7.7 L14.1,8.6 L4.5,16.4 L3.5,15.4 Z"}));
+      og.appendChild(swd);
+      var kh=sv("g",{fill:"#FFFFFF",stroke:"#DB171B","stroke-width":"0.5",
+                     "stroke-linejoin":"round"});
+      kh.appendChild(sv("path",{d:"M8.05,3.5 L9.45,3.5 L9.45,6.1 L8.05,6.1 Z"}));
+      kh.appendChild(sv("path",{d:"M6.5,6.4 L11.0,6.4 L11.0,7.7 L6.5,7.7 Z"}));
+      kh.appendChild(sv("path",{d:"M7.5,8.0 C7.2,10.4 6.5,12.2 5.1,13.5 "
+                              + "C5.9,14.3 7.0,14.4 7.8,13.7 "
+                              + "C9.2,12.4 9.9,10.3 10.1,8.0 Z"}));
+      og.appendChild(kh);
+      s.appendChild(og);
     }else{ return null; }   /* Dubai deliberately carries NO mark, per Ali: the emirate is not
                                flagged here, its row rides under the UAE on the name alone */
     box.appendChild(s);
     return box;
   }
+  /* the Further-reading group labels as they appear in READING, mapped to their marks */
+  var RDFLAG={"GCC":"gcc","Qatar":"qatar","Saudi Arabia":"saudi",
+              "United Arab Emirates":"uae","Kuwait":"kuwait","Bahrain":"bahrain","Oman":"oman"};
 
   /* the thematic half of SECDEF, named once so the landing can tell the two axes apart without a
      second list to keep in sync */
@@ -966,9 +1016,14 @@ document.addEventListener('DOMContentLoaded',function(){
     left.appendChild(el("h2",{cls:"axis-h axis-h-read",text:"Further reading"}));
     READING.forEach(function(g){
       /* the group KEY stays "GCC" because tools/build_member_hubs.py parses these labels;
-         only the displayed heading takes the full name, per the no-bare-GCC rule */
-      left.appendChild(el("h3",{cls:"rd-j",
+         only the displayed heading takes the full name, per the no-bare-GCC rule. The
+         heading leads with the group's own mark instead of a generic dot. */
+      var rj=el("h3",{cls:"rd-j"});
+      var rf=flagEl(RDFLAG[g.j],"fmark-rd");
+      if(rf) rj.appendChild(rf);
+      rj.appendChild(el("span",{cls:"rd-j-t",
         text:g.j==="GCC" ? "The Gulf Cooperation Council (GCC)" : g.j}));
+      left.appendChild(rj);
       left.appendChild(readingList(g.a));
     });
 
@@ -1074,11 +1129,14 @@ document.addEventListener('DOMContentLoaded',function(){
          48 above, not 24: at 24 the next country sat hard against the last rule of the previous
          list and seven groups read as one interrupted list. The measurement said 24 was fine and
          the picture said it was not. */
-      ".rd-j{display:flex;align-items:center;gap:12px;margin:var(--s5) 0 var(--s3);"+
+      /* THE GROUP HEADING LEADS WITH ITS OWN MARK, not a generic glowing dot, which was the
+         one decoration on this page that belonged to no system. The flag names the place, a
+         small mono kicker above it names the section's voice, and the hairline still carries
+         the line out to the right. */
+      ".rd-j{display:flex;align-items:center;gap:13px;margin:var(--s5) 0 var(--s3);"+
         "font:600 19px/1.25 var(--display);letter-spacing:-.005em;text-transform:none;"+
         "color:var(--ink);font-optical-sizing:auto}"+
-      ".rd-j::before{content:\"\";flex:none;width:7px;height:7px;border-radius:50%;"+
-        "background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}"+
+      ".rd-j-t{flex:none}"+
       ".rd-j::after{content:\"\";flex:1 1 auto;height:1px;min-width:16px;"+
         "background:linear-gradient(90deg,var(--accent-line),transparent)}"+
       ".rd{list-style:none;margin:0;padding:0}"+
