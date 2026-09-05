@@ -1,0 +1,3304 @@
+{
+ "schema_version": 1,
+ "generated_at": "2026-09-05T19:07:21Z",
+ "feed_updated_at": "2026-09-05T19:07:21Z",
+ "ingestion_run_id": "run-20260905T190522Z",
+ "registry_version": "2026-08-20.1",
+ "stale_after_hours": 12,
+ "horizon_days": 180,
+ "coverage": {
+  "items": 45,
+  "publishers": 15,
+  "sources_enabled": 7,
+  "sources_defined": 13,
+  "by_discovery": {
+   "thenational_ae": 3,
+   "saudigazette": 3,
+   "alliance_mag": 1,
+   "reliefweb_rss": 38
+  },
+  "register_names_indexed": 1778
+ },
+ "provider_status": [
+  {
+   "source_id": "reliefweb_rss",
+   "query": "KSrelief",
+   "ok": false,
+   "http": 202,
+   "records": 0,
+   "error": "HTTP 202, 0 bytes, ct='text/html; charset=UTF-8' server='awselb/2.0' cf=''",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Saudi Arabia humanitarian",
+   "ok": false,
+   "http": 202,
+   "records": 0,
+   "error": "HTTP 202, 0 bytes, ct='text/html; charset=UTF-8' server='awselb/2.0' cf='' | breaker tripped: two identical failures, so the remaining 12 queries for this source are skipped",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Emirates Red Crescent",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "United Arab Emirates humanitarian",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Qatar Fund for Development",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Qatar Charity",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Kuwait Fund",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Kuwait humanitarian",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Bahrain humanitarian",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Royal Humanitarian Foundation Bahrain",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Oman humanitarian",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "Oman Charitable Organization",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "zakat",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "reliefweb_rss",
+   "query": "waqf endowment",
+   "ok": false,
+   "http": null,
+   "records": 0,
+   "error": "skipped: this source is not answering this run",
+   "quota_note": null
+  },
+  {
+   "source_id": "thenational_ae",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 100,
+   "error": null,
+   "quota_note": null
+  },
+  {
+   "source_id": "saudigazette",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 50,
+   "error": null,
+   "quota_note": null
+  },
+  {
+   "source_id": "unocha",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 10,
+   "error": null,
+   "quota_note": null
+  },
+  {
+   "source_id": "gulftimes_qa",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 50,
+   "error": null,
+   "quota_note": null
+  },
+  {
+   "source_id": "chronicle_phil",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 10,
+   "error": null,
+   "quota_note": "parsed after declaring the prefixes this feed uses without declaring: media"
+  },
+  {
+   "source_id": "alliance_mag",
+   "query": null,
+   "ok": true,
+   "http": 200,
+   "records": 10,
+   "error": null,
+   "quota_note": null
+  }
+ ],
+ "items": [
+  {
+   "id": "43db57362e6e635b",
+   "title": "UAE foundation pledges Dh3 million to support Gazan amputees",
+   "description": null,
+   "original_url": "https://www.thenationalnews.com/news/uae/2026/09/02/uae-foundation-pledges-dh3-million-to-support-gazan-amputees/",
+   "canonical_url": "https://thenationalnews.com/news/uae/2026/09/02/uae-foundation-pledges-dh3-million-to-support-gazan-amputees",
+   "publisher": "The National",
+   "publisher_domain": "thenationalnews.com",
+   "source_type": "independent_media",
+   "published_at": "2026-09-02T16:57:53Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-09-02T18:58:25Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "United Arab Emirates",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Foundations"
+   ],
+   "event_type": "general_news",
+   "organisations": [],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "thenational_ae",
+   "cluster_id": null,
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260902T185630Z",
+    "query_id": "thenational_ae",
+    "provider_record_id": "https://www.thenationalnews.com/news/uae/2026/09/02/uae-foundation-pledges-dh3-million-to-support-gazan-amputees/",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "United Arab Emirates: name 'uae'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "50e32a92d9f7680f",
+   "title": "Saudi foreign minister appoints Manal Radwan special envoy for negotiations and peace efforts",
+   "description": "RIYADH — Foreign Minister Prince Faisal bin Farhan has appointed Manal Hassan Radwan as adviser and special envoy to the foreign minister for negotiations and peace efforts.The appointment places the veteran Saudi diplomat in a role focused on negotiations and peace initiatives…",
+   "original_url": "https://saudigazette.com.sa/article/664223/saudi-arabia/manal-radwan-named-special-envoy-to-saudi-foreign-minister-for-negotiations-and-peace",
+   "canonical_url": "https://saudigazette.com.sa/article/664223/saudi-arabia/manal-radwan-named-special-envoy-to-saudi-foreign-minister-for-negotiations-and-peace",
+   "publisher": "Saudi Gazette",
+   "publisher_domain": "saudigazette.com.sa",
+   "source_type": "independent_media",
+   "published_at": "2026-09-01T14:34:03Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-09-01T15:34:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "People & Leadership",
+   "related_topics": [],
+   "event_type": "leadership_change",
+   "organisations": [],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "saudigazette",
+   "cluster_id": null,
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260901T153224Z",
+    "query_id": "saudigazette",
+    "provider_record_id": "https://saudigazette.com.sa/article/664223/saudi-arabia/manal-radwan-named-special-envoy-to-saudi-foreign-minister-for-negotiations-and-peace",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'",
+     "Saudi Arabia: city 'riyadh'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "66cff81da3af897c",
+   "title": "UAE sends 83 tonnes of aid to Nepal to boost relief efforts after deadly floods",
+   "description": null,
+   "original_url": "https://www.thenationalnews.com/news/uae/2026/08/30/uae-sends-83-tonnes-of-aid-to-nepal-to-boost-relief-efforts-after-deadly-floods/",
+   "canonical_url": "https://thenationalnews.com/news/uae/2026/08/30/uae-sends-83-tonnes-of-aid-to-nepal-to-boost-relief-efforts-after-deadly-floods",
+   "publisher": "The National",
+   "publisher_domain": "thenationalnews.com",
+   "source_type": "independent_media",
+   "published_at": "2026-08-30T09:31:46Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-31T01:38:15Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "United Arab Emirates",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Nepal"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "humanitarian_response",
+   "organisations": [],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "thenational_ae",
+   "cluster_id": null,
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": true,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": 2
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260831T013618Z",
+    "query_id": "thenational_ae",
+    "provider_record_id": "https://www.thenationalnews.com/news/uae/2026/08/30/uae-sends-83-tonnes-of-aid-to-nepal-to-boost-relief-efforts-after-deadly-floods/",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "United Arab Emirates: name 'uae'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "f0483107cb7a15d8",
+   "title": "Saudi philanthropy increasingly institutionalised ahead of 2030 plans",
+   "description": "Saudi Arabia’s philanthropic and impact investing landscape are both increasingly becoming formalised as part of wider national economy plans. According to a report published by Asia’s social impact network AVPN, family-led philanthropy is moving beyond ‘private acts of … The…",
+   "original_url": "https://www.alliancemagazine.org/blog/saudi-philanthropy-increasingly-institutionalised-ahead-of-2030-plans/",
+   "canonical_url": "https://alliancemagazine.org/blog/saudi-philanthropy-increasingly-institutionalised-ahead-of-2030-plans",
+   "publisher": "Alliance magazine",
+   "publisher_domain": "alliancemagazine.org",
+   "source_type": "trade_publication",
+   "published_at": "2026-08-26T08:00:42Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-31T01:38:15Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Impact Investment",
+   "related_topics": [
+    "Philanthropy"
+   ],
+   "event_type": "impact_investment",
+   "organisations": [],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "alliance_mag",
+   "cluster_id": null,
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260831T013618Z",
+    "query_id": "alliance_mag",
+    "provider_record_id": "https://www.alliancemagazine.org/?p=359407",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "eadb6d36806bbab1",
+   "title": "Royal Order transforms charity platform 'Ehsan' into independent non-profit foundation",
+   "description": "RIYADH — A Royal Order has been issued to transform the National Platform for Charitable Work, “Ehsan,” into an independent, non-profit organization under the name Ehsan Foundation for Charitable Work. The foundation aims to strengthen charitable work and connect donors with…",
+   "original_url": "https://saudigazette.com.sa/article/663901/saudi-arabia/royal-order-transforms-charity-platform-ehsan-into-independent-non-profit-foundation",
+   "canonical_url": "https://saudigazette.com.sa/article/663901/saudi-arabia/royal-order-transforms-charity-platform-ehsan-into-independent-non-profit-foundation",
+   "publisher": "Saudi Gazette",
+   "publisher_domain": "saudigazette.com.sa",
+   "source_type": "independent_media",
+   "published_at": "2026-08-20T11:24:55Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:33Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Foundations",
+   "related_topics": [
+    "Nonprofit Sector",
+    "Giving & Donations"
+   ],
+   "event_type": "policy_change",
+   "organisations": [
+    {
+     "name": "Ehsan Foundation",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "National Platform For Charitable Work",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "saudigazette",
+   "cluster_id": "ceadb6d3680",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": true,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": 3
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "saudigazette",
+    "provider_record_id": "https://saudigazette.com.sa/article/663901/saudi-arabia/royal-order-transforms-charity-platform-ehsan-into-independent-non-profit-foundation",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ehsan foundation'",
+     "Saudi Arabia: organisation 'national platform for charitable work'",
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'",
+     "Saudi Arabia: city 'riyadh'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "c195fbb4efffe064",
+   "title": "Beyond Emergency Care: Why Sudan's Humanitarian Response Must Also Protect Essential Health Services",
+   "description": "More than three years into Sudan's war, the humanitarian response has rightly focused on the basics of survival: food, shelter, water, and emergency medical care. But another crisis is unfolding quietly alongside it, one that gets far less attention: the slow collapse of the…",
+   "original_url": "https://reliefweb.int/report/sudan/beyond-emergency-care-why-sudans-humanitarian-response-must-also-protect-essential-health-services",
+   "canonical_url": "https://reliefweb.int/report/sudan/beyond-emergency-care-why-sudans-humanitarian-response-must-also-protect-essential-health-services",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-08-20T09:15:35Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Sudan"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cc195fbb4ef",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": true,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": 4
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/sudan/beyond-emergency-care-why-sudans-humanitarian-response-must-also-protect-essential-health-services",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": true,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "1f108745228cfaef",
+   "title": "UAE sends school supplies for thousands of Gaza children in latest humanitarian drive",
+   "description": null,
+   "original_url": "https://www.thenationalnews.com/news/uae/2026/08/19/uae-sends-school-supplies-for-more-than-25000-gaza-children-as-part-of-humanitarian-campaign/",
+   "canonical_url": "https://thenationalnews.com/news/uae/2026/08/19/uae-sends-school-supplies-for-more-than-25000-gaza-children-as-part-of-humanitarian-campaign",
+   "publisher": "The National",
+   "publisher_domain": "thenationalnews.com",
+   "source_type": "independent_media",
+   "published_at": "2026-08-19T14:27:36Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:33Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "United Arab Emirates",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Gaza"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "general_news",
+   "organisations": [],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "thenational_ae",
+   "cluster_id": null,
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "thenational_ae",
+    "provider_record_id": "https://www.thenationalnews.com/news/uae/2026/08/19/uae-sends-school-supplies-for-more-than-25000-gaza-children-as-part-of-humanitarian-campaign/",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "United Arab Emirates: name 'uae'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "2f3f469c391176a7",
+   "title": "Saudi humanitarian giving exceeds $145 billion, reaches 175 countries through 8,997 projects",
+   "description": "RIYADH — On World Humanitarian Day, observed annually on August 19, Saudi Arabia recalls a humanitarian journey that has continued since its establishment, transcending borders through contributions exceeding $145 billion across 8,997 projects in 175 countries worldwide…",
+   "original_url": "https://saudigazette.com.sa/article/663874/saudi-arabia/saudi-humanitarian-giving-exceeds-145-billion-reaches-175-countries-through-8997-projects",
+   "canonical_url": "https://saudigazette.com.sa/article/663874/saudi-arabia/saudi-humanitarian-giving-exceeds-145-billion-reaches-175-countries-through-8997-projects",
+   "publisher": "Saudi Gazette",
+   "publisher_domain": "saudigazette.com.sa",
+   "source_type": "independent_media",
+   "published_at": "2026-08-19T13:13:20Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:34Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [],
+   "amount": {
+    "value": 145000000000.0,
+    "currency": "USD",
+    "text": "$145 billion",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "saudigazette",
+   "cluster_id": null,
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "saudigazette",
+    "provider_record_id": "https://saudigazette.com.sa/article/663874/saudi-arabia/saudi-humanitarian-giving-exceeds-145-billion-reaches-175-countries-through-8997-projects",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'",
+     "Saudi Arabia: city 'riyadh'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": true,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "892baca6431c0d3f",
+   "title": "Qatar Charity Implements Relief Project to Support 1,200 Flood Affected Families in The Gambia",
+   "description": "Qatar Charity has implemented an integrated relief project to support flood-affected families in the Republic of The Gambia, as part of its humanitarian mission and ongoing efforts to respond to natural disasters and assist vulnerable communities. The project was carried out in…",
+   "original_url": "https://reliefweb.int/report/gambia/qatar-charity-implements-relief-project-support-1200-flood-affected-families-gambia",
+   "canonical_url": "https://reliefweb.int/report/gambia/qatar-charity-implements-relief-project-support-1200-flood-affected-families-gambia",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-08-12T12:53:30Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Gambia"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c892baca643",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/gambia/qatar-charity-implements-relief-project-support-1200-flood-affected-families-gambia",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "561e2875f3976db0",
+   "title": "Signature of a Grant Agreement in the Amount of USD 2,500,000 to Contribute to Supporting the Afghanistan Humanitarian Fund in Afghanistan [EN/AR]",
+   "description": "KUWAIT FUND FOR ARAB ECONOMIC DEVELOPMENT A Grant Agreement was signed today in the State of Kuwait between the United Nations Office for the Coordination of Humanitarian Affairs (OCHA) and the Kuwait Fund for Arab Economic Development, pursuant to which the Kuwait Fund will…",
+   "original_url": "https://reliefweb.int/report/afghanistan/signature-grant-agreement-amount-usd-2500000-contribute-supporting-afghanistan-humanitarian-fund-afghanistan-enar",
+   "canonical_url": "https://reliefweb.int/report/afghanistan/signature-grant-agreement-amount-usd-2500000-contribute-supporting-afghanistan-humanitarian-fund-afghanistan-enar",
+   "publisher": "Government of Kuwait",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_government",
+   "published_at": "2026-08-07T01:28:47Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Kuwait",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Afghanistan"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "grant",
+   "organisations": [
+    {
+     "name": "Kuwait Fund for Arab Economic Development",
+     "register_id": "r1750",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Kuwait",
+     "publishable": true
+    },
+    {
+     "name": "Kuwait Fund",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Kuwait",
+     "publishable": false
+    }
+   ],
+   "amount": {
+    "value": 2500000.0,
+    "currency": "USD",
+    "text": "USD 2,500,000",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c561e2875f3",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Kuwait Fund",
+    "provider_record_id": "https://reliefweb.int/report/afghanistan/signature-grant-agreement-amount-usd-2500000-contribute-supporting-afghanistan-humanitarian-fund-afghanistan-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Kuwait: organisation 'kuwait fund for arab economic development'",
+     "Kuwait: organisation 'kuwait fund'",
+     "Kuwait: name 'kuwait'",
+     "Kuwait: name 'state of kuwait'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "aa90bef7bd15070a",
+   "title": "Signature of a Grant Agreement in the Amount of USD2,500,000 to Contribute to Supporting the Syria Humanitarian Fund in the Syrian Arab Republic [EN/AR]",
+   "description": "KUWAIT FUND FOR ARAB ECONOMIC DEVELOPMENT A Grant Agreement was signed today in the State of Kuwait between the United Nations Office for the Coordination of Humanitarian Affairs (OCHA) and the Kuwait Fund for Arab Economic Development, pursuant to which the Kuwait Fund will…",
+   "original_url": "https://reliefweb.int/report/syrian-arab-republic/signature-grant-agreement-amount-usd2500000-contribute-supporting-syria-humanitarian-fund-syrian-arab-republic-enar",
+   "canonical_url": "https://reliefweb.int/report/syrian-arab-republic/signature-grant-agreement-amount-usd2500000-contribute-supporting-syria-humanitarian-fund-syrian-arab-republic-enar",
+   "publisher": "Government of Kuwait",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_government",
+   "published_at": "2026-08-07T01:24:20Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Kuwait",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Syria"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "grant",
+   "organisations": [
+    {
+     "name": "Kuwait Fund for Arab Economic Development",
+     "register_id": "r1750",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Kuwait",
+     "publishable": true
+    },
+    {
+     "name": "Kuwait Fund",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Kuwait",
+     "publishable": false
+    }
+   ],
+   "amount": {
+    "value": 2500000.0,
+    "currency": "USD",
+    "text": "USD2,500,000",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "caa90bef7bd",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Kuwait Fund",
+    "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/signature-grant-agreement-amount-usd2500000-contribute-supporting-syria-humanitarian-fund-syrian-arab-republic-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Kuwait: organisation 'kuwait fund for arab economic development'",
+     "Kuwait: organisation 'kuwait fund'",
+     "Kuwait: name 'kuwait'",
+     "Kuwait: name 'state of kuwait'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "24b620a1d4223841",
+   "title": "oPt: Qatar Charity Supports Rehabilitation of Gaza Children with Prosthetic Limbs in Jordan",
+   "description": "As part of its continued humanitarian response for Palestinians in the Gaza Strip, Qatar Charity is supporting the “Rehabilitation and Prosthetic Limb Fitting” project, implemented by the Restoring, Hope Society (RHS) in Jordan and Gaza. The initiative seeks to help children who…",
+   "original_url": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-supports-rehabilitation-gaza-children-prosthetic-limbs-jordan",
+   "canonical_url": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-supports-rehabilitation-gaza-children-prosthetic-limbs-jordan",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-08-06T14:12:03Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Gaza",
+    "Jordan"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c24b620a1d4",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-supports-rehabilitation-gaza-children-prosthetic-limbs-jordan",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "f9b3049f4dd9ea90",
+   "title": "Bangladesh: IOM and KSrelief Sign USD 2.5 Million Agreement to Improve WASH in Cox's Bazar",
+   "description": "Riyadh, Saudi Arabia - 20 July 2026 - The International Organization for Migration (IOM) and the King Salman Humanitarian Aid and Relief Centre (KSrelief) have signed a USD 2.5 Million agreement to strengthen safe, dignified and sustainable water, sanitation and hygiene (WASH)…",
+   "original_url": "https://reliefweb.int/report/bangladesh/iom-and-ksrelief-sign-usd-25-million-agreement-improve-wash-coxs-bazar",
+   "canonical_url": "https://reliefweb.int/report/bangladesh/iom-and-ksrelief-sign-usd-25-million-agreement-improve-wash-coxs-bazar",
+   "publisher": "International Organization for Migration",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-07-21T12:03:24Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Bangladesh",
+    "Myanmar"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "partnership",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid and Relief Centre (KSrelief)",
+     "register_id": "r785",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Saudi Arabia",
+     "publishable": true
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": {
+    "value": 2500000.0,
+    "currency": "USD",
+    "text": "USD 2.5 Million",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cf9b3049f4d",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/bangladesh/iom-and-ksrelief-sign-usd-25-million-agreement-improve-wash-coxs-bazar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid and relief centre'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'",
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'",
+     "Saudi Arabia: city 'riyadh'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "63707ead086b261c",
+   "title": "KSrelief and FCDO provide USD10 million to support WFP’S response to hunger in Yemen",
+   "description": "ADEN, YEMEN – The United Nations World Food Programme (WFP) has welcomed a USD10 million contribution from the King Salman Humanitarian Aid and Relief Centre (KSrelief) and the United Kingdom’s Foreign, Commonwealth and Development Office (FCDO) to support vulnerable communities…",
+   "original_url": "https://reliefweb.int/report/yemen/ksrelief-and-fcdo-provide-usd10-million-support-wfps-response-hunger-yemen",
+   "canonical_url": "https://reliefweb.int/report/yemen/ksrelief-and-fcdo-provide-usd10-million-support-wfps-response-hunger-yemen",
+   "publisher": "World Food Programme",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-07-15T01:20:50Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Yemen"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid and Relief Centre (KSrelief)",
+     "register_id": "r785",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Saudi Arabia",
+     "publishable": true
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": {
+    "value": 10000000.0,
+    "currency": "USD",
+    "text": "USD10 million",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c63707ead08",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/yemen/ksrelief-and-fcdo-provide-usd10-million-support-wfps-response-hunger-yemen",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid and relief centre'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'",
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "4f65c735810cf1d8",
+   "title": "KSrelief funding of US$ 5 million enables WHO to sustain dialysis services for more than 5500 patients across Sudan",
+   "description": "9 July 2026, Port Sudan, Sudan – A US$ 5 million grant from the King Salman Humanitarian Aid and Relief Centre (KSrelief) has helped the World Health Organization (WHO) sustain uninterrupted dialysis services for 5568 patients in 62 operational dialysis centres across 12 states…",
+   "original_url": "https://reliefweb.int/report/sudan/ksrelief-funding-us-5-million-enables-who-sustain-dialysis-services-more-5500-patients-across-sudan",
+   "canonical_url": "https://reliefweb.int/report/sudan/ksrelief-funding-us-5-million-enables-who-sustain-dialysis-services-more-5500-patients-across-sudan",
+   "publisher": "World Health Organization",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-07-14T09:12:38Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Sudan"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "grant",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid and Relief Centre (KSrelief)",
+     "register_id": "r785",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Saudi Arabia",
+     "publishable": true
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": {
+    "value": 5000000.0,
+    "currency": "USD",
+    "text": "US$ 5 million",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c4f65c73581",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": true,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": 1
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/sudan/ksrelief-funding-us-5-million-enables-who-sustain-dialysis-services-more-5500-patients-across-sudan",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid and relief centre'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "604c7b5119b87e33",
+   "title": "Qatar Charity Supports Rohingya Refugees with Cooking Gas in Bangladesh [EN/AR]",
+   "description": "Qatar Charity (QC), with the generous support of philanthropists in Qatar, continues to provide cooking gas support to Rohingya refugees living on Bhasan Char in Bangladesh, as part of its ongoing humanitarian relief efforts. Through this latest intervention, approximately 4,810…",
+   "original_url": "https://reliefweb.int/report/bangladesh/qatar-charity-supports-rohingya-refugees-cooking-gas-bangladesh-enar",
+   "canonical_url": "https://reliefweb.int/report/bangladesh/qatar-charity-supports-rohingya-refugees-cooking-gas-bangladesh-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-07-13T12:06:46Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Bangladesh",
+    "Myanmar"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations",
+    "Philanthropy"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c604c7b5119",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/bangladesh/qatar-charity-supports-rohingya-refugees-cooking-gas-bangladesh-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "39eb529786f1a1f7",
+   "title": "Syria: Funded by KSrelief, UNOPS started equipping three hospitals in Hama in coordination with the Ministry of Health",
+   "description": "Hama, July 7, 2026 – With funding from the Kingdom of Saudi Arabia through King Salman humanitarian aid and relief Centre (KSrelief), UNOPS, in close coordination with the Syrian Ministry of Health, has started equipping three hospitals and establishing paediatric intensive care…",
+   "original_url": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-equipping-three-hospitals-hama-coordination-ministry-health",
+   "canonical_url": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-equipping-three-hospitals-hama-coordination-ministry-health",
+   "publisher": "UNOPS",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-07-13T10:44:41Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Syria"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid and Relief Centre (KSrelief)",
+     "register_id": "r785",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Saudi Arabia",
+     "publishable": true
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c39eb529786",
+   "cluster_size": 2,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-equipping-three-hospitals-hama-coordination-ministry-health",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid and relief centre'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'",
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: name 'kingdom of saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "9785b51890e80481",
+   "title": "Syria: Funded by KSrelief, UNOPS started establishing the Pediatric Cardiac Surgery Department at Ibn Roshed Hospital in coordination with the Ministry of Health",
+   "description": "Aleppo, July 7, 2026 – With funding from the Kingdom of Saudi Arabia through King Salman humanitarian aid and relief Centre (KSrelief) and in close coordination with the Syrian Ministry of Health, UNOPS has started equipping the Ibn Roshed Hospital for Cardiac Diseases and…",
+   "original_url": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-establishing-pediatric-cardiac-surgery-department-ibn-roshed-hospital-coordination-ministry-health",
+   "canonical_url": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-establishing-pediatric-cardiac-surgery-department-ibn-roshed-hospital-coordination-ministry-health",
+   "publisher": "UNOPS",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-07-13T10:42:37Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Syria"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid and Relief Centre (KSrelief)",
+     "register_id": "r785",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Saudi Arabia",
+     "publishable": true
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c39eb529786",
+   "cluster_size": 2,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/funded-ksrelief-unops-started-establishing-pediatric-cardiac-surgery-department-ibn-roshed-hospital-coordination-ministry-health",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid and relief centre'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'",
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: name 'kingdom of saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "45607952c74b9cf5",
+   "title": "Pakistan: KSrelief Shelter NFIs Kits Project (2025-2026)",
+   "description": null,
+   "original_url": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-shelter-nfis-kits-project-2025-2026",
+   "canonical_url": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-shelter-nfis-kits-project-2025-2026",
+   "publisher": "UN Office for the Coordination of Humanitarian Affairs",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-07-02T23:20:27Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Pakistan"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c45607952c7",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-shelter-nfis-kits-project-2025-2026",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "33f28734a7899d83",
+   "title": "Qatar Charity and International Rescue Committee Strengthen Humanitarian Partnership in Bangladesh [EN/AR]",
+   "description": "Doha – June 28, 2026 In a significant step toward advancing humanitarian and development efforts in Bangladesh, Qatar Charity (QC) and the International Rescue Committee (IRC) have formalized a strategic partnership through the signing of a Memorandum of Understanding (MoU)…",
+   "original_url": "https://reliefweb.int/report/bangladesh/qatar-charity-and-international-rescue-committee-strengthen-humanitarian-partnership-bangladesh-enar",
+   "canonical_url": "https://reliefweb.int/report/bangladesh/qatar-charity-and-international-rescue-committee-strengthen-humanitarian-partnership-bangladesh-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-30T00:56:31Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Bangladesh"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "partnership",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c33f28734a7",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/bangladesh/qatar-charity-and-international-rescue-committee-strengthen-humanitarian-partnership-bangladesh-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'",
+     "Qatar: city 'doha'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "1872c67d3ad0deaa",
+   "title": "oPt: QRCS, JHCO distribute vegetable parcels to displaced families in Gaza [EN/AR]",
+   "description": "June 28th, 2026 ― Doha, Qatar: A new relief project has been launched by Qatar Red Crescent Society (QRCS), in collaboration with Jordan Hashemite Charity Organization (JHCO), to enhance food security in Gaza, where the latest war left hundreds of thousands of displaced families…",
+   "original_url": "https://reliefweb.int/report/occupied-palestinian-territory/qrcs-jhco-distribute-vegetable-parcels-displaced-families-gaza-enar",
+   "canonical_url": "https://reliefweb.int/report/occupied-palestinian-territory/qrcs-jhco-distribute-vegetable-parcels-displaced-families-gaza-enar",
+   "publisher": "Qatar Red Crescent Society",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-29T13:33:56Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Gaza",
+    "Jordan"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "partnership",
+   "organisations": [
+    {
+     "name": "Qatar Red Crescent Society (QRCS)",
+     "register_id": "r435",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c1872c67d3a",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/occupied-palestinian-territory/qrcs-jhco-distribute-vegetable-parcels-displaced-families-gaza-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar red crescent society'",
+     "Qatar: organisation 'qatar red crescent'",
+     "Qatar: name 'qatar'",
+     "Qatar: city 'doha'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "848969e4efad2556",
+   "title": "Qatari Air Bridge Launched to Deliver Humanitarian Aid to Venezuela in Support of Earthquake-Affected Communities - Qatar Fund For Development [EN/AR]",
+   "description": "Doha, June 26, 2026 In implementation of the directives of H.H. Sheikh Tamim bin Hamad Al-Thani, the Amir of the State of Qatar, may God protect him, Qatar Fund for Development (QFFD) has launched an urgent humanitarian response, in cooperation with the Qatar International…",
+   "original_url": "https://reliefweb.int/report/venezuela-bolivarian-republic/qatari-air-bridge-launched-deliver-humanitarian-aid-venezuela-support-earthquake-affected-communities-qatar-fund-development-enar",
+   "canonical_url": "https://reliefweb.int/report/venezuela-bolivarian-republic/qatari-air-bridge-launched-deliver-humanitarian-aid-venezuela-support-earthquake-affected-communities-qatar-fund-development-enar",
+   "publisher": "Qatar Fund for Development",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-26T23:33:05Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "new_programme",
+   "organisations": [
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c848969e4ef",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/venezuela-bolivarian-republic/qatari-air-bridge-launched-deliver-humanitarian-aid-venezuela-support-earthquake-affected-communities-qatar-fund-development-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: name 'qatar'",
+     "Qatar: name 'state of qatar'",
+     "Qatar: demonym 'qatari'",
+     "Qatar: city 'doha'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "107d2f13dd5ab53e",
+   "title": "World: Qatar Charity Participates in Panel Discussion on Strengthening Refugee Resilience [EN/AR]",
+   "description": "Qatar Charity participated in a panel discussion held as part of World Refugee Day, titled “From Survival to Opportunity: Advancing Refugee Resilience and Inclusion.” The event was organized by the Qatar Fund for Development (QFFD) and the United Nations High Commissioner for…",
+   "original_url": "https://reliefweb.int/report/world/qatar-charity-participates-panel-discussion-strengthening-refugee-resilience-enar",
+   "canonical_url": "https://reliefweb.int/report/world/qatar-charity-participates-panel-discussion-strengthening-refugee-resilience-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-25T09:58:58Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    },
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c107d2f13dd",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/world/qatar-charity-participates-panel-discussion-strengthening-refugee-resilience-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": true,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "db79238f04315e9c",
+   "title": "On World Refugee Day, UNHCR and Qatar Charity expand Strategic Partnership to Support Refugees [EN/AR]",
+   "description": "Doha – June 20, 2026 UNHCR, the UN Refugee Agency, and Qatar Charity (QC) signed two agreements worth QAR 3,079,324 (approximately US$ 844,808) to support more than 15,000 vulnerable displaced people in Lebanon and the Middle East and North Africa. The agreements were signed in…",
+   "original_url": "https://reliefweb.int/report/world/world-refugee-day-unhcr-and-qatar-charity-expand-strategic-partnership-support-refugees-enar",
+   "canonical_url": "https://reliefweb.int/report/world/world-refugee-day-unhcr-and-qatar-charity-expand-strategic-partnership-support-refugees-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-22T10:39:42Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Lebanon"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "partnership",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": {
+    "value": 3079324.0,
+    "currency": "QAR",
+    "text": "QAR 3,079,324",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cdb79238f04",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/world/world-refugee-day-unhcr-and-qatar-charity-expand-strategic-partnership-support-refugees-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'",
+     "Qatar: city 'doha'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": true,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "eabccde1adae57f4",
+   "title": "World: Islamic Development Bank and Qatar Charity Forge Strategic Partnership to Scale Support for Displaced Populations through GIFR [EN/AR]",
+   "description": "Baku, Republic of Azerbaijan — 17 June 2026 — The Islamic Development Bank (IsDB), in its capacity as Trustee of the Global Islamic Fund for Refugees (GIFR), today announced the signing of a strategic Donor Contribution Agreement with Qatar Charity. The agreement was signed by…",
+   "original_url": "https://reliefweb.int/report/world/islamic-development-bank-and-qatar-charity-forge-strategic-partnership-scale-support-displaced-populations-through-gifr-enar",
+   "canonical_url": "https://reliefweb.int/report/world/islamic-development-bank-and-qatar-charity-forge-strategic-partnership-scale-support-displaced-populations-through-gifr-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-18T09:40:38Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Azerbaijan"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development",
+    "People & Leadership",
+    "Giving & Donations"
+   ],
+   "event_type": "partnership",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    },
+    {
+     "name": "Islamic Development Bank (IsDB)",
+     "register_id": "r1130",
+     "match_method": "exact_name",
+     "confidence": 1.0,
+     "country": "Saudi Arabia",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "ceabccde1ad",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/world/islamic-development-bank-and-qatar-charity-forge-strategic-partnership-scale-support-displaced-populations-through-gifr-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "94ecb95d0ca7953f",
+   "title": "World: Qatar Charity Expands Global Efforts to Support Refugees [EN/AR]",
+   "description": "Qatar Charity (QC) continues to prioritize raising awareness of refugee issues and mobilizing support through integrated humanitarian campaigns, field interventions, and international partnerships, with the aim of meeting basic needs and helping refugees restore stability and…",
+   "original_url": "https://reliefweb.int/report/world/qatar-charity-expands-global-efforts-support-refugees-enar",
+   "canonical_url": "https://reliefweb.int/report/world/qatar-charity-expands-global-efforts-support-refugees-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-17T08:55:02Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c94ecb95d0c",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/world/qatar-charity-expands-global-efforts-support-refugees-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "5cba34915a2eee2d",
+   "title": "Qatar Charity Delivers Emergency Relief to Yemeni Refugees in Djibouti [EN/AR]",
+   "description": "Qatar Charity (QC), with the support of benevolent donors, has carried out an urgent relief intervention to assist Yemeni refugees in the Republic of Djibouti. The project involved the distribution of essential food packages to approximately 1,300 people, aiming to alleviate…",
+   "original_url": "https://reliefweb.int/report/yemen/qatar-charity-delivers-emergency-relief-yemeni-refugees-djibouti-enar",
+   "canonical_url": "https://reliefweb.int/report/yemen/qatar-charity-delivers-emergency-relief-yemeni-refugees-djibouti-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-16T09:19:01Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Yemen",
+    "Djibouti"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c5cba34915a",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/yemen/qatar-charity-delivers-emergency-relief-yemeni-refugees-djibouti-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "2cc4e6e1344e6c9a",
+   "title": "Qatar Charity Launches Campaign to Support Vulnerable Refugees Worldwide",
+   "description": "Qatar Charity (QC) has launched a major humanitarian campaign titled “Every Refugee Tent Holds a Story” to mark World Refugee Day, which is observed annually on June 20. The initiative aims to shed light on the harsh realities faced by displaced populations worldwide, amplify…",
+   "original_url": "https://reliefweb.int/report/world/qatar-charity-launches-campaign-support-vulnerable-refugees-worldwide",
+   "canonical_url": "https://reliefweb.int/report/world/qatar-charity-launches-campaign-support-vulnerable-refugees-worldwide",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-15T08:01:16Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "new_programme",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c2cc4e6e134",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/world/qatar-charity-launches-campaign-support-vulnerable-refugees-worldwide",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": true,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "b22f18434f36962d",
+   "title": "oPt: Qatar Charity Distributes 198,000 Ready- to-Eat Meals in Gaza [EN/AR]",
+   "description": "With the support of donors in Qatar, Qatar Charity (QC) has distributed 198,000 ready-to-eat meals in the Gaza Strip, as part of efforts to ease the suffering of patients and displaced families amid ongoing humanitarian challenges. The meals—consisting of pastries, baked goods…",
+   "original_url": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-distributes-198000-ready-eat-meals-gaza-enar",
+   "canonical_url": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-distributes-198000-ready-eat-meals-gaza-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-15T06:38:35Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Gaza"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cb22f18434f",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/occupied-palestinian-territory/qatar-charity-distributes-198000-ready-eat-meals-gaza-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "25d566e8fcd190d3",
+   "title": "Bosnia and Herzegovina: Qatar Charity Signs MoU with Bosnia Ministry to Support Returnees [EN/AR]",
+   "description": "Qatar Charity (QC) has signed a memorandum of cooperation with the Federal Ministry of Displaced Persons and Refugees in Bosnia and Herzegovina to implement joint development projects aimed at supporting returnees and improving their living conditions. The agreement was signed…",
+   "original_url": "https://reliefweb.int/report/bosnia-and-herzegovina/qatar-charity-signs-mou-bosnia-ministry-support-returnees-enar",
+   "canonical_url": "https://reliefweb.int/report/bosnia-and-herzegovina/qatar-charity-signs-mou-bosnia-ministry-support-returnees-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-08T10:50:05Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Bosnia and Herzegovina"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "partnership",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c25d566e8fc",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/bosnia-and-herzegovina/qatar-charity-signs-mou-bosnia-ministry-support-returnees-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "993d08f5a95ae486",
+   "title": "WHO and KSrelief help deliver nearly half a million health consultations in Syria",
+   "description": "4 June 2026, Damascus, Syrian Arab Republic – Nearly half a million medical consultations were provided in Aleppo, Idleb, Hama, and Homs through funding from Saudi Arabia through the King Salman Humanitarian Aid and Relief Centre (KSrelief), helping families access essential…",
+   "original_url": "https://reliefweb.int/report/syrian-arab-republic/who-and-ksrelief-help-deliver-nearly-half-million-health-consultations-syria",
+   "canonical_url": "https://reliefweb.int/report/syrian-arab-republic/who-and-ksrelief-help-deliver-nearly-half-million-health-consultations-syria",
+   "publisher": "World Health Organization",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-06-04T00:00:00Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Syria"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid and Relief Centre (KSrelief)",
+     "register_id": "r785",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Saudi Arabia",
+     "publishable": true
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c993d08f5a9",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/syrian-arab-republic/who-and-ksrelief-help-deliver-nearly-half-million-health-consultations-syria",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid and relief centre'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'",
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "99bd6bfefd3625a2",
+   "title": "Lebanon: Children Remain at Risk Despite Ceasefire",
+   "description": "According to UNICEF, at least 23 children have been killed and 93 injured since the ceasefire took effect earlier this year. These figures reflect a broader deterioration in conditions affecting children since the escalation of hostilities in March, where UNICEF reports that the…",
+   "original_url": "https://reliefweb.int/report/lebanon/lebanon-children-remain-risk-despite-ceasefire",
+   "canonical_url": "https://reliefweb.int/report/lebanon/lebanon-children-remain-risk-despite-ceasefire",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-02T13:16:01Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Lebanon"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c99bd6bfefd",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/lebanon/lebanon-children-remain-risk-despite-ceasefire",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "f97e80cdbbb559f5",
+   "title": "Qatar Charity Distributes Food Baskets to Arab Communities in Somalia [EN/AR]",
+   "description": "Qatar Charity (QC) has distributed food baskets to families from Yemeni, Syrian, and Sudanese communities in Somalia, as well as to Somali families displaced from Yemen. The initiative, implemented under the “The Greatest Days” campaign and supported by donors in Qatar…",
+   "original_url": "https://reliefweb.int/report/somalia/qatar-charity-distributes-food-baskets-arab-communities-somalia-enar",
+   "canonical_url": "https://reliefweb.int/report/somalia/qatar-charity-distributes-food-baskets-arab-communities-somalia-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-06-02T13:05:51Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Yemen",
+    "Somalia"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cf97e80cdbb",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/somalia/qatar-charity-distributes-food-baskets-arab-communities-somalia-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "d32afc2ed35fb8b4",
+   "title": "UNHCR and KSrelief sign agreement to strengthen protection services for displaced families and refugees in Yemen [EN/AR]",
+   "description": "RIYADH – UNHCR, the UN Refugee Agency, and King Salman Humanitarian Aid and Relief Centre (KSrelief) signed an agreement worth USD 3.1 million to support UNHCR’s strengthen protection services for displaced families and refugees in Yemen. The agreement was signed during a…",
+   "original_url": "https://reliefweb.int/report/yemen/unhcr-and-ksrelief-sign-agreement-strengthen-protection-services-displaced-families-and-refugees-yemen-enar",
+   "canonical_url": "https://reliefweb.int/report/yemen/unhcr-and-ksrelief-sign-agreement-strengthen-protection-services-displaced-families-and-refugees-yemen-enar",
+   "publisher": "UN High Commissioner for Refugees",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-06-02T09:03:17Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Yemen"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "partnership",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid and Relief Centre (KSrelief)",
+     "register_id": "r785",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Saudi Arabia",
+     "publishable": true
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": {
+    "value": 3100000.0,
+    "currency": "USD",
+    "text": "USD 3.1 million",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cd32afc2ed3",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/yemen/unhcr-and-ksrelief-sign-agreement-strengthen-protection-services-displaced-families-and-refugees-yemen-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid and relief centre'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'",
+     "Saudi Arabia: city 'riyadh'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "ed8755bb4b0099d0",
+   "title": "Qatar Charity Project Boosts Support for Vulnerable Groups in Sudan [EN/AR]",
+   "description": "Qatar Charity (QC) has implemented a project aimed at strengthening the resilience of vulnerable communities and supporting them through livelihood assistance, food security, and healthcare interventions across four Sudanese states: River Nile, Sennar, Al Jazirah, and the Red…",
+   "original_url": "https://reliefweb.int/report/sudan/qatar-charity-project-boosts-support-vulnerable-groups-sudan-enar",
+   "canonical_url": "https://reliefweb.int/report/sudan/qatar-charity-project-boosts-support-vulnerable-groups-sudan-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-05-25T09:49:27Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Sudan"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "ced8755bb4b",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/sudan/qatar-charity-project-boosts-support-vulnerable-groups-sudan-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "f46835ab95496047",
+   "title": "Qatar Charity Sends Emergency Food Aid to Chad [EN/AR]",
+   "description": "Supported by benevolent donors in Qatar, Qatar Charity (QC) has dispatched a food aid convoy to the Massaguet area, about 70 km from the Chadian capital, N’Djamena, as part of an urgent humanitarian response. The initiative coincides with the first ten days of Dhul-Hijjah and…",
+   "original_url": "https://reliefweb.int/report/chad/qatar-charity-sends-emergency-food-aid-chad-enar",
+   "canonical_url": "https://reliefweb.int/report/chad/qatar-charity-sends-emergency-food-aid-chad-enar",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-05-25T00:00:00Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:31Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Chad"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cf46835ab95",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Charity",
+    "provider_record_id": "https://reliefweb.int/report/chad/qatar-charity-sends-emergency-food-aid-chad-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "adc8e3ae69b6c5f1",
+   "title": "Pakistan: KSrelief Food Security Support Project (Dec-2024 to April-2026)",
+   "description": null,
+   "original_url": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-food-security-support-project-dec-2024-april-2026",
+   "canonical_url": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-food-security-support-project-dec-2024-april-2026",
+   "publisher": "UN Office for the Coordination of Humanitarian Affairs",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-05-13T00:25:10Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Pakistan"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Ksrelief",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    },
+    {
+     "name": "King Salman Humanitarian Aid",
+     "register_id": null,
+     "match_method": "verified_alias",
+     "confidence": 0.9,
+     "country": "Saudi Arabia",
+     "publishable": false
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cadc8e3ae69",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/pakistan/pakistan-ksrelief-food-security-support-project-dec-2024-april-2026",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: organisation 'ksrelief'",
+     "Saudi Arabia: organisation 'king salman humanitarian aid'",
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "5e663d6960d92e8a",
+   "title": "Saudi Arabia fuels polio eradication research with vital funding and leadership",
+   "description": "As the world moves closer to eradicating polio, sustained partner and donor investment in scientific innovation remains essential. Many of the programme’s most significant advances have been driven by years of rigorous research, bringing together leading scientists…",
+   "original_url": "https://reliefweb.int/report/saudi-arabia/saudi-arabia-fuels-polio-eradication-research-vital-funding-and-leadership",
+   "canonical_url": "https://reliefweb.int/report/saudi-arabia/saudi-arabia-fuels-polio-eradication-research-vital-funding-and-leadership",
+   "publisher": "Global Polio Eradication Initiative",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-05-04T13:33:09Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:29Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Saudi Arabia",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Pakistan",
+    "Gambia"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "research_publication",
+   "organisations": [],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": null,
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "KSrelief",
+    "provider_record_id": "https://reliefweb.int/report/saudi-arabia/saudi-arabia-fuels-polio-eradication-research-vital-funding-and-leadership",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Saudi Arabia: name 'saudi arabia'",
+     "Saudi Arabia: demonym 'saudi'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "6b773afa512843e9",
+   "title": "World: UNCDF, UNDP, and Qatar Fund for Development call for global partners to unlock finance for conflict-affected and fragile settings",
+   "description": "\"From Commitments to Capital\": The State of Qatar, the Qatar Fund for Development, UNCDF, UNDP, and key stakeholders working to unlock finance in fragile and crisis-affected settings. New York, 30 April 2026 - New financing solutions are needed for post-conflict recovery and…",
+   "original_url": "https://reliefweb.int/report/world/uncdf-undp-and-qatar-fund-development-call-global-partners-unlock-finance-conflict-affected-and-fragile-settings",
+   "canonical_url": "https://reliefweb.int/report/world/uncdf-undp-and-qatar-fund-development-call-global-partners-unlock-finance-conflict-affected-and-fragile-settings",
+   "publisher": "UN Development Programme",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "un_multilateral",
+   "published_at": "2026-05-01T02:13:31Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c6b773afa51",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/world/uncdf-undp-and-qatar-fund-development-call-global-partners-unlock-finance-conflict-affected-and-fragile-settings",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: name 'qatar'",
+     "Qatar: name 'state of qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "af3d1f1226bd2c8a",
+   "title": "QFFD, QRCS enhance resilience of affected people in Lebanon [EN/AR]",
+   "description": "April 28th, 2026 ― Doha, Qatar: As part of the emergency response to support internally displaced people (IDPs) in Lebanon, with funding from Qatar Fund for Development (QFFD), Qatar Red Crescent Society (QRCS) has begun distributing emergency relief aid to displaced and…",
+   "original_url": "https://reliefweb.int/report/lebanon/qffd-qrcs-enhance-resilience-affected-people-lebanon-enar",
+   "canonical_url": "https://reliefweb.int/report/lebanon/qffd-qrcs-enhance-resilience-affected-people-lebanon-enar",
+   "publisher": "Qatar Fund for Development",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-04-28T12:55:20Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Lebanon"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development",
+    "Giving & Donations"
+   ],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    },
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    },
+    {
+     "name": "Qatar Red Crescent Society (QRCS)",
+     "register_id": "r435",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "caf3d1f1226",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/lebanon/qffd-qrcs-enhance-resilience-affected-people-lebanon-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: organisation 'qatar red crescent society'",
+     "Qatar: organisation 'qatar red crescent'",
+     "Qatar: name 'qatar'",
+     "Qatar: city 'doha'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "7627c19f698d457a",
+   "title": "Lebanon: Funded by Qatar Fund for Development Qatar Charity Implements an Urgent Relief Intervention Worth US$400,000",
+   "description": "Amid the intensifying military escalation in Lebanon and the resulting largescale internal displacement particularly from South Lebanon, Beirut’s southern suburbs, and parts of the Bekaa the State of Qatar has launched an urgent humanitarian intervention to support affected…",
+   "original_url": "https://reliefweb.int/report/lebanon/funded-qatar-fund-development-qatar-charity-implements-urgent-relief-intervention-worth-us400000",
+   "canonical_url": "https://reliefweb.int/report/lebanon/funded-qatar-fund-development-qatar-charity-implements-urgent-relief-intervention-worth-us400000",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-04-20T13:29:34Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Lebanon"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Humanitarian & Development",
+    "Giving & Donations"
+   ],
+   "event_type": "new_programme",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    },
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": {
+    "value": 400000.0,
+    "currency": "USD",
+    "text": "US$400,000",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c7627c19f69",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/lebanon/funded-qatar-fund-development-qatar-charity-implements-urgent-relief-intervention-worth-us400000",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: name 'qatar'",
+     "Qatar: name 'state of qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "e69b6d0dc240d913",
+   "title": "With QFFD support, Qatar Charity hands over rescue equipment to Sri Lanka’s DMC",
+   "description": "Qatar Charity (QC) has reinforced Sri Lanka’s national disaster response capacity by handing over a new set of search and rescue equipment to the Disaster Management Centre (DMC), with funding from the Qatar Fund for Development (QFFD). The handover took place during an official…",
+   "original_url": "https://reliefweb.int/report/sri-lanka/qffd-support-qatar-charity-hands-over-rescue-equipment-sri-lankas-dmc",
+   "canonical_url": "https://reliefweb.int/report/sri-lanka/qffd-support-qatar-charity-hands-over-rescue-equipment-sri-lankas-dmc",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-04-14T08:05:49Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Sri Lanka"
+   ],
+   "primary_topic": "Funding & Grants",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    },
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "ce69b6d0dc2",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/sri-lanka/qffd-support-qatar-charity-hands-over-rescue-equipment-sri-lankas-dmc",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "f719a1a839de8a01",
+   "title": "Qatar Development Fund supports more than 10,600 Palestinian familes stranded in the Arab Republic of Egypt [EN/AR]",
+   "description": "Cairo, Egypt 22/03/2026 Qatar Fund for Development (QFFD) provided shopping vouchers to benefit more than10,600 Palestinian families stranded in the Arab Republic of Egypt, as part of ongoing humanitarian efforts to support families affected by the repercussions of the Israeli…",
+   "original_url": "https://reliefweb.int/report/egypt/qatar-development-fund-supports-more-10600-palestinian-familes-stranded-arab-republic-egypt-enar",
+   "canonical_url": "https://reliefweb.int/report/egypt/qatar-development-fund-supports-more-10600-palestinian-familes-stranded-arab-republic-egypt-enar",
+   "publisher": "Qatar Fund for Development",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-03-23T09:37:30Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Egypt"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "general_news",
+   "organisations": [
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "cf719a1a839",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/egypt/qatar-development-fund-supports-more-10600-palestinian-familes-stranded-arab-republic-egypt-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: name 'qatar'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "9c3915f4acf61e55",
+   "title": "Lebanon: Qatar Charity launches $2.35M Emergency Response for Displaced Populations",
+   "description": "Doha, Qatar – March 18, 2026 The escalation of hostilities in Lebanon since 2 March 2026 has led to widespread displacement and rapidly increasing humanitarian needs, as outlined in the Lebanon Flash Appeal (March–May 2026) issued by OCHA. Families continue to flee affected…",
+   "original_url": "https://reliefweb.int/report/lebanon/lebanon-qatar-charity-launches-235m-emergency-response-displaced-populations",
+   "canonical_url": "https://reliefweb.int/report/lebanon/lebanon-qatar-charity-launches-235m-emergency-response-displaced-populations",
+   "publisher": "Qatar Charity",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-03-18T11:45:40Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Lebanon"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [
+    "Giving & Donations"
+   ],
+   "event_type": "new_programme",
+   "organisations": [
+    {
+     "name": "Qatar Charity",
+     "register_id": "r421",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": {
+    "value": 2350000.0,
+    "currency": "USD",
+    "text": "$2.35M",
+    "usd_equivalent": null,
+    "conversion_date": null
+   },
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c9c3915f4ac",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/lebanon/lebanon-qatar-charity-launches-235m-emergency-response-displaced-populations",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar charity'",
+     "Qatar: name 'qatar'",
+     "Qatar: city 'doha'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  },
+  {
+   "id": "3d51145e3bf903a8",
+   "title": "The State of Qatar Sends Urgent Relief Aid to the Sisterly Republic of Lebanon to Help 40,500 Displaced Families [EN/AR]",
+   "description": "Doha – 12/03/26 In the wake of the severe military escalation taking place in the sisterly Republic of Lebanon; which has led to a large wave of internal displacement as a result of military operations and reciprocal shelling in several areas, particularly in southern Lebanon…",
+   "original_url": "https://reliefweb.int/report/lebanon/state-qatar-sends-urgent-relief-aid-sisterly-republic-lebanon-help-40500-displaced-families-enar",
+   "canonical_url": "https://reliefweb.int/report/lebanon/state-qatar-sends-urgent-relief-aid-sisterly-republic-lebanon-help-40500-displaced-families-enar",
+   "publisher": "Qatar Fund for Development",
+   "publisher_domain": "reliefweb.int",
+   "source_type": "official_organisation",
+   "published_at": "2026-03-12T08:15:49Z",
+   "published_precision": "datetime",
+   "discovered_at": "2026-08-20T14:30:30Z",
+   "language": "en",
+   "original_language": "en",
+   "translation": null,
+   "primary_gcc_country": "Qatar",
+   "related_gcc_countries": [],
+   "destination_countries": [
+    "Lebanon"
+   ],
+   "primary_topic": "Humanitarian & Development",
+   "related_topics": [],
+   "event_type": "humanitarian_response",
+   "organisations": [
+    {
+     "name": "Qatar Fund for Development (QFFD)",
+     "register_id": "r430",
+     "match_method": "verified_alias",
+     "confidence": 0.95,
+     "country": "Qatar",
+     "publishable": true
+    }
+   ],
+   "amount": null,
+   "image_url": null,
+   "image_usage_status": "not_reviewed",
+   "discovered_via": "reliefweb_rss",
+   "cluster_id": "c3d51145e3b",
+   "cluster_size": 1,
+   "editorial": {
+    "status": "published",
+    "is_top": false,
+    "priority": null,
+    "reviewed": false,
+    "editor_note": null,
+    "top_rank": null
+   },
+   "provenance": {
+    "ingestion_run_id": "run-20260820T143005Z",
+    "query_id": "Qatar Fund for Development",
+    "provider_record_id": "https://reliefweb.int/report/lebanon/state-qatar-sends-urgent-relief-aid-sisterly-republic-lebanon-help-40500-displaced-families-enar",
+    "registry_version": "2026-08-20.1",
+    "gcc_evidence": [
+     "Qatar: organisation 'qatar fund for development'",
+     "Qatar: name 'qatar'",
+     "Qatar: name 'state of qatar'",
+     "Qatar: city 'doha'"
+    ]
+   },
+   "_advocacy": false,
+   "_commemorative": false,
+   "beyond_horizon": false,
+   "also_reported_by": []
+  }
+ ]
+}
